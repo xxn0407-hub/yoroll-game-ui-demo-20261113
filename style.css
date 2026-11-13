@@ -119,6 +119,7 @@
 
 /* The current save grows within the existing three-slot row. */
 .game-frame[data-page="saves"]{overflow:clip}
+.saves-layout{left:50%;right:auto;width:min(calc(100% - var(--safe)*2),calc(var(--p)*1480));translate:-50% 0}
 .saves-grid{display:flex;align-items:center}
 .save-shell{display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
 .save-shell.is-active{flex-grow:1.18}

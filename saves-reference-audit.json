@@ -1,5 +1,5 @@
 {
-  "revision": "saves-card-hierarchy-20261113",
+  "revision": "saves-centered-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -28,18 +28,18 @@
   ],
   "cardSizeAt1157": {
     "current": {
-      "height": 269.859375,
-      "width": 320.2109375,
-      "x": 52.0625,
-      "y": 367.8359375
+      "height": 269.7743225097656,
+      "width": 320.11285400390625,
+      "x": 132.5390625,
+      "y": 367.6996765136719
     },
     "other": {
-      "height": 228.6875,
-      "width": 271.359375,
-      "x": 386.734375,
-      "y": 388.421875
+      "height": 228.62847900390625,
+      "width": 271.28472900390625,
+      "x": 467.1050720214844,
+      "y": 388.2725830078125
     },
-    "ratio": 1.1800253354062302
+    "ratio": 1.1799884762378088
   },
   "prototypeInteractions": {
     "createdSecondSlot": true,
@@ -48,8 +48,12 @@
     "noDuplicateSelectionButtons": true,
     "pageStayedReady": true,
     "noPageOffset": true,
-    "intermediateSizeObserved": true
+    "intermediateSizeObserved": true,
+    "rowCentered": true
   },
   "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game.",
-  "updatedAt": "2026-11-13T11:15:09.195550+00:00"
+  "updatedAt": "2026-11-13T11:15:09.195550+00:00",
+  "rowAlignment": "center",
+  "centerOffsetPx": -3.0517578125e-05,
+  "measuredFrameWidth": 1156.666748046875
 }

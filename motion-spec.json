@@ -270,7 +270,9 @@
       "selectedToOtherSizeRatio": 1.18,
       "selectionTransitionMs": 650,
       "selectionTrigger": "card",
-      "replayPageOnSelection": false
+      "replayPageOnSelection": false,
+      "rowAlignment": "center",
+      "layoutRevision": "saves-centered-20261113"
     },
     {
       "id": "settings",
