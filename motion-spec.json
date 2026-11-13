@@ -206,7 +206,7 @@
         "darkOverlay": false,
         "innerShadow": false
       },
-      "chapterEyebrow": "Two-digit chapter number only, with no CHAPTER prefix.",
+      "chapterEyebrow": false,
       "topRightCaption": false,
       "selectionEffects": {
         "revision": "chapter-low-resonance-20261113",
@@ -226,7 +226,8 @@
         "reducedMotion": "Hide dust; retain the static selected outline and glow.",
         "sharedWith": "tree",
         "extraBreathingHalo": false
-      }
+      },
+      "chapterEyebrowRevision": "chapter-heading-clean-20261113"
     },
     {
       "id": "tree",
