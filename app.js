@@ -103,7 +103,7 @@ let chapterRailLeft = 0;
 let ignoreChapterClickUntil = 0;
 const activeChapter = () => ({...CHAPTER_PREVIEWS[selectedChapter],number:selectedChapter+1});
 const chapterProgress = () => selectedChapter===0?saveProgress():activeChapter().progress;
-function chapterInfoMarkup(){const chapter=activeChapter();return `<div class="eyebrow" data-enter="chapter-copy">CHAPTER ${String(chapter.number).padStart(2,'0')}</div><h2 data-enter="chapter-copy">第 ${chapter.number} 章</h2><p class="chapter-desc" data-enter="chapter-copy">${chapter.name}</p><div class="small-progress" data-enter="chapter-copy" role="progressbar" aria-label="章节进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${chapterProgress()}"><span style="width:${chapterProgress()}%"></span></div>`;}
+function chapterInfoMarkup(){const chapter=activeChapter();return `<div class="eyebrow" data-enter="chapter-copy">${String(chapter.number).padStart(2,'0')}</div><h2 data-enter="chapter-copy">第 ${chapter.number} 章</h2><p class="chapter-desc" data-enter="chapter-copy">${chapter.name}</p><div class="small-progress" data-enter="chapter-copy" role="progressbar" aria-label="章节进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${chapterProgress()}"><span style="width:${chapterProgress()}%"></span></div>`;}
 function timeout(fn,ms){const id=setTimeout(()=>{timers.delete(id);fn();},ms);timers.add(id);return id;}
 function track(animation,release=true){
  enterAnimations.add(animation);
