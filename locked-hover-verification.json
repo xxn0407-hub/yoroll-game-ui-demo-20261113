@@ -1,10 +1,10 @@
 {
-  "revision": "locked-hover-paired-20261113",
+  "revision": "locked-hover-low-20261113",
   "source": "assets/audio/ui-hover.wav",
   "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
   "sameRecordingAsPlayableHover": true,
   "playablePlaybackRate": 1,
-  "lockedPlaybackRate": 0.75,
+  "lockedPlaybackRate": 0.6,
   "lockedLevel": 0.44,
   "playableNodeHoverLevel": 0.48,
   "targetedChecksPassed": 7,

@@ -1,7 +1,7 @@
 'use strict';
 // Short original PCM assets; all playback stays local to this prototype.
 window.YorollSound = (() => {
- const revision = 'locked-hover-paired-20261113';
+ const revision = 'locked-hover-low-20261113';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
@@ -198,7 +198,7 @@ window.YorollSound = (() => {
    if(active.length>=6)stopVoice(active[0]);
    const source=context.createBufferSource();source.buffer=buffers.get(name);
    // Use the original hover timbre, lowered for unavailable nodes.
-   if(name==='locked')source.playbackRate.value=.75;
+   if(name==='locked')source.playbackRate.value=.6;
    const gain=context.createGain();gain.gain.value=Math.max(0,Math.min(1,level));
    source.connect(gain);gain.connect(output);
    const voice={source,gain,channel,sequence,stopping:false,ducked:false};voices.add(voice);

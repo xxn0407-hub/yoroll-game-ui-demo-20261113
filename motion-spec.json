@@ -112,7 +112,7 @@
         "intentMs": 110,
         "throttleMs": 650,
         "level": 0.44,
-        "playbackRate": 0.75,
+        "playbackRate": 0.6,
         "disabledButtonRemainsDisabled": true,
         "dragAndPanSilent": true,
         "respectsMasterMute": true,
