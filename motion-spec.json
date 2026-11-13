@@ -145,7 +145,10 @@
     "backButtonHover": {
       "glowTransitionMs": 250,
       "defaultGlow": false,
-      "hoverAndKeyboardFocus": true
+      "hoverAndKeyboardFocus": true,
+      "backgroundVisible": false,
+      "pressedGlowRadiusPx": 6,
+      "pressTransitionMs": 100
     }
   },
   "pages": [

@@ -385,7 +385,9 @@
     "backGlowAtRest": false,
     "backGlowOnHover": true,
     "backGlowOnKeyboardFocus": true,
-    "backGlowTransitionMs": 250
+    "backGlowTransitionMs": 250,
+    "backButtonBackground": false,
+    "backGlowOnPress": true
   },
   "soundVerification": "locked-hover-verification.json",
   "soundRevision": "locked-hover-paired-20261113"

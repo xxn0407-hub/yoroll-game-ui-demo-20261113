@@ -350,6 +350,11 @@
     "hoverGlow": true,
     "keyboardFocusGlow": true,
     "glowRadiusPx": 4,
-    "glowTransitionMs": 250
+    "glowTransitionMs": 250,
+    "backgroundVisible": false,
+    "buttonBoxShadow": false,
+    "pressedGlowRadiusPx": 6,
+    "pressTransitionMs": 100,
+    "focusIndication": "Arrow glow without a rectangular outline."
   }
 }
