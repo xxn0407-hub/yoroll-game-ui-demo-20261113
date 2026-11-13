@@ -262,7 +262,7 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-branches-2d-20261113",
+    "revision": "tree-direct-start-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
@@ -278,7 +278,7 @@
       1579.5
     ],
     "horizontalScroll": true,
-    "fixedDetailColumn": true,
+    "fixedDetailColumn": false,
     "nodeNumberPx": 42,
     "nodeNumberWeight": 300,
     "nodeNumberStyle": "Two tabular digits, without underscore, separated from the title by a fine rule.",
@@ -304,6 +304,14 @@
       2,
       4
     ],
-    "layoutAlgorithm": "Topological ranks and barycentric branch ordering; bounds derived from graph density."
+    "layoutAlgorithm": "Topological ranks and barycentric branch ordering; bounds derived from graph density.",
+    "detailPanel": false,
+    "viewportSizePx": [
+      1747.2,
+      792
+    ],
+    "viewportWidthIncreasePercent": 39,
+    "viewportSafeAreaPercent": 4.5,
+    "directNodeActivation": true
   }
 }

@@ -120,7 +120,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
 }
 function cancelPageMotion(){
  disposeStoryScroll();
- treeSwitchId++;treeDetailMotion=null;treeRouteMotions.clear();
+ treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
  enterAnimations.clear();
  for(const timer of timers)clearTimeout(timer);
@@ -271,8 +271,6 @@ function bindChapterRail(){
 }
 const storyTree = window.YorollStoryTree;
 const storyStates = new Map();
-let treeSwitchId = 0;
-let treeDetailMotion = null;
 const treeRouteMotions = new Map();
 let treeScrollCleanup=null,treeRevealNode=null,treeViewportMove=null;
 let ignoreStoryClickUntil=0,ignoreStoryHoverUntil=0;
@@ -290,15 +288,10 @@ function storyProgressMarkup(node){
  if(node.locked)return '';
  return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span><span class="node-progress-value" aria-hidden="true">${node.progress}%</span></span>`;
 }
-function storyDetailMarkup(node){
- const count=storyTree.create(activeChapter()).nodes.length;
- return `<div class="eyebrow">片段 ${node.id} / ${count}</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.locked?'已锁定':'已探索'}</span>${node.locked?'':`<span class="node-detail-progress" aria-label="游玩进度 ${node.progress}%">${node.progress}%</span>`}</div><p>${node.description}</p>${node.locked?`<button class="btn btn-small" data-action="restart-node" disabled aria-disabled="true">${icon('lock')}<span>尚未解锁</span></button>`:button('从此处开始','restart-node','btn-small','play')}`;
-}
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
  const {layout}=graph;
  const root=graph.nodes.find(node=>!graph.edges.some(edge=>edge[1]===node.id));
- const selected=graph.nodes.find(node=>node.id===state.node);
  const edges=graph.edges.map(([from,to])=>{
   const active=state.path.some((id,index)=>id===from&&state.path[index+1]===to);
   const a=graph.nodes.find(node=>node.id===from),b=graph.nodes.find(node=>node.id===to);
@@ -307,9 +300,9 @@ function treeView(){
  }).join('');
  const nodes=graph.nodes.map(node=>{
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
-  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，可重玩`}"><img src="${node.cover}" alt="" draggable="false">${storyProgressMarkup(node)}${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong></div></button></div>`;
+  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，点击从此处开始`}"><img src="${node.cover}" alt="" draggable="false">${storyProgressMarkup(node)}${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong></div></button></div>`;
  }).join('');
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div><span class="tree-fade-top" aria-hidden="true"></span><span class="tree-fade-bottom" aria-hidden="true"></span></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div><span class="tree-fade-top" aria-hidden="true"></span><span class="tree-fade-bottom" aria-hidden="true"></span></div></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 选择片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
 }
 function disposeStoryScroll(){
  treeScrollCleanup?.();treeScrollCleanup=null;treeRevealNode=null;treeViewportMove=null;
@@ -421,32 +414,15 @@ function updateStoryRoute(path){
   motion?.finished.then(()=>{if(treeRouteMotions.get(line)===motion)treeRouteMotions.delete(line);}).catch(()=>{});
  });
 }
-async function switchStoryDetail(node,request){
- const detail=$('.tree-detail-content');if(!detail)return;
- const style=getComputedStyle(detail),pose={opacity:style.opacity,transform:style.transform};
- if(treeDetailMotion){enterAnimations.delete(treeDetailMotion);treeDetailMotion.cancel();treeDetailMotion=null;}
- if(!motionPreference.matches){
-  treeDetailMotion=animate(detail,[pose,{opacity:0,transform:`translate3d(${unit(-8)}px,0,0)`}],{duration:100,easing:'ease-out'},false);
-  try{await treeDetailMotion.finished;}catch{return;}
- }
- if(request!==treeSwitchId||currentPage!=='tree')return;
- detail.innerHTML=storyDetailMarkup(node);
- const outgoing=treeDetailMotion;
- treeDetailMotion=enter(detail,{x:unit(12),y:0,duration:420});
- if(outgoing){enterAnimations.delete(outgoing);outgoing.cancel();}
- if(treeDetailMotion)try{await treeDetailMotion.finished;}catch{return;}
- if(request===treeSwitchId&&currentPage==='tree'){frame.dataset.treeTransition='ready';treeDetailMotion=null;}
-}
-function selectStoryNode(id,{focus=false}={}){
- if(currentPage!=='tree')return;
+function selectStoryNode(id,{focus=false,sound=true}={}){
+ if(currentPage!=='tree'||screen.getAttribute('aria-busy')==='true')return;
  const graph=storyTree.create(activeChapter()),node=graph.nodes.find(item=>item.id===id);
  if(!storyTree.canPlay(node))return;
  const state=currentStoryState();
  if(state.node===id){if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});treeRevealNode?.(id);return;}
  state.node=id;state.path=storyTree.choosePath(graph,id,state.path);
- const request=++treeSwitchId;
- frame.dataset.treeNode=id;frame.dataset.treeTransition='changing';
- uiSound.play('chapter',{level:.5,throttle:220});
+ frame.dataset.treeNode=id;frame.dataset.treeTransition='ready';
+ if(sound)uiSound.play('chapter',{level:.5,throttle:220});
  $$('.tree-node').forEach(card=>{
   const selected=card.dataset.storyNode===id;
   card.classList.toggle('is-selected',selected);card.classList.toggle('is-route',state.path.includes(card.dataset.storyNode));
@@ -456,12 +432,14 @@ function selectStoryNode(id,{focus=false}={}){
  treeRevealNode?.(id);
  if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});
  $('#tree-announcement').textContent=`已选择片段 ${id}，${node.name}，${node.route}`;
- switchStoryDetail(node,request);
 }
-function restartStoryNode(){
- const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===currentStoryState().node);
+function startStoryNode(id=currentStoryState().node){
+ if(currentPage!=='tree'||screen.getAttribute('aria-busy')==='true')return;
+ const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===id);
  if(!storyTree.canPlay(node))return;
- openModal({title:'从这个片段重新开始？',message:`将进入第 ${activeChapter().number} 章 · 片段 ${node.id}「${node.name}」。当前进度会先保留。`,confirm:'开始片段',onConfirm:()=>{if(!storyTree.canPlay(node))return;playbackStoryNode={...node,chapter:selectedChapter};go('gameplay');toast(`已进入片段 ${node.id} · ${node.name}`);}});
+ selectStoryNode(id,{sound:false});
+ playbackStoryNode={...node,chapter:selectedChapter};
+ go('gameplay');
 }
 
 function saveView(){
@@ -517,7 +495,6 @@ function enterPage(){
  $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Math.min(2,Number(el.dataset.treeDepth))*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
  $$('.tree-route.is-active').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:680,delay:250,easing:'cubic-bezier(.22,.68,.25,1)'}));
  $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Math.min(2,Number(el.dataset.treeDepth))*85+Math.min(2,Number(el.dataset.treeRow))*20,duration:680}));
- $$('[data-enter="detail"]').forEach(el=>enter(el,{x:unit(20),y:0,delay:310,duration:720}));
  $$('[data-enter="footer"]').forEach(el=>enter(el,{y:unit(8),delay:320,duration:620}));
  $$('[data-enter="subtitle"]').forEach(el=>enter(el,{y:unit(12),delay:250,duration:680}));
  $$('[data-enter="qte"]').forEach(el=>enter(el,{y:unit(14),scale:.94,delay:280,duration:650,blur:2}));
@@ -667,7 +644,6 @@ const actions={
  'logout':()=>{if(signedIn)showLogout();else openModal({title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
- 'restart-node':restartStoryNode,
  'reset-settings':()=>{Object.assign(settingState,{master:100,video:100,sfx:100,music:100,language:'跟随系统'});audioMuted=false;applySoundLevels();uiSound.play('confirm');go('settings',{skipExit:true});toast('已恢复默认设置');},
  'modal-cancel':()=>closeModal(),
  'modal-confirm':()=>{const fn=confirmAction;closeModal(true);fn?.();},
@@ -706,12 +682,12 @@ document.addEventListener('click',event=>{
  const control=event.target.closest('button,a');
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true')return;
  if(control.hasAttribute('data-route')){if(control.dataset.route===currentPage)uiSound.play('click',{level:.75});return;}
- if(control.matches('.chapter-card,.tree-node,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action="restart-node"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
+ if(control.matches('.chapter-card,.tree-node,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
  uiSound.play(control.dataset.action==='modal-confirm'?'confirm':control.hasAttribute('data-language')?'select':'click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
  const storyCard=event.target.closest('[data-story-node]');
- if(storyCard){if(performance.now()<ignoreStoryClickUntil){event.preventDefault();return;}selectStoryNode(storyCard.dataset.storyNode);return;}
+ if(storyCard){if(performance.now()<ignoreStoryClickUntil){event.preventDefault();return;}startStoryNode(storyCard.dataset.storyNode);return;}
  const chapterCard=event.target.closest('.chapter-card[data-chapter-index]');
  if(chapterCard){if(performance.now()<ignoreChapterClickUntil){event.preventDefault();return;}selectChapter(Number(chapterCard.dataset.chapterIndex));return;}
  const route=event.target.closest('[data-route]');if(route){go(route.dataset.route);return;}
@@ -740,7 +716,7 @@ document.addEventListener('keydown',event=>{
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)){
    event.preventDefault();const state=currentStoryState();selectStoryNode(storyTree.nextNode(storyTree.create(activeChapter()),state.node,event.key,state.path),{focus:true});return;
   }
-  if(event.key==='Enter'&&(!event.target.closest('button,a')||event.target.closest('.tree-node'))){event.preventDefault();restartStoryNode();return;}
+  if(event.key==='Enter'&&(!event.target.closest('button,a')||event.target.closest('.tree-node'))){event.preventDefault();startStoryNode();return;}
  }
  if(currentPage==='chapters'&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)&&!event.metaKey&&!event.ctrlKey){event.preventDefault();const index=event.key==='Home'?0:event.key==='End'?CHAPTER_PREVIEWS.length-1:Math.max(0,Math.min(CHAPTER_PREVIEWS.length-1,selectedChapter+(event.key==='ArrowRight'?1:-1)));selectChapter(index,{focus:true});return;}
  if(currentPage==='chapters'&&event.key==='Enter'&&(!event.target.closest('button')||event.target.closest('.chapter-card'))){event.preventDefault();go('gameplay');}

@@ -81,24 +81,23 @@
       "rowStagger": 20,
       "connectionDraw": 650,
       "routeDraw": 540,
-      "detailExit": 100,
-      "detailEntry": 420,
       "latestSelectionWins": true,
       "selectionPerChapter": true,
-      "reducedMotion": "Selections, routes and details update immediately.",
+      "reducedMotion": "Selections and routes update immediately; fragment activation uses the reduced-motion page transition.",
       "entryColumnStaggerLimit": 2,
       "panDuration": 440,
       "wheelPanDuration": 280,
       "dragReleaseDuration": 500,
       "scrollPersistencePerChapter": true,
-      "detailColumnFixed": true,
       "selectionGlowTransition": 400,
       "lockedNodesSelectable": false,
       "keyboardSkipsLocked": true,
       "lockedAreasRemainDraggable": true,
       "twoDimensionalPan": true,
       "positionBothAxesPersistsPerChapter": true,
-      "initialCamera": "Vertically centered on the selected fragment; horizontal origin retained."
+      "initialCamera": "Vertically centered on the selected fragment; horizontal origin retained.",
+      "detailPanel": false,
+      "nodeActivation": "Click or Enter starts the explored fragment directly; normal 150ms page exit, no confirmation modal."
     }
   },
   "pages": [
@@ -134,8 +133,8 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "节点与连线沿用柔和入场；选择画面外节点时，横向和纵向以 440ms 同步平移。拖动松手后约 500ms 衰减，选中柔光约 400ms 交接，右侧信息 100ms 淡出、420ms 落位。",
-      "interaction": "拖动可向任意方向浏览；滚轮纵向、Shift＋滚轮横向，触控板可双向滑动。方向键沿连接或同层选择已探索节点，自动确保它在视野内；Home / End 到首尾可游玩片段，PageUp / PageDown 纵向浏览，加 Shift 横向浏览。各章节独立恢复两个方向的位置。"
+      "motion": "节点、连线和选中柔光沿用当前节奏；点击后以 150ms 页面退出衔接片段入场。键盘选择仍以 440ms 将节点带入视野，拖动松手后约 500ms 衰减。",
+      "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。"
     },
     {
       "id": "saves",
