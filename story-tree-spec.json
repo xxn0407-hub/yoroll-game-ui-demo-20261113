@@ -292,21 +292,25 @@
     "glowLoops": false,
     "dust": {
       "selectedNodeOnly": true,
-      "motesPerSelectedNode": 8,
+      "motesPerSelectedNode": 12,
       "diameterPx": [
-        1.5,
-        2.1
+        2.3,
+        4.29
       ],
       "cycleSeconds": [
-        6.1,
-        7.8
+        6.4,
+        11.48
       ],
       "crossfadeMs": 400,
       "cardMotion": false,
       "inactiveMotesPaused": true,
       "pointerEvents": "none",
       "ariaHidden": true,
-      "reducedMotion": "Hide dust; keep the static selection glow."
+      "reducedMotion": "Hide dust; keep the static selection glow.",
+      "revision": "card-dust-unified-20261113",
+      "placement": "behind opaque node card",
+      "depthGroups": 3,
+      "sharedDust": "motion-spec.json common.selectedDust"
     }
   },
   "playableNodes": [

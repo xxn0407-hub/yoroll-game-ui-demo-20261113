@@ -104,18 +104,21 @@
 /* Transparent edge falloff keeps the scene visible without an inset shadow. */
 .tree-viewport{--tree-mask-x:linear-gradient(to right,#0000 0,#0000000f calc(var(--tree-fade-left,0px)*0.2),#00000051 calc(var(--tree-fade-left,0px)*0.4),#000000ae calc(var(--tree-fade-left,0px)*0.6),#000000f0 calc(var(--tree-fade-left,0px)*0.8),#000 var(--tree-fade-left,0px),#000 calc(100% - var(--tree-fade-right,0px)),#000000f0 calc(100% - var(--tree-fade-right,0px)*0.8),#000000ae calc(100% - var(--tree-fade-right,0px)*0.6),#00000051 calc(100% - var(--tree-fade-right,0px)*0.4),#0000000f calc(100% - var(--tree-fade-right,0px)*0.2),#0000 100%);--tree-mask-y:linear-gradient(to bottom,#0000 0,#0000000f calc(var(--tree-fade-top,0px)*0.2),#00000051 calc(var(--tree-fade-top,0px)*0.4),#000000ae calc(var(--tree-fade-top,0px)*0.6),#000000f0 calc(var(--tree-fade-top,0px)*0.8),#000 var(--tree-fade-top,0px),#000 calc(100% - var(--tree-fade-bottom,0px)),#000000f0 calc(100% - var(--tree-fade-bottom,0px)*0.8),#000000ae calc(100% - var(--tree-fade-bottom,0px)*0.6),#00000051 calc(100% - var(--tree-fade-bottom,0px)*0.4),#0000000f calc(100% - var(--tree-fade-bottom,0px)*0.2),#0000 100%);-webkit-mask-image:var(--tree-mask-x),var(--tree-mask-y);mask-image:var(--tree-mask-x),var(--tree-mask-y);-webkit-mask-composite:source-in;mask-composite:intersect;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
 
-/* Sparse light dust stays outside the selected card without moving its artwork. */
-.node-dust{position:absolute;z-index:4;inset:calc(var(--p)*-26);opacity:0;pointer-events:none;user-select:none;transition:opacity .4s var(--soft)}
-.node-dust i{position:absolute;display:block;width:calc(var(--p)*var(--dust-size));height:calc(var(--p)*var(--dust-size));border-radius:50%;background:#f0f1d8;box-shadow:0 0 calc(var(--p)*4) #e1edcd80;opacity:0;animation:story-dust-drift var(--dust-duration) linear var(--dust-delay) infinite both;animation-play-state:paused}
+/* All selected cards share rear dust with near, middle and far depth groups. */
+.chapter-cell,.tree-node-cell{isolation:isolate}
+.chapter-card,.tree-node{z-index:1;background-color:#10171b}
+.node-dust{position:absolute;z-index:0;inset:calc(var(--p)*-26);opacity:0;pointer-events:none;user-select:none;transition:opacity .4s var(--soft)}
+.node-dust i{--dust-strength:.65;--dust-spread:1;--dust-drift-scale:1;position:absolute;display:block;width:calc(var(--p)*var(--dust-size)*var(--dust-spread));height:calc(var(--p)*var(--dust-size)*var(--dust-spread));border-radius:50%;background:#e5ebda;box-shadow:0 0 calc(var(--p)*4) #dce8cf40;filter:blur(calc(var(--p)*.25));opacity:0;animation:story-dust-drift var(--dust-duration) linear var(--dust-delay) infinite both;animation-play-state:paused}
+.node-dust i:nth-child(3n + 2){--dust-strength:.43;--dust-spread:1.2;--dust-drift-scale:.85;filter:blur(calc(var(--p)*.8));animation-duration:calc(var(--dust-duration)*1.15)}
+.node-dust i:nth-child(3n){--dust-strength:.24;--dust-spread:1.65;--dust-drift-scale:.65;filter:blur(calc(var(--p)*1.8));animation-duration:calc(var(--dust-duration)*1.4)}
 .tree-node.is-selected + .node-dust{opacity:1}
 .tree-node.is-selected + .node-dust i{animation-play-state:running;will-change:transform,opacity}
-@keyframes story-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*4),0) scale(.65)}24%{opacity:.42}54%{opacity:.66}82%{opacity:.2}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)),calc(var(--p)*var(--dust-rise)),0) scale(.75)}}
+@keyframes story-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*6),0) scale(.82)}20%{opacity:calc(.4*var(--dust-strength))}50%{opacity:calc(.66*var(--dust-strength))}80%{opacity:calc(.25*var(--dust-strength))}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)*var(--dust-drift-scale)),calc(var(--p)*var(--dust-rise)*var(--dust-drift-scale)),0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.node-dust{display:none}}
 
 /* Chapters share the story tree's selected light dust; reserved rail space keeps it visible. */
 .chapter-card.is-selected + .chapter-dust{opacity:1}
 .chapter-card.is-selected + .chapter-dust i{animation-play-state:running;will-change:transform,opacity}
-.game-frame[data-entry-state="entering"] .chapter-dust i{animation-play-state:paused}
 
 /* The current save grows within the existing three-slot row. */
 .game-frame[data-page="saves"]{overflow:clip}
@@ -123,15 +126,11 @@
 .saves-grid{display:flex;align-items:center}
 .save-shell{isolation:isolate;display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
 .save-shell.is-active{flex-grow:1.18}
-/* Dust stays behind the card; soft distant motes add depth without covering the artwork. */
-.save-dust{top:calc(var(--p)*18);z-index:0}
-.save-dust i{--dust-strength:.65;--dust-spread:1;--dust-drift-scale:1;width:calc(var(--p)*var(--dust-size)*var(--dust-spread));height:calc(var(--p)*var(--dust-size)*var(--dust-spread));background:#e5ebda;box-shadow:0 0 calc(var(--p)*4) #dce8cf40;filter:blur(calc(var(--p)*.25));animation-name:save-dust-drift}
-.save-dust i:nth-child(3n + 2){--dust-strength:.43;--dust-spread:1.2;--dust-drift-scale:.85;filter:blur(calc(var(--p)*.8));animation-duration:calc(var(--dust-duration)*1.15)}
-.save-dust i:nth-child(3n){--dust-strength:.24;--dust-spread:1.65;--dust-drift-scale:.65;filter:blur(calc(var(--p)*1.8));animation-duration:calc(var(--dust-duration)*1.4)}
-@keyframes save-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*6),0) scale(.82)}20%{opacity:calc(.4*var(--dust-strength))}50%{opacity:calc(.66*var(--dust-strength))}80%{opacity:calc(.25*var(--dust-strength))}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)*var(--dust-drift-scale)),calc(var(--p)*var(--dust-rise)*var(--dust-drift-scale)),0) scale(1)}}
+/* The save card uses the shared rear dust, anchored below its metadata row. */
+.save-dust{top:calc(var(--p)*18)}
 .save-shell.is-active>.save-dust{opacity:1}
 .save-shell.is-active>.save-dust i{animation-play-state:running;will-change:transform,opacity}
-.game-frame[data-entry-state="entering"] .save-dust i{animation-play-state:paused}
+.game-frame[data-entry-state="entering"] .node-dust i{animation-play-state:paused}
 .save-meta{position:relative;z-index:2;height:calc(var(--p)*32);margin-bottom:calc(var(--p)*12);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--p)*12)}
 .save-date{display:flex;align-items:center;gap:calc(var(--p)*10);font-size:calc(var(--p)*14);line-height:1.3;color:#aab7ad;white-space:nowrap}
 .save-date:before{content:"";width:1px;height:calc(var(--p)*15);background:#d5ded0b3}

@@ -170,6 +170,48 @@
       "uiScale": "min(viewportWidth / 1920, viewportHeight / 1080)",
       "motionDistances": "Use the same UI scale as CSS.",
       "resizeReplaysEntry": false
+    },
+    "selectedDust": {
+      "revision": "card-dust-unified-20261113",
+      "appliesTo": [
+        "chapters",
+        "tree",
+        "saves"
+      ],
+      "placement": "Behind each opaque card in an isolated stacking context.",
+      "stackOrder": {
+        "particles": 0,
+        "card": 1
+      },
+      "depthLayers": [
+        {
+          "name": "near",
+          "peakOpacity": 0.429,
+          "sizeFactor": 1,
+          "blurPxAt1920": 0.25,
+          "durationFactor": 1
+        },
+        {
+          "name": "middle",
+          "peakOpacity": 0.2838,
+          "sizeFactor": 1.2,
+          "blurPxAt1920": 0.8,
+          "durationFactor": 1.15
+        },
+        {
+          "name": "far",
+          "peakOpacity": 0.1584,
+          "sizeFactor": 1.65,
+          "blurPxAt1920": 1.8,
+          "durationFactor": 1.4
+        }
+      ],
+      "crossfadeMs": 400,
+      "onlySelectedRuns": true,
+      "pauseDuringPageEntry": true,
+      "pointerEvents": "none",
+      "ariaHidden": true,
+      "reducedMotion": "Hide dust; retain static selected glow."
     }
   },
   "pages": [
@@ -218,12 +260,12 @@
       "chapterEyebrow": false,
       "topRightCaption": false,
       "selectionEffects": {
-        "revision": "chapter-low-resonance-20261113",
-        "glow": "Exactly the story tree selected border, shadow, surface tint and particle size.",
-        "dustCount": 8,
+        "revision": "card-dust-unified-20261113",
+        "glow": "Story tree selected border, shadow and surface tint, with shared rear dust depth.",
+        "dustCount": 12,
         "dustPeriodMs": [
-          6100,
-          7800
+          6400,
+          11480
         ],
         "onlySelectedAnimates": true,
         "bottomBar": false,
@@ -233,8 +275,11 @@
         "ariaHidden": true,
         "pointerEvents": "none",
         "reducedMotion": "Hide dust; retain the static selected outline and glow.",
-        "sharedWith": "tree",
-        "extraBreathingHalo": false
+        "sharedWith": "tree and saves",
+        "extraBreathingHalo": false,
+        "dustDepthGroups": 3,
+        "placement": "behind card",
+        "sharedDust": "common.selectedDust"
       },
       "chapterEyebrowRevision": "chapter-heading-clean-20261113"
     },
@@ -242,7 +287,7 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "选中节点周围的细小光点以约 6–8 秒的错峰周期漂移、淡入淡出；切换选中态时以 400ms 交接，旧节点粒子暂停并淡出。节点与连线沿用当前入场，减少动态效果时隐藏浮尘。",
+      "motion": "选中节点后方的 12 个浮尘光点分为近、中、远三组，虚实、透明度与漂移速度统一沿用存档页；切换时 400ms 交接，旧节点粒子暂停并淡出。卡片遮住后方粒子，减少动态效果时隐藏浮尘。",
       "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。 锁定节点悬停沿用可点击 hover 的同一音色，以更低的音高轻柔回应；110ms 停留意图与 650ms 限频防止划过连响，拖动和静音时不响。",
       "nodeInformation": {
         "revision": "tree-node-two-lines-20261113",
@@ -251,6 +296,14 @@
         "namePx": 20,
         "rowGapPx": 8,
         "progress": "Explored progress remains at the right of the name row; locked nodes have no progress."
+      },
+      "selectionEffects": {
+        "revision": "card-dust-unified-20261113",
+        "dustCount": 12,
+        "dustDepthGroups": 3,
+        "placement": "behind card",
+        "sharedDust": "common.selectedDust",
+        "onlySelectedRuns": true
       }
     },
     {
