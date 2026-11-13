@@ -116,7 +116,17 @@
         "disabledButtonRemainsDisabled": true,
         "dragAndPanSilent": true,
         "respectsMasterMute": true
-      }
+      },
+      "viewportSizePx": [
+        1824,
+        864
+      ],
+      "scrollbarsVisible": false
+    },
+    "backButtonHover": {
+      "glowTransitionMs": 250,
+      "defaultGlow": false,
+      "hoverAndKeyboardFocus": true
     }
   },
   "pages": [
@@ -152,7 +162,7 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "节点与连线入场沿用当前节奏。渐隐宽度随剩余滚动距离连续变化，使用平滑透明度曲线衔接清晰区域；透明遮罩只影响剧情树内容。点击以 150ms 退出衔接片段入场，拖动松手约 500ms 衰减。",
+      "motion": "节点与连线沿用当前柔和入场，透明渐隐随滚动距离变化。返回箭头的光晕在 hover / 键盘聚焦时以 250ms 淡入，离开后淡出；默认无光晕。双向平移与拖动惯性保持当前节奏。",
       "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。 锁定节点悬停使用更低、更轻的收束空气声；110ms 停留意图与 650ms 限频防止划过连响，拖动和静音时不响。"
     },
     {

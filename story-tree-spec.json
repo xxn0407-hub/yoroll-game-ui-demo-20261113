@@ -1,5 +1,5 @@
 {
-  "revision": "tree-locked-hover-20261113",
+  "revision": "tree-roomier-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
   "dataScope": "Twenty-eight local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
@@ -210,7 +210,6 @@
       "vertical wheel",
       "Shift + wheel horizontally",
       "two-dimensional trackpad",
-      "native scrollbars",
       "PageUp / PageDown; Shift for horizontal"
     ],
     "nativeScrollContainer": true,
@@ -231,7 +230,10 @@
       "darkOverlay": false,
       "innerShadow": false,
       "sceneUnaffected": true
-    }
+    },
+    "scrollbarsVisible": false,
+    "viewportWidthPercent": 95,
+    "viewportHeightPercent": 80
   },
   "progress": {
     "display": "Explored fragments only: compact 48px thin track and 12px percentage integrated at the right of the bottom information row.",
@@ -353,15 +355,19 @@
   },
   "connectorRouting": "Rounded elbows use separate source lanes to keep rich split and merge trunks distinct.",
   "viewportSizePx": [
-    1747.2,
-    792
+    1824,
+    864
   ],
   "detailPanel": false,
   "activation": "Clicking a playable fragment selects its route and directly enters that fragment. No separate detail panel, start button or confirmation modal.",
   "header": {
     "title": "剧情树",
     "backButton": true,
-    "rightChapterCaption": false
+    "rightChapterCaption": false,
+    "backGlowAtRest": false,
+    "backGlowOnHover": true,
+    "backGlowOnKeyboardFocus": true,
+    "backGlowTransitionMs": 250
   },
   "soundVerification": "locked-hover-verification.json"
 }

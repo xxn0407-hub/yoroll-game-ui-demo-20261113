@@ -1,54 +1,35 @@
 {
-  "revision": "tree-soft-edges-20261113",
-  "verifiedAt": "2026-11-13T07:09:14.582Z",
+  "revision": "tree-roomier-20261113",
+  "verifiedAt": "2026-11-13T07:28:12.890Z",
   "initial": {
-    "backgrounds": {
-      "graph": "rgba(0, 0, 0, 0)",
-      "viewport": "rgba(0, 0, 0, 0)"
+    "backFilter": "none",
+    "backTarget": {
+      "x": 60.49609375,
+      "y": 218.6640625
     },
-    "card": 204.8828125,
-    "composite": "intersect, intersect",
-    "edges": [
-      "0.00px",
-      "72.31px",
-      "57.85px",
-      "57.85px"
-    ],
-    "locked": 22,
-    "lockedProgress": 0,
-    "mask": "linear-gradient(to right, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.318) 0px, rgba(0, 0, 0, 0.682) 0px, rgba(0, 0, 0, 0.94) 0px, rgb(0, 0, 0) 0px, rgb(0, 0, 0) calc(100% - 72.31px), rgba(0, 0, 0, 0.94) calc(100% - 57.848px), rgba(0, 0, 0, 0.682) calc(100% - 43.386px), rgba(0, 0, 0, 0.318) calc(100% - 28.924px), rgba(0, 0, 0, 0.06) calc(100% - 14.462px), rgba(0, 0, 0, 0) 100%), linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.06) 11.57px, rgba(0, 0, 0, 0.318) 23.14px, rgba(0, 0, 0, 0.682) 34.71px, rgba(0, 0, 0, 0.94) 46.28px, rgb(0, 0, 0) 57.85px, rgb(0, 0, 0) calc(100% - 57.85px), rgba(0, 0, 0, 0.94) calc(100% - 46.28px), rgba(0, 0, 0, 0.682) calc(100% - 34.71px), rgba(0, 0, 0, 0.318) calc(100% - 23.14px), rgba(0, 0, 0, 0.06) calc(100% - 11.57px), rgba(0, 0, 0, 0) 100%)",
-    "numberFont": "16.8729px",
-    "progressInsideInfo": true,
-    "progressValue": "22%",
-    "progressWidth": 28.921875,
+    "cardWidth": 204.8828125,
+    "overflow": "auto",
     "scroll": {
       "x": 0,
-      "y": 237.5
+      "y": 215.5
     },
-    "shadows": {
-      "graph": "none",
-      "viewport": "none"
+    "scrollbarWidth": "none",
+    "viewportReferencePx": {
+      "height": 864.0103716508211,
+      "width": 1824.010371650821
     }
   },
-  "scrolling": {
-    "background": "rgba(0, 0, 0, 0)",
-    "edges": [
-      "72.31px",
-      "72.31px",
-      "57.85px",
-      "0.50px"
-    ],
-    "overlayElements": 0,
-    "scroll": {
-      "x": 405,
-      "y": 474.5
-    },
-    "shadow": "none",
-    "stageScroll": 0
+  "hover": {
+    "filter": "drop-shadow(rgba(229, 250, 255, 0.4) 0px 0px 2.41042px)",
+    "hovered": true
   },
-  "nodeStart": {
-    "dialogs": 0,
-    "hud": "第 1 章 · 片段 09 · 黎明关口",
-    "page": "gameplay"
+  "scrolled": {
+    "backFilter": "none",
+    "scroll": {
+      "x": 231.5,
+      "y": 366.5
+    },
+    "scrollbarWidth": "none",
+    "stageScroll": 0
   }
 }

@@ -250,7 +250,7 @@
     "revision": "reference-elements-20261113",
     "reference": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
     "preserveApprovedScale": true,
-    "backButton": "Original filled arrow silhouette; existing header button box and title layout retained.",
+    "backButton": "Original filled arrow silhouette; no glow at rest, soft glow on hover or keyboard focus. Header dimensions retained.",
     "storyTreeNodePx": [
       340,
       191.25
@@ -262,7 +262,7 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-soft-edges-20261113",
+    "revision": "tree-roomier-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
@@ -307,11 +307,10 @@
     "layoutAlgorithm": "Topological ranks and barycentric branch ordering; bounds derived from graph density.",
     "detailPanel": false,
     "viewportSizePx": [
-      1747.2,
-      792
+      1824,
+      864
     ],
-    "viewportWidthIncreasePercent": 39,
-    "viewportSafeAreaPercent": 4.5,
+    "viewportSafeAreaPercent": 2.5,
     "directNodeActivation": true,
     "progressTrackWidthPx": 48,
     "edgeFade": {
@@ -323,6 +322,16 @@
       "darkOverlay": false,
       "innerShadow": false,
       "sceneUnaffected": true
-    }
+    },
+    "viewportWidthPercent": 95,
+    "viewportHeightPercent": 80,
+    "scrollbarsVisible": false
+  },
+  "backButtonInteraction": {
+    "defaultGlow": false,
+    "hoverGlow": true,
+    "keyboardFocusGlow": true,
+    "glowRadiusPx": 4,
+    "glowTransitionMs": 250
   }
 }
