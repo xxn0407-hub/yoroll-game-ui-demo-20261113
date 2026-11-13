@@ -1,0 +1,48 @@
+{
+  "revision": "saves-reference-20261113",
+  "checkedAt": "2026-11-13T11:02:37.562590+00:00",
+  "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
+  "sourceScreenshot": "comparison/before/07-saves.jpg",
+  "sourceObserved": [
+    "Filmstrip perforations above and below cards",
+    "Saved-at metadata and a visible trash icon above occupied cards",
+    "Chapter number and fragment name over artwork",
+    "Glass capsule select button below an occupied card",
+    "Circular plus with a create-save label for empty slots"
+  ],
+  "implemented": [
+    "Filmstrip edges",
+    "Saved-at metadata",
+    "Always-visible trash button",
+    "Below-card capsule select button using the existing chapter button style",
+    "Circular create-save affordance",
+    "Current-save outline, glow and button state",
+    "Removed SAVE FILES caption and its line"
+  ],
+  "adaptations": [
+    "Retain the established compact card dimensions.",
+    "Use readable scene names instead of internal Unity scene IDs.",
+    "Timestamps and save slots belong to the local demonstration and reset on reload."
+  ],
+  "cardSizeAt1157": {
+    "before": {
+      "height": 242.1484375,
+      "width": 287.640625,
+      "x": 52.0625,
+      "y": 341.328125
+    },
+    "after": {
+      "height": 242.2421875,
+      "width": 287.640625,
+      "x": 52.0625,
+      "y": 367.8359375
+    }
+  },
+  "prototypeInteractions": {
+    "createdSecondSlot": true,
+    "switchedBackUsingBottomButton": true,
+    "singleCurrentMarker": true,
+    "cancelDeletePreservedSlots": true
+  },
+  "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game."
+}
