@@ -1,0 +1,74 @@
+{
+  "revision": "story-branches-20261113",
+  "units": "Reference pixels at 1920x1080; durations in milliseconds.",
+  "dataScope": "Seven local preview fragments, not online Race story data.",
+  "boardSizePx": [
+    1230,
+    724
+  ],
+  "nodeSizePx": [
+    340,
+    191.25
+  ],
+  "columnX": [
+    20,
+    445,
+    870
+  ],
+  "rowY": [
+    24,
+    266.375,
+    508.75
+  ],
+  "edges": [
+    [
+      "01",
+      "02"
+    ],
+    [
+      "01",
+      "03"
+    ],
+    [
+      "01",
+      "04"
+    ],
+    [
+      "02",
+      "05"
+    ],
+    [
+      "03",
+      "05"
+    ],
+    [
+      "03",
+      "06"
+    ],
+    [
+      "04",
+      "06"
+    ],
+    [
+      "04",
+      "07"
+    ]
+  ],
+  "entry": {
+    "nodeEntryDuration": 680,
+    "columnStagger": 85,
+    "rowStagger": 20,
+    "connectionDraw": 650,
+    "routeDraw": 540,
+    "detailExit": 100,
+    "detailEntry": 420,
+    "latestSelectionWins": true,
+    "selectionPerChapter": true,
+    "reducedMotion": "Selections, routes and details update immediately."
+  },
+  "selection": "One selected node. Highlight its connected ancestor route; retain the latest branch at a merge. Cancel interrupted detail and route motions.",
+  "keyboard": "Left/right follow connections; up/down move within the same column; Home/End jump to the first/last node; Enter opens replay confirmation.",
+  "unexplored": "Visually dimmed but all seven nodes remain selectable and replayable for interaction testing.",
+  "sound": "Uses the approved chapter cue at 0.5 level, throttled to 220ms; hover is 0.48. Opening and audio engine are unchanged.",
+  "verification": "story-tree-verification.json"
+}

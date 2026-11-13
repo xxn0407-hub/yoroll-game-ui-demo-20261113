@@ -74,6 +74,18 @@
       "backgroundDrift": 1400,
       "latestSelectionWins": true,
       "selectedStatePersistsAcrossNavigation": true
+    },
+    "storyTree": {
+      "nodeEntryDuration": 680,
+      "columnStagger": 85,
+      "rowStagger": 20,
+      "connectionDraw": 650,
+      "routeDraw": 540,
+      "detailExit": 100,
+      "detailEntry": 420,
+      "latestSelectionWins": true,
+      "selectionPerChapter": true,
+      "reducedMotion": "Selections, routes and details update immediately."
     }
   },
   "pages": [
@@ -108,9 +120,9 @@
     {
       "id": "tree",
       "name": "剧情树",
-      "kind": "原版实拍",
-      "motion": "起点与连接线先显现，节点随后从下方 24px 落位；右侧说明由右向左进入，整体约 1s。",
-      "interaction": "节点可选；重玩先出现确认弹窗，取消后回到节点。"
+      "kind": "原版实拍 + 分支示例",
+      "motion": "节点按列以 85ms 错峰、680ms 轻浮入场；连线 650ms 展开。点选即时切换边框，新路线用 540ms 描绘，右侧信息 100ms 淡出、420ms 轻落位。快速切换以最后选择为准。",
+      "interaction": "七个节点均可点击；方向键沿连接或在同列切换，Home / End 到首尾，Enter 打开所选片段的重玩确认。汇合保留最近选择的路线；各章节独立保留节点，返回后恢复。重玩进入对应片段的本地场景与标题预览。"
     },
     {
       "id": "saves",

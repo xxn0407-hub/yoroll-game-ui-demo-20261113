@@ -43,6 +43,7 @@ let modalPreviousFocus = null;
 let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
+let playbackStoryNode = null;
 let qteDone = false;
 let audioMuted = uiSound.isMuted();
 let signedIn = true;
@@ -118,6 +119,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
  return animate(element,[{opacity:0,transform:`translate3d(${x}px,${y}px,0) scale(${scale})`,filter:`blur(${blur}px)`},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0px)'}],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)'});
 }
 function cancelPageMotion(){
+ treeSwitchId++;treeDetailMotion=null;treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
  enterAnimations.clear();
  for(const timer of timers)clearTimeout(timer);
@@ -266,10 +268,90 @@ function bindChapterRail(){
  strip.addEventListener('pointerup',endDrag,options);strip.addEventListener('pointercancel',endDrag,options);window.addEventListener('blur',endDrag,options);
  chapterControlsCleanup=()=>{stop();controller.abort();strip.classList.remove('is-dragging');};
 }
-function treeView(){
- const chapter=activeChapter();
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph"><div class="tree-root" data-enter="tree-line"></div><div data-enter="node"><button class="tree-node" data-action="select-node" aria-pressed="true" aria-label="${chapter.name}，片段 03，已解锁，可重玩"><img src="${chapter.cover}" alt=""><div class="node-info"><span class="node-number">03_</span><strong>${chapter.name}</strong></div></button></div></div><aside class="tree-detail" data-enter="detail"><div class="eyebrow">当前片段</div><h2>${chapter.name}</h2><p>第 ${chapter.number} 章 · 片段 03<br>从这里重新进入故事。</p>${button('从此处开始','restart-node','btn-small','play')}</aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已解锁</span><span><i class="legend-dot"></i> 未探索</span></div>')}`;
+const storyTree = window.YorollStoryTree;
+const storyStates = new Map();
+let treeSwitchId = 0;
+let treeDetailMotion = null;
+const treeRouteMotions = new Map();
+function currentStoryState(){
+ if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03']});
+ return storyStates.get(selectedChapter);
 }
+function storyDetailMarkup(node){
+ return `<div class="eyebrow">片段 ${node.id} / 07</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.explored?'已探索':'未探索'}</span></div><p>${node.description}</p>${button('从此处开始','restart-node','btn-small','play')}`;
+}
+function treeView(){
+ const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
+ const {layout}=storyTree;
+ const selected=graph.nodes.find(node=>node.id===state.node);
+ const edges=graph.edges.map(([from,to])=>{
+  const active=state.path.some((id,index)=>id===from&&state.path[index+1]===to);
+  const a=graph.nodes.find(node=>node.id===from),b=graph.nodes.find(node=>node.id===to);
+  const d=storyTree.linkPath(a,b),key=`${from}-${to}`;
+  return `<path class="tree-link" d="${d}" pathLength="1" data-enter="tree-connection" data-tree-depth="${b.column}"/><path class="tree-route ${active?'is-active':''}" d="${d}" pathLength="1" data-tree-route="${key}"/>`;
+ }).join('');
+ const nodes=graph.nodes.map(node=>{
+  const active=node.id===state.node,onRoute=state.path.includes(node.id);
+  return `<div class="tree-node-cell" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.explored?'':'is-unexplored'}" data-story-node="${node.id}" aria-pressed="${active}" tabindex="${active?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.explored?'已探索':'未探索'}，可重玩"><img src="${node.cover}" alt="" draggable="false"><span class="node-selection" aria-hidden="true"></span><div class="node-info"><span class="node-number">${node.id}_</span><strong>${node.name}</strong></div></button></div>`;
+ }).join('');
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-board"><div class="tree-column-label" style="--column-x:20">起点</div><div class="tree-column-label" style="--column-x:445">分支</div><div class="tree-column-label" style="--column-x:870">汇合 / 结局</div><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 4 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span><i class="legend-dot"></i> 未探索</span><span><i class="legend-route"></i> 当前路线</span></div>','<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+}
+function updateStoryRoute(path){
+ $$('.tree-route').forEach(line=>{
+  const active=path.some((id,index)=>`${id}-${path[index+1]}`===line.dataset.treeRoute);
+  const wasActive=line.classList.contains('is-active');
+  line.classList.toggle('is-active',active);
+  if(active===wasActive)return;
+  for(const animation of [...enterAnimations])if(animation.effect?.target===line){enterAnimations.delete(animation);animation.cancel();}
+  const previous=treeRouteMotions.get(line);
+  if(previous){enterAnimations.delete(previous);previous.cancel();treeRouteMotions.delete(line);}
+  if(!active||motionPreference.matches)return;
+  const motion=animate(line,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:540,easing:'cubic-bezier(.22,.68,.25,1)'});
+  treeRouteMotions.set(line,motion);
+  motion?.finished.then(()=>{if(treeRouteMotions.get(line)===motion)treeRouteMotions.delete(line);}).catch(()=>{});
+ });
+}
+async function switchStoryDetail(node,request){
+ const detail=$('.tree-detail-content');if(!detail)return;
+ const style=getComputedStyle(detail),pose={opacity:style.opacity,transform:style.transform};
+ if(treeDetailMotion){enterAnimations.delete(treeDetailMotion);treeDetailMotion.cancel();treeDetailMotion=null;}
+ if(!motionPreference.matches){
+  treeDetailMotion=animate(detail,[pose,{opacity:0,transform:`translate3d(${unit(-8)}px,0,0)`}],{duration:100,easing:'ease-out'},false);
+  try{await treeDetailMotion.finished;}catch{return;}
+ }
+ if(request!==treeSwitchId||currentPage!=='tree')return;
+ detail.innerHTML=storyDetailMarkup(node);
+ const outgoing=treeDetailMotion;
+ treeDetailMotion=enter(detail,{x:unit(12),y:0,duration:420});
+ if(outgoing){enterAnimations.delete(outgoing);outgoing.cancel();}
+ if(treeDetailMotion)try{await treeDetailMotion.finished;}catch{return;}
+ if(request===treeSwitchId&&currentPage==='tree'){frame.dataset.treeTransition='ready';treeDetailMotion=null;}
+}
+function selectStoryNode(id,{focus=false}={}){
+ if(currentPage!=='tree')return;
+ const graph=storyTree.create(activeChapter()),node=graph.nodes.find(item=>item.id===id);
+ if(!node)return;
+ const state=currentStoryState();
+ if(state.node===id){if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});return;}
+ state.node=id;state.path=storyTree.choosePath(graph,id,state.path);
+ const request=++treeSwitchId;
+ frame.dataset.treeNode=id;frame.dataset.treeTransition='changing';
+ uiSound.play('chapter',{level:.5,throttle:220});
+ $$('.tree-node').forEach(card=>{
+  const selected=card.dataset.storyNode===id;
+  card.classList.toggle('is-selected',selected);card.classList.toggle('is-route',state.path.includes(card.dataset.storyNode));
+  card.setAttribute('aria-pressed',String(selected));card.tabIndex=selected?0:-1;
+ });
+ updateStoryRoute(state.path);
+ if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});
+ $('#tree-announcement').textContent=`已选择片段 ${id}，${node.name}，${node.route}`;
+ switchStoryDetail(node,request);
+}
+function restartStoryNode(){
+ const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===currentStoryState().node);
+ openModal({title:'从这个片段重新开始？',message:`将进入第 ${activeChapter().number} 章 · 片段 ${node.id}「${node.name}」。当前进度会先保留。`,confirm:'开始片段',onConfirm:()=>{playbackStoryNode={...node,chapter:selectedChapter};go('gameplay');toast(`已进入片段 ${node.id} · ${node.name}`);}});
+}
+
 function saveView(){
  return `${pageHeading('切换存档','home','SAVE FILES')}<section class="saves-layout"><div class="section-line" data-enter="section"><span>选择一个故事进度</span><span>本机存档 · ${slots.filter(Boolean).length} / 3</span></div><div class="saves-grid">${slots.map((save,index)=>`<div class="save-shell" data-enter="save"><button class="save-card ${index===activeSlot?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，空档位'}">${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""><span class="save-slot">SAVE 0${index+1}</span>${index===activeSlot?'<span class="save-active">当前存档</span>':''}</div><div class="save-info"><h2>${save.chapter}</h2><p>${sceneLabel(save)}</p><div class="save-bottom"><span>${save.date}</span><strong>${save.progress}%</strong></div></div>`:`<div><span class="plus">＋</span><small>空档位 0${index+1}</small><p class="empty-note">开始一段新的故事</p></div>`}</button>${save?`<button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div>`).join('')}</div></section>${footer('选择进度，继续故事')}`;
 }
@@ -280,20 +362,22 @@ function settingsView(){
  <div class="setting-row sound-setting" data-enter="setting"><span>全部声音</span><div class="sound-controls"><button class="sound-state-button" data-action="sound-toggle" aria-label="全部声音" aria-pressed="${!audioMuted}"><span class="sound-indicator"></span><span data-sound-label>${audioMuted?'关闭':'开启'}</span></button><button class="sound-audition" data-action="audition-sound">${icon('volume')}试听音效</button></div></div></div>
  <div class="section-caption" data-enter="section">通用</div><div class="setting-row language" data-enter="setting"><span>语言</span><div class="select-wrap"><button class="select-button" id="language-select" aria-expanded="false" aria-haspopup="listbox"><span>${settingState.language}</span>${icon('chevron')}</button><div class="select-options" id="language-options" role="listbox" aria-label="语言" hidden>${['跟随系统','简体中文','English','日本語'].map(label=>`<button role="option" aria-selected="${label===settingState.language}" data-language="${label}">${label}${label===settingState.language?icon('check'):''}</button>`).join('')}</div></div></div><p class="settings-note" data-enter="footer">主音量控制整体 · 音效与音乐分别调节</p></section>${footer(button('恢复默认','reset-settings','btn-small'),'<span><span class="keycap">Esc</span> 返回</span>')}`;
 }
-function hud(){const chapter=activeChapter();return `<div class="game-hud"><div class="hud-scene" data-enter="heading">第 ${chapter.number} 章 <span>·</span> ${chapter.name}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div></div></div>`;}
+function playbackLabel(){return playbackStoryNode?.chapter===selectedChapter?`片段 ${playbackStoryNode.id} · ${playbackStoryNode.name}`:activeChapter().name;}
+function hud(){const chapter=activeChapter();return `<div class="game-hud"><div class="hud-scene" data-enter="heading">第 ${chapter.number} 章 <span>·</span> ${playbackLabel()}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div></div></div>`;}
 function gameplayView(){return `${hud()}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div>`;}
-function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${activeChapter().name}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
+function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${playbackLabel()}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
 function choiceView(){return `${hud()}<section class="choice-panel"><div class="eyebrow" data-enter="choice-title">做出你的选择</div><h2 data-enter="choice-title">前面的路，由你决定。</h2><div class="choice-options">${['全力加速，抢占内线','稳住节奏，等待机会'].map((label,index)=>`<div data-enter="choice"><button class="choice-option" data-action="choice-${index}"><span class="choice-number">0${index+1}</span><span>${label}</span><span class="choice-arrow">${icon('arrow')}</span></button></div>`).join('')}</div><div data-enter="choice-time"><div class="choice-time"><span id="choice-progress"></span></div><div class="choice-meta"><span>限时选择</span><button class="time-toggle" data-action="choice-timer" aria-pressed="false">暂停计时</button></div></div></section>${footer('','<span><span class="keycap">1</span> / <span class="keycap">2</span> 选择</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
 function qteView(){return `${hud()}<div class="subtitle qte-subtitle" data-enter="subtitle"><span class="speaker">把握时机</span>在弯道前完成换挡。</div><div class="qte-widget" data-enter="qte"><div class="qte-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle id="qte-progress" cx="60" cy="60" r="56"/></svg><button class="qte-key" data-action="qte-hit" aria-label="完成换挡，按 E">E</button></div><div class="qte-label">换挡</div><div class="qte-tip">按下 E 或点击</div></div>${footer('','<span><span class="keycap">E</span> 换挡</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
 function resultView(){return `${pageHeading('章节结果','chapters','CHAPTER COMPLETE')}<section class="result-layout"><div class="eyebrow" data-enter="result">CHAPTER ${String(activeChapter().number).padStart(2,'0')} / COMPLETE</div><h1 data-enter="result">顺利抵达</h1><p data-enter="result">每一次选择，都让故事走向不同的远方。</p><dl class="result-stats"><div data-enter="result"><dt>章节进度</dt><dd><span data-count="100">100</span>%</dd></div><div data-enter="result"><dt>关键选择</dt><dd>02</dd></div><div data-enter="result"><dt>完成评级</dt><dd>A</dd></div></dl><div class="result-actions"><div data-enter="action">${goButton('查看剧情树','tree','','tree')}</div><div data-enter="action">${goButton('返回章节','chapters','btn-primary','arrow')}</div></div></section>${footer('')}`;}
 const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
 function setScene(page){
- const key=['home','exit','saves','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
+ const fragment=['gameplay','pause','choice','qte','result'].includes(page)&&playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null;
+ const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
  if(key!==sceneKey){
   sceneKey=key;
   if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="wall/index.html?clean" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
   else if(key==='cover'){scene.className='scene';scene.innerHTML='<img src="wall/assets/nocturne-cover.webp" alt="">';}
-  else{const chapter=activeChapter();scene.className='scene';scene.innerHTML=`<img class="chapter-background" data-chapter-index="${selectedChapter}" src="${chapter.cover}" alt="" style="object-position:${chapter.position}">`;}
+  else{const chapter=activeChapter(),image=fragment||chapter;scene.className='scene';scene.innerHTML=`<img class="chapter-background" data-chapter-index="${selectedChapter}" src="${image.cover}" alt="" style="object-position:${image.position||'50% center'}">`;}
  }
  frame.classList.remove('tree-backdrop','settings-backdrop','saves-backdrop','profile-backdrop');
  if(['tree','settings','saves','profile','pause'].includes(page))frame.classList.add((page==='pause'?'tree':page)+'-backdrop');
@@ -318,7 +402,9 @@ function enterPage(){
  const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[260,70], 'choice-time':[430,40],result:[140,60] };
  for(const [name,[delay,step]] of Object.entries(groups))$$(`[data-enter="${name}"]`).forEach((el,i)=>enter(el,{y:unit(18),delay:delay+i*step,duration:650}));
  $$('[data-enter="tree-line"]').forEach(el=>enter(el,{y:0,delay:140,duration:550}));
- $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(24),scale:.985,delay:220,duration:760}));
+ $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Number(el.dataset.treeDepth)*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
+ $$('.tree-route.is-active').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:680,delay:250,easing:'cubic-bezier(.22,.68,.25,1)'}));
+ $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Number(el.dataset.treeDepth)*85+Number(el.dataset.treeRow)*20,duration:680}));
  $$('[data-enter="detail"]').forEach(el=>enter(el,{x:unit(20),y:0,delay:310,duration:720}));
  $$('[data-enter="footer"]').forEach(el=>enter(el,{y:unit(8),delay:320,duration:620}));
  $$('[data-enter="subtitle"]').forEach(el=>enter(el,{y:unit(12),delay:250,duration:680}));
@@ -345,6 +431,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(old==='chapters')disposeChapterControls();
  cancelPageMotion();
  previousPage=old;
+ if(page==='gameplay'&&['home','cover','chapters','splash'].includes(old))playbackStoryNode=null;
  currentPage=page;
  frame.dataset.page=page;
  frame.dataset.chapter=String(selectedChapter+1);frame.dataset.chapterTransition='ready';
@@ -371,6 +458,7 @@ async function go(page,{replace=false,skipExit=false}={}){
 }
 function bindPageControls(){
  if(currentPage==='chapters')bindChapterRail();
+ if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';}
  applySoundLevels();
  $$('.range').forEach(input=>input.addEventListener('input',()=>{settingState[input.dataset.setting]=Number(input.value);input.style.setProperty('--value',`${input.value}%`);input.parentElement.querySelector('output').textContent=`${input.value}%`;applySoundLevels();uiSound.play('hover',{level:.45,throttle:180});}));
  $('#language-select')?.addEventListener('click',()=>{
@@ -467,8 +555,7 @@ const actions={
  'logout':()=>{if(signedIn)showLogout();else openModal({title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
- 'select-node':()=>{enter($('.tree-detail'),{x:unit(12),y:0,duration:400});},
- 'restart-node':()=>openModal({title:'从这个片段重新开始？',message:`将进入第 ${activeChapter().number} 章的当前片段。当前进度会先保留。`,confirm:'开始片段',onConfirm:()=>go('gameplay')}),
+ 'restart-node':restartStoryNode,
  'reset-settings':()=>{Object.assign(settingState,{master:100,video:100,sfx:100,music:100,language:'跟随系统'});audioMuted=false;applySoundLevels();uiSound.play('confirm');go('settings',{skipExit:true});toast('已恢复默认设置');},
  'modal-cancel':()=>closeModal(),
  'modal-confirm':()=>{const fn=confirmAction;closeModal(true);fn?.();},
@@ -487,7 +574,7 @@ let keyboardFocusSound=false;
 let hoverSoundTimer=0;
 let hoveredSoundControl=null;
 const soundControl=target=>target.closest('button,a,input[type="range"]');
-const hoverLevel=control=>control.matches('.chapter-card') ? .48 : .68;
+const hoverLevel=control=>control.matches('.chapter-card,.tree-node') ? .48 : .68;
 function cancelPendingHover(){clearTimeout(hoverSoundTimer);hoverSoundTimer=0;hoveredSoundControl=null;}
 document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPendingHover();},{capture:true});
 document.addEventListener('keydown',event=>{keyboardFocusSound=event.key==='Tab';cancelPendingHover();},{capture:true});
@@ -506,10 +593,12 @@ document.addEventListener('click',event=>{
  const control=event.target.closest('button,a');
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true')return;
  if(control.hasAttribute('data-route')){if(control.dataset.route===currentPage)uiSound.play('click',{level:.75});return;}
- if(control.matches('.chapter-card,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action="restart-node"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
+ if(control.matches('.chapter-card,.tree-node,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action="restart-node"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
  uiSound.play(control.dataset.action==='modal-confirm'?'confirm':control.hasAttribute('data-language')?'select':'click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
+ const storyCard=event.target.closest('[data-story-node]');
+ if(storyCard){selectStoryNode(storyCard.dataset.storyNode);return;}
  const chapterCard=event.target.closest('.chapter-card[data-chapter-index]');
  if(chapterCard){if(performance.now()<ignoreChapterClickUntil){event.preventDefault();return;}selectChapter(Number(chapterCard.dataset.chapterIndex));return;}
  const route=event.target.closest('[data-route]');if(route){go(route.dataset.route);return;}
@@ -533,6 +622,12 @@ document.addEventListener('keydown',event=>{
   if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='tree'||currentPage==='result')go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}
+ if(currentPage==='tree'&&!event.metaKey&&!event.ctrlKey){
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)){
+   event.preventDefault();const state=currentStoryState();selectStoryNode(storyTree.nextNode(storyTree.create(activeChapter()),state.node,event.key,state.path),{focus:true});return;
+  }
+  if(event.key==='Enter'&&(!event.target.closest('button,a')||event.target.closest('.tree-node'))){event.preventDefault();restartStoryNode();return;}
+ }
  if(currentPage==='chapters'&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)&&!event.metaKey&&!event.ctrlKey){event.preventDefault();const index=event.key==='Home'?0:event.key==='End'?CHAPTER_PREVIEWS.length-1:Math.max(0,Math.min(CHAPTER_PREVIEWS.length-1,selectedChapter+(event.key==='ArrowRight'?1:-1)));selectChapter(index,{focus:true});return;}
  if(currentPage==='chapters'&&event.key==='Enter'&&(!event.target.closest('button')||event.target.closest('.chapter-card'))){event.preventDefault();go('gameplay');}
  if(currentPage==='choice'&&(event.key==='1'||event.key==='2'))choose(Number(event.key)-1);
