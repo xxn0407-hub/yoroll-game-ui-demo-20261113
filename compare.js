@@ -15,7 +15,7 @@ function updatePage(){
  $('#page-kind').textContent=page.kind;
  $('#page-count').textContent=`${String(index+1).padStart(2,'0')} / ${pages.length}`;
  $('#change').textContent=page.change;$('#ratio').textContent=page.ratio;$('#motion').textContent=page.motion;$('#interaction').textContent=page.interaction;
- $('#after-image').src=`comparison/after/${page.id}.jpg?v=story-branches-20261113`;
+ $('#after-image').src=`comparison/after/${page.id}.jpg?v=story-branches-full-20261113`;
  $('#after-image').alt=page.name+'修改后';
  $('#before-image').hidden=!page.before;
  $('#no-before').hidden=Boolean(page.before);
