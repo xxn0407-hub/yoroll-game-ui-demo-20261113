@@ -8,8 +8,9 @@ window.YorollSound = (() => {
  const lastPlayed = new Map();
  const counts = {};
  const mixGain = .5;
+ const muteKey = 'yoroll-ui-preview:master-muted';
  let context, output, compressor, activityGate, loading, contextChange, activityPoll;
- let activated = false, available = true, muted = false, volume = 1;
+ let activated = false, available = true, muted = readMutedPreference(), volume = 1;
  let autoplayRequested=false, autoplayState='idle', autoplayAttempt=null, activation='none';
  let loadFailed = false, lastCue = '', total = 0, previewId = 0;
  let pageAway=false, focusLost=!document.hasFocus(), lastDocumentFocus=document.hasFocus();
@@ -21,11 +22,13 @@ window.YorollSound = (() => {
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
+ function readMutedPreference(){try{return localStorage.getItem(muteKey)==='true';}catch{return false;}}
  function publish(){
   const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
   Object.assign(document.documentElement.dataset,{
    audioRevision:revision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
    audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
+   audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
    audioDecoded:String(buffers.size),audioVoices:String(voices.size),
    audioLifecycleRevision:'preview-pause-20261111',audioPreviewActive:String(isActive()),
@@ -33,7 +36,7 @@ window.YorollSound = (() => {
   });
   document.dispatchEvent(new CustomEvent('ui-audio-state',{detail:{state,muted,volume}}));
  }
- function isActive(){return !previewPaused&&!pageAway&&!document.hidden&&!focusLost&&document.hasFocus()&&ownsAudio;}
+ function isActive(){return !muted&&!previewPaused&&!pageAway&&!document.hidden&&!focusLost&&document.hasFocus()&&ownsAudio;}
  function setPreviewPaused(value){
   previewPaused=Boolean(value);
   if(!previewPaused){focusLost=!document.hasFocus();claimAudio();}
@@ -78,6 +81,10 @@ window.YorollSound = (() => {
  if(audioChannel)audioChannel.onmessage=event=>{
   if(event.data?.type==='claim'&&event.data.ownerId!==ownerId){ownsAudio=false;syncActivity();}
  };
+ function releaseVoice(voice){
+  if(voice.released)return;
+  voice.released=true;voices.delete(voice);voice.source.disconnect();voice.gain.disconnect();
+ }
  function stopVoice(voice,immediate=false,fade=.1){
   if(voice.stopping&&!immediate)return;
   voice.stopping=true;
@@ -87,6 +94,7 @@ window.YorollSound = (() => {
   if(immediate)voice.gain.gain.setValueAtTime(0,now);
   else voice.gain.gain.linearRampToValueAtTime(0,now+fade);
   try{voice.source.stop(immediate?now:now+fade+.005);}catch{}
+  if(immediate)releaseVoice(voice);
  }
  function suppressHover(){for(const voice of voices)if(voice.channel==='hover')stopVoice(voice,false,.025);}
  function duckTail(voice,{level=.28,seconds=.035}={}){
@@ -99,9 +107,14 @@ window.YorollSound = (() => {
  function stopAll(immediate=false){previewId++;for(const voice of voices)stopVoice(voice,immediate);}
  function setLevels({master=1,sfx=1,isMuted=false}={}){
   const nextVolume=Math.max(0,Math.min(1,Number(master)||0))*Math.max(0,Math.min(1,Number(sfx)||0));
-  muted=Boolean(isMuted);volume=nextVolume;
+  const nextMuted=Boolean(isMuted);
+  if(nextMuted!==muted){muted=nextMuted;try{localStorage.setItem(muteKey,String(muted));}catch{}}
+  volume=nextVolume;
   if(output){const now=context.currentTime;output.gain.cancelScheduledValues(now);output.gain.setTargetAtTime(muted?0:volume*mixGain,now,.008);}
-  if(muted||volume===0)stopAll();
+  if(volume===0)stopAll();
+  // The activity gate sits after the shared compressor, so mute also pauses
+  // the opening, whose music bus bypasses the SFX volume control.
+  syncActivity();
   publish();
  }
  function ensureContext(){
@@ -135,6 +148,7 @@ window.YorollSound = (() => {
  }
  async function prepareAutoplay(){
   autoplayRequested=true;
+  if(muted){autoplayState='muted';publish();return false;}
   if(activated)return context?.state==='running';
   if(!previewPaused&&!pageAway&&!document.hidden&&!focusLost&&document.hasFocus())claimAudio();
   if(!isActive()){autoplayState='deferred';publish();return false;}
@@ -186,7 +200,7 @@ window.YorollSound = (() => {
    const gain=context.createGain();gain.gain.value=Math.max(0,Math.min(1,level));
    source.connect(gain);gain.connect(output);
    const voice={source,gain,channel,sequence,stopping:false,ducked:false};voices.add(voice);
-   source.onended=()=>{voices.delete(voice);source.disconnect();gain.disconnect();publish();};
+   source.onended=()=>{releaseVoice(voice);publish();};
    source.start(context.currentTime+Math.max(0,delay));
    lastCue=name;total++;counts[name]=(counts[name]||0)+1;publish();
    return true;
@@ -205,8 +219,9 @@ window.YorollSound = (() => {
   play('click',{sequence:true,delay:1.4,throttle:0,level:.9});
   play('transition',{sequence:true,delay:3.1,throttle:0,level:.85});
  }
- document.addEventListener('pointerdown',unlock,{capture:true});
- document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.ctrlKey&&!event.altKey)unlock();},{capture:true});
+ function turnsSoundOff(target){return !muted&&target?.closest?.('[data-action="sound-toggle"],[data-action="mute"]');}
+ document.addEventListener('pointerdown',event=>{if(!turnsSoundOff(event.target))unlock();},{capture:true});
+ document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.ctrlKey&&!event.altKey&&!(['Enter',' '].includes(event.key)&&turnsSoundOff(event.target)))unlock();},{capture:true});
  document.addEventListener('visibilitychange',pollActivity);
  window.addEventListener('blur',()=>{focusLost=true;lastDocumentFocus=document.hasFocus();syncActivity();});
  window.addEventListener('focus',()=>{focusLost=false;lastDocumentFocus=document.hasFocus();if(activated)claimAudio();if(autoplayState==='deferred')prepareAutoplay();syncActivity();});
@@ -214,5 +229,5 @@ window.YorollSound = (() => {
  window.addEventListener('pageshow',()=>{pageAway=false;focusLost=!document.hasFocus();if(activated){claimAudio();watchActivity();}syncActivity();});
  syncActivity();
  publish();
- return {play,unlock,prepareAutoplay,setLevels,audition,stopAll,suppressHover,isActive,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
+ return {play,unlock,prepareAutoplay,setLevels,audition,stopAll,suppressHover,isActive,isMuted:()=>muted,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
 })();

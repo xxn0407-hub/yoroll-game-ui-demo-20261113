@@ -218,7 +218,19 @@
       "previousChapterTailGain": 0.2,
       "previousChapterTailTimeConstantMs": 110
     },
-    "entryRevision": "entry-autoplay-20261113"
+    "entryRevision": "entry-autoplay-20261113",
+    "masterMute": {
+      "revision": "master-mute-20261113",
+      "control": "Home header speaker icon, settings sound switch, and in-game sound button.",
+      "scope": "Opening and every UI cue on all pages.",
+      "silenceImmediately": true,
+      "pauseAudioContext": true,
+      "persistPreference": true,
+      "storageKey": "yoroll-ui-preview:master-muted",
+      "preserveVolumeLevels": true,
+      "closingHasNoConfirmationCue": true,
+      "openingDoesNotStartWhenTurningOff": true
+    }
   },
   "backgroundMusic": {
     "spec": "music-spec.json",

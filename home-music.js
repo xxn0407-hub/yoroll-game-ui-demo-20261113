@@ -44,13 +44,14 @@ window.YorollMusic = (() => {
  function publish(){
   checkpoint();
   let phase='off';
-  if(wanted&&loadFailed)phase='unavailable';
+  if(wanted&&window.YorollSound.isMuted())phase='muted';
+  else if(wanted&&loadFailed)phase='unavailable';
   else if(wanted&&hasFinished&&!voice)phase='ended';
   else if(wanted&&(!context||document.documentElement.dataset.audioState==='locked'))phase='locked';
   else if(wanted&&!buffer)phase='loading';
   else if(voice)phase=!wanted?'fading':!window.YorollSound.isActive()||context.state!=='running'?'paused':tailSeconds()&&timelineOf(voice)>=duration()-tailSeconds()?'fading':'opening';
   else if(wanted)phase=hasStarted?'paused':'ready';
-  const gain=master*music*(plan?.musicMixGain??.24);
+  const gain=window.YorollSound.isMuted()?0:master*music*(plan?.musicMixGain??.24);
   const position=voice?timelineOf(voice):hasFinished?duration():resumePosition;
   Object.assign(document.documentElement.dataset,{
    musicRevision:revision,musicPhase:phase,musicGain:String(Number(gain.toFixed(4))),

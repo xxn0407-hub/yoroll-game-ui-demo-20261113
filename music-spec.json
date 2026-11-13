@@ -29,5 +29,11 @@
     "permissionWaitLimitMs": 120,
     "decodeWaitLimitMs": 1000,
     "backgroundAutoplay": false
+  },
+  "masterMute": {
+    "controlledBy": "YorollSound shared activity gate",
+    "pausesOpening": true,
+    "preventsAutoplayWhenMuted": true,
+    "preservesEndingEnvelope": true
   }
 }

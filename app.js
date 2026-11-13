@@ -43,7 +43,7 @@ let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
 let qteDone = false;
-let audioMuted = false;
+let audioMuted = uiSound.isMuted();
 let signedIn = true;
 let savedToastAnimation;
 const initialSlots = [ {chapter:'第 1 章',scene:'race-start-2',date:'演示存档',progress:22},null,null ];
@@ -54,24 +54,27 @@ const sceneLabel=save=>save?.scene==='race-start-2'?'蓄势待发':'起跑之前
 const settingState = {master:100,video:100,sfx:100,music:100,language:'跟随系统'};
 const settingsRows = [['master','主音量'],['video','视频音量'],['sfx','音效音量'],['music','音乐音量']];
 function syncSoundControls(){
+ audioMuted=uiSound.isMuted();
  $$('[data-action="toggle-preview-audio"]').forEach(button=>{button.textContent=document.documentElement.dataset.audioPreviewPaused==='true'?'继续声音':'暂停声音';});
  $$('[data-action="sound-toggle"]').forEach(button=>{
   button.setAttribute('aria-pressed',String(!audioMuted));
   const label=button.querySelector('[data-sound-label]');
-  const text=button.closest('.review-panel')?(audioMuted?'音效已关闭':'音效已开启'):(audioMuted?'关闭':'开启');
+  const text=button.closest('.review-panel')?(audioMuted?'声音已关闭':'声音已开启'):(audioMuted?'关闭':'开启');
   if(label&&label.textContent!==text)label.textContent=text;
+  if(button.classList.contains('sound-toggle-button')){
+   button.title=audioMuted?'声音已关闭，点击开启':'关闭全部声音';
+   if(button.dataset.muted!==String(audioMuted)){button.dataset.muted=String(audioMuted);button.innerHTML=icon(audioMuted?'volume-off':'volume');}
+  }
  });
  $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;});
- $$('[data-action="restart-music"]').forEach(button=>{button.disabled=settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result'].includes(currentPage);});
- const mute=$('[data-action="mute"]');
- if(mute){mute.setAttribute('aria-pressed',String(audioMuted));mute.setAttribute('aria-label',audioMuted?'取消静音':'静音');if(mute.dataset.muted!==String(audioMuted)){mute.dataset.muted=String(audioMuted);mute.innerHTML=icon(audioMuted?'volume-off':'volume');}}
+ $$('[data-action="restart-music"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result'].includes(currentPage);});
  const status=$('#sound-status');
- if(status){const state=document.documentElement.dataset.audioState;const text=audioMuted?'界面声音已关闭':settingState.master===0||settingState.sfx===0?'界面音量为零':state==='unavailable'?'声音暂不可用':state==='locked'?'首次点击后启用声音':state==='loading'?'声音准备中':'Hover · 点击 · 页面切换';if(status.textContent!==text)status.textContent=text;}
+ if(status){const state=document.documentElement.dataset.audioState;const text=audioMuted?'全部声音已关闭':settingState.master===0||settingState.sfx===0?'界面音量为零':state==='unavailable'?'声音暂不可用':state==='locked'?'首次点击后启用声音':state==='loading'?'声音准备中':'Hover · 点击 · 页面切换';if(status.textContent!==text)status.textContent=text;}
  const musicStatus=$('#music-status');
- if(musicStatus){const phase=document.documentElement.dataset.musicPhase;const text=Number(document.documentElement.dataset.musicGain)===0?'开场音量为零':phase==='opening'?'开场音 · 播放中':phase==='fading'?'开场音 · 渐弱中':phase==='ended'?'开场音 · 已结束':phase==='paused'?'开场音 · 已暂停':phase==='loading'?'开场音 · 准备中':phase==='unavailable'?'开场音 · 暂不可用':phase==='locked'?(document.documentElement.dataset.musicResumeAvailable==='true'?'点击后继续开场音':'首次点击后播放开场音'):'开场音 · 未播放';if(musicStatus.textContent!==text)musicStatus.textContent=text;}
+ if(musicStatus){const phase=document.documentElement.dataset.musicPhase;const text=audioMuted?'全部声音已关闭':Number(document.documentElement.dataset.musicGain)===0?'开场音量为零':phase==='opening'?'开场音 · 播放中':phase==='fading'?'开场音 · 渐弱中':phase==='ended'?'开场音 · 已结束':phase==='paused'?'开场音 · 已暂停':phase==='loading'?'开场音 · 准备中':phase==='unavailable'?'开场音 · 暂不可用':phase==='locked'?(document.documentElement.dataset.musicResumeAvailable==='true'?'点击后继续开场音':'首次点击后播放开场音'):'开场音 · 未播放';if(musicStatus.textContent!==text)musicStatus.textContent=text;}
 }
 function applySoundLevels(){uiSound.setLevels({master:settingState.master/100,sfx:settingState.sfx/100,isMuted:audioMuted});window.YorollMusic.setLevels({master:settingState.master/100,music:settingState.music/100});syncSoundControls();}
-function toggleInterfaceSound(){audioMuted=!audioMuted;applySoundLevels();if(!audioMuted)uiSound.play('click');toast(audioMuted?'界面音效已关闭':'界面音效已开启');}
+function toggleInterfaceSound(){audioMuted=!audioMuted;applySoundLevels();if(!audioMuted)uiSound.play('click');toast(audioMuted?'全部声音已关闭':'声音已开启');}
 document.addEventListener('ui-audio-state',syncSoundControls);
 document.addEventListener('home-music-state',syncSoundControls);
 // Demonstration chapters for interaction testing, separate from the online Race data.
@@ -126,8 +129,11 @@ function footer(left='',right='<span><span class="keycap">Esc</span> 返回</spa
 function pageHeading(title,back='home',meta=''){
  return `<div class="back-heading" data-enter="heading"><button class="icon-button" data-route="${back}" aria-label="返回">${icon('back')}</button><h1>${title}</h1></div>${meta?`<div class="page-meta" data-enter="meta">${meta}</div>`:''}`;
 }
+function soundButton(){
+ return `<button class="icon-button sound-toggle-button" data-action="sound-toggle" data-muted="${audioMuted}" aria-label="声音开关" aria-pressed="${!audioMuted}" title="${audioMuted?'声音已关闭，点击开启':'关闭全部声音'}">${icon(audioMuted?'volume-off':'volume')}</button>`;
+}
 function header(){
- return `<header class="topbar"><button class="brand" data-route="home" aria-label="Yoroll 首页" data-enter="brand"><img src="assets/yoroll-logo.png" alt="yoroll"></button><div class="header-actions"><div data-enter="header"><button class="icon-button" data-route="settings" aria-label="设置">${icon('settings')}</button></div><div data-enter="header"><button class="account" data-action="logout" aria-label="账号"><span class="avatar">${icon('user')}</span><span>${signedIn?'演示玩家':'未登录'}</span></button></div></div></header>`;
+ return `<header class="topbar"><button class="brand" data-route="home" aria-label="Yoroll 首页" data-enter="brand"><img src="assets/yoroll-logo.png" alt="yoroll"></button><div class="header-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="settings" aria-label="设置">${icon('settings')}</button></div><div data-enter="header"><button class="account" data-action="logout" aria-label="账号"><span class="avatar">${icon('user')}</span><span>${signedIn?'演示玩家':'未登录'}</span></button></div></div></header>`;
 }
 function homeView(cover=false){
  return `${header()}<nav class="home-menu" aria-label="游戏菜单">${[[saveProgress()>0?'继续游戏':'开始游戏','gameplay'],['章节选择','chapters'],['切换存档','saves'],['退出','exit']].map(([label,route])=>`<div data-enter="menu"><button data-route="${route}">${label}<span class="menu-mark">${icon('arrow')}</span></button></div>`).join('')}</nav>${cover?'<div class="cover-wordmark" data-enter="wordmark"><img src="wall/assets/nocturne-logo.webp" alt="Nocturne"></div>':''}`;
@@ -270,10 +276,10 @@ function settingsView(){
  return `${pageHeading('设置',previousPage==='pause'?'pause':'home','SETTINGS')}
  <section class="settings-layout"><div class="section-caption" data-enter="section">音频</div><div class="setting-group">
  ${settingsRows.map(([key,label])=>`<label class="setting-row" data-enter="setting"><span>${label}</span><input class="range" type="range" min="0" max="100" value="${settingState[key]}" data-setting="${key}" style="--value:${settingState[key]}%" aria-label="${label}"><output>${settingState[key]}%</output></label>`).join('')}
- <div class="setting-row sound-setting" data-enter="setting"><span>界面音效</span><div class="sound-controls"><button class="sound-state-button" data-action="sound-toggle" aria-label="界面音效" aria-pressed="${!audioMuted}"><span class="sound-indicator"></span><span data-sound-label>${audioMuted?'关闭':'开启'}</span></button><button class="sound-audition" data-action="audition-sound">${icon('volume')}试听音效</button></div></div></div>
+ <div class="setting-row sound-setting" data-enter="setting"><span>全部声音</span><div class="sound-controls"><button class="sound-state-button" data-action="sound-toggle" aria-label="全部声音" aria-pressed="${!audioMuted}"><span class="sound-indicator"></span><span data-sound-label>${audioMuted?'关闭':'开启'}</span></button><button class="sound-audition" data-action="audition-sound">${icon('volume')}试听音效</button></div></div></div>
  <div class="section-caption" data-enter="section">通用</div><div class="setting-row language" data-enter="setting"><span>语言</span><div class="select-wrap"><button class="select-button" id="language-select" aria-expanded="false" aria-haspopup="listbox"><span>${settingState.language}</span>${icon('chevron')}</button><div class="select-options" id="language-options" role="listbox" aria-label="语言" hidden>${['跟随系统','简体中文','English','日本語'].map(label=>`<button role="option" aria-selected="${label===settingState.language}" data-language="${label}">${label}${label===settingState.language?icon('check'):''}</button>`).join('')}</div></div></div><p class="settings-note" data-enter="footer">主音量控制整体 · 音效与音乐分别调节</p></section>${footer(button('恢复默认','reset-settings','btn-small'),'<span><span class="keycap">Esc</span> 返回</span>')}`;
 }
-function hud(){const chapter=activeChapter();return `<div class="game-hud"><div class="hud-scene" data-enter="heading">第 ${chapter.number} 章 <span>·</span> ${chapter.name}</div><div class="hud-actions"><div data-enter="header"><button class="icon-button" data-action="mute" aria-label="${audioMuted?'取消静音':'静音'}" aria-pressed="${audioMuted}">${icon('volume')}</button></div><div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div></div></div>`;}
+function hud(){const chapter=activeChapter();return `<div class="game-hud"><div class="hud-scene" data-enter="heading">第 ${chapter.number} 章 <span>·</span> ${chapter.name}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div></div></div>`;}
 function gameplayView(){return `${hud()}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div>`;}
 function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${activeChapter().name}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
 function choiceView(){return `${hud()}<section class="choice-panel"><div class="eyebrow" data-enter="choice-title">做出你的选择</div><h2 data-enter="choice-title">前面的路，由你决定。</h2><div class="choice-options">${['全力加速，抢占内线','稳住节奏，等待机会'].map((label,index)=>`<div data-enter="choice"><button class="choice-option" data-action="choice-${index}"><span class="choice-number">0${index+1}</span><span>${label}</span><span class="choice-arrow">${icon('arrow')}</span></button></div>`).join('')}</div><div data-enter="choice-time"><div class="choice-time"><span id="choice-progress"></span></div><div class="choice-meta"><span>限时选择</span><button class="time-toggle" data-action="choice-timer" aria-pressed="false">暂停计时</button></div></div></section>${footer('','<span><span class="keycap">1</span> / <span class="keycap">2</span> 选择</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
