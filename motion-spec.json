@@ -248,7 +248,7 @@
       "id": "saves",
       "name": "切换存档",
       "kind": "原版实拍",
-      "motion": "卡片以 65ms 间隔、650ms 时长入场；确认切换后，原地以 650ms 平滑交接大小，当前标记 300ms 淡入淡出，不重播页面入场。 当前卡片以 6.4s 周期轻缓上下浮沉，最大上浮 6px；切换时振幅以 700ms 柔和交接。",
+      "motion": "卡片以 65ms 间隔、650ms 时长入场；确认切换后，原地以 650ms 平滑交接大小，当前标记 300ms 淡入淡出，不重播页面入场。 当前卡片以 6.4s 周期轻缓上下浮沉，最大上浮 6px；切换时振幅以 700ms 柔和交接。 当前卡片周围复用剧情树的 8 个浮尘光点，以约 6–8s 错峰漂移，400ms 淡入淡出，切换后旧层暂停。",
       "interaction": "点击已有卡片确认切换，底部无重复按钮；空档位创建新存档。",
       "referenceRevision": "saves-reference-20261113",
       "referenceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
@@ -285,7 +285,21 @@
         "reducedMotion": "Disable float."
       },
       "footerCaption": false,
-      "footerRevision": "saves-footer-clean-20261113"
+      "footerRevision": "saves-footer-clean-20261113",
+      "selectedParticles": {
+        "revision": "saves-selected-dust-20261113",
+        "sharedWith": "story tree",
+        "count": 8,
+        "durationRangeMs": [
+          6100,
+          7800
+        ],
+        "fadeMs": 400,
+        "onlyCurrentRuns": true,
+        "pointerEvents": "none",
+        "ariaHidden": true,
+        "reducedMotion": "Hidden."
+      }
     },
     {
       "id": "settings",

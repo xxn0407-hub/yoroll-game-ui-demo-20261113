@@ -1,5 +1,5 @@
 {
-  "revision": "saves-footer-clean-20261113",
+  "revision": "saves-selected-dust-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -52,7 +52,10 @@
     "rowCentered": true,
     "floatPositionChangedBetweenSamples": true,
     "floatHandoffInterpolates": true,
-    "unselectedFloatSettlesToZero": true
+    "unselectedFloatSettlesToZero": true,
+    "particleMotionObserved": true,
+    "particleSelectionHandoffVerified": true,
+    "inactiveParticlesPausedAndHidden": true
   },
   "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game.",
   "updatedAt": "2026-11-13T11:30:00.060282+00:00",
@@ -67,5 +70,13 @@
     "otherAmplitude": 0,
     "disabledWhenReducedMotion": true
   },
-  "footerCaption": false
+  "footerCaption": false,
+  "selectedParticles": {
+    "count": 8,
+    "sharedWith": "story tree",
+    "fadeMs": 400,
+    "runningOnCurrentOnly": true,
+    "decorative": true,
+    "hiddenUnderReducedMotion": true
+  }
 }
