@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 const root=process.argv[2]||path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -19,7 +20,7 @@ class AudioContext extends EventTarget{
  createGain(){return new AudioNode();}
  createDynamicsCompressor(){return{connect(){},threshold:new Parameter(),knee:new Parameter(),ratio:new Parameter(),attack:new Parameter(),release:new Parameter()};}
  createBufferSource(){const source={playbackRate:new Parameter(),connect(){},disconnect(){},start(){started.push(source);},stop(){source.onended?.();}};return source;}
- async decodeAudioData(bytes){assert.equal(Buffer.from(bytes).toString('ascii',0,4),'RIFF');return{duration:.48};}
+ async decodeAudioData(bytes){const data=Buffer.from(bytes);assert.equal(data.toString('ascii',0,4),'RIFF');return{duration:1.05,sha256:createHash('sha256').update(data).digest('hex')};}
  async resume(){this.state='running';this.dispatchEvent(new Event('statechange'));}
  async suspend(){this.state='suspended';this.dispatchEvent(new Event('statechange'));}
 }
@@ -56,9 +57,11 @@ function enter(item,extra={}){item.hover=true;dispatch('pointerover',item,extra)
 const count=()=>Number(data.audioPlayCount),passed=[];
 const locked=control(true),ordinary=control();
 enter(locked);tick(109);assert.equal(count(),0);tick(1);
-assert.equal(data.audioLastCue,'locked');assert.equal(count(),1);assert.equal(started.at(-1).playbackRate.value,.84);
+assert.equal(data.audioLastCue,'locked');assert.equal(count(),1);assert.equal(started.at(-1).playbackRate.value,.75);
+const lockedVoice=started.at(-1);
+assert.equal(lockedVoice.buffer.sha256,createHash('sha256').update(fs.readFileSync(path.join(root,'assets/audio/ui-hover.wav'))).digest('hex'));
 assert.equal(JSON.parse(data.audioCounts).hover,undefined);
-passed.push('A deliberate locked hover plays one lower, distinct unavailable cue after its dwell.');
+passed.push('A deliberate locked hover uses the original hover recording at a lower pitch after its dwell.');
 
 leave(locked);enter(locked);tick(110);assert.equal(count(),1);
 leave(locked);tick(650);enter(locked);tick(110);assert.equal(count(),2);
@@ -85,6 +88,7 @@ leave(locked);tick(700);enter(locked);tick(110);assert.equal(count(),before+1);
 passed.push('Master mute stops this cue as well; re-enabling audio restores it.');
 
 before=count();leave(locked);tick(700);enter(ordinary);tick(70);assert.equal(data.audioLastCue,'hover');assert.equal(count(),before+1);
+assert.equal(started.at(-1).buffer.sha256,lockedVoice.buffer.sha256);assert.equal(started.at(-1).playbackRate.value,1);
 const disabled=control(false,true);enter(disabled);tick(200);assert.equal(count(),before+1);
-passed.push('Playable node hover retains its original cue; unrelated disabled buttons remain silent.');
-console.log(JSON.stringify({revision:'tree-locked-hover-20261113',passed:passed.length,checks:passed},null,2));
+passed.push('Playable and locked hover share the exact recording at different pitches; unrelated disabled buttons remain silent.');
+console.log(JSON.stringify({revision:'locked-hover-paired-20261113',passed:passed.length,checks:passed},null,2));

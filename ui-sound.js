@@ -1,7 +1,7 @@
 'use strict';
 // Short original PCM assets; all playback stays local to this prototype.
 window.YorollSound = (() => {
- const revision = 'tree-locked-hover-20261113';
+ const revision = 'locked-hover-paired-20261113';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
@@ -18,7 +18,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'select':name}.wav?v=${revision}`)
+ const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${revision}`)
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
@@ -197,8 +197,8 @@ window.YorollSound = (() => {
    const active=[...voices].filter(voice=>!voice.stopping);
    if(active.length>=6)stopVoice(active[0]);
    const source=context.createBufferSource();source.buffer=buffers.get(name);
-   // A softer, lower air closure signals an unavailable interaction.
-   if(name==='locked')source.playbackRate.value=.84;
+   // Use the original hover timbre, lowered for unavailable nodes.
+   if(name==='locked')source.playbackRate.value=.75;
    const gain=context.createGain();gain.gain.value=Math.max(0,Math.min(1,level));
    source.connect(gain);gain.connect(output);
    const voice={source,gain,channel,sequence,stopping:false,ducked:false};voices.add(voice);

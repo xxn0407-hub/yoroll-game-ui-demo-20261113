@@ -1,7 +1,7 @@
 {
   "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "tree-locked-hover-20261113",
+  "revision": "locked-hover-paired-20261113",
   "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
@@ -159,14 +159,14 @@
       "fadeOutMs": 1120
     },
     "locked": {
-      "file": "assets/audio/ui-select.wav",
-      "sourceDurationMs": 480,
-      "durationMs": 571,
-      "playbackRate": 0.84,
+      "file": "assets/audio/ui-hover.wav",
+      "sourceDurationMs": 1050,
+      "durationMs": 1400,
+      "playbackRate": 0.75,
       "sampleRate": 48000,
       "channels": 2,
-      "character": "A quieter, lower diffuse air closure for unavailable story fragments; no buzzer, new musical note, or sharp transient.",
-      "sharedSourceWith": "select"
+      "character": "The exact playable-hover recording lowered by about five semitones, preserving its delicate onset, harmonics and diffuse stereo tail. Slightly quieter; no extra effect layer.",
+      "sharedSourceWith": "hover"
     }
   },
   "sourceQuality": {

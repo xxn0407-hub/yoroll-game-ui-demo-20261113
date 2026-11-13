@@ -1,37 +1,21 @@
 {
-  "revision": "tree-locked-hover-20261113",
-  "verifiedAt": "2026-11-13T07:22:53.029Z",
-  "before": {
-    "counts": "{}",
-    "muted": "true",
-    "state": "locked"
-  },
-  "locked": {
-    "active": "true",
-    "counts": "{\"locked\":1}",
-    "cue": "locked",
-    "hovered": true,
-    "scrolling": "ready"
-  },
-  "normal": {
-    "counts": "{\"locked\":1,\"hover\":1}",
-    "cue": "hover"
-  },
-  "drag": {
-    "counts": "{\"locked\":1,\"hover\":1}",
-    "page": "tree",
-    "selected": "03"
-  },
-  "muted": {
-    "counts": "{}",
-    "hovered": true,
-    "locked": 22,
-    "muted": "true"
-  },
-  "initialLocalMuteRestored": true,
-  "checks": {
-    "targetedHoverChecksPassed": 7,
-    "existingAudioLifecycleChecksPassed": 14,
-    "script": "scripts/verify_locked_hover.mjs"
-  }
+  "revision": "locked-hover-paired-20261113",
+  "source": "assets/audio/ui-hover.wav",
+  "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+  "sameRecordingAsPlayableHover": true,
+  "playablePlaybackRate": 1,
+  "lockedPlaybackRate": 0.75,
+  "lockedLevel": 0.44,
+  "playableNodeHoverLevel": 0.48,
+  "targetedChecksPassed": 7,
+  "audioLifecycleChecksPassed": 14,
+  "verificationScript": "scripts/verify_locked_hover.mjs",
+  "checksInclude": [
+    "actual shared WAV hash",
+    "different playback pitches",
+    "dwell and throttle",
+    "drag and pan silence",
+    "master mute",
+    "normal hover unchanged"
+  ]
 }

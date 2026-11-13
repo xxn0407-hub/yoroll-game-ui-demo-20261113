@@ -201,7 +201,7 @@
   "selection": "Only explored, unlocked nodes can be selected or replayed. Active paths must only contain playable nodes; retain the selected upstream branch at merges.",
   "keyboard": "Arrows select playable nodes; Home/End select the first/last playable fragment; PageUp/PageDown browse vertically, Shift pages horizontally; Enter starts the selected fragment directly.",
   "unexplored": "Native disabled button, aria-disabled, tabIndex -1, dim image and lock icon. No percentage or progress track. Cannot select or start; wrapper still supports dragging.",
-  "sound": "Approved hover and keyboard chapter cues remain. Locked wrappers play a distinct quiet unavailable air closure after 110ms, throttled to 650ms; dragging, panning, hidden previews and master mute suppress it. Buttons stay disabled. The 480ms select source is reused at playbackRate .84, level .44; no new audio file or background music.",
+  "sound": "Playable and locked hover share the exact ui-hover.wav recording, including its soft onset, harmonics and stereo tail. Locked playbackRate is .75 at level .44; normal node hover is rate 1 at level .48. Existing 110ms intent, 650ms throttle, drag suppression and master mute remain. No other audio or opening changes.",
   "verification": "story-tree-verification.json",
   "scrolling": {
     "axis": "both",
@@ -387,5 +387,6 @@
     "backGlowOnKeyboardFocus": true,
     "backGlowTransitionMs": 250
   },
-  "soundVerification": "locked-hover-verification.json"
+  "soundVerification": "locked-hover-verification.json",
+  "soundRevision": "locked-hover-paired-20261113"
 }
