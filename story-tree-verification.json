@@ -1,35 +1,155 @@
 {
-  "revision": "tree-roomier-20261113",
-  "verifiedAt": "2026-11-13T07:28:12.890Z",
-  "initial": {
-    "backFilter": "none",
-    "backTarget": {
-      "x": 60.49609375,
-      "y": 218.6640625
+  "revision": "tree-dust-20261113",
+  "verifiedAt": "2026-11-13T07:43:07.339Z",
+  "phaseA": {
+    "active": [
+      {
+        "opacity": "0.523848",
+        "playState": "running",
+        "transform": "matrix(0.686981, 0, 0, 0.686981, -1.33709, -3.82935)"
+      },
+      {
+        "opacity": "0.187704",
+        "playState": "running",
+        "transform": "matrix(0.733107, 0, 0, 0.733107, 2.50402, -9.60888)"
+      },
+      {
+        "opacity": "0.540462",
+        "playState": "running",
+        "transform": "matrix(0.711276, 0, 0, 0.711276, 2.21552, -8.66717)"
+      },
+      {
+        "opacity": "0.047467",
+        "playState": "running",
+        "transform": "matrix(0.745728, 0, 0, 0.745728, -4.03803, -12.588)"
+      },
+      {
+        "opacity": "0.209485",
+        "playState": "running",
+        "transform": "matrix(0.731423, 0, 0, 0.731423, 2.45328, -13.2906)"
+      },
+      {
+        "opacity": "0.410827",
+        "playState": "running",
+        "transform": "matrix(0.673476, 0, 0, 0.673476, -0.565865, -0.984771)"
+      },
+      {
+        "opacity": "0.121815",
+        "playState": "running",
+        "transform": "matrix(0.739037, 0, 0, 0.739037, 2.68269, -12.6127)"
+      },
+      {
+        "opacity": "0.618064",
+        "playState": "running",
+        "transform": "matrix(0.698758, 0, 0, 0.698758, -1.46909, -7.57937)"
+      }
+    ],
+    "card": {
+      "height": 115.2421875,
+      "width": 204.8828125,
+      "x": 309.1328125,
+      "y": 458.5078125
     },
-    "cardWidth": 204.8828125,
-    "overflow": "auto",
-    "scroll": {
-      "x": 0,
-      "y": 215.5
-    },
-    "scrollbarWidth": "none",
-    "viewportReferencePx": {
-      "height": 864.0103716508211,
-      "width": 1824.010371650821
-    }
+    "layers": 6,
+    "lockedLayers": 0,
+    "offStates": [
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused",
+      "paused"
+    ],
+    "particles": 48,
+    "selected": "03"
   },
-  "hover": {
-    "filter": "drop-shadow(rgba(229, 250, 255, 0.4) 0px 0px 2.41042px)",
-    "hovered": true
-  },
-  "scrolled": {
-    "backFilter": "none",
-    "scroll": {
-      "x": 231.5,
-      "y": 366.5
+  "phaseB": {
+    "card": {
+      "height": 115.2421875,
+      "width": 204.8828125,
+      "x": 309.1328125,
+      "y": 458.5078125
     },
-    "scrollbarWidth": "none",
-    "stageScroll": 0
+    "particles": [
+      {
+        "opacity": "0.114327",
+        "transform": "matrix(0.739711, 0, 0, 0.739711, -3.2436, -12.7264)"
+      },
+      {
+        "opacity": "0.435069",
+        "transform": "matrix(0.717691, 0, 0, 0.717691, 2.03956, -7.37946)"
+      },
+      {
+        "opacity": "0.208341",
+        "transform": "matrix(0.731492, 0, 0, 0.731492, 2.94645, -12.3219)"
+      },
+      {
+        "opacity": "0.621997",
+        "transform": "matrix(0.69925, 0, 0, 0.69925, -2.07746, -5.30588)"
+      },
+      {
+        "opacity": "0.539486",
+        "transform": "matrix(0.711336, 0, 0, 0.711336, 1.84806, -9.41714)"
+      },
+      {
+        "opacity": "0.379941",
+        "transform": "matrix(0.671711, 0, 0, 0.671711, -0.523323, -0.729522)"
+      },
+      {
+        "opacity": "0.651899",
+        "transform": "matrix(0.704493, 0, 0, 0.704493, 1.64189, -6.78416)"
+      },
+      {
+        "opacity": "0.28644",
+        "transform": "matrix(0.726738, 0, 0, 0.726738, -2.31214, -13.3122)"
+      }
+    ],
+    "pointerEvents": "none"
+  },
+  "selectionSwitch": {
+    "activeOpacity": "1",
+    "oldOpacity": "0",
+    "oldPaused": true,
+    "running": 8,
+    "selected": "01"
+  },
+  "directStart": {
+    "dialogs": 0,
+    "hud": "第 1 章 · 片段 01 · 整装待发",
+    "page": "gameplay"
   }
 }

@@ -262,7 +262,7 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-roomier-20261113",
+    "revision": "tree-dust-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
@@ -325,7 +325,25 @@
     },
     "viewportWidthPercent": 95,
     "viewportHeightPercent": 80,
-    "scrollbarsVisible": false
+    "scrollbarsVisible": false,
+    "selectedDust": {
+      "selectedNodeOnly": true,
+      "motesPerSelectedNode": 8,
+      "diameterPx": [
+        1.5,
+        2.1
+      ],
+      "cycleSeconds": [
+        6.1,
+        7.8
+      ],
+      "crossfadeMs": 400,
+      "cardMotion": false,
+      "inactiveMotesPaused": true,
+      "pointerEvents": "none",
+      "ariaHidden": true,
+      "reducedMotion": "Hide dust; keep the static selection glow."
+    }
   },
   "backButtonInteraction": {
     "defaultGlow": false,

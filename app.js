@@ -288,6 +288,15 @@ function storyProgressMarkup(node){
  if(node.locked)return '';
  return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-value" aria-hidden="true">${node.progress}%</span><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span></span>`;
 }
+function storyDustMarkup(){
+ const motes=[
+  [18,6,1.6,-6,-24,6.4,-1.1], [59,7,1.8,5,-20,7.3,-4.8],
+  [97,36,1.5,6,-26,6.8,-2.9], [72,96,2,-7,-22,7.8,-6.2],
+  [28,98,1.7,5,-28,6.1,-3.7], [3,67,1.6,-4,-20,7.1,-.4],
+  [2,28,1.5,5,-24,7.6,-5.5], [98,81,2.1,-5,-30,6.7,-2]
+ ];
+ return `<span class="node-dust" aria-hidden="true">${motes.map(([x,y,size,dx,rise,duration,delay])=>`<i style="left:${x}%;top:${y}%;--dust-size:${size};--dust-dx:${dx};--dust-rise:${rise};--dust-duration:${duration}s;--dust-delay:${delay}s"></i>`).join('')}</span>`;
+}
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
  const {layout}=graph;
@@ -300,7 +309,7 @@ function treeView(){
  }).join('');
  const nodes=graph.nodes.map(node=>{
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
-  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，点击从此处开始`}"><img src="${node.cover}" alt="" draggable="false">${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong>${storyProgressMarkup(node)}</div></button></div>`;
+  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，点击从此处开始`}"><img src="${node.cover}" alt="" draggable="false">${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong>${storyProgressMarkup(node)}</div></button>${node.locked?'':storyDustMarkup()}</div>`;
  }).join('');
  return `${pageHeading('剧情树','chapters')}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div></div></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 选择片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
 }
