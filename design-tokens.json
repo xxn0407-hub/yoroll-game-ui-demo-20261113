@@ -361,5 +361,16 @@
     "pressedGlowRadiusPx": 6,
     "pressTransitionMs": 100,
     "focusIndication": "Arrow glow without a rectangular outline."
+  },
+  "viewport": {
+    "revision": "viewport-backgrounds-20261113",
+    "frame": "100% viewport width and dynamic viewport height; no fixed aspect ratio.",
+    "referenceCanvas": "1920x1080 is the UI design reference only.",
+    "uiScale": "min(viewportWidth / 1920, viewportHeight / 1080)",
+    "backgroundFit": "cover",
+    "backgroundPosition": "Keep each scene image's existing focal point.",
+    "backgroundDistortion": false,
+    "posterWall": "Fill the iframe viewport; resize its existing grid with ResizeObserver.",
+    "letterboxing": false
   }
 }

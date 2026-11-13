@@ -161,6 +161,15 @@
       "nativeFocusPreserved": true,
       "keyboardNavigationPreserved": true,
       "otherControlFocusStylesUnchanged": true
+    },
+    "viewport": {
+      "revision": "viewport-backgrounds-20261113",
+      "appliesTo": "All 14 page states",
+      "background": "Fill the viewport with proportional cover cropping.",
+      "posterWall": "Recalculate the existing poster grid when viewport size changes.",
+      "uiScale": "min(viewportWidth / 1920, viewportHeight / 1080)",
+      "motionDistances": "Use the same UI scale as CSS.",
+      "resizeReplaysEntry": false
     }
   },
   "pages": [
