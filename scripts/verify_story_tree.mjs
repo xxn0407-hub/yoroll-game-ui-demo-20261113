@@ -61,8 +61,8 @@ check('Each chapter gets fresh preview data and keeps its own main fragment',()=
  assert.equal(other.nodes.find(n=>n.id==='03').cover,'other.webp');
 });
 check('Extended endings remain visible but cannot be selected before exploration',()=>{
- assert.equal(graph.nodes.length,19);
- for(const id of ['17','18','19']){
+ assert.equal(graph.nodes.length,28);
+ for(const id of ['25','26','27','28']){
   assert(graph.edges.some(([,to])=>to===id));
   assert.equal(tree.canPlay(graph.nodes.find(n=>n.id===id)),false);
   assert.equal(tree.choosePath(graph,id).length,0);
@@ -71,17 +71,20 @@ check('Extended endings remain visible but cannot be selected before exploration
  for(let i=0;i<5;i++)current=tree.nextNode(graph,current,'ArrowRight');
  assert.equal(current,'09');
 });
-check('Reveal keeps visible nodes steady and brings offscreen nodes fully into view',()=>{
- const first=graph.nodes[0],last=graph.nodes.at(-1);
- assert.equal(tree.revealOffset(graph.nodes.find(n=>n.id==='03'),1257,0),0);
+check('Reveal brings a selected fragment into view on both axes',()=>{
+ const viewport={width:1257,height:724};
  for(const node of graph.nodes){
-  const left=tree.revealOffset(node,1257,0);
-  assert(left>=0&&left<=tree.layout.width-1257);
-  assert(node.x>=left&&node.x+tree.layout.nodeWidth<=left+1257);
+  const camera=tree.revealPosition(graph,node,viewport);
+  assert(camera.x>=0&&camera.x<=graph.layout.width-viewport.width);
+  assert(camera.y>=0&&camera.y<=graph.layout.height-viewport.height);
+  assert(node.x>=camera.x&&node.x+tree.layout.nodeWidth<=camera.x+viewport.width);
+  assert(node.y>=camera.y&&node.y+tree.layout.nodeHeight<=camera.y+viewport.height);
+  const stable=tree.revealPosition(graph,node,viewport,camera);
+  assert.equal(stable.x,camera.x);assert.equal(stable.y,camera.y);
  }
- assert.equal(tree.revealOffset(first,1257,tree.layout.width-1257),0);
- assert.equal(tree.revealOffset(last,340,0),last.x);
- assert.equal(tree.revealOffset(last,tree.layout.width,0),0);
+ const last=graph.nodes.at(-1);
+ const exact=tree.revealPosition(graph,last,{width:tree.layout.nodeWidth,height:tree.layout.nodeHeight});
+ assert.equal(exact.x,last.x);assert.equal(exact.y,last.y);
 });
 check('Every fragment has a percentage and unexplored fragments have zero progress',()=>{
  for(const node of graph.nodes){
@@ -100,5 +103,48 @@ check('All keyboard navigation targets are playable, including Home and End',()=
    assert(tree.canPlay(graph.nodes.find(n=>n.id===id)),`${key} selected locked fragment ${id}`);
   }
  }
+});
+check('Branch density varies, merges exist, and short branches can end early',()=>{
+ const counts=graph.layers.map(layer=>layer.length);
+ assert(new Set(counts).size>=4);assert(Math.max(...counts)>3);
+ assert(graph.nodes.some(n=>graph.edges.filter(([from])=>from===n.id).length>=4));
+ assert(graph.nodes.some(n=>graph.edges.filter(([,to])=>to===n.id).length>=3));
+ const leaves=graph.nodes.filter(n=>!graph.edges.some(([from])=>from===n.id));
+ assert(Math.min(...leaves.map(n=>n.column))<Math.max(...leaves.map(n=>n.column)));
+});
+check('Automatic layout keeps the approved card size and never overlaps nodes',()=>{
+ assert.equal(graph.layout.nodeWidth,340);assert.equal(graph.layout.nodeHeight,191.25);
+ for(const a of graph.nodes){
+  assert(a.x>=0&&a.y>=0&&a.x+340<=graph.layout.width&&a.y+191.25<=graph.layout.height);
+  for(const b of graph.nodes){
+   if(a.id===b.id)continue;
+   assert(a.x+340<=b.x||b.x+340<=a.x||a.y+191.25<=b.y||b.y+191.25<=a.y,`Overlapping fragments ${a.id} and ${b.id}`);
+  }
+ }
+ for(const [from,to] of graph.edges){
+  const a=graph.nodes.find(n=>n.id===from),b=graph.nodes.find(n=>n.id===to);
+  assert(a.x+340<b.x,'A connection should flow forward between cards.');
+ }
+});
+check('Layout supports an eight-way split without fixed row slots',()=>{
+ const nodes=[{id:'root'},...Array.from({length:8},(_,i)=>({id:`child-${i}`})),{id:'merge'}];
+ const edges=nodes.slice(1,-1).flatMap(n=>[['root',n.id],[n.id,'merge']]);
+ const fan=tree.arrange(nodes,edges);
+ assert.equal(fan.layers[1].length,8);
+ assert(fan.layout.height>8*tree.layout.nodeHeight);
+ assert.equal(new Set(fan.nodes.filter(n=>n.column===1).map(n=>n.y)).size,8);
+ assert.throws(()=>tree.arrange([{id:'a'},{id:'b'}],[['a','b'],['b','a']]),/acyclic/);
+ assert.throws(()=>tree.arrange([{id:'a'}],[['a','missing']]),/missing/);
+});
+check('Route selection handles many merges while retaining the chosen path',()=>{
+ const nodes=[{id:'root',explored:true,locked:false}],edges=[];
+ let previous=['root'];const preferred=['root'];
+ for(let depth=0;depth<20;depth++){
+  const pair=[`a-${depth}`,`b-${depth}`];
+  for(const id of pair){nodes.push({id,explored:true,locked:false});for(const from of previous)edges.push([from,id]);}
+  preferred.push(pair[1]);previous=pair;
+ }
+ const merged=tree.arrange(nodes,edges);
+ assert.equal(tree.choosePath(merged,previous[1],preferred).join('>'),preferred.join('>'));
 });
 console.log(JSON.stringify({passed:checks.length,checks},null,2));

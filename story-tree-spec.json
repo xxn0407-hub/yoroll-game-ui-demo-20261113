@@ -1,28 +1,14 @@
 {
-  "revision": "tree-lock-only-20261113",
+  "revision": "tree-branches-2d-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
-  "dataScope": "Nineteen local preview fragments and sample percentages, not online Race story or save data.",
+  "dataScope": "Twenty-eight local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
-    2930,
-    724
+    3820,
+    1579.5
   ],
   "nodeSizePx": [
     340,
     191.25
-  ],
-  "columnX": [
-    20,
-    445,
-    870,
-    1295,
-    1720,
-    2145,
-    2570
-  ],
-  "rowY": [
-    24,
-    266.375,
-    508.75
   ],
   "edges": [
     [
@@ -43,19 +29,15 @@
     ],
     [
       "03",
-      "05"
+      "06"
     ],
     [
       "03",
-      "06"
+      "05"
     ],
     [
       "04",
       "06"
-    ],
-    [
-      "04",
-      "07"
     ],
     [
       "05",
@@ -66,6 +48,14 @@
       "09"
     ],
     [
+      "05",
+      "20"
+    ],
+    [
+      "06",
+      "07"
+    ],
+    [
       "06",
       "09"
     ],
@@ -74,14 +64,14 @@
       "10"
     ],
     [
-      "07",
-      "10"
-    ],
-    [
       "08",
       "11"
     ],
     [
+      "20",
+      "11"
+    ],
+    [
       "09",
       "11"
     ],
@@ -94,7 +84,7 @@
       "12"
     ],
     [
-      "10",
+      "11",
       "13"
     ],
     [
@@ -102,40 +92,76 @@
       "14"
     ],
     [
-      "12",
-      "14"
+      "11",
+      "21"
+    ],
+    [
+      "11",
+      "15"
     ],
     [
       "12",
       "15"
     ],
     [
-      "13",
-      "15"
-    ],
-    [
-      "13",
+      "12",
       "16"
+    ],
+    [
+      "12",
+      "22"
+    ],
+    [
+      "13",
+      "17"
     ],
     [
       "14",
       "17"
     ],
     [
-      "15",
-      "17"
-    ],
-    [
-      "15",
+      "21",
       "18"
     ],
     [
-      "16",
+      "15",
       "18"
     ],
     [
       "16",
       "19"
+    ],
+    [
+      "22",
+      "19"
+    ],
+    [
+      "18",
+      "23"
+    ],
+    [
+      "18",
+      "24"
+    ],
+    [
+      "19",
+      "24"
+    ],
+    [
+      "23",
+      "25"
+    ],
+    [
+      "23",
+      "26"
+    ],
+    [
+      "24",
+      "27"
+    ],
+    [
+      "24",
+      "28"
     ]
   ],
   "entry": {
@@ -158,30 +184,35 @@
     "selectionGlowTransition": 400,
     "lockedNodesSelectable": false,
     "keyboardSkipsLocked": true,
-    "lockedAreasRemainDraggable": true
+    "lockedAreasRemainDraggable": true,
+    "twoDimensionalPan": true,
+    "positionBothAxesPersistsPerChapter": true,
+    "initialCamera": "Vertically centered on the selected fragment; horizontal origin retained."
   },
   "selection": "Only explored, unlocked nodes can be selected or replayed. Active paths must only contain playable nodes; retain the selected upstream branch at merges.",
-  "keyboard": "Arrows skip locked nodes; Home/End choose the first/last playable fragment; PageUp/PageDown browse all branches; Enter confirms replay of the selected playable fragment.",
+  "keyboard": "Arrows select playable connected or same-layer nodes by geometry; Home/End choose the first/last playable fragment; PageUp/PageDown browse vertically, Shift pages horizontally; Enter opens replay confirmation.",
   "unexplored": "Native disabled button, aria-disabled, tabIndex -1, dim image and lock icon. No percentage or progress track in the card, accessible label or detail panel. Cannot select or start; wrapper still supports dragging.",
   "sound": "Uses the approved chapter cue at 0.5 level, throttled to 220ms; hover is 0.48. Opening and audio engine are unchanged.",
   "verification": "story-tree-verification.json",
   "scrolling": {
-    "axis": "horizontal",
+    "axis": "both",
     "inputs": [
-      "mouse drag",
+      "two-dimensional mouse drag",
       "vertical wheel",
-      "horizontal trackpad",
-      "native scrollbar",
-      "PageUp / PageDown"
+      "Shift + wheel horizontally",
+      "two-dimensional trackpad",
+      "native scrollbars",
+      "PageUp / PageDown; Shift for horizontal"
     ],
     "nativeScrollContainer": true,
     "dragThresholdPx": 6,
     "dragReleaseDurationMs": 500,
     "nodeRevealDurationMs": 440,
     "rightDetailFixed": true,
-    "positionStoredPerChapter": "Reference pixels; restored on return and entry replay.",
+    "positionStoredPerChapter": "Reference-pixel offsets on both axes, restored on return and replay.",
     "dragDoesNotSelect": true,
-    "outerStageCannotScroll": true
+    "outerStageCannotScroll": true,
+    "initialView": "Selected fragment is vertically centered; individual card size is preserved."
   },
   "progress": {
     "display": "Explored fragments only: thin horizontal line and plain bottom-right percentage.",
@@ -204,7 +235,16 @@
       "16": 0,
       "17": 0,
       "18": 0,
-      "19": 0
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0
     },
     "trackCssPx": 1,
     "trackInsetReferencePx": 20,
@@ -234,5 +274,60 @@
     "05",
     "06",
     "09"
-  ]
+  ],
+  "layers": [
+    [
+      "01"
+    ],
+    [
+      "02",
+      "03",
+      "04"
+    ],
+    [
+      "05",
+      "06"
+    ],
+    [
+      "08",
+      "20",
+      "09",
+      "07",
+      "10"
+    ],
+    [
+      "11",
+      "12"
+    ],
+    [
+      "13",
+      "14",
+      "21",
+      "15",
+      "16",
+      "22"
+    ],
+    [
+      "17",
+      "18",
+      "19"
+    ],
+    [
+      "23",
+      "24"
+    ],
+    [
+      "25",
+      "26",
+      "27",
+      "28"
+    ]
+  ],
+  "layout": "Graph ranks come from connections; alternating barycentric sweeps order related branches. Each layer is vertically centered, with no fixed row slots. The graph extent grows with branch count and depth.",
+  "modelChecks": {
+    "passed": 13,
+    "script": "scripts/verify_story_tree.mjs",
+    "includes": "Graph connectivity, unlocked routes, two-axis reveal, no card overlap, eight-way fanout and repeated merges."
+  },
+  "connectorRouting": "Rounded elbows use separate source lanes to keep rich split and merge trunks distinct."
 }

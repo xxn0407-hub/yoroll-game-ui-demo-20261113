@@ -262,27 +262,27 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-progress-line-20261113",
+    "revision": "tree-branches-2d-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
       191.25
     ],
-    "columns": 7,
-    "nodes": 19,
+    "columns": 9,
+    "nodes": 28,
     "columnGapPx": 85,
-    "rowGapPx": 51.125,
+    "rowGapPx": 64,
     "preserveApprovedUiScale": true,
     "boardSizePx": [
-      2930,
-      724
+      3820,
+      1579.5
     ],
     "horizontalScroll": true,
     "fixedDetailColumn": true,
     "nodeNumberPx": 42,
     "nodeNumberWeight": 300,
     "nodeNumberStyle": "Two tabular digits, without underscore, separated from the title by a fine rule.",
-    "lockedPreviewNodes": 13,
+    "lockedPreviewNodes": 22,
     "playablePreviewNodes": 6,
     "selectionGlowRadiusPx": [
       22,
@@ -290,6 +290,20 @@
     ],
     "progressTrackCssPx": 1,
     "progressValuePx": 14,
-    "progressValuePosition": "bottom right"
+    "progressValuePosition": "bottom right",
+    "verticalScroll": true,
+    "variableLayerDensity": true,
+    "nodesPerLayer": [
+      1,
+      3,
+      2,
+      5,
+      2,
+      6,
+      3,
+      2,
+      4
+    ],
+    "layoutAlgorithm": "Topological ranks and barycentric branch ordering; bounds derived from graph density."
   }
 }

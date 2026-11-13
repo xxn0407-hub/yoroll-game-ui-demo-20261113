@@ -278,11 +278,11 @@ let treeScrollCleanup=null,treeRevealNode=null,treeViewportMove=null;
 let ignoreStoryClickUntil=0,ignoreStoryHoverUntil=0;
 function currentStoryState(){
  const graph=storyTree.create(activeChapter());
- if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03'],scroll:0});
+ if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03'],scroll:0,scrollY:null});
  const state=storyStates.get(selectedChapter);
  if(!storyTree.canPlay(graph.nodes.find(node=>node.id===state.node))){
   const first=graph.nodes.find(node=>node.id==='03'&&storyTree.canPlay(node))||graph.nodes.find(storyTree.canPlay);
-  state.node=first?.id;state.path=first?storyTree.choosePath(graph,first.id):[];state.scroll=0;
+  state.node=first?.id;state.path=first?storyTree.choosePath(graph,first.id):[];state.scroll=0;state.scrollY=null;
  }
  return state;
 }
@@ -296,7 +296,8 @@ function storyDetailMarkup(node){
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
- const {layout}=storyTree;
+ const {layout}=graph;
+ const root=graph.nodes.find(node=>!graph.edges.some(edge=>edge[1]===node.id));
  const selected=graph.nodes.find(node=>node.id===state.node);
  const edges=graph.edges.map(([from,to])=>{
   const active=state.path.some((id,index)=>id===from&&state.path[index+1]===to);
@@ -308,68 +309,87 @@ function treeView(){
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
   return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，可重玩`}"><img src="${node.cover}" alt="" draggable="false">${storyProgressMarkup(node)}${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong></div></button></div>`;
  }).join('');
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可横向滚动的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 9 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动或滚轮浏览</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div><span class="tree-fade-top" aria-hidden="true"></span><span class="tree-fade-bottom" aria-hidden="true"></span></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
 }
 function disposeStoryScroll(){
  treeScrollCleanup?.();treeScrollCleanup=null;treeRevealNode=null;treeViewportMove=null;
 }
 function bindStoryScroll(){
- const viewport=$('.tree-viewport'),graph=$('.tree-graph');if(!viewport)return;
- const state=currentStoryState(),controller=new AbortController(),options={signal:controller.signal};
+ const viewport=$('.tree-viewport'),graphElement=$('.tree-graph');if(!viewport)return;
+ const state=currentStoryState(),graph=storyTree.create(activeChapter());
+ const controller=new AbortController(),options={signal:controller.signal};
  let motionFrame=0,drag=null,wheelTarget=null;
- const maximum=()=>Math.max(0,viewport.scrollWidth-viewport.clientWidth);
- const clamp=left=>Math.max(0,Math.min(maximum(),left));
+ const current=()=>({x:viewport.scrollLeft,y:viewport.scrollTop});
+ const maximum=()=>({x:Math.max(0,viewport.scrollWidth-viewport.clientWidth),y:Math.max(0,viewport.scrollHeight-viewport.clientHeight)});
+ const clamp=point=>{const max=maximum();return{x:Math.max(0,Math.min(max.x,point.x)),y:Math.max(0,Math.min(max.y,point.y))};};
  const update=()=>{
-  state.scroll=viewport.scrollLeft/unit(1);
-  graph.classList.toggle('can-scroll-back',viewport.scrollLeft>1);
-  graph.classList.toggle('can-scroll-next',viewport.scrollLeft<maximum()-1);
+  state.scroll=viewport.scrollLeft/unit(1);state.scrollY=viewport.scrollTop/unit(1);
+  const max=maximum();
+  graphElement.classList.toggle('can-scroll-back',viewport.scrollLeft>1);
+  graphElement.classList.toggle('can-scroll-next',viewport.scrollLeft<max.x-1);
+  graphElement.classList.toggle('can-scroll-up',viewport.scrollTop>1);
+  graphElement.classList.toggle('can-scroll-down',viewport.scrollTop<max.y-1);
  };
  const stop=()=>{cancelAnimationFrame(motionFrame);motionFrame=0;frame.dataset.treePanState='ready';};
- function scrollTo(left,duration=440){
-  stop();const from=viewport.scrollLeft,to=clamp(left);
-  if(motionPreference.matches||Math.abs(to-from)<1){viewport.scrollLeft=to;wheelTarget=null;update();return;}
+ const place=point=>{viewport.scrollLeft=point.x;viewport.scrollTop=point.y;update();};
+ function scrollTo(point,duration=440){
+  stop();const from=current(),to=clamp(point);
+  if(motionPreference.matches||Math.hypot(to.x-from.x,to.y-from.y)<1){place(to);wheelTarget=null;return;}
   frame.dataset.treePanState='moving';const start=performance.now();
   const tick=now=>{
-   if(!viewport.isConnected||document.hidden){stop();return;}
-   const t=Math.min(1,(now-start)/duration);viewport.scrollLeft=from+(to-from)*(1-(1-t)**4);update();
+   if(!viewport.isConnected||document.hidden){wheelTarget=null;stop();return;}
+   const t=Math.min(1,(now-start)/duration),ease=1-(1-t)**4;
+   place({x:from.x+(to.x-from.x)*ease,y:from.y+(to.y-from.y)*ease});
    if(t<1)motionFrame=requestAnimationFrame(tick);
    else{motionFrame=0;wheelTarget=null;frame.dataset.treePanState='ready';update();}
   };
   motionFrame=requestAnimationFrame(tick);
  }
  treeRevealNode=id=>{
-  const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===id);if(!node)return;
-  const target=storyTree.revealOffset(node,viewport.clientWidth/unit(1),viewport.scrollLeft/unit(1));
-  wheelTarget=null;scrollTo(unit(target));
+  const node=graph.nodes.find(item=>item.id===id);if(!node)return;
+  const target=storyTree.revealPosition(graph,node,{width:viewport.clientWidth/unit(1),height:viewport.clientHeight/unit(1)},{x:viewport.scrollLeft/unit(1),y:viewport.scrollTop/unit(1)});
+  wheelTarget=null;scrollTo({x:unit(target.x),y:unit(target.y)});
  };
- treeViewportMove=direction=>{wheelTarget=null;scrollTo(viewport.scrollLeft+direction*viewport.clientWidth*.8);};
- viewport.scrollLeft=clamp(unit(state.scroll||0));frame.dataset.treePanState='ready';update();
+ treeViewportMove=(direction,axis='y')=>{
+  wheelTarget=null;const next=current();next[axis]+=direction*(axis==='x'?viewport.clientWidth:viewport.clientHeight)*.8;scrollTo(next);
+ };
+ if(state.scrollY==null){
+  const node=graph.nodes.find(item=>item.id===state.node);
+  const initial=storyTree.revealPosition(graph,node,{width:viewport.clientWidth/unit(1),height:viewport.clientHeight/unit(1)},{x:0,y:0},{center:true});
+  state.scroll=0;state.scrollY=initial.y;
+ }
+ place(clamp({x:unit(state.scroll),y:unit(state.scrollY)}));frame.dataset.treePanState='ready';
  viewport.addEventListener('scroll',update,{...options,passive:true});
  viewport.addEventListener('dragstart',event=>event.preventDefault(),options);
  viewport.addEventListener('wheel',event=>{
   if(event.ctrlKey||event.metaKey)return;
-  const delta=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY;
-  if(!delta)return;
+  let dx=event.deltaX,dy=event.deltaY;
+  if(event.shiftKey){dx=dx||dy;dy=0;}
+  if(!dx&&!dy)return;
   event.preventDefault();cancelPendingHover();ignoreStoryHoverUntil=performance.now()+250;
-  const factor=event.deltaMode===1?16:event.deltaMode===2?viewport.clientWidth:1;
-  if(Math.abs(event.deltaX)>Math.abs(event.deltaY)){
-   stop();wheelTarget=null;viewport.scrollLeft=clamp(viewport.scrollLeft+delta*factor);update();
-  }else{wheelTarget=clamp((wheelTarget??viewport.scrollLeft)+delta*factor);scrollTo(wheelTarget,280);}
+  const factor=event.deltaMode===1?16:event.deltaMode===2?viewport.clientHeight:1;
+  if(event.deltaMode===0&&(Math.abs(dx)>0||Math.abs(dy)<50)){
+   stop();wheelTarget=null;const position=current();place(clamp({x:position.x+dx*factor,y:position.y+dy*factor}));
+  }else{
+   const previous=wheelTarget||current();wheelTarget=clamp({x:previous.x+dx*factor,y:previous.y+dy*factor});scrollTo(wheelTarget,280);
+  }
  },{...options,passive:false});
  viewport.addEventListener('pointerdown',event=>{
   if(event.button!==0||event.pointerType!=='mouse')return;
-  // Leave the native scrollbar free for the browser to handle.
-  if(event.clientY>=viewport.getBoundingClientRect().top+viewport.clientHeight)return;
-  stop();wheelTarget=null;drag={id:event.pointerId,startX:event.clientX,startLeft:viewport.scrollLeft,lastX:event.clientX,lastTime:event.timeStamp,velocity:0,moved:false};
+  const bounds=viewport.getBoundingClientRect();
+  if(event.clientY>=bounds.top+viewport.clientHeight||event.clientX>=bounds.left+viewport.clientWidth)return;
+  stop();wheelTarget=null;
+  drag={id:event.pointerId,startX:event.clientX,startY:event.clientY,startLeft:viewport.scrollLeft,startTop:viewport.scrollTop,lastX:event.clientX,lastY:event.clientY,lastTime:event.timeStamp,vx:0,vy:0,moved:false};
  },options);
  viewport.addEventListener('pointermove',event=>{
   if(!drag||event.pointerId!==drag.id)return;
-  const distance=event.clientX-drag.startX;
-  if(!drag.moved&&Math.abs(distance)>6){drag.moved=true;viewport.classList.add('is-dragging');viewport.setPointerCapture(event.pointerId);frame.dataset.treePanState='dragging';cancelPendingHover();}
+  const dx=event.clientX-drag.startX,dy=event.clientY-drag.startY;
+  if(!drag.moved&&Math.hypot(dx,dy)>6){drag.moved=true;viewport.classList.add('is-dragging');viewport.setPointerCapture(event.pointerId);frame.dataset.treePanState='dragging';cancelPendingHover();}
   if(!drag.moved)return;
   event.preventDefault();const elapsed=Math.max(1,event.timeStamp-drag.lastTime);
-  drag.velocity=Math.max(-2,Math.min(2,(drag.lastX-event.clientX)/elapsed));drag.lastX=event.clientX;drag.lastTime=event.timeStamp;
-  viewport.scrollLeft=clamp(drag.startLeft-distance);update();
+  drag.vx=Math.max(-2,Math.min(2,(drag.lastX-event.clientX)/elapsed));drag.vy=Math.max(-2,Math.min(2,(drag.lastY-event.clientY)/elapsed));
+  drag.lastX=event.clientX;drag.lastY=event.clientY;drag.lastTime=event.timeStamp;
+  place(clamp({x:drag.startLeft-dx,y:drag.startTop-dy}));
  },options);
  function endDrag(event){
   if(!drag||event.pointerId!==undefined&&event.pointerId!==drag.id)return;
@@ -377,14 +397,15 @@ function bindStoryScroll(){
   if(viewport.hasPointerCapture(finished.id))viewport.releasePointerCapture(finished.id);
   if(finished.moved){
    ignoreStoryClickUntil=performance.now()+180;ignoreStoryHoverUntil=performance.now()+250;
-   const velocity=event.type==='blur'||event.type==='pointercancel'||event.timeStamp-finished.lastTime>100?0:finished.velocity;
-   scrollTo(viewport.scrollLeft+velocity*150,500);
+   const cancelled=event.type==='blur'||event.type==='pointercancel'||event.timeStamp-finished.lastTime>100,position=current();
+   scrollTo({x:position.x+(cancelled?0:finished.vx*150),y:position.y+(cancelled?0:finished.vy*150)},500);
   }
  }
  viewport.addEventListener('pointerup',endDrag,options);viewport.addEventListener('pointercancel',endDrag,options);window.addEventListener('blur',endDrag,options);
- const resize=new ResizeObserver(()=>{stop();viewport.scrollLeft=clamp(unit(state.scroll));update();});resize.observe(viewport);
+ const resize=new ResizeObserver(()=>{stop();wheelTarget=null;place(clamp({x:unit(state.scroll),y:unit(state.scrollY)}));});resize.observe(viewport);
  treeScrollCleanup=()=>{stop();update();controller.abort();resize.disconnect();viewport.classList.remove('is-dragging');};
 }
+
 function updateStoryRoute(path){
  $$('.tree-route').forEach(line=>{
   const active=path.some((id,index)=>`${id}-${path[index+1]}`===line.dataset.treeRoute);
@@ -495,7 +516,7 @@ function enterPage(){
  $$('[data-enter="tree-line"]').forEach(el=>enter(el,{y:0,delay:140,duration:550}));
  $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Math.min(2,Number(el.dataset.treeDepth))*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
  $$('.tree-route.is-active').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:680,delay:250,easing:'cubic-bezier(.22,.68,.25,1)'}));
- $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Math.min(2,Number(el.dataset.treeDepth))*85+Number(el.dataset.treeRow)*20,duration:680}));
+ $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Math.min(2,Number(el.dataset.treeDepth))*85+Math.min(2,Number(el.dataset.treeRow))*20,duration:680}));
  $$('[data-enter="detail"]').forEach(el=>enter(el,{x:unit(20),y:0,delay:310,duration:720}));
  $$('[data-enter="footer"]').forEach(el=>enter(el,{y:unit(8),delay:320,duration:620}));
  $$('[data-enter="subtitle"]').forEach(el=>enter(el,{y:unit(12),delay:250,duration:680}));
@@ -715,7 +736,7 @@ document.addEventListener('keydown',event=>{
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}
  if(currentPage==='tree'&&!event.metaKey&&!event.ctrlKey){
-  if(['PageUp','PageDown'].includes(event.key)){event.preventDefault();treeViewportMove?.(event.key==='PageDown'?1:-1);return;}
+  if(['PageUp','PageDown'].includes(event.key)){event.preventDefault();treeViewportMove?.(event.key==='PageDown'?1:-1,event.shiftKey?'x':'y');return;}
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)){
    event.preventDefault();const state=currentStoryState();selectStoryNode(storyTree.nextNode(storyTree.create(activeChapter()),state.node,event.key,state.path),{focus:true});return;
   }
