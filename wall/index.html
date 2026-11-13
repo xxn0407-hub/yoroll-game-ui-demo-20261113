@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080a0b">
+  <meta name="description" content="Yoroll 游戏菜单与动态海报背景。">
+  <title>Yoroll</title>
+  <link rel="icon" href="assets/yoroll-icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="experience" id="experience">
+    <div class="ambient ambient-cool" aria-hidden="true"></div>
+    <div class="ambient ambient-warm" aria-hidden="true"></div>
+    <div class="cover-scene" id="cover-scene" aria-hidden="true" hidden>
+      <img class="cover-image" id="cover-image" alt="" width="1664" height="936" decoding="async" draggable="false">
+    </div>
+    <div class="entry-track" id="entry-track" aria-hidden="true">
+      <div class="scene" id="scene">
+        <div class="camera" id="camera"><div class="arrival" id="arrival"><div class="gallery" id="gallery"></div></div></div>
+      </div>
+    </div>
+    <div class="menu-backdrop" aria-hidden="true"></div>
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="cover-logo" id="cover-logo" hidden>
+      <img id="cover-logo-image" alt="" decoding="async" draggable="false">
+    </div>
+
+    <header class="header">
+      <div class="brand content-layer">
+        <img src="assets/yoroll-logo.png" alt="yoroll" width="224" height="65">
+      </div>
+      <div class="header-actions">
+        <div class="header-action-entry">
+        <button class="settings-button" type="button" id="settings-toggle" aria-label="设置" aria-expanded="false" aria-controls="settings" title="设置">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.4 3.7.7-1.2h3.8l.7 1.2.4 1.7 1.7 1 1.6-.5 1.4.1 1.9 3.3-.6 1.2-1.2 1.2v2l1.2 1.2.6 1.2-1.9 3.3-1.4.1-1.6-.5-1.7 1-.4 1.7-.7 1.2h-3.8l-.7-1.2-.4-1.7-1.7-1-1.6.5-1.4-.1-1.9-3.3.6-1.2 1.2-1.2v-2L2 10.3l-.6-1.2L3.3 5.8l1.4-.1 1.6.5 1.7-1 .4-1.7Z" transform="translate(.6 -.5) scale(.95)"/><circle cx="12" cy="12" r="3.2"/></svg>
+        </button>
+        </div>
+        <div class="header-action-entry">
+        <button class="account-status" type="button" aria-label="未登录">
+          <span class="account-avatar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M14 4a6.3 6.3 0 1 0 0 12.6A9.7 9.7 0 0 0 4.3 26v1.5h19.4V26a9.7 9.7 0 0 0-9.7-9.4A6.3 6.3 0 0 0 14 4Zm9 2a5.3 5.3 0 0 1 0 10.2 9.3 9.3 0 0 1 5.9 8.6v.7h-3.3a12 12 0 0 0-6.1-10.2A8.5 8.5 0 0 0 23 6Z"/></svg></span>
+          <span>未登录</span>
+        </button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="main-menu" aria-label="游戏菜单">
+      <button type="button"><span class="menu-label">开始游戏</span></button>
+      <button type="button"><span class="menu-label">章节选择</span></button>
+      <button type="button"><span class="menu-label">切换存档</span></button>
+      <button type="button"><span class="menu-label">退出</span></button>
+    </nav>
+
+    <div class="preview-controls content-layer">
+      <button class="replay-control" type="button" id="replay" aria-label="重播入场动画" title="重播入场动画"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.2 6.4A6 6 0 1 1 4 13M4 2.5v4.5h4.5"/></svg><span>重播入场</span></button>
+    </div>
+
+    <aside class="settings" id="settings" aria-label="设置" hidden>
+      <div class="settings-heading"><span>设置</span><button id="settings-close" type="button" aria-label="关闭设置">×</button></div>
+      <div class="background-options" role="group" aria-label="背景预览">
+        <button type="button" data-background-mode="default" aria-pressed="true">默认背景</button>
+        <button type="button" data-background-mode="cover" aria-pressed="false">封面背景</button>
+      </div>
+      <div class="motion-controls">
+        <button type="button" id="pause" aria-label="暂停动态" aria-pressed="false" title="暂停动态"><svg class="pause-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg><svg class="play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z"/></svg><span>暂停</span></button>
+      </div>
+      <div class="poster-controls"><label for="depth">入场倾角<span id="depth-value">24°</span></label><input type="range" id="depth" min="10" max="42" value="24"></div>
+      <label for="brightness">背景亮度<span id="brightness-value">80%</span></label><input type="range" id="brightness" min="35" max="115" value="80">
+    </aside>
+    <div class="loading-indicator" id="loading" role="status" aria-label="正在加载"><span></span></div>
+    <span class="sr-only" id="announcement" aria-live="polite"></span>
+  </main>
+  <script src="background-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

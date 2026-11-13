@@ -1,0 +1,201 @@
+{
+  "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
+  "format": "48 kHz stereo 16-bit PCM WAV",
+  "revision": "chapter-ethereal-20261113",
+  "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
+  "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
+  "defaultMixGain": 0.5,
+  "assets": {
+    "hover": {
+      "file": "assets/audio/ui-hover.wav",
+      "durationMs": 1050,
+      "bodyMs": 190,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.21,
+      "rmsDbfs": -33.0,
+      "reverbRt60Seconds": 0.74,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 12,
+      "fadeOutMs": 120
+    },
+    "click": {
+      "file": "assets/audio/ui-click.wav",
+      "durationMs": 1350,
+      "bodyMs": 260,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.26,
+      "rmsDbfs": -30.6,
+      "reverbRt60Seconds": 0.95,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 12,
+      "fadeOutMs": 120
+    },
+    "select": {
+      "file": "assets/audio/ui-select.wav",
+      "durationMs": 480,
+      "bodyMs": 140,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.17,
+      "pitched": false,
+      "character": "A short diffuse air closure without a pitched note.",
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 15,
+      "fadeOutMs": 100
+    },
+    "back": {
+      "file": "assets/audio/ui-back.wav",
+      "durationMs": 1150,
+      "bodyMs": 220,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.21,
+      "rmsDbfs": -31.4,
+      "reverbRt60Seconds": 0.83,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 12,
+      "fadeOutMs": 120
+    },
+    "transition": {
+      "file": "assets/audio/ui-transition.wav",
+      "durationMs": 1850,
+      "bodyMs": 620,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.22,
+      "rmsDbfs": -29.9,
+      "reverbRt60Seconds": 1.25,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 45,
+      "fadeOutMs": 120
+    },
+    "open": {
+      "file": "assets/audio/ui-open.wav",
+      "durationMs": 1600,
+      "bodyMs": 400,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.22,
+      "rmsDbfs": -29.9,
+      "reverbRt60Seconds": 1.1,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 45,
+      "fadeOutMs": 120
+    },
+    "confirm": {
+      "file": "assets/audio/ui-confirm.wav",
+      "durationMs": 1600,
+      "bodyMs": 300,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.25,
+      "rmsDbfs": -30.9,
+      "reverbRt60Seconds": 1.12,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 12,
+      "fadeOutMs": 120
+    },
+    "success": {
+      "file": "assets/audio/ui-success.wav",
+      "durationMs": 2050,
+      "bodyMs": 480,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.25,
+      "rmsDbfs": -31.4,
+      "reverbRt60Seconds": 1.4,
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 12,
+      "fadeOutMs": 120
+    },
+    "chapter": {
+      "file": "assets/audio/ui-chapter.wav",
+      "durationMs": 1280,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.145,
+      "rmsDbfs": -36.7,
+      "character": "A soft bloom of the existing hover harmonics with a diffuse stereo tail; no percussive attack or new musical note.",
+      "source": "assets/audio/ui-hover.wav",
+      "sourcePcmSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+      "processing": {
+        "sourceOffsetMs": 85,
+        "attackMs": 75,
+        "lowpassHz": 2000,
+        "pitchShiftSemitones": 0,
+        "addedNoise": false
+      },
+      "boundarySamples": [
+        0,
+        0
+      ],
+      "minFadeInMs": 75,
+      "fadeOutMs": 1120
+    }
+  },
+  "sourceQuality": {
+    "hoverRmsDbfs": -63.7,
+    "hoverUsed": false,
+    "hoverReason": "Insufficient signal; not amplified into an audible cue.",
+    "clickRmsDbfs": -54.9,
+    "clickUsed": true,
+    "transitionRmsDbfs": -23.4,
+    "transitionUsed": true
+  },
+  "runtime": {
+    "hoverIntentMs": 70,
+    "hoverThrottleMs": 180,
+    "maxActiveVoices": 6,
+    "stopFadeMs": 100,
+    "tailDuckingGain": 0.28,
+    "tailDuckingTimeConstantMs": 35,
+    "masterTimesSfx": true,
+    "firstGestureRequired": true,
+    "noSoundOnDrag": true,
+    "chapterHoverTailGain": 0.6,
+    "chapterHoverBlendTimeConstantMs": 90,
+    "chapterPreviousTailGain": 0.2,
+    "chapterTailBlendTimeConstantMs": 110,
+    "chapterLevel": 0.62,
+    "chapterRepeatLevel": 0.38,
+    "chapterThrottleMs": 220
+  },
+  "eventMap": {
+    "hover": "Control focus",
+    "click": "Ordinary activation",
+    "select": "Language selection and choice timeout",
+    "back": "Modal cancel",
+    "transition": "Page navigation",
+    "open": "Modal opening",
+    "confirm": "Confirmation",
+    "success": "QTE success",
+    "chapter": "Chapter activation; same timbre as hover, no stepped pitch or hard attack"
+  },
+  "backgroundMusic": "music-spec.json"
+}

@@ -1,0 +1,26 @@
+{
+  "revision": "opening-fade-20261111",
+  "currentAssetChecks": {
+    "approvedOpeningPcmIdentical": true,
+    "openingPcmSha256": "64e885fb9ef4aacd8185ee20c10c4627c748fc82f9d7f5e34116a8853a3dc717",
+    "previewFirstSevenSecondsIdentical": true,
+    "previewEndsAtZero": true,
+    "fadeOutStartSeconds": 7,
+    "fadeOutDurationSeconds": 3,
+    "durationSeconds": 10,
+    "loopEnabled": false,
+    "loopAssetAbsent": true
+  },
+  "currentBrowserObservation": {
+    "fadeSeconds": "3",
+    "loopEnabled": "false",
+    "phase": "ended",
+    "position": "10",
+    "revision": "opening-fade-20261111",
+    "starts": "1",
+    "status": "开场音 · 已结束",
+    "tailGain": "0"
+  },
+  "repeatAfterCompletionObserved": false,
+  "fadeCurveValidatedByUnitChecks": true
+}

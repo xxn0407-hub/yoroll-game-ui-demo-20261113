@@ -1,0 +1,23 @@
+{
+  "revision": "opening-fade-20261111",
+  "file": "assets/audio/home-opening.wav",
+  "mode": "opening-once",
+  "durationSeconds": 10,
+  "introSeconds": 10,
+  "loop": false,
+  "loopSeconds": 0,
+  "sampleRate": 48000,
+  "channels": 2,
+  "musicMixGain": 0.24,
+  "fileDurationSeconds": 10,
+  "openingPcmSha256": "64e885fb9ef4aacd8185ee20c10c4627c748fc82f9d7f5e34116a8853a3dc717",
+  "approvedOpeningPcmUnchanged": true,
+  "replayButtonRetained": true,
+  "resumeUnfinishedOpening": true,
+  "newPageStartsOpeningAgainAfterPreviousCompletion": true,
+  "fadeOutSeconds": 3,
+  "fadeOutStartSeconds": 7,
+  "fadeOutCurve": "smootherstep",
+  "fadeOutEndGain": 0,
+  "fadeOutGainIndependentFromPlaybackGain": true
+}

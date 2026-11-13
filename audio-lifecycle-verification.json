@@ -1,0 +1,26 @@
+{
+  "revision": "opening-fade-20261111",
+  "passed": [
+    "Blur and visibility pause shared audio; focus resumes the same source and position.",
+    "An interrupted opening resumes after reopening, finishes once, and explicit replay starts it again.",
+    "Late audio decoding cannot start music after the preview has lost focus.",
+    "Only the actively claimed preview plays, even when two embedded views both report focus.",
+    "Focus polling pauses a host view even when the host omits a blur event.",
+    "Opening has no loop, stays silent after completion through UI/focus changes, and a fresh visit can play it once.",
+    "The ending fades monotonically to exact silence on its own gain node; UI and focus updates preserve that fade.",
+    "Reopening during the tail continues the remaining fade instead of restoring full volume."
+  ],
+  "browserChecks": {
+    "fadeSeconds": "3",
+    "loopEnabled": "false",
+    "phase": "ended",
+    "position": "10",
+    "revision": "opening-fade-20261111",
+    "starts": "1",
+    "status": "开场音 · 已结束",
+    "tailGain": "0"
+  },
+  "hostPanelCloseSignalObserved": false,
+  "hostPanelAutoPauseVerified": false,
+  "hostPanelNote": "The host panel visibility operation did not report a document focus/visibility transition; tab closure and explicit audio pause are supported."
+}

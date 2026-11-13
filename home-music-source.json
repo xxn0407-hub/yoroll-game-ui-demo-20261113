@@ -1,0 +1,16 @@
+{
+  "revision": "opening-fade-20261111",
+  "method": "Previously approved original opening PCM with a three-second smooth playback fade to silence; no loop.",
+  "assetId": "3875b498-61df-428a-8ee5-81bf270b0274",
+  "file": "assets/audio/home-opening.wav",
+  "durationSeconds": 10,
+  "loop": false,
+  "openingPcmSha256": "64e885fb9ef4aacd8185ee20c10c4627c748fc82f9d7f5e34116a8853a3dc717",
+  "generationCredits": 0,
+  "additionalGenerationCredits": 0,
+  "preview": "home-opening-fade-preview.wav",
+  "fadeOutSeconds": 3,
+  "fadeOutStartSeconds": 7,
+  "fadeOutCurve": "smootherstep",
+  "sourcePcmUnchanged": true
+}

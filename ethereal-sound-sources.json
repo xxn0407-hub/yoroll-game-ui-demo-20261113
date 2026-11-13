@@ -1,0 +1,37 @@
+{
+  "method": "Custom SFX generation with original harmonic synthesis and diffuse stereo reverb",
+  "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
+  "projectUrl": "https://app.chatcut.io/editor/c2db9bc2-0bc4-4908-b9fe-0a90100ec61b",
+  "generationCredits": 0.73,
+  "sources": [
+    {
+      "cue": "hover",
+      "prompt": "One original premium console UI hover cue. An airy, ethereal translucent glass harmonic with a tiny clear soft onset, a suspended luminous overtone and a smooth spacious stereo reverb tail. Weightless, calm and refined. Brief action, trailing silence. No voice, percussion, bass thump, wooden click, hiss or melody.",
+      "requestedSeconds": 1.5,
+      "assetId": "4c57d4a9bf",
+      "jobId": "4b6e57fc-1316-46f2-872e-8ac53471bbfc",
+      "originalFile": "source-audio/hover.mp3",
+      "use": "Preserved as source; insufficient signal for the final cue."
+    },
+    {
+      "cue": "click",
+      "prompt": "One isolated original premium console UI confirmation cue. A delicate transparent crystal tone blooms gently, with a quiet upper harmonic and a beautiful airy stereo reverb tail. Clear and responsive onset, calm and weightless, sophisticated modern console interface. One brief gesture, no jingle. No bass thump, wood, mechanical click, hiss, speech or background music.",
+      "requestedSeconds": 1.5,
+      "assetId": "d90e125aa7",
+      "jobId": "684f730a-00b9-4adc-b8cc-e96537e27ee9",
+      "originalFile": "source-audio/click.mp3",
+      "use": "Texture layer blended with original harmonic synthesis."
+    },
+    {
+      "cue": "transition",
+      "prompt": "One original premium console UI page transition. A weightless luminous harmonic breath expands softly in stereo, with a very gentle glass overtone and an ethereal spacious reverb tail. Calm, translucent, refined, restrained. A brief opening gesture fading naturally to silence. No rushing wind, loud whoosh, percussion, impact, bass rumble, hiss, speech or melody.",
+      "requestedSeconds": 2,
+      "assetId": "a894a71fe1",
+      "jobId": "c438f0a5-b8fa-4ad4-9ecd-9658051856cd",
+      "originalFile": "source-audio/transition.mp3",
+      "use": "Texture layer blended with original harmonic synthesis."
+    }
+  ],
+  "finalAssets": "preview/assets/audio/ui-*.wav",
+  "preview": "ui-sounds-ethereal-preview.wav"
+}

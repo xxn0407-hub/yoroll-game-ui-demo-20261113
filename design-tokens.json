@@ -1,0 +1,248 @@
+{
+  "referenceCanvas": {
+    "width": 1920,
+    "height": 1080,
+    "aspectRatio": "16:9",
+    "scaling": "min(viewportWidth / 1920, viewportHeight / 1080)",
+    "horizontalSafeAreaPercent": 4.5,
+    "horizontalSafeAreaPx": 86.4
+  },
+  "color": {
+    "background": "#090d0f",
+    "text": "#eeefeb",
+    "muted": "#a2a7a4",
+    "quiet": "#747c7a",
+    "accent": "#d8c7a5",
+    "line": "#e7e9e51c"
+  },
+  "typographyPx": {
+    "pageTitle": 30,
+    "menu": 25,
+    "settingsLabel": 24,
+    "settingsValue": 20,
+    "button": 20,
+    "buttonSmall": 18,
+    "body": 18,
+    "caption": 14,
+    "chapterTitle": 58,
+    "resultTitle": 67,
+    "subtitle": 27
+  },
+  "componentsPx": {
+    "menuRowHeight": 51,
+    "menuGap": 17,
+    "headerBrandWidth": 128,
+    "headerAvatarSize": 46,
+    "buttonHeight": 52,
+    "buttonMinWidth": 196,
+    "buttonSmallHeight": 48,
+    "chapterCard": [
+      280,
+      158
+    ],
+    "settingRowHeight": 80,
+    "saveCardApprox": [
+      477,
+      401
+    ],
+    "dialogWidth": 650,
+    "dialogPadding": 54,
+    "qteDiameter": 144
+  },
+  "sourceEstimateNotice": "Original measurements are estimates from 1280x720 screenshots, scaled by 1.5. New measurements are from the local DOM. No Unity source properties are available.",
+  "measuredAt1280": {
+    "settings": {
+      "settingLabel": {
+        "fontSize": "16px",
+        "height": 22.5,
+        "width": 106.6640625
+      },
+      "settingRow": {
+        "fontSize": "16px",
+        "height": 53.328125,
+        "width": 606.6640625
+      },
+      "settingValue": {
+        "fontSize": "13.3333px",
+        "height": 16,
+        "width": 44
+      },
+      "title": {
+        "fontSize": "20px",
+        "height": 26,
+        "width": 43.203125
+      }
+    },
+    "chapters": {
+      "chapterButton": {
+        "fontSize": "13.3333px",
+        "height": 34.6640625,
+        "width": 130.6640625
+      },
+      "chapterCard": {
+        "fontSize": "16px",
+        "height": 105.328125,
+        "width": 186.6640625
+      },
+      "title": {
+        "fontSize": "20px",
+        "height": 26,
+        "width": 86.40625
+      },
+      "actionBottom": 460.8359375,
+      "chapterRailTop": 532.0078125,
+      "actionRailGap": 71.171875,
+      "chapterCardCount": 12,
+      "chapterInfoBottom": 460.8359375,
+      "bottomAlignmentErrorPx": 0.0
+    },
+    "tree": {
+      "node": {
+        "fontSize": "16px",
+        "height": 214.984375,
+        "width": 226.6640625
+      },
+      "title": {
+        "fontSize": "20px",
+        "height": 26,
+        "width": 64.8046875
+      }
+    },
+    "home": {
+      "avatar": {
+        "fontSize": "18px",
+        "height": 30.6640625,
+        "width": 30.6640625
+      },
+      "logo": {
+        "fontSize": "16px",
+        "height": 24.7578125,
+        "width": 85.328125
+      },
+      "menu": {
+        "fontSize": "16.6667px",
+        "height": 34,
+        "width": 111.9921875
+      }
+    },
+    "cover": {
+      "avatar": {
+        "fontSize": "18px",
+        "height": 30.6640625,
+        "width": 30.6640625
+      },
+      "logo": {
+        "fontSize": "16px",
+        "height": 24.7578125,
+        "width": 85.328125
+      },
+      "menu": {
+        "fontSize": "16.6667px",
+        "height": 34,
+        "width": 111.9921875
+      }
+    },
+    "saves": {
+      "saveCard": {
+        "fontSize": "16px",
+        "height": 267.1875,
+        "width": 318.21875
+      },
+      "title": {
+        "fontSize": "20px",
+        "height": 26,
+        "width": 86.40625
+      }
+    },
+    "splash": {},
+    "logout": {
+      "avatar": {
+        "fontSize": "18px",
+        "height": 30.6640625,
+        "width": 30.6640625
+      },
+      "dialog": {
+        "fontSize": "16px",
+        "height": 221.15625,
+        "width": 433.328125
+      },
+      "dialogButton": {
+        "fontSize": "12px",
+        "height": 32,
+        "width": 175
+      },
+      "logo": {
+        "fontSize": "16px",
+        "height": 24.7578125,
+        "width": 85.328125
+      },
+      "menu": {
+        "fontSize": "16.6667px",
+        "height": 34,
+        "width": 111.9921875
+      }
+    },
+    "exit": {
+      "avatar": {
+        "fontSize": "18px",
+        "height": 30.6640625,
+        "width": 30.6640625
+      },
+      "dialog": {
+        "fontSize": "16px",
+        "height": 221.15625,
+        "width": 433.328125
+      },
+      "dialogButton": {
+        "fontSize": "12px",
+        "height": 32,
+        "width": 175
+      },
+      "logo": {
+        "fontSize": "16px",
+        "height": 24.7578125,
+        "width": 85.328125
+      },
+      "menu": {
+        "fontSize": "16.6667px",
+        "height": 34,
+        "width": 111.9921875
+      }
+    },
+    "gameplay": {},
+    "pause": {
+      "title": {
+        "fontSize": "20px",
+        "height": 26,
+        "width": 43.203125
+      }
+    },
+    "choice": {
+      "choice": {
+        "fontSize": "14.6667px",
+        "height": 38.6640625,
+        "width": 566.6640625
+      }
+    }
+  },
+  "chapterLayout": {
+    "actionRightSafeAreaPercent": 4.5,
+    "actionStyle": "original capsule and glass highlights",
+    "buttonSizePx": [
+      196,
+      52
+    ],
+    "railBottomPx": 112,
+    "cardSizePx": [
+      280,
+      158
+    ],
+    "cardGapPx": 17,
+    "layoutPreviewSlots": 12,
+    "availableChapters": 12,
+    "previewSceneCount": 4,
+    "summaryTopPercent": 48,
+    "actionAlignment": "Bottom aligned with chapter information / progress-bar lower edge",
+    "actionRailGapAt1280": 71.17
+  }
+}

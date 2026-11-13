@@ -1,0 +1,33 @@
+{
+  "method": "Built-in ImageGen, no fallback CLI",
+  "reference": "garage.jpg",
+  "purpose": "Illustrative chapter scenes for local UI interaction testing; not real Race chapters",
+  "assets": [
+    {
+      "key": "night",
+      "prompt": "Use case: stylized-concept. Asset type: one single 16:9 cinematic chapter background for a racing-game UI prototype. Input image 1 is a car identity reference, not an edit target or interface layout. Create a continuous realistic wide scene in the same visual world and retain the distinctive yellow compact rally car, number 11, black hood / accents and magenta lower trim. The same yellow number-11 rally hatchback with black hood and magenta lower trim, now parked on the right half of a rain-soaked downtown street at blue hour. Three-quarter front view, car facing left, realistic wet asphalt reflecting restrained cool cyan and amber city lights. A cinematic modern street-racing world, tasteful and dark, no excessive neon. Compose at 2048 x 1152 landscape. Preserve usable dark, low-detail negative space at the lower left for an existing chapter title; keep the main car in the center-right, with enough surrounding scenery for a wide composition. Premium realistic game-cinematic look, restrained contrast, clear silhouette, plausible materials, no overprocessing. No UI, no buttons, no menu, no subtitles, no title lettering, no border, no watermark, no split panels or collage. The only visible markings may be the car's small number 11; do not add new branding.",
+      "webAsset": "preview/assets/chapter-night.webp",
+      "original": "night.png",
+      "savedWebAsset": "chapter-night.webp"
+    },
+    {
+      "key": "mountain",
+      "prompt": "Use case: stylized-concept. Asset type: one single 16:9 cinematic chapter background for a racing-game UI prototype. Input image 1 is a car identity reference, not an edit target or interface layout. Create a continuous realistic wide scene in the same visual world and retain the distinctive yellow compact rally car, number 11, black hood / accents and magenta lower trim. The same yellow number-11 rally hatchback with black hood and magenta lower trim, now on a mountain switchback overlook at misty dawn. Three-quarter rear-side view, car on the right half, long road winding toward the distant mountains, restrained blue-gray atmosphere with warm rim light and believable asphalt details. Compose at 2048 x 1152 landscape. Preserve usable dark, low-detail negative space at the lower left for an existing chapter title; keep the main car in the center-right, with enough surrounding scenery for a wide composition. Premium realistic game-cinematic look, restrained contrast, clear silhouette, plausible materials, no overprocessing. No UI, no buttons, no menu, no subtitles, no title lettering, no border, no watermark, no split panels or collage. The only visible markings may be the car's small number 11; do not add new branding.",
+      "webAsset": "preview/assets/chapter-mountain.webp",
+      "original": "mountain.png",
+      "savedWebAsset": "chapter-mountain.webp"
+    },
+    {
+      "key": "harbor",
+      "prompt": "Use case: stylized-concept. Asset type: one single 16:9 cinematic chapter background for a racing-game UI prototype. Input image 1 is a car identity reference, not an edit target or interface layout. Create a continuous realistic wide scene in the same visual world and retain the distinctive yellow compact rally car, number 11, black hood / accents and magenta lower trim. The same yellow number-11 rally hatchback with black hood and magenta lower trim, now parked in a dark industrial harbor under sparse warm floodlights at night. Low three-quarter front view, car on the right half, distant cargo cranes and containers, cool navy shadows, atmospheric haze, understated cinematic highlights on the bodywork. Compose at 2048 x 1152 landscape. Preserve usable dark, low-detail negative space at the lower left for an existing chapter title; keep the main car in the center-right, with enough surrounding scenery for a wide composition. Premium realistic game-cinematic look, restrained contrast, clear silhouette, plausible materials, no overprocessing. No UI, no buttons, no menu, no subtitles, no title lettering, no border, no watermark, no split panels or collage. The only visible markings may be the car's small number 11; do not add new branding.",
+      "webAsset": "preview/assets/chapter-harbor.webp",
+      "original": "harbor.png",
+      "savedWebAsset": "chapter-harbor.webp"
+    }
+  ],
+  "exportDimensions": {
+    "width": 1664,
+    "height": 936,
+    "aspectRatio": "16:9"
+  }
+}
