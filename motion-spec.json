@@ -149,6 +149,18 @@
       "backgroundVisible": false,
       "pressedGlowRadiusPx": 6,
       "pressTransitionMs": 100
+    },
+    "cardKeyboardFocus": {
+      "revision": "card-focus-glow-20261113",
+      "selectors": [
+        ".chapter-card:focus-visible",
+        ".tree-node:focus-visible"
+      ],
+      "extraOutline": false,
+      "visibleIndicator": "Existing selected outline, glow and drifting light dust.",
+      "nativeFocusPreserved": true,
+      "keyboardNavigationPreserved": true,
+      "otherControlFocusStylesUnchanged": true
     }
   },
   "pages": [

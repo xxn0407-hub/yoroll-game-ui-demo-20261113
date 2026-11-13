@@ -69,7 +69,8 @@
 /* Per-fragment progress, locked branches and a soft selection glow. */
 .tree-node:before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:linear-gradient(135deg,#fff6d51f,transparent 45%,#c7e8ed17);opacity:0;pointer-events:none;transition:opacity .4s}
 .tree-node.is-selected:before{opacity:1}
-.tree-node:focus-visible{outline:1px solid #f4edcf9e;outline-offset:calc(var(--p)*4)}
+/* Selected cards use their existing glow as the keyboard focus indicator. */
+.chapter-card:focus-visible,.tree-node:focus-visible{outline:none;outline-offset:0}
 .node-progress{position:relative;z-index:3;flex:0 0 calc(var(--p)*48);display:grid;gap:calc(var(--p)*7);color:#adb9b0;pointer-events:none}
 
 .node-progress-track{display:block;width:100%;height:1px;background:#c9d4c51f;border-radius:1px;overflow:hidden}
