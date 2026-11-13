@@ -1,5 +1,5 @@
 {
-  "revision": "tree-soft-edges-20261113",
+  "revision": "tree-clean-header-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
   "dataScope": "Twenty-eight local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
@@ -357,5 +357,10 @@
     792
   ],
   "detailPanel": false,
-  "activation": "Clicking a playable fragment selects its route and directly enters that fragment. No separate detail panel, start button or confirmation modal."
+  "activation": "Clicking a playable fragment selects its route and directly enters that fragment. No separate detail panel, start button or confirmation modal.",
+  "header": {
+    "title": "剧情树",
+    "backButton": true,
+    "rightChapterCaption": false
+  }
 }
