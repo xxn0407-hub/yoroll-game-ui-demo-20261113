@@ -130,6 +130,10 @@
 .save-meta .delete-save{position:static;flex:none;opacity:1;color:#a1afa5;background:none;border:0;transition:color .2s,filter .2s}
 .save-meta .delete-save:hover{color:#e2b6ac;filter:drop-shadow(0 0 3px #e2b6ac40)}
 .save-shell>.save-card{flex:none;height:auto;aspect-ratio:477/402;min-height:0;background:#0b1218b3;border-color:#c3d0c72b;isolation:isolate}
+@property --save-float-amount{syntax:"<number>";inherits:false;initial-value:0}
+.save-card{--save-float-amount:0;translate:0 0;animation:save-selected-float 6.4s ease-in-out infinite;transition:transform .4s var(--ease),border-color .25s,background .25s,box-shadow .4s,--save-float-amount .7s var(--soft)}
+.save-card.selected{--save-float-amount:1}
+@keyframes save-selected-float{0%,100%{translate:0 0}50%{translate:0 calc(var(--p)*-6*var(--save-float-amount))}}
 .save-card:before,.save-card:after{content:"";position:absolute;z-index:3;left:0;right:0;height:calc(var(--p)*16);background-color:#05090df2;background-image:repeating-linear-gradient(90deg,transparent 0 calc(var(--p)*10),#81918a30 calc(var(--p)*10) calc(var(--p)*26),transparent calc(var(--p)*26) calc(var(--p)*38));background-size:auto calc(var(--p)*6);background-repeat:repeat-x;background-position:0 center;pointer-events:none}
 .save-card:before{top:0}.save-card:after{bottom:0}
 .save-card .save-cover{position:absolute;inset:calc(var(--p)*16) 0;height:auto}
@@ -149,4 +153,4 @@
 .empty-save .plus{display:grid;place-items:center;width:calc(var(--p)*42);height:calc(var(--p)*42);margin:0 auto calc(var(--p)*18);border-radius:50%;background:#d7dfd3bc;color:#16201e;font-size:calc(var(--p)*30);line-height:1;font-weight:400;transition:background .25s,box-shadow .3s}
 .empty-save:hover .plus,.empty-save:focus-visible .plus{background:#ecf0e2;box-shadow:0 0 calc(var(--p)*18) #d7e5ce1c}
 .empty-save small{font-size:calc(var(--p)*18);letter-spacing:.04em}
-@media(prefers-reduced-motion:reduce){.save-shell{transition:none}}
+@media(prefers-reduced-motion:reduce){.save-shell{transition:none}.save-card{animation:none;translate:0 0}}

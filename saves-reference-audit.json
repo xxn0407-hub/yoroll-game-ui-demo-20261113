@@ -1,5 +1,5 @@
 {
-  "revision": "saves-centered-20261113",
+  "revision": "saves-selected-float-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -49,11 +49,22 @@
     "pageStayedReady": true,
     "noPageOffset": true,
     "intermediateSizeObserved": true,
-    "rowCentered": true
+    "rowCentered": true,
+    "floatPositionChangedBetweenSamples": true,
+    "floatHandoffInterpolates": true,
+    "unselectedFloatSettlesToZero": true
   },
   "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game.",
-  "updatedAt": "2026-11-13T11:15:09.195550+00:00",
+  "updatedAt": "2026-11-13T11:30:00.060282+00:00",
   "rowAlignment": "center",
   "centerOffsetPx": -3.0517578125e-05,
-  "measuredFrameWidth": 1156.666748046875
+  "measuredFrameWidth": 1156.666748046875,
+  "selectedFloat": {
+    "periodMs": 6400,
+    "liftPxAt1920": 6,
+    "selectionBlendMs": 700,
+    "currentAmplitude": 1,
+    "otherAmplitude": 0,
+    "disabledWhenReducedMotion": true
+  }
 }

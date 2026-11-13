@@ -248,7 +248,7 @@
       "id": "saves",
       "name": "切换存档",
       "kind": "原版实拍",
-      "motion": "卡片以 65ms 间隔、650ms 时长入场；确认切换后，原地以 650ms 平滑交接大小，当前标记 300ms 淡入淡出，不重播页面入场。",
+      "motion": "卡片以 65ms 间隔、650ms 时长入场；确认切换后，原地以 650ms 平滑交接大小，当前标记 300ms 淡入淡出，不重播页面入场。 当前卡片以 6.4s 周期轻缓上下浮沉，最大上浮 6px；切换时振幅以 700ms 柔和交接。",
       "interaction": "点击已有卡片确认切换，底部无重复按钮；空档位创建新存档。",
       "referenceRevision": "saves-reference-20261113",
       "referenceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
@@ -272,7 +272,18 @@
       "selectionTrigger": "card",
       "replayPageOnSelection": false,
       "rowAlignment": "center",
-      "layoutRevision": "saves-centered-20261113"
+      "layoutRevision": "saves-centered-20261113",
+      "selectedFloat": {
+        "revision": "saves-selected-float-20261113",
+        "periodMs": 6400,
+        "liftPxAt1920": 6,
+        "selectionBlendMs": 700,
+        "axis": "y",
+        "sharedPhase": true,
+        "unselectedAmplitude": 0,
+        "metaMoves": false,
+        "reducedMotion": "Disable float."
+      }
     },
     {
       "id": "settings",
