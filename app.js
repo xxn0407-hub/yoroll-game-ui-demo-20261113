@@ -147,7 +147,7 @@ function chaptersView(){
  const chapterCards=CHAPTER_PREVIEWS.map((chapter,index)=>{
   const number=index+1;
   const selected=index===selectedChapter;
-  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="card-label">第 ${number} 章</span></button></div>`;
+  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="card-label">第 ${number} 章</span></button>${storyDustMarkup('node-dust chapter-dust')}</div>`;
  }).join('');
  return `${pageHeading('章节选择','home')}
  <div class="chapter-summary"><section class="chapter-info">${chapterInfoMarkup()}</section><div class="chapter-actions"><div data-enter="action">${goButton('剧情树','tree','','tree')}</div><div data-enter="action">${goButton(chapterProgress()>0?'继续游戏':'开始游戏','gameplay','btn-primary','play-circle')}</div></div></div>
@@ -287,14 +287,14 @@ function storyProgressMarkup(node){
  if(node.locked)return '';
  return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-value" aria-hidden="true">${node.progress}%</span><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span></span>`;
 }
-function storyDustMarkup(){
+function storyDustMarkup(className='node-dust'){
  const motes=[
   [18,6,1.6,-6,-24,6.4,-1.1], [59,7,1.8,5,-20,7.3,-4.8],
   [97,36,1.5,6,-26,6.8,-2.9], [72,96,2,-7,-22,7.8,-6.2],
   [28,98,1.7,5,-28,6.1,-3.7], [3,67,1.6,-4,-20,7.1,-.4],
   [2,28,1.5,5,-24,7.6,-5.5], [98,81,2.1,-5,-30,6.7,-2]
  ];
- return `<span class="node-dust" aria-hidden="true">${motes.map(([x,y,size,dx,rise,duration,delay])=>`<i style="left:${x}%;top:${y}%;--dust-size:${size};--dust-dx:${dx};--dust-rise:${rise};--dust-duration:${duration}s;--dust-delay:${delay}s"></i>`).join('')}</span>`;
+ return `<span class="${className}" aria-hidden="true">${motes.map(([x,y,size,dx,rise,duration,delay])=>`<i style="left:${x}%;top:${y}%;--dust-size:${size};--dust-dx:${dx};--dust-rise:${rise};--dust-duration:${duration}s;--dust-delay:${delay}s"></i>`).join('')}</span>`;
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();

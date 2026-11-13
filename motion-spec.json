@@ -195,7 +195,25 @@
         "innerShadow": false
       },
       "chapterEyebrow": "Two-digit chapter number only, with no CHAPTER prefix.",
-      "topRightCaption": false
+      "topRightCaption": false,
+      "selectionEffects": {
+        "revision": "chapter-selected-dust-20261113",
+        "glow": "Thin luminous border, soft outer glow and a slow breathing halo.",
+        "glowPeriodMs": 5800,
+        "dustCount": 8,
+        "dustPeriodMs": [
+          6100,
+          7800
+        ],
+        "onlySelectedAnimates": true,
+        "bottomBar": false,
+        "artworkFloats": false,
+        "railPaddingBlockAt1920": 38,
+        "cardSizeAndPositionPreserved": true,
+        "ariaHidden": true,
+        "pointerEvents": "none",
+        "reducedMotion": "Hide dust and breathing halo; retain the static selected outline and glow."
+      }
     },
     {
       "id": "tree",
