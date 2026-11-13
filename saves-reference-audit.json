@@ -1,5 +1,5 @@
 {
-  "revision": "saves-selected-float-20261113",
+  "revision": "saves-footer-clean-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -66,5 +66,6 @@
     "currentAmplitude": 1,
     "otherAmplitude": 0,
     "disabledWhenReducedMotion": true
-  }
+  },
+  "footerCaption": false
 }

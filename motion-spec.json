@@ -283,7 +283,9 @@
         "unselectedAmplitude": 0,
         "metaMoves": false,
         "reducedMotion": "Disable float."
-      }
+      },
+      "footerCaption": false,
+      "footerRevision": "saves-footer-clean-20261113"
     },
     {
       "id": "settings",

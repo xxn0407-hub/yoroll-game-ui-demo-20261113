@@ -66,7 +66,7 @@ window.YOROLL_REPORT = {
       "name": "切换存档",
       "before": "07-saves.jpg",
       "kind": "原版实拍 · 2026-11-13",
-      "change": "三张卡片及保存信息作为一组水平居中。当前存档比其他卡片大约 18%，配合细亮边和微光形成主次；移除重复的底部「选择存档」按钮，直接点击卡片确认切换。保留胶片边缘、保存时间、删除入口与圆形加号，SAVE FILES 及短线保持移除。",
+      "change": "三张卡片及保存信息作为一组水平居中。当前存档比其他卡片大约 18%，配合细亮边和微光形成主次；移除重复的底部「选择存档」按钮，直接点击卡片确认切换。保留胶片边缘、保存时间、删除入口与圆形加号，SAVE FILES 及短线保持移除。 移除左下角「选择进度，继续故事」辅助文案。",
       "ratio": "三张卡片共用原有 1480px 行宽和 24px 间距；以 1920×1080 为基准，当前卡片约 531×448px，其余约 450×380px。字号保持当前设置。 整行以画面中心定位。",
       "motion": "整行以 65ms 间隔、650ms 时长入场。确认切换后，卡片在原位置以 650ms 平滑交接大小，当前标记以 300ms 淡入淡出，页面不重新入场。 当前卡片每 6.4s 轻缓浮沉一轮，上浮最多 6px，切换时以 700ms 交接浮动幅度；保存时间和删除入口保持稳定。",
       "interaction": "直接点击已有卡片确认切换；空档位可创建新存档。当前卡片、可访问选中状态与标记同步更新，取消确认保留现有选择。",
@@ -74,7 +74,8 @@ window.YOROLL_REPORT = {
       "referenceRevision": "saves-reference-20261113",
       "selectionRevision": "saves-card-hierarchy-20261113",
       "layoutRevision": "saves-centered-20261113",
-      "selectedFloatRevision": "saves-selected-float-20261113"
+      "selectedFloatRevision": "saves-selected-float-20261113",
+      "footerRevision": "saves-footer-clean-20261113"
     },
     {
       "id": "settings",
