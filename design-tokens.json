@@ -42,12 +42,17 @@
     ],
     "settingRowHeight": 80,
     "saveCardApprox": [
-      477,
-      402
+      450,
+      380
     ],
     "dialogWidth": 650,
     "dialogPadding": 54,
-    "qteDiameter": 144
+    "qteDiameter": 144,
+    "saveCardCurrentApprox": [
+      531,
+      448
+    ],
+    "saveCardCurrentToOtherRatio": 1.18
   },
   "sourceEstimateNotice": "Original measurements are estimates from 1280x720 screenshots, scaled by 1.5. New measurements are from the local DOM. No Unity source properties are available.",
   "measuredAt1280": {

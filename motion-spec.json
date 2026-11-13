@@ -248,24 +248,29 @@
       "id": "saves",
       "name": "切换存档",
       "kind": "原版实拍",
-      "motion": "三张卡片连同保存时间与选择按钮以 65ms 间隔轻浮入场，650ms 收尾；悬停上移 5px、画面轻推近，加号和按钮柔和提亮。",
-      "interaction": "本地演示新建、切换与删除确认保留；底部选择按钮与卡片使用同一选择流程，切换后同步当前状态。",
+      "motion": "卡片以 65ms 间隔、650ms 时长入场；确认切换后，原地以 650ms 平滑交接大小，当前标记 300ms 淡入淡出，不重播页面入场。",
+      "interaction": "点击已有卡片确认切换，底部无重复按钮；空档位创建新存档。",
       "referenceRevision": "saves-reference-20261113",
       "referenceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
       "filmstripEdges": true,
       "visibleSaveTime": true,
       "deleteAlwaysVisible": true,
-      "selectButtonBelowCard": true,
-      "selectButtonPx": [
-        196,
-        52
-      ],
+      "selectButtonBelowCard": false,
       "cardApproxPx": [
-        477,
-        402
+        450,
+        380
       ],
       "emptySlot": "Circular plus and 创建新存档 label.",
-      "cornerCaption": false
+      "cornerCaption": false,
+      "selectionRevision": "saves-card-hierarchy-20261113",
+      "currentCardApproxPx": [
+        531,
+        448
+      ],
+      "selectedToOtherSizeRatio": 1.18,
+      "selectionTransitionMs": 650,
+      "selectionTrigger": "card",
+      "replayPageOnSelection": false
     },
     {
       "id": "settings",

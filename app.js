@@ -454,9 +454,19 @@ function saveView(){
  const cards=slots.map((save,index)=>{
   const active=Boolean(save)&&index===activeSlot;
   const number=save?String(Number(save.chapter.match(/\d+/)?.[0]||1)).padStart(2,'0'):'';
-  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div>${active?`<span class="save-active">${icon('check')}当前存档</span>`:''}<div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button><div class="save-actions chapter-actions">${save?`<button class="btn ${active?'btn-primary':''}" data-action="save-${index}" aria-label="选择存档位 ${index+1}"><span>选择存档</span></button>`:''}</div></div>`;
+  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div><span class="save-active" aria-hidden="${!active}">${icon('check')}当前存档</span><div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button></div>`;
  }).join('');
  return `${pageHeading('切换存档','home')}<section class="saves-layout"><div class="section-line" data-enter="section"><span>选择一个故事进度</span><span>本机存档 · ${slots.filter(Boolean).length} / 3</span></div><div class="saves-grid">${cards}</div></section>${footer('选择进度，继续故事')}`;
+}
+function refreshSaveSelection(){
+ $$('.save-shell').forEach((shell,index)=>{
+  const active=Boolean(slots[index])&&index===activeSlot;
+  const card=shell.querySelector('.save-card');
+  shell.classList.toggle('is-active',active);
+  card.classList.toggle('selected',active);
+  if(slots[index])card.setAttribute('aria-pressed',String(active));
+  card.querySelector('.save-active')?.setAttribute('aria-hidden',String(!active));
+ });
 }
 function settingsView(){
  return `${pageHeading('设置',previousPage==='pause'?'pause':'home','SETTINGS')}
@@ -649,7 +659,7 @@ function showExit(){openModal({title:'离开当前故事？',message:'当前进�
 function saveAction(index){
  if(!slots[index])openModal({title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters');toast('新的本地演示存档已建立');}});
  else if(index===activeSlot){uiSound.play('click',{level:.75});toast('已在使用这个存档');}
- else openModal({title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;go('saves',{skipExit:true});toast('已切换存档');}});
+ else openModal({title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();toast('已切换存档');}});
 }
 function deleteAction(index){openModal({title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
 function showLogout(){openModal({title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}

@@ -117,16 +117,18 @@
 .chapter-card.is-selected + .chapter-dust i{animation-play-state:running;will-change:transform,opacity}
 .game-frame[data-entry-state="entering"] .chapter-dust i{animation-play-state:paused}
 
-/* Save cards echo the live filmstrip treatment at the established compact size. */
-.saves-grid{align-items:start}
-.save-shell{display:flex;flex-direction:column}
+/* The current save grows within the existing three-slot row. */
+.game-frame[data-page="saves"]{overflow:clip}
+.saves-grid{display:flex;align-items:center}
+.save-shell{display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
+.save-shell.is-active{flex-grow:1.18}
 .save-meta{height:calc(var(--p)*32);margin-bottom:calc(var(--p)*12);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--p)*12)}
 .save-date{display:flex;align-items:center;gap:calc(var(--p)*10);font-size:calc(var(--p)*14);line-height:1.3;color:#aab7ad;white-space:nowrap}
 .save-date:before{content:"";width:1px;height:calc(var(--p)*15);background:#d5ded0b3}
 .save-date>span{color:#8f9e94;font-size:calc(var(--p)*13);font-variant-numeric:tabular-nums}
 .save-meta .delete-save{position:static;flex:none;opacity:1;color:#a1afa5;background:none;border:0;transition:color .2s,filter .2s}
 .save-meta .delete-save:hover{color:#e2b6ac;filter:drop-shadow(0 0 3px #e2b6ac40)}
-.save-shell>.save-card{flex:none;height:calc(var(--p)*402);min-height:0;background:#0b1218b3;border-color:#c3d0c72b;isolation:isolate}
+.save-shell>.save-card{flex:none;height:auto;aspect-ratio:477/402;min-height:0;background:#0b1218b3;border-color:#c3d0c72b;isolation:isolate}
 .save-card:before,.save-card:after{content:"";position:absolute;z-index:3;left:0;right:0;height:calc(var(--p)*16);background-color:#05090df2;background-image:repeating-linear-gradient(90deg,transparent 0 calc(var(--p)*10),#81918a30 calc(var(--p)*10) calc(var(--p)*26),transparent calc(var(--p)*26) calc(var(--p)*38));background-size:auto calc(var(--p)*6);background-repeat:repeat-x;background-position:0 center;pointer-events:none}
 .save-card:before{top:0}.save-card:after{bottom:0}
 .save-card .save-cover{position:absolute;inset:calc(var(--p)*16) 0;height:auto}
@@ -134,7 +136,8 @@
 .save-card.selected{border-color:#e5e8dba6;box-shadow:0 0 calc(var(--p)*20) #e7f0d21a}
 .save-card.selected .save-cover img{opacity:.9}
 .save-card:hover,.save-card:focus-visible{border-color:#f0f0ddb3;box-shadow:0 0 calc(var(--p)*20) #e7f0d21f;outline:none}
-.save-card .save-active{display:flex;align-items:center;gap:calc(var(--p)*7);top:calc(var(--p)*31);right:calc(var(--p)*22);font-size:calc(var(--p)*13);color:#e0e7d4}
+.save-card .save-active{display:flex;align-items:center;gap:calc(var(--p)*7);top:calc(var(--p)*31);right:calc(var(--p)*22);font-size:calc(var(--p)*13);color:#e0e7d4;opacity:0;pointer-events:none;transition:opacity .3s}
+.save-card.selected .save-active{opacity:1}
 .save-active svg{font-size:calc(var(--p)*14)}
 .save-card .save-info{position:absolute;z-index:2;left:0;right:0;bottom:calc(var(--p)*16);padding:calc(var(--p)*24);display:flex;justify-content:space-between;align-items:flex-end;gap:calc(var(--p)*18)}
 .save-number{display:block;font-family:"Helvetica Neue",Arial,sans-serif;font-size:calc(var(--p)*36);line-height:1;font-weight:450;letter-spacing:.03em;color:#eef0e5;font-variant-numeric:tabular-nums}
@@ -145,4 +148,4 @@
 .empty-save .plus{display:grid;place-items:center;width:calc(var(--p)*42);height:calc(var(--p)*42);margin:0 auto calc(var(--p)*18);border-radius:50%;background:#d7dfd3bc;color:#16201e;font-size:calc(var(--p)*30);line-height:1;font-weight:400;transition:background .25s,box-shadow .3s}
 .empty-save:hover .plus,.empty-save:focus-visible .plus{background:#ecf0e2;box-shadow:0 0 calc(var(--p)*18) #d7e5ce1c}
 .empty-save small{font-size:calc(var(--p)*18);letter-spacing:.04em}
-.save-actions{justify-content:center;min-height:calc(var(--p)*52);margin-top:calc(var(--p)*24)}
+@media(prefers-reduced-motion:reduce){.save-shell{transition:none}}

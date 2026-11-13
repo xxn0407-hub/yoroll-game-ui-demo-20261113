@@ -1,5 +1,5 @@
 {
-  "revision": "saves-reference-20261113",
+  "revision": "saves-card-hierarchy-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -14,35 +14,42 @@
     "Filmstrip edges",
     "Saved-at metadata",
     "Always-visible trash button",
-    "Below-card capsule select button using the existing chapter button style",
     "Circular create-save affordance",
-    "Current-save outline, glow and button state",
-    "Removed SAVE FILES caption and its line"
+    "Removed SAVE FILES caption and its line",
+    "Direct selection on the card with no duplicate button",
+    "Current save is 18 percent larger than the other cards",
+    "650ms in-place size transition with a fading current marker"
   ],
   "adaptations": [
-    "Retain the established compact card dimensions.",
+    "Keep the existing row width and font sizes; allocate more space to the current save.",
+    "Select through the card itself; omit the separate choose button.",
     "Use readable scene names instead of internal Unity scene IDs.",
     "Timestamps and save slots belong to the local demonstration and reset on reload."
   ],
   "cardSizeAt1157": {
-    "before": {
-      "height": 242.1484375,
-      "width": 287.640625,
-      "x": 52.0625,
-      "y": 341.328125
-    },
-    "after": {
-      "height": 242.2421875,
-      "width": 287.640625,
+    "current": {
+      "height": 269.859375,
+      "width": 320.2109375,
       "x": 52.0625,
       "y": 367.8359375
-    }
+    },
+    "other": {
+      "height": 228.6875,
+      "width": 271.359375,
+      "x": 386.734375,
+      "y": 388.421875
+    },
+    "ratio": 1.1800253354062302
   },
   "prototypeInteractions": {
     "createdSecondSlot": true,
-    "switchedBackUsingBottomButton": true,
+    "switchedByCard": true,
     "singleCurrentMarker": true,
-    "cancelDeletePreservedSlots": true
+    "noDuplicateSelectionButtons": true,
+    "pageStayedReady": true,
+    "noPageOffset": true,
+    "intermediateSizeObserved": true
   },
-  "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game."
+  "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game.",
+  "updatedAt": "2026-11-13T11:15:09.195550+00:00"
 }
