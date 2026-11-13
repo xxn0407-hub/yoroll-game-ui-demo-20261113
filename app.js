@@ -18,6 +18,7 @@ const pages = [
 const pageNames = Object.fromEntries(pages);
 const icons = {
  back:'<path d="m14 5-7 7 7 7"/>', arrow:'<path d="M4 12h15m-6-6 6 6-6 6"/>',
+ 'back-filled':'<path d="M20.5 .5 4 12l16.5 11.5L14.7 12Z" fill="currentColor" stroke="none"/>',
  chevron:'<path d="m6 9 6 6 6-6"/>', close:'<path d="m6 6 12 12M18 6 6 18"/>',
  settings:'<path d="m9 3 .8-1h4.4l.8 1 .6 2 1.7 1 2.1-.4 2.2 3.8-1.3 1.7v2l1.3 1.7-2.2 3.8-2.1-.4-1.7 1-.6 2-.8 1H9l-.8-1-.6-2-1.7-1-2.1.4-2.2-3.8 1.3-1.7v-2L1.6 9.5l2.2-3.8 2.1.4 1.7-1Z" transform="translate(1 1) scale(.91)"/><circle cx="12" cy="12" r="3.3"/>',
  user:'<path d="M19 21v-2a7 7 0 0 0-14 0v2M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/>',
@@ -127,7 +128,7 @@ function footer(left='',right='<span><span class="keycap">Esc</span> 返回</spa
  return `<footer class="page-footer" data-enter="footer"><div>${left}</div><div class="key-hints">${right}</div></footer>`;
 }
 function pageHeading(title,back='home',meta=''){
- return `<div class="back-heading" data-enter="heading"><button class="icon-button" data-route="${back}" aria-label="返回">${icon('back')}</button><h1>${title}</h1></div>${meta?`<div class="page-meta" data-enter="meta">${meta}</div>`:''}`;
+ return `<div class="back-heading" data-enter="heading"><button class="icon-button back-button" data-route="${back}" aria-label="返回">${icon('back-filled')}</button><h1>${title}</h1></div>${meta?`<div class="page-meta" data-enter="meta">${meta}</div>`:''}`;
 }
 function soundButton(){
  return `<button class="icon-button sound-toggle-button" data-action="sound-toggle" data-muted="${audioMuted}" aria-label="声音开关" aria-pressed="${!audioMuted}" title="${audioMuted?'声音已关闭，点击开启':'关闭全部声音'}">${icon(audioMuted?'volume-off':'volume')}</button>`;
@@ -144,7 +145,7 @@ function chaptersView(){
   const number=index+1;
   const selected=index===selectedChapter;
   const progress=index===0?saveProgress():chapter.progress;
-  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="card-label">第 ${number} 章 <small>${progress}%</small></span></button></div>`;
+  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="chapter-progress" aria-label="章节进度 ${progress}%">${progress}%</span><span class="card-label">第 ${number} 章</span></button></div>`;
  }).join('');
  return `${pageHeading('章节选择','home','CHAPTERS')}
  <div class="chapter-summary"><section class="chapter-info">${chapterInfoMarkup()}</section><div class="chapter-actions"><div data-enter="action">${goButton('剧情树','tree','','tree')}</div><div data-enter="action">${goButton(chapterProgress()>0?'继续游戏':'开始游戏','gameplay','btn-primary','play-circle')}</div></div></div>
@@ -267,7 +268,7 @@ function bindChapterRail(){
 }
 function treeView(){
  const chapter=activeChapter();
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph"><div class="tree-root" data-enter="tree-line"></div><div data-enter="node"><button class="tree-node" data-action="select-node" aria-pressed="true"><img src="${chapter.cover}" alt="${chapter.name}"><div class="node-info"><span class="node-number">SCENE 03 · 已解锁</span><strong>${chapter.name}</strong><small>已探索 · 可重玩</small></div></button></div></div><aside class="tree-detail" data-enter="detail"><div class="eyebrow">当前片段</div><h2>${chapter.name}</h2><p>第 ${chapter.number} 章 · 片段 03<br>从这里重新进入故事。</p>${button('从此处开始','restart-node','btn-small','play')}</aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已解锁</span><span><i class="legend-dot"></i> 未探索</span></div>')}`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph"><div class="tree-root" data-enter="tree-line"></div><div data-enter="node"><button class="tree-node" data-action="select-node" aria-pressed="true" aria-label="${chapter.name}，片段 03，已解锁，可重玩"><img src="${chapter.cover}" alt=""><div class="node-info"><span class="node-number">03_</span><strong>${chapter.name}</strong></div></button></div></div><aside class="tree-detail" data-enter="detail"><div class="eyebrow">当前片段</div><h2>${chapter.name}</h2><p>第 ${chapter.number} 章 · 片段 03<br>从这里重新进入故事。</p>${button('从此处开始','restart-node','btn-small','play')}</aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已解锁</span><span><i class="legend-dot"></i> 未探索</span></div>')}`;
 }
 function saveView(){
  return `${pageHeading('切换存档','home','SAVE FILES')}<section class="saves-layout"><div class="section-line" data-enter="section"><span>选择一个故事进度</span><span>本机存档 · ${slots.filter(Boolean).length} / 3</span></div><div class="saves-grid">${slots.map((save,index)=>`<div class="save-shell" data-enter="save"><button class="save-card ${index===activeSlot?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，空档位'}">${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""><span class="save-slot">SAVE 0${index+1}</span>${index===activeSlot?'<span class="save-active">当前存档</span>':''}</div><div class="save-info"><h2>${save.chapter}</h2><p>${sceneLabel(save)}</p><div class="save-bottom"><span>${save.date}</span><strong>${save.progress}%</strong></div></div>`:`<div><span class="plus">＋</span><small>空档位 0${index+1}</small><p class="empty-note">开始一段新的故事</p></div>`}</button>${save?`<button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div>`).join('')}</div></section>${footer('选择进度，继续故事')}`;

@@ -1,0 +1,207 @@
+{
+  "reference": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
+  "sourceViewport": [
+    1280,
+    720
+  ],
+  "sourceMeasurementNotice": "Reference shapes and aspect ratios were checked visually in the live Unity canvas. Approved prototype geometry was checked through DOM measurements after entry completed.",
+  "scope": [
+    "page-heading return arrows",
+    "16:9 story tree node and image overlay",
+    "chapter progress badge and label alignment"
+  ],
+  "revision": "reference-elements-20261113",
+  "tree": {
+    "before": {
+      "back": {
+        "height": 20.484375,
+        "width": 16.8671875,
+        "x": 52.0625,
+        "y": 208.421875
+      },
+      "detail": {
+        "height": 153.796875,
+        "width": 241.0390625,
+        "x": 863.8984375,
+        "y": 448.796875
+      },
+      "frame": {
+        "height": 650.8125,
+        "width": 1157,
+        "x": 0,
+        "y": 178.59375
+      },
+      "layout": {
+        "height": 436.296875,
+        "width": 1052.875,
+        "x": 52.0625,
+        "y": 307.546875
+      },
+      "node": {
+        "height": 194.609375,
+        "width": 204.8828125,
+        "x": 328.421875,
+        "y": 428.390625
+      },
+      "title": {
+        "height": 23.5,
+        "width": 58.5703125,
+        "x": 80.9765625,
+        "y": 206.9140625
+      },
+      "titleFont": "18.0781px"
+    },
+    "after": {
+      "aspectRatio": "16 / 9",
+      "back": {
+        "height": 20.484375,
+        "width": 16.8671875,
+        "x": 52.0625,
+        "y": 208.421875
+      },
+      "detail": {
+        "height": 153.796875,
+        "width": 241.0390625,
+        "x": 863.8984375,
+        "y": 448.796875
+      },
+      "frame": {
+        "height": 650.8125,
+        "width": 1157,
+        "x": 0,
+        "y": 178.59375
+      },
+      "layout": {
+        "height": 436.296875,
+        "width": 1052.875,
+        "x": 52.0625,
+        "y": 307.546875
+      },
+      "node": {
+        "height": 115.2421875,
+        "width": 204.8828125,
+        "x": 328.421875,
+        "y": 468.0703125
+      },
+      "nodeInfoPosition": "absolute",
+      "returnFill": "currentColor",
+      "title": {
+        "height": 23.5,
+        "width": 58.5703125,
+        "x": 80.9765625,
+        "y": 206.9140625
+      },
+      "titleFont": "18.0781px"
+    },
+    "checks": {
+      "nodeWidthUnchanged": true,
+      "ratio16by9": true,
+      "centerUnchanged": true,
+      "titleAndLayoutUnchanged": true,
+      "fontUnchanged": true
+    }
+  },
+  "chapters": {
+    "before": {
+      "action": {
+        "height": 31.328125,
+        "width": 118.109375,
+        "x": 859.078125,
+        "y": 563.96875
+      },
+      "back": {
+        "height": 20.484375,
+        "width": 16.8671875,
+        "x": 52.0625,
+        "y": 208.421875
+      },
+      "card": {
+        "height": 95.2109375,
+        "width": 168.7265625,
+        "x": 52.0625,
+        "y": 663.1015625
+      },
+      "count": 12,
+      "frame": {
+        "height": 650.8125,
+        "width": 1157,
+        "x": 0,
+        "y": 178.59375
+      },
+      "rail": {
+        "height": 102.4296875,
+        "width": 1052.875,
+        "x": 52.0625,
+        "y": 659.4921875
+      },
+      "title": {
+        "height": 23.5,
+        "width": 78.0859375,
+        "x": 80.9765625,
+        "y": 206.9140625
+      },
+      "titleFont": "18.0781px"
+    },
+    "after": {
+      "action": {
+        "height": 31.328125,
+        "width": 118.109375,
+        "x": 859.078125,
+        "y": 563.96875
+      },
+      "back": {
+        "height": 20.484375,
+        "width": 16.8671875,
+        "x": 52.0625,
+        "y": 208.42184448242188
+      },
+      "badge": {
+        "height": 24.1015625,
+        "width": 24.1015625,
+        "x": 188.4609375,
+        "y": 671.328125
+      },
+      "badgeRadius": "50%",
+      "card": {
+        "height": 95.2109375,
+        "width": 168.7265625,
+        "x": 52.0625,
+        "y": 663.1015625
+      },
+      "count": 12,
+      "frame": {
+        "height": 650.8125,
+        "width": 1157,
+        "x": 0,
+        "y": 178.59375
+      },
+      "rail": {
+        "height": 102.4296875,
+        "width": 1052.875,
+        "x": 52.0625,
+        "y": 659.4921875
+      },
+      "title": {
+        "height": 23.5,
+        "width": 78.0859375,
+        "x": 80.9765625,
+        "y": 206.9140625
+      },
+      "titleAlignment": "center",
+      "titleFont": "18.0781px"
+    },
+    "checks": {
+      "approvedSizesUnchanged": true,
+      "fontUnchanged": true,
+      "twelveChapters": true,
+      "roundBadge": true,
+      "centeredTitle": true
+    }
+  },
+  "interaction": {
+    "replayConfirmationAndCancel": true,
+    "backToChapters": true,
+    "clickThenArrowSelectsChapter3": true,
+    "selectedChapterPersistsInTree": true
+  }
+}

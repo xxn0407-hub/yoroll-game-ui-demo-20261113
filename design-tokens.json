@@ -99,8 +99,9 @@
     "tree": {
       "node": {
         "fontSize": "16px",
-        "height": 214.984375,
-        "width": 226.6640625
+        "height": 127.5,
+        "width": 226.66666666666666,
+        "measurementNote": "Current DOM geometry normalized from a 1157px-wide 16:9 frame to 1280px; see component-alignment.json."
       },
       "title": {
         "fontSize": "20px",
@@ -244,5 +245,20 @@
     "summaryTopPercent": 48,
     "actionAlignment": "Bottom aligned with chapter information / progress-bar lower edge",
     "actionRailGapAt1280": 71.17
+  },
+  "referenceAlignment": {
+    "revision": "reference-elements-20261113",
+    "reference": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
+    "preserveApprovedScale": true,
+    "backButton": "Original filled arrow silhouette; existing header button box and title layout retained.",
+    "storyTreeNodePx": [
+      340,
+      191.25
+    ],
+    "storyTreeAspectRatio": "16:9",
+    "storyTreeText": "Number and title overlay the lower-left of the full image.",
+    "chapterProgressBadgeDiameterPx": 40,
+    "chapterCardCornerRadiusPx": 12,
+    "verification": "component-alignment.json"
   }
 }
