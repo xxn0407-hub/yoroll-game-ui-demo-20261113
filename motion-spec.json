@@ -194,7 +194,8 @@
         "darkOverlay": false,
         "innerShadow": false
       },
-      "chapterEyebrow": "Two-digit chapter number only, with no CHAPTER prefix."
+      "chapterEyebrow": "Two-digit chapter number only, with no CHAPTER prefix.",
+      "topRightCaption": false
     },
     {
       "id": "tree",
