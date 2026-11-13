@@ -1,37 +1,38 @@
 {
-  "revision": "chapter-continuous-tail-20261113",
+  "revision": "chapter-low-soft-20261113",
   "durationSeconds": 2.8,
-  "peak": 0.10498046875,
-  "rmsDbfs": -33.33,
+  "fundamentalHz": 293.665,
+  "pitchShiftSemitones": -12,
+  "fixedPartialsHz": [
+    293.665,
+    587.33
+  ],
+  "upperPartialGain": 0.15,
+  "centredIdenticalChannels": true,
+  "peak": 0.046661376953125,
+  "rmsDbfs": -39.33,
+  "previousRmsDbfs": -33.33,
+  "levelChangeDb": -6.0,
   "boundarySamples": [
     0,
     0,
     0,
     0
   ],
-  "first20msRmsDbfs": -50.223,
   "last20msRmsDbfs": -240.0,
-  "tailRmsDbfs1280to2300ms": -44.578,
+  "tailRmsDbfs1280to2300ms": -54.662,
   "chapterLevel": 0.44,
   "chapterRepeatLevel": 0.27,
-  "volumeSettingUnchanged": true,
+  "runtimeCueLevelsUnchanged": true,
+  "hoverTailGainOnChapterClick": 0.3,
+  "previousChapterFadeOutMs": 160,
+  "tailLevelRisesAbove015dB": 0,
   "existingAudioFilesUnchanged": 10,
   "homeOpeningUnchanged": true,
   "noLoopAsset": true,
   "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
   "renderScript": "scripts/extend_chapter_tail.py",
-  "tailEnvelope": {
-    "windowMs": 50,
-    "stepMs": 10,
-    "rangeSeconds": [
-      0.35,
-      1.85
-    ],
-    "levelRisesAbove015dB": 0,
-    "largestRiseDb": -0.0896,
-    "rippleAroundSmoothDecayDb": 0.0173
-  },
-  "previousTailLevelRisesAbove015dB": 51,
-  "previousTailRippleDb": 1.92,
-  "audioLifecycleChecksPassed": 14
+  "audioLifecycleChecksPassed": 14,
+  "oldVoiceReleaseObservedWithinMs": 302,
+  "tailEnvelopeRippleDb": 0.0332
 }

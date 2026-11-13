@@ -1,4 +1,4 @@
-"""Render one continuous, decaying chapter tone from the existing hover palette."""
+"""Render a low, centred chapter tone with a continuous, quiet decay."""
 from pathlib import Path
 import hashlib
 import json
@@ -10,7 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RATE = 48000
 DURATION = 2.8
 FUNDAMENTAL = 587.33
-TARGET_RMS_DBFS = -33.33
+PITCH_RATIO = .5
+TARGET_RMS_DBFS = -39.33
 
 
 def read_pcm(path):
@@ -33,13 +34,13 @@ def smooth(value):
 
 
 def fit_partials(source):
-    # Read the established hover's colour and stereo phase. Rational frequency
-    # ratios keep every partial coherent, with no detuned pairs or beating.
+    # Keep the established source colour, lowering it one octave. A single
+    # centred phase avoids the hollow impression of a wide stereo tail.
     start, count = round(.085 * RATE), round(.2 * RATE)
     weights = [.5 - .5 * math.cos(2 * math.pi * i / (count - 1)) for i in range(count)]
     scale = 2 / sum(weights)
     partials = []
-    for ratio in [1, 1.5, 2]:
+    for ratio in [1, 2]:
         frequency = FUNDAMENTAL * ratio
         coefficients = []
         for channel in [0, 1]:
@@ -50,7 +51,9 @@ def fit_partials(source):
                 cosine += value * math.cos(phase)
                 sine += value * math.sin(phase)
             coefficients.append((cosine * scale, sine * scale))
-        partials.append((frequency, coefficients))
+        colour_gain = 1 if ratio == 1 else .15
+        centred = tuple((coefficients[0][i] + coefficients[1][i]) * .5 * colour_gain for i in [0, 1])
+        partials.append((frequency * PITCH_RATIO, [centred, centred]))
     return partials
 
 
@@ -59,8 +62,8 @@ def continuous_tail(source):
     frames = []
     for index in range(round(DURATION * RATE)):
         time = index / RATE
-        envelope = smooth(time / .075) * math.exp(-time / .7)
-        envelope *= 1 - smooth((time - 1.9) / .9)
+        envelope = smooth(time / .075) * math.exp(-time / .55)
+        envelope *= 1 - smooth((time - 1.75) / 1.05)
         pair = [0., 0.]
         for frequency, coefficients in partials:
             phase = 2 * math.pi * frequency * (time + .085)
@@ -70,8 +73,8 @@ def continuous_tail(source):
         frames.append(tuple(pair))
     rms = math.sqrt(sum(a * a + b * b for a, b in frames) / (len(frames) * 2))
     peak = max(abs(value) for pair in frames for value in pair)
-    # Match the accepted quiet version without introducing a dynamic processor.
-    gain = min(10 ** (TARGET_RMS_DBFS / 20) / rms, .145 / peak)
+    # A fixed, lower gain keeps the entire tone gentle without compression.
+    gain = min(10 ** (TARGET_RMS_DBFS / 20) / rms, .085 / peak)
     frames = [(a * gain, b * gain) for a, b in frames]
     frames[0] = frames[-1] = (0., 0.)
     return frames
@@ -86,7 +89,7 @@ def main():
     for clip, at, level in [(source, .10, .5 * .48), (frames, .37, .5 * .44)]:
         for index, pair in enumerate(clip):
             target = round(at * RATE) + index
-            blend = .6 + .4 * math.exp(-max(0, target / RATE - .37) / .09) if clip is source else 1
+            blend = .3 + .7 * math.exp(-max(0, target / RATE - .37) / .09) if clip is source else 1
             for channel in (0, 1):
                 audition[target][channel] += pair[channel] * level * blend
     write_pcm(ROOT / 'chapter-sound-preview.wav', audition)

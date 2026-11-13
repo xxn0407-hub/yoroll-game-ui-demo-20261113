@@ -1,7 +1,7 @@
 'use strict';
 // Short original PCM assets; all playback stays local to this prototype.
 window.YorollSound = (() => {
- const revision = 'chapter-continuous-tail-20261113';
+ const revision = 'chapter-low-soft-20261113';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
@@ -189,8 +189,8 @@ window.YorollSound = (() => {
     previewId++;
     for(const voice of voices){
      if(voice.sequence)stopVoice(voice);
-     else if(channel==='chapter'&&voice.channel==='hover')duckTail(voice,{level:.6,seconds:.09});
-     else if(channel==='chapter'&&voice.channel==='chapter')duckTail(voice,{level:.2,seconds:.11});
+     else if(channel==='chapter'&&voice.channel==='hover')duckTail(voice,{level:.3,seconds:.09});
+     else if(channel==='chapter'&&voice.channel==='chapter')stopVoice(voice,false,.16);
      else if(voice.channel===channel||(channel!=='hover'&&voice.channel==='hover'))duckTail(voice);
     }
    }
