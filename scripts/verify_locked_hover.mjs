@@ -57,7 +57,7 @@ function enter(item,extra={}){item.hover=true;dispatch('pointerover',item,extra)
 const count=()=>Number(data.audioPlayCount),passed=[];
 const locked=control(true),ordinary=control();
 enter(locked);tick(109);assert.equal(count(),0);tick(1);
-assert.equal(data.audioLastCue,'locked');assert.equal(count(),1);assert.equal(started.at(-1).playbackRate.value,.6);
+assert.equal(data.audioLastCue,'locked');assert.equal(count(),1);assert.equal(started.at(-1).playbackRate.value,.5);
 const lockedVoice=started.at(-1);
 assert.equal(lockedVoice.buffer.sha256,createHash('sha256').update(fs.readFileSync(path.join(root,'assets/audio/ui-hover.wav'))).digest('hex'));
 assert.equal(JSON.parse(data.audioCounts).hover,undefined);
@@ -91,4 +91,4 @@ before=count();leave(locked);tick(700);enter(ordinary);tick(70);assert.equal(dat
 assert.equal(started.at(-1).buffer.sha256,lockedVoice.buffer.sha256);assert.equal(started.at(-1).playbackRate.value,1);
 const disabled=control(false,true);enter(disabled);tick(200);assert.equal(count(),before+1);
 passed.push('Playable and locked hover share the exact recording at different pitches; unrelated disabled buttons remain silent.');
-console.log(JSON.stringify({revision:'locked-hover-low-20261113',passed:passed.length,checks:passed},null,2));
+console.log(JSON.stringify({revision:'locked-hover-octave-20261113',passed:passed.length,checks:passed},null,2));
