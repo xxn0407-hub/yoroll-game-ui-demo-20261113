@@ -22,7 +22,7 @@
 .scene>img.chapter-background{position:absolute;inset:0;will-change:opacity,transform}
 .chapter-info{will-change:opacity,transform}.small-progress span{transition:width .45s var(--ease)}
 .chapter-strip{cursor:grab;touch-action:pan-x}.chapter-strip.is-dragging,.chapter-strip.is-dragging *{cursor:grabbing!important;user-select:none}.chapter-strip.is-dragging,.chapter-strip.is-scrolling{scroll-snap-type:none}
-.chapter-card{display:block;border-color:rgba(201,217,211,.24);transition:transform .45s var(--ease),border-color .25s,box-shadow .4s}.chapter-card img{opacity:.65;pointer-events:none}.chapter-card .card-label{z-index:2;pointer-events:none}.chapter-card.is-selected{border-color:rgba(239,246,237,.92);box-shadow:0 0 calc(var(--p)*20) #e7f0d24d,0 0 calc(var(--p)*44) #bedce529}.chapter-card.is-selected img{opacity:.98}.chapter-card:active{transform:translateY(calc(var(--p)*-2)) scale(.985)}
+.chapter-card{display:block;border-color:rgba(201,217,211,.24);transition:transform .45s var(--ease),border-color .25s,box-shadow .4s}.chapter-card img{opacity:.65;pointer-events:none}.chapter-card .card-label{z-index:2;pointer-events:none}.chapter-card.is-selected img{opacity:.98}.chapter-card:active{transform:translateY(calc(var(--p)*-2)) scale(.985)}
 .chapter-rail-arrow{position:absolute;z-index:3;top:81.5%;translate:0 -50%;width:calc(var(--p)*40);height:calc(var(--p)*40);display:grid;place-items:center;border:1px solid rgba(214,229,219,.24);border-radius:50%;background:rgba(10,17,20,.5);backdrop-filter:blur(10px);font-size:calc(var(--p)*22);color:#dce4d7;transition:background .2s,border-color .2s,opacity .2s}.chapter-rail-arrow:hover{background:rgba(194,216,200,.14);border-color:rgba(221,238,217,.6)}.chapter-rail-arrow-left{left:1.2%}.chapter-rail-arrow-right{right:1.2%}.chapter-rail-arrow-right svg{rotate:180deg}.chapter-rail-arrow:disabled{opacity:.18;cursor:default}
 .chapter-browse-meta{display:flex;gap:calc(var(--p)*24);align-items:center}.chapter-browse-meta>span:last-child{color:#718379;font-size:calc(var(--p)*13)}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -52,7 +52,7 @@
 .tree-route.is-active{opacity:1}
 .tree-node img{opacity:.64;filter:saturate(.74);transition:opacity .45s var(--soft),filter .45s var(--soft)}
 .tree-node.is-route{border-color:#c9cfaa70}
-.tree-node.is-selected{border-color:#f6efd5;box-shadow:0 0 0 1px #eee6cb5c,0 0 calc(var(--p)*22) #e7f0d23d,0 0 calc(var(--p)*48) #bedce526}
+.chapter-card.is-selected,.tree-node.is-selected{border-color:#f6efd5;box-shadow:0 0 0 1px #eee6cb5c,0 0 calc(var(--p)*22) #e7f0d23d,0 0 calc(var(--p)*48) #bedce526}
 .tree-node.is-selected img,.tree-node:hover img{opacity:.98;filter:saturate(.94)}
 
 .legend-route{display:block;width:calc(var(--p)*20);height:1px;background:#dbd3b8}
@@ -67,8 +67,8 @@
 .tree-legend .tree-browse-tip{color:#748378;font-size:calc(var(--p)*13);margin-left:calc(var(--p)*5)}
 
 /* Per-fragment progress, locked branches and a soft selection glow. */
-.tree-node:before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:linear-gradient(135deg,#fff6d51f,transparent 45%,#c7e8ed17);opacity:0;pointer-events:none;transition:opacity .4s}
-.tree-node.is-selected:before{opacity:1}
+.chapter-card:before,.tree-node:before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:linear-gradient(135deg,#fff6d51f,transparent 45%,#c7e8ed17);opacity:0;pointer-events:none;transition:opacity .4s}
+.chapter-card.is-selected:before,.tree-node.is-selected:before{opacity:1}
 /* Selected cards use their existing glow as the keyboard focus indicator. */
 .chapter-card:focus-visible,.tree-node:focus-visible{outline:none;outline-offset:0}
 .node-progress{position:relative;z-index:3;flex:0 0 calc(var(--p)*48);display:grid;gap:calc(var(--p)*7);color:#adb9b0;pointer-events:none}
@@ -111,8 +111,4 @@
 /* Chapters share the story tree's selected light dust; reserved rail space keeps it visible. */
 .chapter-card.is-selected + .chapter-dust{opacity:1}
 .chapter-card.is-selected + .chapter-dust i{animation-play-state:running;will-change:transform,opacity}
-.chapter-dust i{width:calc(var(--p)*var(--dust-size)*1.2);height:calc(var(--p)*var(--dust-size)*1.2)}
-.chapter-dust:before{content:"";position:absolute;inset:calc(var(--p)*26);border-radius:calc(var(--p)*12);box-shadow:0 0 calc(var(--p)*16) #e7f0d247,0 0 calc(var(--p)*34) #bedce522;opacity:.35;animation:chapter-glow-breathe 5.8s ease-in-out infinite;animation-play-state:paused}
-.chapter-card.is-selected + .chapter-dust:before{animation-play-state:running;will-change:opacity}
-.game-frame[data-entry-state="entering"] .chapter-dust i,.game-frame[data-entry-state="entering"] .chapter-dust:before{animation-play-state:paused}
-@keyframes chapter-glow-breathe{0%,100%{opacity:.35}50%{opacity:.8}}
+.game-frame[data-entry-state="entering"] .chapter-dust i{animation-play-state:paused}

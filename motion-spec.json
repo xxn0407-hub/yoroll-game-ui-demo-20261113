@@ -209,9 +209,8 @@
       "chapterEyebrow": "Two-digit chapter number only, with no CHAPTER prefix.",
       "topRightCaption": false,
       "selectionEffects": {
-        "revision": "chapter-selected-dust-20261113",
-        "glow": "Thin luminous border, soft outer glow and a slow breathing halo.",
-        "glowPeriodMs": 5800,
+        "revision": "chapter-low-resonance-20261113",
+        "glow": "Exactly the story tree selected border, shadow, surface tint and particle size.",
         "dustCount": 8,
         "dustPeriodMs": [
           6100,
@@ -224,7 +223,9 @@
         "cardSizeAndPositionPreserved": true,
         "ariaHidden": true,
         "pointerEvents": "none",
-        "reducedMotion": "Hide dust and breathing halo; retain the static selected outline and glow."
+        "reducedMotion": "Hide dust; retain the static selected outline and glow.",
+        "sharedWith": "tree",
+        "extraBreathingHalo": false
       }
     },
     {
@@ -321,7 +322,7 @@
       "chapter wheel / trackpad scrolling"
     ],
     "visibility": "Stop voices and suspend audio while hidden; no stale sounds replayed.",
-    "revision": "chapter-dry-close-20261113",
+    "revision": "chapter-low-resonance-20261113",
     "tailHandling": "Prior related tails duck to 28 percent with a 35ms smoothing constant; tails finish naturally.",
     "auditionStartSeconds": [
       0.06,
@@ -330,21 +331,22 @@
     ],
     "chapterSelection": {
       "cue": "chapter",
-      "attackMs": 75,
-      "sameSourceAsHover": false,
+      "attackMs": 100,
+      "sameSourceAsHover": true,
       "chapterLevel": 0.44,
       "hoverLevel": 0.48,
       "throttleMs": 220,
       "hoverTailGain": 0,
       "previousChapterTailGain": 0,
-      "durationMs": 1200,
+      "durationMs": 2400,
       "chapterRepeatLevel": 0.27,
-      "fadeOutMs": 774,
-      "tailMode": "A close natural cloth-air fade without sustained oscillators or added room reflections.",
+      "fadeOutMs": 1100,
+      "tailMode": "One low centred resonance with a continuous smooth decay; no added room reflections or modulation.",
       "amplitudeModulation": false,
       "previousChapterFadeOutMs": 160,
       "hoverFadeOutMs": 120,
-      "sourceManifest": "chapter-sound-source.json"
+      "sourceManifest": "chapter-sound-source.json",
+      "fundamentalHz": 196
     },
     "entryRevision": "entry-autoplay-20261113",
     "masterMute": {

@@ -1,13 +1,23 @@
 {
-  "title": "Clothes Shaking Movement 6_18",
-  "author": "Joao_Janz",
-  "platform": "Freesound",
-  "pageUrl": "https://freesound.org/people/Joao_Janz/sounds/493477/",
-  "license": "CC0 1.0",
-  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/",
-  "downloadUrl": "https://cdn.freesound.org/previews/493/493477_9961300-hq.mp3",
-  "sourceFile": "assets/audio/sources/Clothes Shaking Movement 6_18.mp3",
-  "sourceSha256": "d68be023ad03d02fd42f163231f764f3ccaba12136259dab6ca50e060c27f04c",
-  "sourceDescription": "A natural cloth movement recording; source author reports a Tascam DR-40 recording and gentle filtering/denoising.",
-  "processing": "Half-speed resampling, non-resonant high/low-pass filtering, centred channels and one gentle fade. No oscillator, musical note, reverb or feedback."
+  "title": "Low chapter resonance from the existing hover palette",
+  "sourceType": "Local harmonic resynthesis of the existing interface cue",
+  "sourceFile": "assets/audio/ui-hover.wav",
+  "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+  "fundamentalHz": 196,
+  "previousResonanceFundamentalHz": 293.665,
+  "processing": "Centred fundamental with a much weaker second harmonic; 100ms soft attack, one continuous quiet decay and a smooth end fade. No added reverb, delay, detuning, tremolo, noise or repeated segments.",
+  "renderScript": "scripts/extend_chapter_tail.py",
+  "unusedPreviousSource": {
+    "title": "Clothes Shaking Movement 6_18",
+    "author": "Joao_Janz",
+    "platform": "Freesound",
+    "pageUrl": "https://freesound.org/people/Joao_Janz/sounds/493477/",
+    "license": "CC0 1.0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "downloadUrl": "https://cdn.freesound.org/previews/493/493477_9961300-hq.mp3",
+    "sourceFile": "assets/audio/sources/Clothes Shaking Movement 6_18.mp3",
+    "sourceSha256": "d68be023ad03d02fd42f163231f764f3ccaba12136259dab6ca50e060c27f04c",
+    "sourceDescription": "A natural cloth movement recording; source author reports a Tascam DR-40 recording and gentle filtering/denoising.",
+    "processing": "Half-speed resampling, non-resonant high/low-pass filtering, centred channels and one gentle fade. No oscillator, musical note, reverb or feedback."
+  }
 }

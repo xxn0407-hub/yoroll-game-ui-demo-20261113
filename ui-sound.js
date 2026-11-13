@@ -1,7 +1,7 @@
 'use strict';
 // Short local PCM assets; provenance is recorded in sound-spec.json.
 window.YorollSound = (() => {
- const revision = 'chapter-dry-close-20261113';
+ const revision = 'chapter-low-resonance-20261113';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
