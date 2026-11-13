@@ -1,7 +1,7 @@
 'use strict';
 window.YorollMusic = (() => {
  const revision='opening-fade-20261111';
- const menuPages=new Set(['splash','home','cover','chapters','tree','saves','settings','logout','exit']);
+ const menuPages=new Set(['splash','home','cover','chapters','tree','saves','settings','logout','exit','affinity']);
  const openingPages=new Set(['splash','home','cover']);
  const positionKey=`yoroll-opening-position:${revision}`;
  let scene='home',wanted=false,master=1,music=1;

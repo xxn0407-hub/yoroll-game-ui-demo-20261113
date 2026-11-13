@@ -12,7 +12,7 @@ const uiSound = window.YorollSound;
 if(params.has('capture'))document.body.classList.add('capture');
 const pages = [
  ['splash','启动'],['home','默认首页'],['cover','封面首页'],['chapters','章节选择'],
- ['tree','剧情树'],['saves','切换存档'],['settings','设置'],['logout','退出登录'],
+ ['tree','剧情树'],['affinity','角色好感度'],['saves','切换存档'],['settings','设置'],['logout','退出登录'],
  ['gameplay','游戏内'],['pause','暂停'],['choice','限时选择'],['qte','QTE'],['result','章节结果'],['exit','退出确认']
 ];
 const pageNames = Object.fromEntries(pages);
@@ -30,6 +30,7 @@ const icons = {
  replay:'<path d="M5 8a8 8 0 1 1-.3 8M5 3v5h5"/>', volume:'<path d="m11 4-5 4H2v8h4l5 4Zm4 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
  'volume-off':'<path d="m11 4-5 4H2v8h4l5 4Z"/><path d="m16 9 6 6m0-6-6 6"/>'
 };
+icons.heart='<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>';
 const icon = (name,extra='') => `<svg viewBox="0 0 24 24" aria-hidden="true" ${extra}>${icons[name]||icons.arrow}</svg>`;
 const button = (label,action,kind='',iconName='') => `<button class="btn ${kind}" data-action="${action}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
 const goButton = (label,route,kind='',iconName='') => `<button class="btn ${kind}" data-route="${route}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
@@ -141,7 +142,7 @@ function header(){
  return `<header class="topbar"><button class="brand" data-route="home" aria-label="Yoroll 首页" data-enter="brand"><img src="assets/yoroll-logo.png" alt="yoroll"></button><div class="header-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="settings" aria-label="设置">${icon('settings')}</button></div><div data-enter="header"><button class="account" data-action="logout" aria-label="账号"><span class="avatar">${icon('user')}</span><span>${signedIn?'演示玩家':'未登录'}</span></button></div></div></header>`;
 }
 function homeView(cover=false){
- return `${header()}<nav class="home-menu" aria-label="游戏菜单">${[[saveProgress()>0?'继续游戏':'开始游戏','gameplay'],['章节选择','chapters'],['切换存档','saves'],['退出','exit']].map(([label,route])=>`<div data-enter="menu"><button data-route="${route}">${label}<span class="menu-mark">${icon('arrow')}</span></button></div>`).join('')}</nav>${cover?'<div class="cover-wordmark" data-enter="wordmark"><img src="wall/assets/nocturne-logo.webp" alt="Nocturne"></div>':''}`;
+ return `${header()}<nav class="home-menu" aria-label="游戏菜单">${[[saveProgress()>0?'继续游戏':'开始游戏','gameplay'],['章节选择','chapters'],['好感度','affinity'],['切换存档','saves'],['退出','exit']].map(([label,route])=>`<div data-enter="menu"><button data-route="${route}">${label}<span class="menu-mark">${icon('arrow')}</span></button></div>`).join('')}</nav>${cover?'<div class="cover-wordmark" data-enter="wordmark"><img src="wall/assets/nocturne-logo.webp" alt="Nocturne"></div>':''}`;
 }
 function splashView(){return `<div class="splash-logo" data-enter="splash-logo"><img src="assets/yoroll-logo.png" alt="yoroll"></div><button class="splash-start" data-route="home" data-enter="splash-start"><span>点击任意位置开始</span></button><div class="splash-copy" data-enter="footer">YOROLL · INTERACTIVE STORIES</div>`;}
 function chaptersView(){
@@ -299,7 +300,7 @@ function storyDustMarkup(className='node-dust',particleLayout){
  ];
  return `<span class="${className}" aria-hidden="true">${motes.map(([x,y,size,dx,rise,duration,delay])=>`<i style="left:${x}%;top:${y}%;--dust-size:${size};--dust-dx:${dx};--dust-rise:${rise};--dust-duration:${duration}s;--dust-delay:${delay}s"></i>`).join('')}</span>`;
 }
-function saveDustMarkup(){
+function largeCardDustMarkup(className='node-dust save-dust'){
  const motes=[
   [8,5,2.8,-8,-28,6.4,-1.1], [24,3,3.4,6,-24,7.3,-4.8],
   [41,7,2.6,-5,-32,7.8,-2.9], [57,2,3.8,8,-26,6.8,-5.4],
@@ -314,7 +315,7 @@ function saveDustMarkup(){
   [1,63,2.5,-7,-28,7.7,-6.3], [4,48,3.2,6,-35,6.7,-2.7],
   [2,31,3.6,-5,-25,8.4,-5.1], [5,14,2.8,8,-31,7.4,-1.8]
  ];
- return storyDustMarkup('node-dust save-dust',motes);
+ return storyDustMarkup(className,motes);
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
@@ -473,7 +474,7 @@ function saveView(){
  const cards=slots.map((save,index)=>{
   const active=Boolean(save)&&index===activeSlot;
   const number=save?String(Number(save.chapter.match(/\d+/)?.[0]||1)).padStart(2,'0'):'';
-  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div><span class="save-active" aria-hidden="${!active}">${icon('check')}当前存档</span><div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button>${save?saveDustMarkup():''}</div>`;
+  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div><span class="save-active" aria-hidden="${!active}">${icon('check')}当前存档</span><div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button>${save?largeCardDustMarkup():''}</div>`;
  }).join('');
  return `${pageHeading('切换存档','home')}<section class="saves-layout"><div class="section-line" data-enter="section"><span>选择一个故事进度</span><span>本机存档 · ${slots.filter(Boolean).length} / 3</span></div><div class="saves-grid">${cards}</div></section>${footer()}`;
 }
@@ -486,6 +487,36 @@ function refreshSaveSelection(){
   if(slots[index])card.setAttribute('aria-pressed',String(active));
   card.querySelector('.save-active')?.setAttribute('aria-hidden',String(!active));
  });
+}
+// Demonstration values; portraits are composed from the user-supplied previous UI.
+const AFFINITY_CHARACTERS=[
+ {id:'bjorn',name:'Bjorn',score:2.5,x:144,y:230},
+ {id:'liuyan',name:'Liuyan',score:4,x:498,y:260},
+ {id:'starry',name:'Starry',score:3.5,x:857,y:305},
+ {id:'kaelen',name:'Kaelen',score:1.5,x:1214,y:245},
+ {id:'vis',name:'Vis',score:5,x:1571,y:345}
+];
+let selectedAffinity=0;
+let affinityReturnPage='home';
+function affinityHearts(score){
+ return `<span class="affinity-hearts" aria-hidden="true">${Array.from({length:6},(_,i)=>{const fill=Math.max(0,Math.min(1,score-i))*100;return `<span class="affinity-heart">${icon('heart')}<span class="affinity-heart-fill" data-fill="${fill}" style="width:${fill}%">${icon('heart')}</span></span>`;}).join('')}</span>`;
+}
+function affinityView(){
+ const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-art" aria-hidden="true"><img src="assets/affinity-characters.png" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
+ return `${pageHeading('角色好感度',affinityReturnPage)}<section class="affinity-layout" aria-label="角色好感度">${cards}</section>${footer('','<span><span class="keycap">←</span><span class="keycap">→</span> 选择角色</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="affinity-announcement" role="status" aria-live="polite"></div>`;
+}
+function selectAffinity(index,{focus=false}={}){
+ if(currentPage!=='affinity'||index<0||index>=AFFINITY_CHARACTERS.length)return;
+ const changed=index!==selectedAffinity;selectedAffinity=index;
+ $$('.affinity-card').forEach((card,i)=>{const active=i===index;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active));card.tabIndex=active?0:-1;});
+ const character=AFFINITY_CHARACTERS[index];frame.dataset.affinityCharacter=character.id;
+ $('#affinity-announcement').textContent=`已选择 ${character.name}，好感度 ${character.score} / 6`;
+ if(focus)$(`.affinity-card[data-affinity-index="${index}"]`)?.focus({preventScroll:true});
+ uiSound.play('chapter',{level:changed?.36:.22,throttle:220});
+}
+function bindAffinity(){
+ frame.dataset.affinityCharacter=AFFINITY_CHARACTERS[selectedAffinity].id;
+ $$('.affinity-cell').forEach((cell,index)=>cell.querySelectorAll('.affinity-heart-fill').forEach((fill,heart)=>{if(Number(fill.dataset.fill)>0)animate(fill,[{width:'0%'},{width:fill.style.width}],{duration:620,delay:150+index*55+heart*22,easing:'cubic-bezier(.16,1,.3,1)'});}));
 }
 function settingsView(){
  return `${pageHeading('设置',previousPage==='pause'?'pause':'home','SETTINGS')}
@@ -501,18 +532,18 @@ function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="paus
 function choiceView(){return `${hud()}<section class="choice-panel"><div class="eyebrow" data-enter="choice-title">做出你的选择</div><h2 data-enter="choice-title">前面的路，由你决定。</h2><div class="choice-options">${['全力加速，抢占内线','稳住节奏，等待机会'].map((label,index)=>`<div data-enter="choice"><button class="choice-option" data-action="choice-${index}"><span class="choice-number">0${index+1}</span><span>${label}</span><span class="choice-arrow">${icon('arrow')}</span></button></div>`).join('')}</div><div data-enter="choice-time"><div class="choice-time"><span id="choice-progress"></span></div><div class="choice-meta"><span>限时选择</span><button class="time-toggle" data-action="choice-timer" aria-pressed="false">暂停计时</button></div></div></section>${footer('','<span><span class="keycap">1</span> / <span class="keycap">2</span> 选择</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
 function qteView(){return `${hud()}<div class="subtitle qte-subtitle" data-enter="subtitle"><span class="speaker">把握时机</span>在弯道前完成换挡。</div><div class="qte-widget" data-enter="qte"><div class="qte-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle id="qte-progress" cx="60" cy="60" r="56"/></svg><button class="qte-key" data-action="qte-hit" aria-label="完成换挡，按 E">E</button></div><div class="qte-label">换挡</div><div class="qte-tip">按下 E 或点击</div></div>${footer('','<span><span class="keycap">E</span> 换挡</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
 function resultView(){return `${pageHeading('章节结果','chapters','CHAPTER COMPLETE')}<section class="result-layout"><div class="eyebrow" data-enter="result">CHAPTER ${String(activeChapter().number).padStart(2,'0')} / COMPLETE</div><h1 data-enter="result">顺利抵达</h1><p data-enter="result">每一次选择，都让故事走向不同的远方。</p><dl class="result-stats"><div data-enter="result"><dt>章节进度</dt><dd><span data-count="100">100</span>%</dd></div><div data-enter="result"><dt>关键选择</dt><dd>02</dd></div><div data-enter="result"><dt>完成评级</dt><dd>A</dd></div></dl><div class="result-actions"><div data-enter="action">${goButton('查看剧情树','tree','','tree')}</div><div data-enter="action">${goButton('返回章节','chapters','btn-primary','arrow')}</div></div></section>${footer('')}`;}
-const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
+const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
 function setScene(page){
  const fragment=['gameplay','pause','choice','qte','result'].includes(page)&&playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null;
- const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
+ const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','affinity','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
  if(key!==sceneKey){
   sceneKey=key;
   if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="wall/index.html?clean&revision=viewport-backgrounds-20261113" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
   else if(key==='cover'){scene.className='scene';scene.innerHTML='<img src="wall/assets/nocturne-cover.webp" alt="">';}
   else{const chapter=activeChapter(),image=fragment||chapter;scene.className='scene';scene.innerHTML=`<img class="chapter-background" data-chapter-index="${selectedChapter}" src="${image.cover}" alt="" style="object-position:${image.position||'50% center'}">`;}
  }
- frame.classList.remove('tree-backdrop','settings-backdrop','saves-backdrop','profile-backdrop');
- if(['tree','settings','saves','profile','pause'].includes(page))frame.classList.add((page==='pause'?'tree':page)+'-backdrop');
+ frame.classList.remove('tree-backdrop','settings-backdrop','saves-backdrop','profile-backdrop','affinity-backdrop');
+ if(['tree','settings','saves','profile','affinity','pause'].includes(page))frame.classList.add((page==='pause'?'tree':page)+'-backdrop');
 }
 function animateScene(){
  const image=scene.querySelector(':scope > img');
@@ -531,7 +562,7 @@ function enterPage(){
  $$('[data-enter="menu"]').forEach((el,i)=>enter(el,{y:unit(-22),delay:50+i*65,duration:560}));
  $$('[data-enter="heading"]').forEach(el=>enter(el,{x:unit(-18),y:0,delay:30,duration:560}));
  $$('[data-enter="meta"]').forEach(el=>enter(el,{x:unit(18),y:0,delay:90,duration:580}));
- const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[260,70], 'choice-time':[430,40],result:[140,60] };
+ const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], affinity:[170,55], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[260,70], 'choice-time':[430,40],result:[140,60] };
  for(const [name,[delay,step]] of Object.entries(groups))$$(`[data-enter="${name}"]`).forEach((el,i)=>enter(el,{y:unit(18),delay:delay+i*step,duration:650}));
  $$('[data-enter="tree-line"]').forEach(el=>enter(el,{y:0,delay:140,duration:550}));
  $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Math.min(2,Number(el.dataset.treeDepth))*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
@@ -549,6 +580,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(!renders[page])page='home';
  const id=++transitionId;
  const old=currentPage;
+ if(page==='affinity'&&['home','cover'].includes(old))affinityReturnPage=old;
  cancelPendingHover();
  if(screen.children.length&&page!==old)uiSound.play('transition',{level:.85,delay:.03});
  closeModal(true);
@@ -588,6 +620,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
+ if(currentPage==='affinity')bindAffinity();
  if(currentPage==='chapters')bindChapterRail();
  if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';bindStoryScroll();}
  applySoundLevels();
@@ -704,7 +737,7 @@ let keyboardFocusSound=false;
 let hoverSoundTimer=0;
 let hoveredSoundControl=null;
 const soundControl=target=>target.closest('.tree-node-cell.is-locked')||target.closest('button,a,input[type="range"]');
-const hoverLevel=control=>control.matches('.chapter-card,.tree-node') ? .48 : .68;
+const hoverLevel=control=>control.matches('.chapter-card,.tree-node,.affinity-card') ? .48 : .68;
 function cancelPendingHover(){clearTimeout(hoverSoundTimer);hoverSoundTimer=0;hoveredSoundControl=null;}
 document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPendingHover();},{capture:true});
 document.addEventListener('keydown',event=>{keyboardFocusSound=event.key==='Tab';cancelPendingHover();},{capture:true});
@@ -730,10 +763,12 @@ document.addEventListener('click',event=>{
  const control=event.target.closest('button,a');
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true')return;
  if(control.hasAttribute('data-route')){if(control.dataset.route===currentPage)uiSound.play('click',{level:.75});return;}
- if(control.matches('.chapter-card,.tree-node,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
+ if(control.matches('.chapter-card,.tree-node,.affinity-card,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
  uiSound.play(control.dataset.action==='modal-confirm'?'confirm':control.hasAttribute('data-language')?'select':'click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
+ const affinityCard=event.target.closest('[data-affinity-index]');
+ if(affinityCard){selectAffinity(Number(affinityCard.dataset.affinityIndex));return;}
  const storyCard=event.target.closest('[data-story-node]');
  if(storyCard){if(performance.now()<ignoreStoryClickUntil){event.preventDefault();return;}startStoryNode(storyCard.dataset.storyNode);return;}
  const chapterCard=event.target.closest('.chapter-card[data-chapter-index]');
@@ -756,7 +791,7 @@ document.addEventListener('keydown',event=>{
   event.preventDefault();
   if(!$('#review-panel').hidden){uiSound.play('back');$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');return;}
   if($('#language-options')&&!$('#language-options').hidden){uiSound.play('back');$('#language-options').hidden=true;$('#language-select').setAttribute('aria-expanded','false');return;}
-  if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='tree'||currentPage==='result')go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
+  if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='affinity')go(affinityReturnPage);else if(currentPage==='tree'||currentPage==='result')go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}
  if(currentPage==='tree'&&!event.metaKey&&!event.ctrlKey){
@@ -766,6 +801,7 @@ document.addEventListener('keydown',event=>{
   }
   if(event.key==='Enter'&&(!event.target.closest('button,a')||event.target.closest('.tree-node'))){event.preventDefault();startStoryNode();return;}
  }
+ if(currentPage==='affinity'&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)&&!event.metaKey&&!event.ctrlKey){event.preventDefault();const index=event.key==='Home'?0:event.key==='End'?AFFINITY_CHARACTERS.length-1:Math.max(0,Math.min(AFFINITY_CHARACTERS.length-1,selectedAffinity+(event.key==='ArrowRight'?1:-1)));selectAffinity(index,{focus:true});return;}
  if(currentPage==='chapters'&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)&&!event.metaKey&&!event.ctrlKey){event.preventDefault();const index=event.key==='Home'?0:event.key==='End'?CHAPTER_PREVIEWS.length-1:Math.max(0,Math.min(CHAPTER_PREVIEWS.length-1,selectedChapter+(event.key==='ArrowRight'?1:-1)));selectChapter(index,{focus:true});return;}
  if(currentPage==='chapters'&&event.key==='Enter'&&(!event.target.closest('button')||event.target.closest('.chapter-card'))){event.preventDefault();go('gameplay');}
  if(currentPage==='choice'&&(event.key==='1'||event.key==='2'))choose(Number(event.key)-1);

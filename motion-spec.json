@@ -164,7 +164,7 @@
     },
     "viewport": {
       "revision": "viewport-backgrounds-20261113",
-      "appliesTo": "All 14 page states",
+      "appliesTo": "All 15 page states",
       "background": "Fill the viewport with proportional cover cropping.",
       "posterWall": "Recalculate the existing poster grid when viewport size changes.",
       "uiScale": "min(viewportWidth / 1920, viewportHeight / 1080)",
@@ -176,7 +176,8 @@
       "appliesTo": [
         "chapters",
         "tree",
-        "saves"
+        "saves",
+        "affinity"
       ],
       "placement": "Behind each opaque card in an isolated stacking context.",
       "stackOrder": {
@@ -304,6 +305,30 @@
         "placement": "behind card",
         "sharedDust": "common.selectedDust",
         "onlySelectedRuns": true
+      }
+    },
+    {
+      "id": "affinity",
+      "name": "角色好感度",
+      "kind": "用户提供原版 UI",
+      "motion": "五张角色卡以 55ms 间隔、650ms 时长逐项落位；爱心 620ms 逐项显现。选中沿用当前柔光和后景近、中、远三层浮尘，400ms 平滑交接。",
+      "interaction": "首页和封面首页新增好感度入口；点击或左右方向键选择角色，Home/End 选择首尾；返回和 Esc 回到进入时的首页，所选角色在本次访问中保留。",
+      "reference": "comparison/before/10-affinity-user.png",
+      "cardSizePx": [
+        280,
+        480
+      ],
+      "rowWidthPx": 1480,
+      "gapPx": 20,
+      "nameFontPx": 22,
+      "heartSizePx": 20,
+      "heartsPerCharacter": 6,
+      "fractionalHearts": true,
+      "dataScope": "Five names and portrait artwork from the user reference; scores are local demonstration values.",
+      "selectedParticles": {
+        "count": 24,
+        "sharedDust": "common.selectedDust",
+        "placement": "behind opaque card"
       }
     },
     {

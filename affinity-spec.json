@@ -1,0 +1,103 @@
+{
+  "revision": "affinity-page-20261113",
+  "reference": {
+    "source": "User supplied previous affinity-page UI",
+    "image": "comparison/before/10-affinity-user.png",
+    "dimensions": [
+      1920,
+      1080
+    ]
+  },
+  "portraits": {
+    "asset": "assets/affinity-characters.png",
+    "treatment": "Original screenshot reused unchanged, clipped as CSS sprites with inverse horizontal shear.",
+    "sourceWidthPerPortrait": 314,
+    "inverseShearX": 0.096,
+    "replacement": "Replace sprite art with per-character portrait assets when available."
+  },
+  "layout": {
+    "referenceCanvas": [
+      1920,
+      1080
+    ],
+    "cards": [
+      280,
+      480
+    ],
+    "rowWidth": 1480,
+    "gap": 20,
+    "namePx": 22,
+    "heartPx": 20
+  },
+  "characters": [
+    {
+      "id": "bjorn",
+      "name": "Bjorn",
+      "score": 2.5,
+      "spriteX": 144,
+      "spriteY": 230
+    },
+    {
+      "id": "liuyan",
+      "name": "Liuyan",
+      "score": 4,
+      "spriteX": 498,
+      "spriteY": 260
+    },
+    {
+      "id": "starry",
+      "name": "Starry",
+      "score": 3.5,
+      "spriteX": 857,
+      "spriteY": 305
+    },
+    {
+      "id": "kaelen",
+      "name": "Kaelen",
+      "score": 1.5,
+      "spriteX": 1214,
+      "spriteY": 245
+    },
+    {
+      "id": "vis",
+      "name": "Vis",
+      "score": 5,
+      "spriteX": 1571,
+      "spriteY": 345
+    }
+  ],
+  "scoreMaximum": 6,
+  "scoresAreDemonstrationOnly": true,
+  "selection": {
+    "pointer": true,
+    "keyboard": [
+      "ArrowLeft",
+      "ArrowRight",
+      "Home",
+      "End"
+    ],
+    "persistsWithinVisit": true,
+    "progressDoesNotChangeOnSelect": true
+  },
+  "motion": {
+    "entryMs": 650,
+    "entryStaggerMs": 55,
+    "heartRevealMs": 620,
+    "selectionHandoffMs": 400,
+    "selectedDust": "motion-spec.json common.selectedDust"
+  },
+  "verification": {
+    "fiveCharactersLoaded": true,
+    "sixHeartsEach": true,
+    "halfHeartsVerified": true,
+    "pointerAndKeyboardSelection": true,
+    "selectionRetainedAfterReturn": true,
+    "replayRetainsSelection": true,
+    "returnsToBothHomeVariants": true,
+    "backgroundFillsViewport": true,
+    "selectedDustBehindCard": true,
+    "onlySelectedDustRuns": true,
+    "pageStates": 15,
+    "checkedAt": "2026-11-13T15:28:19.725Z"
+  }
+}

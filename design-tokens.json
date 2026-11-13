@@ -52,7 +52,15 @@
       531,
       448
     ],
-    "saveCardCurrentToOtherRatio": 1.18
+    "saveCardCurrentToOtherRatio": 1.18,
+    "affinityCard": [
+      280,
+      480
+    ],
+    "affinityRowWidth": 1480,
+    "affinityGap": 20,
+    "affinityName": 22,
+    "affinityHeart": 20
   },
   "sourceEstimateNotice": "Original measurements are estimates from 1280x720 screenshots, scaled by 1.5. New measurements are from the local DOM. No Unity source properties are available.",
   "measuredAt1280": {
