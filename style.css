@@ -40,7 +40,7 @@
 /* Connected story preview; reference card size stays 340 x 191.25. */
 .tree-board{position:relative;flex:none;width:calc(var(--p)*var(--tree-board-width));height:calc(var(--p)*724)}
 .tree-node-cell{position:absolute;left:calc(var(--p)*var(--node-x));top:calc(var(--p)*var(--node-y));width:calc(var(--p)*340)}
-.tree-column-label{position:absolute;left:calc(var(--p)*var(--column-x));top:calc(var(--p)*-17);font-size:calc(var(--p)*13);letter-spacing:.16em;color:#77827b}
+
 .tree-connections{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;fill:none}
 .tree-link,.tree-origin-line{stroke:#84948880;stroke-width:1.3;fill:none}
 .tree-link,.tree-route{stroke-dasharray:1;stroke-dashoffset:0}
