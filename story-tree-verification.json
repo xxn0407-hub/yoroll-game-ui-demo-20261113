@@ -165,5 +165,13 @@
     "progress": 19,
     "stageScroll": 0,
     "value": "22"
+  },
+  "lockedProgressVisibility": {
+    "locked": 13,
+    "lockedWithoutProgress": true,
+    "locksPresent": true,
+    "played": 6,
+    "playedWithProgress": true,
+    "progressCount": 6
   }
 }

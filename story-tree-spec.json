@@ -1,5 +1,5 @@
 {
-  "revision": "tree-progress-line-20261113",
+  "revision": "tree-lock-only-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
   "dataScope": "Nineteen local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
@@ -162,7 +162,7 @@
   },
   "selection": "Only explored, unlocked nodes can be selected or replayed. Active paths must only contain playable nodes; retain the selected upstream branch at merges.",
   "keyboard": "Arrows skip locked nodes; Home/End choose the first/last playable fragment; PageUp/PageDown browse all branches; Enter confirms replay of the selected playable fragment.",
-  "unexplored": "Native disabled button, aria-disabled, tabIndex -1, dim image, lock icon and zero percent. Cannot select or start. Pointer events pass to the pan wrapper so dragging still works.",
+  "unexplored": "Native disabled button, aria-disabled, tabIndex -1, dim image and lock icon. No percentage or progress track in the card, accessible label or detail panel. Cannot select or start; wrapper still supports dragging.",
   "sound": "Uses the approved chapter cue at 0.5 level, throttled to 220ms; hover is 0.48. Opening and audio engine are unchanged.",
   "verification": "story-tree-verification.json",
   "scrolling": {
@@ -184,7 +184,7 @@
     "outerStageCannotScroll": true
   },
   "progress": {
-    "display": "Thin horizontal line and plain bottom-right percentage, reusing the established chapter progress treatment.",
+    "display": "Explored fragments only: thin horizontal line and plain bottom-right percentage.",
     "sampleValues": {
       "01": 100,
       "02": 64,
@@ -209,7 +209,8 @@
     "trackCssPx": 1,
     "trackInsetReferencePx": 20,
     "valueReferencePx": 14,
-    "backgroundPlate": false
+    "backgroundPlate": false,
+    "visibleOnLocked": false
   },
   "numberStyle": {
     "font": "Helvetica Neue, Arial, sans-serif",
