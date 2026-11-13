@@ -1,7 +1,7 @@
 {
-  "revision": "story-scroll-20261113",
+  "revision": "tree-states-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
-  "dataScope": "Nineteen local preview fragments, not online Race story data.",
+  "dataScope": "Nineteen local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
     2930,
     724
@@ -154,11 +154,15 @@
     "wheelPanDuration": 280,
     "dragReleaseDuration": 500,
     "scrollPersistencePerChapter": true,
-    "detailColumnFixed": true
+    "detailColumnFixed": true,
+    "selectionGlowTransition": 400,
+    "lockedNodesSelectable": false,
+    "keyboardSkipsLocked": true,
+    "lockedAreasRemainDraggable": true
   },
-  "selection": "One selected node. Highlight its connected ancestor route; retain the latest branch at a merge. Cancel interrupted detail and route motions.",
-  "keyboard": "Arrows choose connected or same-column nodes and reveal them smoothly; Home/End choose the first/last node; PageUp/PageDown browse; Enter opens replay confirmation.",
-  "unexplored": "Dimmed but all nineteen nodes are selectable and replayable.",
+  "selection": "Only explored, unlocked nodes can be selected or replayed. Active paths must only contain playable nodes; retain the selected upstream branch at merges.",
+  "keyboard": "Arrows skip locked nodes; Home/End choose the first/last playable fragment; PageUp/PageDown browse all branches; Enter confirms replay of the selected playable fragment.",
+  "unexplored": "Native disabled button, aria-disabled, tabIndex -1, dim image, lock icon and zero percent. Cannot select or start. Pointer events pass to the pan wrapper so dragging still works.",
   "sound": "Uses the approved chapter cue at 0.5 level, throttled to 220ms; hover is 0.48. Opening and audio engine are unchanged.",
   "verification": "story-tree-verification.json",
   "scrolling": {
@@ -176,6 +180,55 @@
     "nodeRevealDurationMs": 440,
     "rightDetailFixed": true,
     "positionStoredPerChapter": "Reference pixels; restored on return and entry replay.",
-    "dragDoesNotSelect": true
-  }
+    "dragDoesNotSelect": true,
+    "outerStageCannotScroll": true
+  },
+  "progress": {
+    "display": "Ring and percentage on every node; selected percentage repeated in the detail panel.",
+    "diameterPx": 44,
+    "sampleValues": {
+      "01": 100,
+      "02": 64,
+      "03": 22,
+      "04": 0,
+      "05": 100,
+      "06": 35,
+      "07": 0,
+      "08": 0,
+      "09": 12,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0
+    }
+  },
+  "numberStyle": {
+    "font": "Helvetica Neue, Arial, sans-serif",
+    "sizePx": 42,
+    "weight": 300,
+    "tabularNumbers": true,
+    "underscore": false
+  },
+  "selectedState": {
+    "glowPx": [
+      22,
+      48
+    ],
+    "transitionMs": 400,
+    "loops": false
+  },
+  "playableNodes": [
+    "01",
+    "02",
+    "03",
+    "05",
+    "06",
+    "09"
+  ]
 }

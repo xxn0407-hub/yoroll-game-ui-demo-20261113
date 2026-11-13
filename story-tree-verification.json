@@ -1,75 +1,158 @@
 {
-  "revision": "story-scroll-20261113",
+  "revision": "tree-states-20261113",
   "baseline": {
-    "clientWidth": 758,
-    "detail": {
-      "height": 204.8828125,
-      "width": 241.0390625,
-      "x": 863.8984375,
-      "y": 423.25
+    "card": {
+      "height": 115.2421875,
+      "width": 204.8828125,
+      "x": 64.109375,
+      "y": 468.0625
     },
-    "edges": 28,
     "frame": {
       "height": 650.8125,
       "width": 1157,
       "x": 0,
       "y": 178.59375
     },
-    "node": {
+    "glow": "rgba(238, 230, 203, 0.36) 0px 0px 0px 1px, rgba(231, 240, 210, 0.24) 0px 0px 13.2573px 0px, rgba(190, 220, 229, 0.15) 0px 0px 28.925px 0px",
+    "labels": 0,
+    "locked": [
+      "04",
+      "07",
+      "08",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19"
+    ],
+    "lockedRect": {
       "height": 115.2421875,
       "width": 204.8828125,
-      "x": 64.109375,
-      "y": 468.0625
+      "x": 320.21875,
+      "y": 614.1171875
     },
-    "nodes": 19,
-    "scrollLeft": 0,
-    "scrollWidth": 1766,
-    "selected": "03",
-    "viewport": {
-      "height": 477.2578125,
-      "width": 757.6015625,
-      "x": 52.0625,
-      "y": 288.265625
-    }
-  },
-  "verticalWheel": {
-    "detail": {
-      "height": 204.8828125,
-      "width": 241.0390625,
-      "x": 863.8984375,
-      "y": 423.25
-    },
-    "maximum": 1008,
-    "scroll": 1008,
-    "selected": "03",
-    "title": "起跑之前"
-  },
-  "drag": {
-    "dragging": false,
-    "scroll": 428,
+    "numberFont": "\"Helvetica Neue\", Arial, sans-serif",
+    "numberText": "03",
+    "progress": [
+      {
+        "id": "01",
+        "value": "100"
+      },
+      {
+        "id": "02",
+        "value": "64"
+      },
+      {
+        "id": "03",
+        "value": "22"
+      },
+      {
+        "id": "04",
+        "value": "0"
+      },
+      {
+        "id": "05",
+        "value": "100"
+      },
+      {
+        "id": "06",
+        "value": "35"
+      },
+      {
+        "id": "07",
+        "value": "0"
+      },
+      {
+        "id": "08",
+        "value": "0"
+      },
+      {
+        "id": "09",
+        "value": "12"
+      },
+      {
+        "id": "10",
+        "value": "0"
+      },
+      {
+        "id": "11",
+        "value": "0"
+      },
+      {
+        "id": "12",
+        "value": "0"
+      },
+      {
+        "id": "13",
+        "value": "0"
+      },
+      {
+        "id": "14",
+        "value": "0"
+      },
+      {
+        "id": "15",
+        "value": "0"
+      },
+      {
+        "id": "16",
+        "value": "0"
+      },
+      {
+        "id": "17",
+        "value": "0"
+      },
+      {
+        "id": "18",
+        "value": "0"
+      },
+      {
+        "id": "19",
+        "value": "0"
+      }
+    ],
     "selected": "03"
   },
-  "keyboardEnd": {
-    "detailX": 863.8984375,
-    "detailY": 423.25,
-    "nodeHeight": 115.2421875,
-    "nodeWidth": 204.8828125,
-    "scroll": 1007.5,
-    "selected": "19",
-    "title": "灯火尽头",
-    "visible": true
+  "lockedClickAndDown": {
+    "lockedDisabled": true,
+    "lockedTabIndex": -1,
+    "modal": "",
+    "page": "tree",
+    "selected": "03"
   },
-  "returnState": {
-    "scroll": 1007.5,
-    "selected": "19",
-    "title": "灯火尽头"
+  "keyboardEndAndRight": {
+    "percent": "12%",
+    "route": [
+      "01-03",
+      "03-05",
+      "05-09"
+    ],
+    "selected": "09",
+    "title": "黎明关口"
   },
-  "keyboardHome": {
+  "playableReplay": {
+    "canStart": true,
+    "message": "将进入第 1 章 · 片段 06「赛道汇合」。当前进度会先保留。"
+  },
+  "lockedPanBefore": {
+    "scroll": 1008,
+    "selected": "03"
+  },
+  "lockedPanAfter": {
+    "modal": "",
+    "scroll": 448,
+    "selected": "03"
+  },
+  "outerStage": {
+    "graphScroll": 0,
+    "headingOffset": 28.3203125,
+    "overflow": "clip",
     "scroll": 0,
-    "selected": "01"
-  },
-  "horizontalWheel": {
-    "scroll": 347,
-    "selected": "01"
+    "selected": "03"
   }
 }

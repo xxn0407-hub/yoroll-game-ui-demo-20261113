@@ -91,7 +91,11 @@
       "wheelPanDuration": 280,
       "dragReleaseDuration": 500,
       "scrollPersistencePerChapter": true,
-      "detailColumnFixed": true
+      "detailColumnFixed": true,
+      "selectionGlowTransition": 400,
+      "lockedNodesSelectable": false,
+      "keyboardSkipsLocked": true,
+      "lockedAreasRemainDraggable": true
     }
   },
   "pages": [
@@ -127,8 +131,8 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "节点与连线保留柔和入场；画面外节点随选择以 440ms 平滑带入。鼠标拖动后以 500ms 衰减停住，滚轮平移约 280ms；右侧信息 100ms 淡出、420ms 落位，快速操作以最后选择为准。",
-      "interaction": "十九个节点均可点击。支持鼠标拖动、滚轮、触控板和原生滚动条浏览；方向键选择后自动确保节点可见，Home / End 到首尾，PageUp / PageDown 浏览，Enter 重玩确认。拖动不会误选节点；各章节独立保留选中项、路线与滚动位置。"
+      "motion": "节点、连线和平移保留当前节奏。选中边框与柔光约 400ms 平滑交接；路线 540ms 展开，说明 100ms 淡出、420ms 落位。锁定节点没有 Hover 提亮或选中反馈。",
+      "interaction": "六个已探索节点可选择和开始，十三个未探索节点原生禁用；鼠标、方向键、Home / End 只会选择可游玩节点，开始动作也再次检查权限。所有区域仍可拖动或滚轮浏览，包括锁定卡片；PageUp / PageDown 可浏览未来分支，返回保留节点和位置。"
     },
     {
       "id": "saves",

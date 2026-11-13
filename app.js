@@ -277,12 +277,21 @@ const treeRouteMotions = new Map();
 let treeScrollCleanup=null,treeRevealNode=null,treeViewportMove=null;
 let ignoreStoryClickUntil=0,ignoreStoryHoverUntil=0;
 function currentStoryState(){
+ const graph=storyTree.create(activeChapter());
  if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03'],scroll:0});
- return storyStates.get(selectedChapter);
+ const state=storyStates.get(selectedChapter);
+ if(!storyTree.canPlay(graph.nodes.find(node=>node.id===state.node))){
+  const first=graph.nodes.find(node=>node.id==='03'&&storyTree.canPlay(node))||graph.nodes.find(storyTree.canPlay);
+  state.node=first?.id;state.path=first?storyTree.choosePath(graph,first.id):[];state.scroll=0;
+ }
+ return state;
+}
+function storyProgressMarkup(node){
+ return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="node-progress-track" cx="22" cy="22" r="19"/><circle class="node-progress-fill" cx="22" cy="22" r="19" pathLength="100" stroke-dasharray="${node.progress} 100" transform="rotate(-90 22 22)"/></svg><span class="node-progress-value" aria-hidden="true">${node.progress}<small>%</small></span></span>`;
 }
 function storyDetailMarkup(node){
  const count=storyTree.create(activeChapter()).nodes.length;
- return `<div class="eyebrow">片段 ${node.id} / ${count}</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.explored?'已探索':'未探索'}</span></div><p>${node.description}</p>${button('从此处开始','restart-node','btn-small','play')}`;
+ return `<div class="eyebrow">片段 ${node.id} / ${count}</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.locked?'已锁定':'已探索'}</span><span class="node-detail-progress" aria-label="游玩进度 ${node.progress}%">${node.progress}%</span></div><p>${node.description}</p>${node.locked?`<button class="btn btn-small" data-action="restart-node" disabled aria-disabled="true">${icon('lock')}<span>尚未解锁</span></button>`:button('从此处开始','restart-node','btn-small','play')}`;
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
@@ -296,9 +305,9 @@ function treeView(){
  }).join('');
  const nodes=graph.nodes.map(node=>{
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
-  return `<div class="tree-node-cell" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.explored?'':'is-unexplored'}" data-story-node="${node.id}" aria-pressed="${active}" tabindex="${active?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.explored?'已探索':'未探索'}，可重玩"><img src="${node.cover}" alt="" draggable="false"><span class="node-selection" aria-hidden="true"></span><div class="node-info"><span class="node-number">${node.id}_</span><strong>${node.name}</strong></div></button></div>`;
+  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，游玩进度 ${node.progress}%，${node.locked?'未探索，已锁定':'已探索，可重玩'}"><img src="${node.cover}" alt="" draggable="false">${storyProgressMarkup(node)}${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong></div></button></div>`;
  }).join('');
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可横向滚动的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 9 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span><i class="legend-dot"></i> 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动或滚轮浏览</span></div>','<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可横向滚动的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 9 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动或滚轮浏览</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
 }
 function disposeStoryScroll(){
  treeScrollCleanup?.();treeScrollCleanup=null;treeRevealNode=null;treeViewportMove=null;
@@ -409,7 +418,7 @@ async function switchStoryDetail(node,request){
 function selectStoryNode(id,{focus=false}={}){
  if(currentPage!=='tree')return;
  const graph=storyTree.create(activeChapter()),node=graph.nodes.find(item=>item.id===id);
- if(!node)return;
+ if(!storyTree.canPlay(node))return;
  const state=currentStoryState();
  if(state.node===id){if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});treeRevealNode?.(id);return;}
  state.node=id;state.path=storyTree.choosePath(graph,id,state.path);
@@ -429,7 +438,8 @@ function selectStoryNode(id,{focus=false}={}){
 }
 function restartStoryNode(){
  const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===currentStoryState().node);
- openModal({title:'从这个片段重新开始？',message:`将进入第 ${activeChapter().number} 章 · 片段 ${node.id}「${node.name}」。当前进度会先保留。`,confirm:'开始片段',onConfirm:()=>{playbackStoryNode={...node,chapter:selectedChapter};go('gameplay');toast(`已进入片段 ${node.id} · ${node.name}`);}});
+ if(!storyTree.canPlay(node))return;
+ openModal({title:'从这个片段重新开始？',message:`将进入第 ${activeChapter().number} 章 · 片段 ${node.id}「${node.name}」。当前进度会先保留。`,confirm:'开始片段',onConfirm:()=>{if(!storyTree.canPlay(node))return;playbackStoryNode={...node,chapter:selectedChapter};go('gameplay');toast(`已进入片段 ${node.id} · ${node.name}`);}});
 }
 
 function saveView(){
