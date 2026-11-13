@@ -502,7 +502,7 @@ function affinityHearts(score){
  return `<span class="affinity-hearts" aria-hidden="true">${Array.from({length:6},(_,i)=>{const fill=Math.max(0,Math.min(1,score-i))*100;return `<span class="affinity-heart">${icon('heart')}<span class="affinity-heart-fill" data-fill="${fill}" style="width:${fill}%">${icon('heart')}</span></span>`;}).join('')}</span>`;
 }
 function affinityView(){
- const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-art" aria-hidden="true"><img src="assets/affinity-characters.png" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
+ const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-art" aria-hidden="true"><img src="assets/affinity-characters.png?v=affinity-page-20261113-r2" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
  return `${pageHeading('角色好感度',affinityReturnPage)}<section class="affinity-layout" aria-label="角色好感度">${cards}</section>${footer('','<span><span class="keycap">←</span><span class="keycap">→</span> 选择角色</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="affinity-announcement" role="status" aria-live="polite"></div>`;
 }
 function selectAffinity(index,{focus=false}={}){
@@ -516,7 +516,12 @@ function selectAffinity(index,{focus=false}={}){
 }
 function bindAffinity(){
  frame.dataset.affinityCharacter=AFFINITY_CHARACTERS[selectedAffinity].id;
- $$('.affinity-cell').forEach((cell,index)=>cell.querySelectorAll('.affinity-heart-fill').forEach((fill,heart)=>{if(Number(fill.dataset.fill)>0)animate(fill,[{width:'0%'},{width:fill.style.width}],{duration:620,delay:150+index*55+heart*22,easing:'cubic-bezier(.16,1,.3,1)'});}));
+ $$('.affinity-cell').forEach((cell,index)=>{
+  const image=cell.querySelector('.affinity-art img'),art=cell.querySelector('.affinity-art');
+  const reveal=()=>{if(image.isConnected)art.classList.add('is-ready');};
+  if(image.complete&&image.naturalWidth)reveal();else image.addEventListener('load',reveal,{once:true});
+  cell.querySelectorAll('.affinity-heart-fill').forEach((fill,heart)=>{if(Number(fill.dataset.fill)>0)animate(fill,[{width:'0%'},{width:fill.style.width}],{duration:620,delay:150+index*55+heart*22,easing:'cubic-bezier(.16,1,.3,1)'});});
+ });
 }
 function settingsView(){
  return `${pageHeading('设置',previousPage==='pause'?'pause':'home','SETTINGS')}

@@ -84,7 +84,9 @@
     "entryStaggerMs": 55,
     "heartRevealMs": 620,
     "selectionHandoffMs": 400,
-    "selectedDust": "motion-spec.json common.selectedDust"
+    "selectedDust": "motion-spec.json common.selectedDust",
+    "portraitRevealOnLoadMs": 700,
+    "portraitLoadAware": true
   },
   "verification": {
     "fiveCharactersLoaded": true,
