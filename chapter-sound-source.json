@@ -4,8 +4,8 @@
   "sourceFile": "assets/audio/ui-hover.wav",
   "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
   "fundamentalHz": 196,
-  "previousResonanceFundamentalHz": 293.665,
-  "processing": "Centred fundamental with a much weaker second harmonic; 100ms soft attack, one continuous quiet decay and a smooth end fade. No added reverb, delay, detuning, tremolo, noise or repeated segments.",
+  "previousResonanceFundamentalHz": 196,
+  "processing": "Existing 196 Hz centred resonance and weak second harmonic retained. 100ms soft attack, shorter 280ms decay constant and one smooth fade from 500ms to 1400ms. No added reverb, delay, detuning, tremolo, noise or repeated segments.",
   "renderScript": "scripts/extend_chapter_tail.py",
   "unusedPreviousSource": {
     "title": "Clothes Shaking Movement 6_18",

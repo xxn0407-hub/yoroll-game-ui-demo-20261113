@@ -1,7 +1,7 @@
 {
   "origin": "Existing interface palette; chapter activation derives a lower resonance from the same hover partials.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "chapter-low-resonance-20261113",
+  "revision": "chapter-short-resonance-20261113",
   "character": "Quiet, low resonant chapter selection with a continuous gentle tail.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
@@ -136,12 +136,12 @@
     },
     "chapter": {
       "file": "assets/audio/ui-chapter.wav",
-      "durationMs": 2400,
+      "durationMs": 1400,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.038726806640625,
+      "peak": 0.037811279296875,
       "rmsDbfs": -40.5,
-      "character": "A low, soft resonance at 196 Hz, with a continuous quiet decay and no added room reflections.",
+      "character": "The same 196 Hz low resonance, with a shorter, quieter tail that dissipates once.",
       "source": "assets/audio/ui-hover.wav",
       "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
       "sourceManifest": "chapter-sound-source.json",
@@ -149,9 +149,9 @@
         "fundamentalHz": 196,
         "upperHarmonicColourGain": 0.06,
         "attackMs": 100,
-        "decayTimeConstantMs": 500,
-        "endFadeStartMs": 1300,
-        "endFadeMs": 1100,
+        "decayTimeConstantMs": 280,
+        "endFadeStartMs": 500,
+        "endFadeMs": 900,
         "addedReverb": false,
         "addedDelay": false,
         "detuning": false,
@@ -165,7 +165,7 @@
         0
       ],
       "minFadeInMs": 100,
-      "fadeOutMs": 1100
+      "fadeOutMs": 900
     },
     "locked": {
       "file": "assets/audio/ui-hover.wav",

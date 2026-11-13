@@ -322,7 +322,7 @@
       "chapter wheel / trackpad scrolling"
     ],
     "visibility": "Stop voices and suspend audio while hidden; no stale sounds replayed.",
-    "revision": "chapter-low-resonance-20261113",
+    "revision": "chapter-short-resonance-20261113",
     "tailHandling": "Prior related tails duck to 28 percent with a 35ms smoothing constant; tails finish naturally.",
     "auditionStartSeconds": [
       0.06,
@@ -338,15 +338,17 @@
       "throttleMs": 220,
       "hoverTailGain": 0,
       "previousChapterTailGain": 0,
-      "durationMs": 2400,
+      "durationMs": 1400,
       "chapterRepeatLevel": 0.27,
-      "fadeOutMs": 1100,
-      "tailMode": "One low centred resonance with a continuous smooth decay; no added room reflections or modulation.",
+      "fadeOutMs": 900,
+      "tailMode": "The same low resonance with a shorter 280ms decay constant, fading once to silence.",
       "amplitudeModulation": false,
       "previousChapterFadeOutMs": 160,
       "hoverFadeOutMs": 120,
       "sourceManifest": "chapter-sound-source.json",
-      "fundamentalHz": 196
+      "fundamentalHz": 196,
+      "decayTimeConstantMs": 280,
+      "endFadeStartMs": 500
     },
     "entryRevision": "entry-autoplay-20261113",
     "masterMute": {

@@ -1,10 +1,10 @@
 {
-  "revision": "chapter-low-resonance-20261113",
-  "durationSeconds": 2.4,
+  "revision": "chapter-short-resonance-20261113",
+  "durationSeconds": 1.4,
   "fundamentalHz": 196,
   "measuredFundamentalHz": 195.993,
-  "previousResonanceFundamentalHz": 293.665,
-  "pitchChangeFromPreviousResonanceSemitones": -7.0,
+  "previousResonanceFundamentalHz": 196,
+  "pitchChangeFromPreviousResonanceSemitones": 0,
   "sourceManifest": "chapter-sound-source.json",
   "sourceType": "Local harmonic resynthesis of the existing interface cue",
   "sustainedOscillators": true,
@@ -12,7 +12,7 @@
   "addedDelay": false,
   "amplitudeModulation": false,
   "centredIdenticalChannels": true,
-  "peak": 0.038726806640625,
+  "peak": 0.037811279296875,
   "rmsDbfs": -40.5,
   "boundarySamples": [
     0,
@@ -27,5 +27,11 @@
   "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
   "renderScript": "scripts/extend_chapter_tail.py",
   "existingAudioFilesUnchanged": 10,
-  "audioLifecycleChecksPassed": 14
+  "audioLifecycleChecksPassed": 14,
+  "decayTimeConstantMs": 280,
+  "endFadeStartMs": 500,
+  "endFadeMs": 900,
+  "previousTailRmsDbfs750to1200ms": -45.98,
+  "tailRmsDbfs750to1200ms": -60.45,
+  "tailReductionDb": 14.47
 }

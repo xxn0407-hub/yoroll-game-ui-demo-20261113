@@ -8,7 +8,7 @@ import wave
 
 ROOT = Path(__file__).resolve().parents[1]
 RATE = 48000
-DURATION = 2.4
+DURATION = 1.4
 FUNDAMENTAL = 587.33
 PITCH_RATIO = 196.0 / FUNDAMENTAL
 TARGET_RMS_DBFS = -40.5
@@ -62,8 +62,8 @@ def continuous_tail(source):
     frames = []
     for index in range(round(DURATION * RATE)):
         time = index / RATE
-        envelope = smooth(time / .1) * math.exp(-time / .5)
-        envelope *= 1 - smooth((time - 1.3) / 1.1)
+        envelope = smooth(time / .1) * math.exp(-time / .28)
+        envelope *= 1 - smooth((time - .5) / .9)
         pair = [0., 0.]
         for frequency, coefficients in partials:
             phase = 2 * math.pi * frequency * (time + .085)
@@ -85,7 +85,7 @@ def main():
     source = read_pcm(source_path)
     frames = continuous_tail(source)
     write_pcm(ROOT / 'assets/audio/ui-chapter.wav', frames)
-    audition = [[0., 0.] for _ in range(round(3.0 * RATE))]
+    audition = [[0., 0.] for _ in range(round(2.0 * RATE))]
     for clip, at, level in [(source, .10, .5 * .48), (frames, .37, .5 * .44)]:
         for index, pair in enumerate(clip):
             target = round(at * RATE) + index
@@ -94,12 +94,12 @@ def main():
                 audition[target][channel] += pair[channel] * level * blend
     write_pcm(ROOT / 'chapter-sound-preview.wav', audition)
     rms = math.sqrt(sum(a * a + b * b for a, b in frames) / (len(frames) * 2))
-    tail = frames[round(1.28 * RATE):round(2.3 * RATE)]
+    tail = frames[round(.75 * RATE):round(1.2 * RATE)]
     tail_rms = math.sqrt(sum(a * a + b * b for a, b in tail) / (len(tail) * 2))
     print(json.dumps({'durationSeconds': DURATION, 'fundamentalHz': FUNDAMENTAL * PITCH_RATIO,
                       'peak': max(abs(v) for pair in frames for v in pair),
                       'rmsDbfs': round(20 * math.log10(rms), 2),
-                      'tailRmsDbfs1280to2300ms': round(20 * math.log10(tail_rms), 2),
+                      'tailRmsDbfs750to1200ms': round(20 * math.log10(tail_rms), 2),
                       'sourceSha256': hashlib.sha256(source_path.read_bytes()).hexdigest()}))
 
 
