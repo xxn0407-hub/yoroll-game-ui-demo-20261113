@@ -1,8 +1,8 @@
 {
-  "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
+  "origin": "Original interface palette with a CC0 natural cloth-air cue for chapter activation.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "chapter-low-soft-20261113",
-  "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
+  "revision": "chapter-dry-close-20261113",
+  "character": "A gentle, restrained interface palette; chapter activation uses a close, dry natural texture.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
   "assets": {
@@ -136,40 +136,37 @@
     },
     "chapter": {
       "file": "assets/audio/ui-chapter.wav",
-      "durationMs": 2800,
+      "durationMs": 1200,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.046661376953125,
-      "rmsDbfs": -39.33,
-      "character": "One warm, low, centred sustain. An octave lower, bright partials restrained, with identical channel phase and a quieter, closer continuous decay.",
-      "source": "assets/audio/ui-hover.wav",
-      "sourcePcmSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+      "peak": 0.033447265625,
+      "rmsDbfs": -40.5,
+      "character": "A close, very soft cloth-air movement with a continuous natural fade. The sustained bell-like oscillator is removed; no added reverb, echo, or tonal tail.",
+      "source": "assets/audio/sources/Clothes Shaking Movement 6_18.mp3",
       "processing": {
-        "sourceFitStartMs": 85,
-        "sourceFitWindowMs": 200,
+        "naturalSourcePlaybackRate": 0.5,
+        "highpassHz": 180,
+        "lowpassHz": 1600,
+        "nonResonantFilters": true,
         "attackMs": 75,
-        "fixedPartialsHz": [
-          293.665,
-          587.33
-        ],
-        "pitchModulation": false,
-        "amplitudeModulation": false,
-        "echoFeedback": false,
+        "releaseStartMs": 270,
+        "addedReverb": false,
+        "addedDelay": false,
+        "syntheticOscillators": false,
         "repeatedAudioSegments": false,
-        "decayTimeConstantSeconds": 0.55,
-        "addedNoise": false,
-        "renderScript": "scripts/extend_chapter_tail.py",
-        "pitchShiftSemitones": -12,
-        "upperPartialGain": 0.15,
+        "addedSyntheticNoise": false,
+        "transientSoftening": "Memoryless soft-knee rounding of isolated cloth crackles.",
         "stereoWidth": 0,
-        "identicalChannels": true
+        "renderScript": "scripts/extend_chapter_tail.py"
       },
       "boundarySamples": [
         0,
         0
       ],
       "minFadeInMs": 75,
-      "fadeOutMs": 1050
+      "fadeOutMs": 774,
+      "sourceSha256": "d68be023ad03d02fd42f163231f764f3ccaba12136259dab6ca50e060c27f04c",
+      "sourceManifest": "chapter-sound-source.json"
     },
     "locked": {
       "file": "assets/audio/ui-hover.wav",
@@ -201,8 +198,7 @@
     "masterTimesSfx": true,
     "firstGestureRequired": "Only when browser blocks audible autoplay.",
     "noSoundOnDrag": true,
-    "chapterHoverTailGain": 0.3,
-    "chapterHoverBlendTimeConstantMs": 90,
+    "chapterHoverTailGain": 0,
     "chapterPreviousTailGain": 0,
     "chapterLevel": 0.44,
     "chapterRepeatLevel": 0.27,
@@ -219,7 +215,8 @@
     "lockedHoverThrottleMs": 650,
     "lockedHoverLevel": 0.44,
     "lockedDuringDrag": false,
-    "chapterPreviousFadeOutMs": 160
+    "chapterPreviousFadeOutMs": 160,
+    "chapterHoverFadeOutMs": 120
   },
   "eventMap": {
     "hover": "Control focus",
@@ -230,7 +227,7 @@
     "open": "Modal opening",
     "confirm": "Confirmation",
     "success": "QTE success",
-    "chapter": "Chapter activation; a low, soft, centred sustain with no tremolo or distinct echo.",
+    "chapter": "Chapter activation and keyboard story selection; a soft, close cloth-air cue without sustained resonance.",
     "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive."
   },
   "backgroundMusic": "music-spec.json",

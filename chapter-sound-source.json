@@ -1,0 +1,13 @@
+{
+  "title": "Clothes Shaking Movement 6_18",
+  "author": "Joao_Janz",
+  "platform": "Freesound",
+  "pageUrl": "https://freesound.org/people/Joao_Janz/sounds/493477/",
+  "license": "CC0 1.0",
+  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/",
+  "downloadUrl": "https://cdn.freesound.org/previews/493/493477_9961300-hq.mp3",
+  "sourceFile": "assets/audio/sources/Clothes Shaking Movement 6_18.mp3",
+  "sourceSha256": "d68be023ad03d02fd42f163231f764f3ccaba12136259dab6ca50e060c27f04c",
+  "sourceDescription": "A natural cloth movement recording; source author reports a Tascam DR-40 recording and gentle filtering/denoising.",
+  "processing": "Half-speed resampling, non-resonant high/low-pass filtering, centred channels and one gentle fade. No oscillator, musical note, reverb or feedback."
+}

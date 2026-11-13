@@ -321,7 +321,7 @@
       "chapter wheel / trackpad scrolling"
     ],
     "visibility": "Stop voices and suspend audio while hidden; no stale sounds replayed.",
-    "revision": "chapter-low-soft-20261113",
+    "revision": "chapter-dry-close-20261113",
     "tailHandling": "Prior related tails duck to 28 percent with a 35ms smoothing constant; tails finish naturally.",
     "auditionStartSeconds": [
       0.06,
@@ -331,20 +331,20 @@
     "chapterSelection": {
       "cue": "chapter",
       "attackMs": 75,
-      "sameSourceAsHover": true,
+      "sameSourceAsHover": false,
       "chapterLevel": 0.44,
       "hoverLevel": 0.48,
       "throttleMs": 220,
-      "hoverTailGain": 0.3,
-      "hoverBlendTimeConstantMs": 90,
+      "hoverTailGain": 0,
       "previousChapterTailGain": 0,
-      "durationMs": 2800,
+      "durationMs": 1200,
       "chapterRepeatLevel": 0.27,
-      "fadeOutMs": 1050,
-      "tailMode": "Low, centred continuous decay. Earlier chapter voices crossfade to silence to prevent echoes.",
+      "fadeOutMs": 774,
+      "tailMode": "A close natural cloth-air fade without sustained oscillators or added room reflections.",
       "amplitudeModulation": false,
-      "pitchShiftSemitones": -12,
-      "previousChapterFadeOutMs": 160
+      "previousChapterFadeOutMs": 160,
+      "hoverFadeOutMs": 120,
+      "sourceManifest": "chapter-sound-source.json"
     },
     "entryRevision": "entry-autoplay-20261113",
     "masterMute": {
