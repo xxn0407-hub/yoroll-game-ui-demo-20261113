@@ -1,0 +1,37 @@
+{
+  "revision": "tree-locked-hover-20261113",
+  "verifiedAt": "2026-11-13T07:22:53.029Z",
+  "before": {
+    "counts": "{}",
+    "muted": "true",
+    "state": "locked"
+  },
+  "locked": {
+    "active": "true",
+    "counts": "{\"locked\":1}",
+    "cue": "locked",
+    "hovered": true,
+    "scrolling": "ready"
+  },
+  "normal": {
+    "counts": "{\"locked\":1,\"hover\":1}",
+    "cue": "hover"
+  },
+  "drag": {
+    "counts": "{\"locked\":1,\"hover\":1}",
+    "page": "tree",
+    "selected": "03"
+  },
+  "muted": {
+    "counts": "{}",
+    "hovered": true,
+    "locked": 22,
+    "muted": "true"
+  },
+  "initialLocalMuteRestored": true,
+  "checks": {
+    "targetedHoverChecksPassed": 7,
+    "existingAudioLifecycleChecksPassed": 14,
+    "script": "scripts/verify_locked_hover.mjs"
+  }
+}

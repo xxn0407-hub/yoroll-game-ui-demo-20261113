@@ -1,7 +1,7 @@
 {
   "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "chapter-ethereal-20261113",
+  "revision": "tree-locked-hover-20261113",
   "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
@@ -157,6 +157,16 @@
       ],
       "minFadeInMs": 75,
       "fadeOutMs": 1120
+    },
+    "locked": {
+      "file": "assets/audio/ui-select.wav",
+      "sourceDurationMs": 480,
+      "durationMs": 571,
+      "playbackRate": 0.84,
+      "sampleRate": 48000,
+      "channels": 2,
+      "character": "A quieter, lower diffuse air closure for unavailable story fragments; no buzzer, new musical note, or sharp transient.",
+      "sharedSourceWith": "select"
     }
   },
   "sourceQuality": {
@@ -192,7 +202,11 @@
       "splash",
       "home",
       "cover"
-    ]
+    ],
+    "lockedHoverIntentMs": 110,
+    "lockedHoverThrottleMs": 650,
+    "lockedHoverLevel": 0.44,
+    "lockedDuringDrag": false
   },
   "eventMap": {
     "hover": "Control focus",
@@ -203,7 +217,8 @@
     "open": "Modal opening",
     "confirm": "Confirmation",
     "success": "QTE success",
-    "chapter": "Chapter activation; same timbre as hover, no stepped pitch or hard attack"
+    "chapter": "Chapter activation; same timbre as hover, no stepped pitch or hard attack",
+    "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive."
   },
   "backgroundMusic": "music-spec.json",
   "entryRevision": "entry-autoplay-20261113",

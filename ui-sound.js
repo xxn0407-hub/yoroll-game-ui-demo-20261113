@@ -1,8 +1,8 @@
 'use strict';
 // Short original PCM assets; all playback stays local to this prototype.
 window.YorollSound = (() => {
- const revision = 'chapter-ethereal-20261113';
- const names = ['hover','click','select','chapter','back','transition','open','confirm','success'];
+ const revision = 'tree-locked-hover-20261113';
+ const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
  const lastPlayed = new Map();
@@ -18,7 +18,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name}.wav?v=${revision}`)
+ const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'select':name}.wav?v=${revision}`)
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
@@ -176,7 +176,7 @@ window.YorollSound = (() => {
  function play(name,{level=1,delay=0,sequence=false,throttle}={}){
   if(!names.includes(name)||!activated||!available||muted||volume===0||!isActive())return false;
   const requested=performance.now();
-  const interval=throttle??(name==='hover'?180:name==='transition'?220:55);
+  const interval=throttle??(name==='locked'?650:name==='hover'?180:name==='transition'?220:55);
   if(requested-(lastPlayed.get(name)??-Infinity)<interval)return false;
   if(!sequence&&name==='transition'&&['confirm','open','success'].some(cue=>requested-(lastPlayed.get(cue)??-Infinity)<180))return false;
   lastPlayed.set(name,requested);
@@ -184,7 +184,7 @@ window.YorollSound = (() => {
   const run=()=>{
    if(!context||context.state!=='running'||muted||volume===0||!isActive()||!buffers.has(name))return false;
    if(performance.now()-requested>200)return false; // Never replay stale interactions after a slow load.
-   const channel=name==='hover'?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':name==='success'?'result':'control';
+   const channel=['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':name==='success'?'result':'control';
    if(!sequence){
     previewId++;
     for(const voice of voices){
@@ -197,6 +197,8 @@ window.YorollSound = (() => {
    const active=[...voices].filter(voice=>!voice.stopping);
    if(active.length>=6)stopVoice(active[0]);
    const source=context.createBufferSource();source.buffer=buffers.get(name);
+   // A softer, lower air closure signals an unavailable interaction.
+   if(name==='locked')source.playbackRate.value=.84;
    const gain=context.createGain();gain.gain.value=Math.max(0,Math.min(1,level));
    source.connect(gain);gain.connect(output);
    const voice={source,gain,channel,sequence,stopping:false,ducked:false};voices.add(voice);

@@ -660,7 +660,7 @@ const actions={
 let keyboardFocusSound=false;
 let hoverSoundTimer=0;
 let hoveredSoundControl=null;
-const soundControl=target=>target.closest('button,a,input[type="range"]');
+const soundControl=target=>target.closest('.tree-node-cell.is-locked')||target.closest('button,a,input[type="range"]');
 const hoverLevel=control=>control.matches('.chapter-card,.tree-node') ? .48 : .68;
 function cancelPendingHover(){clearTimeout(hoverSoundTimer);hoverSoundTimer=0;hoveredSoundControl=null;}
 document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPendingHover();},{capture:true});
@@ -670,9 +670,15 @@ document.addEventListener('pointerover',event=>{
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||event.buttons||control.contains(event.relatedTarget)||$('.chapter-strip.is-dragging,.tree-viewport.is-dragging'))return;
  if(control.closest('#screen')&&frame.dataset.entryState!=='ready')return;
  if(control.closest('.chapter-strip')&&performance.now()<ignoreChapterClickUntil)return;
- if(control.closest('.tree-viewport')&&performance.now()<ignoreStoryHoverUntil)return;
+ if(control.closest('.tree-viewport')&&(performance.now()<ignoreStoryHoverUntil||frame.dataset.treePanState!=='ready'))return;
+ const locked=control.matches('.tree-node-cell.is-locked');
  cancelPendingHover();hoveredSoundControl=control;
- hoverSoundTimer=setTimeout(()=>{hoverSoundTimer=0;if(hoveredSoundControl===control&&control.isConnected&&control.matches(':hover')&&!document.hidden)uiSound.play('hover',{level:hoverLevel(control)});},70);
+ hoverSoundTimer=setTimeout(()=>{
+  hoverSoundTimer=0;
+  if(hoveredSoundControl!==control||!control.isConnected||!control.matches(':hover')||document.hidden)return;
+  if(control.closest('.tree-viewport')&&(performance.now()<ignoreStoryHoverUntil||frame.dataset.treePanState!=='ready'||$('.tree-viewport.is-dragging')))return;
+  uiSound.play(locked?'locked':'hover',{level:locked?.44:hoverLevel(control),throttle:locked?650:180});
+ },locked?110:70);
 });
 document.addEventListener('pointerout',event=>{if(hoveredSoundControl&&hoveredSoundControl.contains(event.target)&&!hoveredSoundControl.contains(event.relatedTarget))cancelPendingHover();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelPendingHover();});
