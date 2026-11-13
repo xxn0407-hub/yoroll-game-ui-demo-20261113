@@ -121,22 +121,24 @@
 .game-frame[data-page="saves"]{overflow:clip}
 .saves-layout{left:50%;right:auto;width:min(calc(100% - var(--safe)*2),calc(var(--p)*1480));translate:-50% 0}
 .saves-grid{display:flex;align-items:center}
-.save-shell{display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
+.save-shell{isolation:isolate;display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
 .save-shell.is-active{flex-grow:1.18}
-/* Larger save cards use denser, clearer dust with the story tree's soft palette. */
-.save-dust{top:calc(var(--p)*18)}
-.save-dust i{background:#eef1da;box-shadow:0 0 calc(var(--p)*5) #e1edcdb3,0 0 calc(var(--p)*11) #dfeacd26;animation-name:save-dust-drift}
-@keyframes save-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*6),0) scale(.82)}20%{opacity:.52}50%{opacity:.84}80%{opacity:.4}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)),calc(var(--p)*var(--dust-rise)),0) scale(1)}}
+/* Dust stays behind the card; soft distant motes add depth without covering the artwork. */
+.save-dust{top:calc(var(--p)*18);z-index:0}
+.save-dust i{--dust-strength:.65;--dust-spread:1;--dust-drift-scale:1;width:calc(var(--p)*var(--dust-size)*var(--dust-spread));height:calc(var(--p)*var(--dust-size)*var(--dust-spread));background:#e5ebda;box-shadow:0 0 calc(var(--p)*4) #dce8cf40;filter:blur(calc(var(--p)*.25));animation-name:save-dust-drift}
+.save-dust i:nth-child(3n + 2){--dust-strength:.43;--dust-spread:1.2;--dust-drift-scale:.85;filter:blur(calc(var(--p)*.8));animation-duration:calc(var(--dust-duration)*1.15)}
+.save-dust i:nth-child(3n){--dust-strength:.24;--dust-spread:1.65;--dust-drift-scale:.65;filter:blur(calc(var(--p)*1.8));animation-duration:calc(var(--dust-duration)*1.4)}
+@keyframes save-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*6),0) scale(.82)}20%{opacity:calc(.4*var(--dust-strength))}50%{opacity:calc(.66*var(--dust-strength))}80%{opacity:calc(.25*var(--dust-strength))}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)*var(--dust-drift-scale)),calc(var(--p)*var(--dust-rise)*var(--dust-drift-scale)),0) scale(1)}}
 .save-shell.is-active>.save-dust{opacity:1}
 .save-shell.is-active>.save-dust i{animation-play-state:running;will-change:transform,opacity}
 .game-frame[data-entry-state="entering"] .save-dust i{animation-play-state:paused}
-.save-meta{height:calc(var(--p)*32);margin-bottom:calc(var(--p)*12);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--p)*12)}
+.save-meta{position:relative;z-index:2;height:calc(var(--p)*32);margin-bottom:calc(var(--p)*12);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--p)*12)}
 .save-date{display:flex;align-items:center;gap:calc(var(--p)*10);font-size:calc(var(--p)*14);line-height:1.3;color:#aab7ad;white-space:nowrap}
 .save-date:before{content:"";width:1px;height:calc(var(--p)*15);background:#d5ded0b3}
 .save-date>span{color:#8f9e94;font-size:calc(var(--p)*13);font-variant-numeric:tabular-nums}
 .save-meta .delete-save{position:static;flex:none;opacity:1;color:#a1afa5;background:none;border:0;transition:color .2s,filter .2s}
 .save-meta .delete-save:hover{color:#e2b6ac;filter:drop-shadow(0 0 3px #e2b6ac40)}
-.save-shell>.save-card{flex:none;height:auto;aspect-ratio:477/402;min-height:0;background:#0b1218b3;border-color:#c3d0c72b;isolation:isolate}
+.save-shell>.save-card{z-index:1;flex:none;height:auto;aspect-ratio:477/402;min-height:0;background:#0b1218;border-color:#c3d0c72b;isolation:isolate}
 @property --save-float-amount{syntax:"<number>";inherits:false;initial-value:0}
 .save-card{--save-float-amount:0;translate:0 0;animation:save-selected-float 6.4s ease-in-out infinite;transition:transform .4s var(--ease),border-color .25s,background .25s,box-shadow .4s,--save-float-amount .7s var(--soft)}
 .save-card.selected{--save-float-amount:1}

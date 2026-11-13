@@ -1,5 +1,5 @@
 {
-  "revision": "saves-dust-visible-20261113",
+  "revision": "saves-dust-depth-20261113",
   "checkedAt": "2026-11-13T11:02:37.562590+00:00",
   "sourceUrl": "https://preview.game.yoroll.ai/?config=Race&test=1&lang=zh",
   "sourceScreenshot": "comparison/before/07-saves.jpg",
@@ -55,10 +55,12 @@
     "unselectedFloatSettlesToZero": true,
     "particleMotionObserved": true,
     "particleSelectionHandoffVerified": true,
-    "inactiveParticlesPausedAndHidden": true
+    "inactiveParticlesPausedAndHidden": true,
+    "particlesBehindCardVerified": true,
+    "particleDepthLayersVerified": true
   },
   "sourceInteraction": "Read-only visual inspection and hover; no save creation, switching or deletion in the online game.",
-  "updatedAt": "2026-11-13T14:41:45.093904+00:00",
+  "updatedAt": "2026-11-13T14:54:16.491Z",
   "rowAlignment": "center",
   "centerOffsetPx": -3.0517578125e-05,
   "measuredFrameWidth": 1156.666748046875,
@@ -80,10 +82,37 @@
     "hiddenUnderReducedMotion": true,
     "sizeRangePxAt1920": [
       2.5,
-      3.8
+      6.3
     ],
-    "peakOpacity": 0.84,
+    "peakOpacity": 0.429,
     "observedRunningCount": 24,
-    "observedVisibleCount": 19
+    "placement": "behind card",
+    "depthLayers": [
+      {
+        "name": "near",
+        "count": 8,
+        "peakOpacity": 0.429,
+        "sizeFactor": 1,
+        "blurPxAt1920": 0.25,
+        "durationFactor": 1
+      },
+      {
+        "name": "middle",
+        "count": 8,
+        "peakOpacity": 0.2838,
+        "sizeFactor": 1.2,
+        "blurPxAt1920": 0.8,
+        "durationFactor": 1.15
+      },
+      {
+        "name": "far",
+        "count": 8,
+        "peakOpacity": 0.1584,
+        "sizeFactor": 1.65,
+        "blurPxAt1920": 1.8,
+        "durationFactor": 1.4
+      }
+    ],
+    "cardBackingOpaque": true
   }
 }
