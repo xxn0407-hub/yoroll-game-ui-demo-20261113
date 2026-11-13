@@ -42,14 +42,35 @@ check('Directional navigation follows connected nodes and the chosen return rout
  assert.equal(tree.nextNode(graph,'03','ArrowUp'),'02');
  assert.equal(tree.nextNode(graph,'03','ArrowDown'),'04');
  assert.equal(tree.nextNode(graph,'02','ArrowUp'),'02');
- assert.equal(tree.nextNode(graph,'07','ArrowRight'),'07');
+ assert.equal(tree.nextNode(graph,'19','ArrowRight'),'19');
  assert.equal(tree.nextNode(graph,'04','Home'),'01');
- assert.equal(tree.nextNode(graph,'02','End'),'07');
+ assert.equal(tree.nextNode(graph,'02','End'),'19');
 });
 check('Each chapter gets fresh preview data and keeps its own main fragment',()=>{
  const other=tree.create({name:'另一个章节',cover:'other.webp'});
  assert.equal(other.nodes.find(n=>n.id==='03').name,'另一个章节');
  assert.equal(graph.nodes.find(n=>n.id==='03').name,'当前章节');
  assert.equal(other.nodes.find(n=>n.id==='03').cover,'other.webp');
+});
+check('Extended branches stay connected through later merges and endings',()=>{
+ assert.equal(graph.nodes.length,19);
+ const before=tree.choosePath(graph,'16');
+ const merged=tree.choosePath(graph,'18',before);
+ assert.equal(merged.slice(-2).join('>'),'16>18');
+ let current='03';
+ for(let i=0;i<5;i++)current=tree.nextNode(graph,current,'ArrowRight');
+ assert.equal(current,'18');
+});
+check('Reveal keeps visible nodes steady and brings offscreen nodes fully into view',()=>{
+ const first=graph.nodes[0],last=graph.nodes.at(-1);
+ assert.equal(tree.revealOffset(graph.nodes.find(n=>n.id==='03'),1257,0),0);
+ for(const node of graph.nodes){
+  const left=tree.revealOffset(node,1257,0);
+  assert(left>=0&&left<=tree.layout.width-1257);
+  assert(node.x>=left&&node.x+tree.layout.nodeWidth<=left+1257);
+ }
+ assert.equal(tree.revealOffset(first,1257,tree.layout.width-1257),0);
+ assert.equal(tree.revealOffset(last,340,0),last.x);
+ assert.equal(tree.revealOffset(last,tree.layout.width,0),0);
 });
 console.log(JSON.stringify({passed:checks.length,checks},null,2));

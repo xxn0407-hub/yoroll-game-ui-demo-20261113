@@ -85,7 +85,13 @@
       "detailEntry": 420,
       "latestSelectionWins": true,
       "selectionPerChapter": true,
-      "reducedMotion": "Selections, routes and details update immediately."
+      "reducedMotion": "Selections, routes and details update immediately.",
+      "entryColumnStaggerLimit": 2,
+      "panDuration": 440,
+      "wheelPanDuration": 280,
+      "dragReleaseDuration": 500,
+      "scrollPersistencePerChapter": true,
+      "detailColumnFixed": true
     }
   },
   "pages": [
@@ -121,8 +127,8 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "节点按列以 85ms 错峰、680ms 轻浮入场；连线 650ms 展开。点选即时切换边框，新路线用 540ms 描绘，右侧信息 100ms 淡出、420ms 轻落位。快速切换以最后选择为准。",
-      "interaction": "七个节点均可点击；方向键沿连接或在同列切换，Home / End 到首尾，Enter 打开所选片段的重玩确认。汇合保留最近选择的路线；各章节独立保留节点，返回后恢复。重玩进入对应片段的本地场景与标题预览。"
+      "motion": "节点与连线保留柔和入场；画面外节点随选择以 440ms 平滑带入。鼠标拖动后以 500ms 衰减停住，滚轮平移约 280ms；右侧信息 100ms 淡出、420ms 落位，快速操作以最后选择为准。",
+      "interaction": "十九个节点均可点击。支持鼠标拖动、滚轮、触控板和原生滚动条浏览；方向键选择后自动确保节点可见，Home / End 到首尾，PageUp / PageDown 浏览，Enter 重玩确认。拖动不会误选节点；各章节独立保留选中项、路线与滚动位置。"
     },
     {
       "id": "saves",

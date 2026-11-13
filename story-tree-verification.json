@@ -1,177 +1,75 @@
 {
-  "revision": "story-branches-20261113",
-  "layout": {
-    "checks": {
-      "all16by9": true,
-      "approvedWidth": true,
-      "besideDetail": true,
-      "eightLinks": true,
-      "insideGraph": true,
-      "noOverlap": true,
-      "sevenNodes": true
-    },
+  "revision": "story-scroll-20261113",
+  "baseline": {
+    "clientWidth": 758,
     "detail": {
-      "height": 204.81771850585935,
-      "width": 240.9635467529297,
-      "x": 863.654541015625,
-      "y": 423.1684265136719
+      "height": 204.8828125,
+      "width": 241.0390625,
+      "x": 863.8984375,
+      "y": 423.25
     },
-    "edges": 8,
+    "edges": 28,
     "frame": {
-      "height": 650.6250610351562,
-      "width": 1156.666748046875,
+      "height": 650.8125,
+      "width": 1157,
       "x": 0,
-      "y": 178.57640075683594
+      "y": 178.59375
     },
-    "graph": {
-      "height": 436.1719055175781,
-      "width": 757.3958740234375,
-      "x": 52.048614501953125,
-      "y": 307.4913330078125
+    "node": {
+      "height": 115.2421875,
+      "width": 204.8828125,
+      "x": 64.109375,
+      "y": 468.0625
     },
-    "nodes": [
-      {
-        "height": 115.20833587646484,
-        "id": "01",
-        "width": 204.81771850585935,
-        "x": 72.29167175292969,
-        "y": 467.9687805175781
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "02",
-        "width": 204.81771850585935,
-        "x": 328.3246765136719,
-        "y": 321.9531555175781
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "03",
-        "width": 204.81771850585935,
-        "x": 328.3246765136719,
-        "y": 467.9687805175781
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "04",
-        "width": 204.81771850585935,
-        "x": 328.3246765136719,
-        "y": 613.9757080078125
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "05",
-        "width": 204.81771850585935,
-        "x": 584.357666015625,
-        "y": 321.9531555175781
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "06",
-        "width": 204.81771850585935,
-        "x": 584.357666015625,
-        "y": 467.9687805175781
-      },
-      {
-        "height": 115.20833587646484,
-        "id": "07",
-        "width": 204.81771850585935,
-        "x": 584.357666015625,
-        "y": 613.9757080078125
-      }
-    ]
-  },
-  "merge": {
-    "ready": "ready",
-    "route": [
-      "01-04",
-      "04-06"
-    ],
-    "selected": "06",
-    "title": "赛道汇合"
-  },
-  "keyboardReturn": {
-    "focused": "04",
-    "selected": "04"
-  },
-  "rapid": {
-    "detailOpacity": "1",
-    "route": [
-      "01-04",
-      "04-07"
-    ],
-    "selected": "07",
-    "selectedCount": 1,
-    "title": "远港灯火",
-    "transition": "ready"
-  },
-  "replay": {
-    "hud": "第 1 章 · 片段 07 · 远港灯火",
-    "image": "assets/chapter-harbor.webp"
-  },
-  "returnFromGameplay": {
-    "selected": "07",
-    "title": "远港灯火"
-  },
-  "chapterIsolation": {
-    "chapter": "CHAPTER 02",
+    "nodes": 19,
+    "scrollLeft": 0,
+    "scrollWidth": 1766,
     "selected": "03",
-    "title": "雨夜出发"
-  },
-  "restoredChapter": {
-    "selected": "07",
-    "title": "远港灯火"
-  },
-  "allSelections": [
-    {
-      "id": "01",
-      "route": [],
-      "title": "整装待发"
-    },
-    {
-      "id": "02",
-      "route": [
-        "01-02"
-      ],
-      "title": "雨夜近道"
-    },
-    {
-      "id": "04",
-      "route": [
-        "01-04"
-      ],
-      "title": "港口支线"
-    },
-    {
-      "id": "05",
-      "route": [
-        "01-02",
-        "02-05"
-      ],
-      "title": "山路出口"
-    },
-    {
-      "id": "06",
-      "route": [
-        "01-03",
-        "03-06"
-      ],
-      "title": "赛道汇合"
-    },
-    {
-      "id": "07",
-      "route": [
-        "01-04",
-        "04-07"
-      ],
-      "title": "远港灯火"
-    },
-    {
-      "id": "03",
-      "route": [
-        "01-03"
-      ],
-      "title": "起跑之前"
+    "viewport": {
+      "height": 477.2578125,
+      "width": 757.6015625,
+      "x": 52.0625,
+      "y": 288.265625
     }
-  ]
+  },
+  "verticalWheel": {
+    "detail": {
+      "height": 204.8828125,
+      "width": 241.0390625,
+      "x": 863.8984375,
+      "y": 423.25
+    },
+    "maximum": 1008,
+    "scroll": 1008,
+    "selected": "03",
+    "title": "起跑之前"
+  },
+  "drag": {
+    "dragging": false,
+    "scroll": 428,
+    "selected": "03"
+  },
+  "keyboardEnd": {
+    "detailX": 863.8984375,
+    "detailY": 423.25,
+    "nodeHeight": 115.2421875,
+    "nodeWidth": 204.8828125,
+    "scroll": 1007.5,
+    "selected": "19",
+    "title": "灯火尽头",
+    "visible": true
+  },
+  "returnState": {
+    "scroll": 1007.5,
+    "selected": "19",
+    "title": "灯火尽头"
+  },
+  "keyboardHome": {
+    "scroll": 0,
+    "selected": "01"
+  },
+  "horizontalWheel": {
+    "scroll": 347,
+    "selected": "01"
+  }
 }

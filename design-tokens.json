@@ -262,16 +262,22 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "story-branches-20261113",
+    "revision": "story-scroll-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
       191.25
     ],
-    "columns": 3,
-    "nodes": 7,
+    "columns": 7,
+    "nodes": 19,
     "columnGapPx": 85,
     "rowGapPx": 51.125,
-    "preserveApprovedUiScale": true
+    "preserveApprovedUiScale": true,
+    "boardSizePx": [
+      2930,
+      724
+    ],
+    "horizontalScroll": true,
+    "fixedDetailColumn": true
   }
 }

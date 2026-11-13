@@ -119,6 +119,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
  return animate(element,[{opacity:0,transform:`translate3d(${x}px,${y}px,0) scale(${scale})`,filter:`blur(${blur}px)`},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0px)'}],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)'});
 }
 function cancelPageMotion(){
+ disposeStoryScroll();
  treeSwitchId++;treeDetailMotion=null;treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
  enterAnimations.clear();
@@ -273,12 +274,15 @@ const storyStates = new Map();
 let treeSwitchId = 0;
 let treeDetailMotion = null;
 const treeRouteMotions = new Map();
+let treeScrollCleanup=null,treeRevealNode=null,treeViewportMove=null;
+let ignoreStoryClickUntil=0,ignoreStoryHoverUntil=0;
 function currentStoryState(){
- if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03']});
+ if(!storyStates.has(selectedChapter))storyStates.set(selectedChapter,{node:'03',path:['01','03'],scroll:0});
  return storyStates.get(selectedChapter);
 }
 function storyDetailMarkup(node){
- return `<div class="eyebrow">片段 ${node.id} / 07</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.explored?'已探索':'未探索'}</span></div><p>${node.description}</p>${button('从此处开始','restart-node','btn-small','play')}`;
+ const count=storyTree.create(activeChapter()).nodes.length;
+ return `<div class="eyebrow">片段 ${node.id} / ${count}</div><h2>${node.name}</h2><div class="tree-node-meta"><span>${node.route}</span><span>${node.explored?'已探索':'未探索'}</span></div><p>${node.description}</p>${button('从此处开始','restart-node','btn-small','play')}`;
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
@@ -294,7 +298,82 @@ function treeView(){
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
   return `<div class="tree-node-cell" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.explored?'':'is-unexplored'}" data-story-node="${node.id}" aria-pressed="${active}" tabindex="${active?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.explored?'已探索':'未探索'}，可重玩"><img src="${node.cover}" alt="" draggable="false"><span class="node-selection" aria-hidden="true"></span><div class="node-info"><span class="node-number">${node.id}_</span><strong>${node.name}</strong></div></button></div>`;
  }).join('');
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-board"><div class="tree-column-label" style="--column-x:20">起点</div><div class="tree-column-label" style="--column-x:445">分支</div><div class="tree-column-label" style="--column-x:870">汇合 / 结局</div><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 4 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span><i class="legend-dot"></i> 未探索</span><span><i class="legend-route"></i> 当前路线</span></div>','<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可横向滚动的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width}">${['起点','分支','交汇','追寻','转折','抉择','结局'].map((label,index)=>`<div class="tree-column-label" style="--column-x:${20+425*index}">${label}</div>`).join('')}<svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M 9 362 H 20"/>${edges}</svg><div class="tree-root" data-enter="tree-line"></div>${nodes}</div></div></div><aside class="tree-detail" data-enter="detail"><div class="tree-detail-content">${storyDetailMarkup(selected)}</div></aside></div>${footer('<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span><i class="legend-dot"></i> 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动或滚轮浏览</span></div>','<span><span class="keycap">↑ ↓ ← →</span> 切换片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+}
+function disposeStoryScroll(){
+ treeScrollCleanup?.();treeScrollCleanup=null;treeRevealNode=null;treeViewportMove=null;
+}
+function bindStoryScroll(){
+ const viewport=$('.tree-viewport'),graph=$('.tree-graph');if(!viewport)return;
+ const state=currentStoryState(),controller=new AbortController(),options={signal:controller.signal};
+ let motionFrame=0,drag=null,wheelTarget=null;
+ const maximum=()=>Math.max(0,viewport.scrollWidth-viewport.clientWidth);
+ const clamp=left=>Math.max(0,Math.min(maximum(),left));
+ const update=()=>{
+  state.scroll=viewport.scrollLeft/unit(1);
+  graph.classList.toggle('can-scroll-back',viewport.scrollLeft>1);
+  graph.classList.toggle('can-scroll-next',viewport.scrollLeft<maximum()-1);
+ };
+ const stop=()=>{cancelAnimationFrame(motionFrame);motionFrame=0;frame.dataset.treePanState='ready';};
+ function scrollTo(left,duration=440){
+  stop();const from=viewport.scrollLeft,to=clamp(left);
+  if(motionPreference.matches||Math.abs(to-from)<1){viewport.scrollLeft=to;wheelTarget=null;update();return;}
+  frame.dataset.treePanState='moving';const start=performance.now();
+  const tick=now=>{
+   if(!viewport.isConnected||document.hidden){stop();return;}
+   const t=Math.min(1,(now-start)/duration);viewport.scrollLeft=from+(to-from)*(1-(1-t)**4);update();
+   if(t<1)motionFrame=requestAnimationFrame(tick);
+   else{motionFrame=0;wheelTarget=null;frame.dataset.treePanState='ready';update();}
+  };
+  motionFrame=requestAnimationFrame(tick);
+ }
+ treeRevealNode=id=>{
+  const node=storyTree.create(activeChapter()).nodes.find(item=>item.id===id);if(!node)return;
+  const target=storyTree.revealOffset(node,viewport.clientWidth/unit(1),viewport.scrollLeft/unit(1));
+  wheelTarget=null;scrollTo(unit(target));
+ };
+ treeViewportMove=direction=>{wheelTarget=null;scrollTo(viewport.scrollLeft+direction*viewport.clientWidth*.8);};
+ viewport.scrollLeft=clamp(unit(state.scroll||0));frame.dataset.treePanState='ready';update();
+ viewport.addEventListener('scroll',update,{...options,passive:true});
+ viewport.addEventListener('dragstart',event=>event.preventDefault(),options);
+ viewport.addEventListener('wheel',event=>{
+  if(event.ctrlKey||event.metaKey)return;
+  const delta=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY;
+  if(!delta)return;
+  event.preventDefault();cancelPendingHover();ignoreStoryHoverUntil=performance.now()+250;
+  const factor=event.deltaMode===1?16:event.deltaMode===2?viewport.clientWidth:1;
+  if(Math.abs(event.deltaX)>Math.abs(event.deltaY)){
+   stop();wheelTarget=null;viewport.scrollLeft=clamp(viewport.scrollLeft+delta*factor);update();
+  }else{wheelTarget=clamp((wheelTarget??viewport.scrollLeft)+delta*factor);scrollTo(wheelTarget,280);}
+ },{...options,passive:false});
+ viewport.addEventListener('pointerdown',event=>{
+  if(event.button!==0||event.pointerType!=='mouse')return;
+  // Leave the native scrollbar free for the browser to handle.
+  if(event.clientY>=viewport.getBoundingClientRect().top+viewport.clientHeight)return;
+  stop();wheelTarget=null;drag={id:event.pointerId,startX:event.clientX,startLeft:viewport.scrollLeft,lastX:event.clientX,lastTime:event.timeStamp,velocity:0,moved:false};
+ },options);
+ viewport.addEventListener('pointermove',event=>{
+  if(!drag||event.pointerId!==drag.id)return;
+  const distance=event.clientX-drag.startX;
+  if(!drag.moved&&Math.abs(distance)>6){drag.moved=true;viewport.classList.add('is-dragging');viewport.setPointerCapture(event.pointerId);frame.dataset.treePanState='dragging';cancelPendingHover();}
+  if(!drag.moved)return;
+  event.preventDefault();const elapsed=Math.max(1,event.timeStamp-drag.lastTime);
+  drag.velocity=Math.max(-2,Math.min(2,(drag.lastX-event.clientX)/elapsed));drag.lastX=event.clientX;drag.lastTime=event.timeStamp;
+  viewport.scrollLeft=clamp(drag.startLeft-distance);update();
+ },options);
+ function endDrag(event){
+  if(!drag||event.pointerId!==undefined&&event.pointerId!==drag.id)return;
+  const finished=drag;drag=null;viewport.classList.remove('is-dragging');
+  if(viewport.hasPointerCapture(finished.id))viewport.releasePointerCapture(finished.id);
+  if(finished.moved){
+   ignoreStoryClickUntil=performance.now()+180;ignoreStoryHoverUntil=performance.now()+250;
+   const velocity=event.type==='blur'||event.type==='pointercancel'||event.timeStamp-finished.lastTime>100?0:finished.velocity;
+   scrollTo(viewport.scrollLeft+velocity*150,500);
+  }
+ }
+ viewport.addEventListener('pointerup',endDrag,options);viewport.addEventListener('pointercancel',endDrag,options);window.addEventListener('blur',endDrag,options);
+ const resize=new ResizeObserver(()=>{stop();viewport.scrollLeft=clamp(unit(state.scroll));update();});resize.observe(viewport);
+ treeScrollCleanup=()=>{stop();update();controller.abort();resize.disconnect();viewport.classList.remove('is-dragging');};
 }
 function updateStoryRoute(path){
  $$('.tree-route').forEach(line=>{
@@ -332,7 +411,7 @@ function selectStoryNode(id,{focus=false}={}){
  const graph=storyTree.create(activeChapter()),node=graph.nodes.find(item=>item.id===id);
  if(!node)return;
  const state=currentStoryState();
- if(state.node===id){if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});return;}
+ if(state.node===id){if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});treeRevealNode?.(id);return;}
  state.node=id;state.path=storyTree.choosePath(graph,id,state.path);
  const request=++treeSwitchId;
  frame.dataset.treeNode=id;frame.dataset.treeTransition='changing';
@@ -343,6 +422,7 @@ function selectStoryNode(id,{focus=false}={}){
   card.setAttribute('aria-pressed',String(selected));card.tabIndex=selected?0:-1;
  });
  updateStoryRoute(state.path);
+ treeRevealNode?.(id);
  if(focus)$(`[data-story-node="${id}"]`)?.focus({preventScroll:true});
  $('#tree-announcement').textContent=`已选择片段 ${id}，${node.name}，${node.route}`;
  switchStoryDetail(node,request);
@@ -402,9 +482,9 @@ function enterPage(){
  const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[260,70], 'choice-time':[430,40],result:[140,60] };
  for(const [name,[delay,step]] of Object.entries(groups))$$(`[data-enter="${name}"]`).forEach((el,i)=>enter(el,{y:unit(18),delay:delay+i*step,duration:650}));
  $$('[data-enter="tree-line"]').forEach(el=>enter(el,{y:0,delay:140,duration:550}));
- $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Number(el.dataset.treeDepth)*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
+ $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Math.min(2,Number(el.dataset.treeDepth))*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
  $$('.tree-route.is-active').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:680,delay:250,easing:'cubic-bezier(.22,.68,.25,1)'}));
- $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Number(el.dataset.treeDepth)*85+Number(el.dataset.treeRow)*20,duration:680}));
+ $$('[data-enter="node"]').forEach(el=>enter(el,{y:unit(20),scale:.99,delay:180+Math.min(2,Number(el.dataset.treeDepth))*85+Number(el.dataset.treeRow)*20,duration:680}));
  $$('[data-enter="detail"]').forEach(el=>enter(el,{x:unit(20),y:0,delay:310,duration:720}));
  $$('[data-enter="footer"]').forEach(el=>enter(el,{y:unit(8),delay:320,duration:620}));
  $$('[data-enter="subtitle"]').forEach(el=>enter(el,{y:unit(12),delay:250,duration:680}));
@@ -458,7 +538,7 @@ async function go(page,{replace=false,skipExit=false}={}){
 }
 function bindPageControls(){
  if(currentPage==='chapters')bindChapterRail();
- if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';}
+ if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';bindStoryScroll();}
  applySoundLevels();
  $$('.range').forEach(input=>input.addEventListener('input',()=>{settingState[input.dataset.setting]=Number(input.value);input.style.setProperty('--value',`${input.value}%`);input.parentElement.querySelector('output').textContent=`${input.value}%`;applySoundLevels();uiSound.play('hover',{level:.45,throttle:180});}));
  $('#language-select')?.addEventListener('click',()=>{
@@ -580,9 +660,10 @@ document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPend
 document.addEventListener('keydown',event=>{keyboardFocusSound=event.key==='Tab';cancelPendingHover();},{capture:true});
 document.addEventListener('pointerover',event=>{
  const control=soundControl(event.target);
- if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||event.buttons||control.contains(event.relatedTarget)||$('.chapter-strip.is-dragging'))return;
+ if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||event.buttons||control.contains(event.relatedTarget)||$('.chapter-strip.is-dragging,.tree-viewport.is-dragging'))return;
  if(control.closest('#screen')&&frame.dataset.entryState!=='ready')return;
  if(control.closest('.chapter-strip')&&performance.now()<ignoreChapterClickUntil)return;
+ if(control.closest('.tree-viewport')&&performance.now()<ignoreStoryHoverUntil)return;
  cancelPendingHover();hoveredSoundControl=control;
  hoverSoundTimer=setTimeout(()=>{hoverSoundTimer=0;if(hoveredSoundControl===control&&control.isConnected&&control.matches(':hover')&&!document.hidden)uiSound.play('hover',{level:hoverLevel(control)});},70);
 });
@@ -598,7 +679,7 @@ document.addEventListener('click',event=>{
 },{capture:true});
 document.addEventListener('click',event=>{
  const storyCard=event.target.closest('[data-story-node]');
- if(storyCard){selectStoryNode(storyCard.dataset.storyNode);return;}
+ if(storyCard){if(performance.now()<ignoreStoryClickUntil){event.preventDefault();return;}selectStoryNode(storyCard.dataset.storyNode);return;}
  const chapterCard=event.target.closest('.chapter-card[data-chapter-index]');
  if(chapterCard){if(performance.now()<ignoreChapterClickUntil){event.preventDefault();return;}selectChapter(Number(chapterCard.dataset.chapterIndex));return;}
  const route=event.target.closest('[data-route]');if(route){go(route.dataset.route);return;}
@@ -623,6 +704,7 @@ document.addEventListener('keydown',event=>{
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}
  if(currentPage==='tree'&&!event.metaKey&&!event.ctrlKey){
+  if(['PageUp','PageDown'].includes(event.key)){event.preventDefault();treeViewportMove?.(event.key==='PageDown'?1:-1);return;}
   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)){
    event.preventDefault();const state=currentStoryState();selectStoryNode(storyTree.nextNode(storyTree.create(activeChapter()),state.node,event.key,state.path),{focus:true});return;
   }

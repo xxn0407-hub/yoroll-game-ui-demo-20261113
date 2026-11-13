@@ -1,9 +1,9 @@
 {
-  "revision": "story-branches-20261113",
+  "revision": "story-scroll-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
-  "dataScope": "Seven local preview fragments, not online Race story data.",
+  "dataScope": "Nineteen local preview fragments, not online Race story data.",
   "boardSizePx": [
-    1230,
+    2930,
     724
   ],
   "nodeSizePx": [
@@ -13,7 +13,11 @@
   "columnX": [
     20,
     445,
-    870
+    870,
+    1295,
+    1720,
+    2145,
+    2570
   ],
   "rowY": [
     24,
@@ -52,6 +56,86 @@
     [
       "04",
       "07"
+    ],
+    [
+      "05",
+      "08"
+    ],
+    [
+      "05",
+      "09"
+    ],
+    [
+      "06",
+      "09"
+    ],
+    [
+      "06",
+      "10"
+    ],
+    [
+      "07",
+      "10"
+    ],
+    [
+      "08",
+      "11"
+    ],
+    [
+      "09",
+      "11"
+    ],
+    [
+      "09",
+      "12"
+    ],
+    [
+      "10",
+      "12"
+    ],
+    [
+      "10",
+      "13"
+    ],
+    [
+      "11",
+      "14"
+    ],
+    [
+      "12",
+      "14"
+    ],
+    [
+      "12",
+      "15"
+    ],
+    [
+      "13",
+      "15"
+    ],
+    [
+      "13",
+      "16"
+    ],
+    [
+      "14",
+      "17"
+    ],
+    [
+      "15",
+      "17"
+    ],
+    [
+      "15",
+      "18"
+    ],
+    [
+      "16",
+      "18"
+    ],
+    [
+      "16",
+      "19"
     ]
   ],
   "entry": {
@@ -64,11 +148,34 @@
     "detailEntry": 420,
     "latestSelectionWins": true,
     "selectionPerChapter": true,
-    "reducedMotion": "Selections, routes and details update immediately."
+    "reducedMotion": "Selections, routes and details update immediately.",
+    "entryColumnStaggerLimit": 2,
+    "panDuration": 440,
+    "wheelPanDuration": 280,
+    "dragReleaseDuration": 500,
+    "scrollPersistencePerChapter": true,
+    "detailColumnFixed": true
   },
   "selection": "One selected node. Highlight its connected ancestor route; retain the latest branch at a merge. Cancel interrupted detail and route motions.",
-  "keyboard": "Left/right follow connections; up/down move within the same column; Home/End jump to the first/last node; Enter opens replay confirmation.",
-  "unexplored": "Visually dimmed but all seven nodes remain selectable and replayable for interaction testing.",
+  "keyboard": "Arrows choose connected or same-column nodes and reveal them smoothly; Home/End choose the first/last node; PageUp/PageDown browse; Enter opens replay confirmation.",
+  "unexplored": "Dimmed but all nineteen nodes are selectable and replayable.",
   "sound": "Uses the approved chapter cue at 0.5 level, throttled to 220ms; hover is 0.48. Opening and audio engine are unchanged.",
-  "verification": "story-tree-verification.json"
+  "verification": "story-tree-verification.json",
+  "scrolling": {
+    "axis": "horizontal",
+    "inputs": [
+      "mouse drag",
+      "vertical wheel",
+      "horizontal trackpad",
+      "native scrollbar",
+      "PageUp / PageDown"
+    ],
+    "nativeScrollContainer": true,
+    "dragThresholdPx": 6,
+    "dragReleaseDurationMs": 500,
+    "nodeRevealDurationMs": 440,
+    "rightDetailFixed": true,
+    "positionStoredPerChapter": "Reference pixels; restored on return and entry replay.",
+    "dragDoesNotSelect": true
+  }
 }
