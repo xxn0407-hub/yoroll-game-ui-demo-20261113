@@ -103,7 +103,7 @@ let chapterRailLeft = 0;
 let ignoreChapterClickUntil = 0;
 const activeChapter = () => ({...CHAPTER_PREVIEWS[selectedChapter],number:selectedChapter+1});
 const chapterProgress = () => selectedChapter===0?saveProgress():activeChapter().progress;
-function chapterInfoMarkup(){const chapter=activeChapter();return `<div class="eyebrow" data-enter="chapter-copy">CHAPTER ${String(chapter.number).padStart(2,'0')}</div><h2 data-enter="chapter-copy">第 ${chapter.number} 章</h2><p class="chapter-desc" data-enter="chapter-copy">${chapter.name}</p><div class="small-progress" data-enter="chapter-copy"><span style="width:${chapterProgress()}%"></span></div>`;}
+function chapterInfoMarkup(){const chapter=activeChapter();return `<div class="eyebrow" data-enter="chapter-copy">CHAPTER ${String(chapter.number).padStart(2,'0')}</div><h2 data-enter="chapter-copy">第 ${chapter.number} 章</h2><p class="chapter-desc" data-enter="chapter-copy">${chapter.name}</p><div class="small-progress" data-enter="chapter-copy" role="progressbar" aria-label="章节进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${chapterProgress()}"><span style="width:${chapterProgress()}%"></span></div>`;}
 function timeout(fn,ms){const id=setTimeout(()=>{timers.delete(id);fn();},ms);timers.add(id);return id;}
 function track(animation,release=true){
  enterAnimations.add(animation);
@@ -147,8 +147,7 @@ function chaptersView(){
  const chapterCards=CHAPTER_PREVIEWS.map((chapter,index)=>{
   const number=index+1;
   const selected=index===selectedChapter;
-  const progress=index===0?saveProgress():chapter.progress;
-  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="chapter-progress" aria-label="章节进度 ${progress}%">${progress}%</span><span class="card-label">第 ${number} 章</span></button></div>`;
+  return `<div class="chapter-cell" data-enter="chapter-card"><button class="chapter-card ${selected?'is-selected':''}" data-chapter-index="${index}" aria-pressed="${selected}" tabindex="${selected?0:-1}" aria-label="第 ${number} 章，${chapter.name}"><img src="${chapter.cover}" alt="" draggable="false" style="object-position:${chapter.position}"><span class="card-label">第 ${number} 章</span></button></div>`;
  }).join('');
  return `${pageHeading('章节选择','home','CHAPTERS')}
  <div class="chapter-summary"><section class="chapter-info">${chapterInfoMarkup()}</section><div class="chapter-actions"><div data-enter="action">${goButton('剧情树','tree','','tree')}</div><div data-enter="action">${goButton(chapterProgress()>0?'继续游戏':'开始游戏','gameplay','btn-primary','play-circle')}</div></div></div>

@@ -39,7 +39,7 @@
 .back-heading .back-button:is(:hover,:focus-visible) svg{filter:drop-shadow(0 0 calc(var(--p)*4) #e5faff66)}
 .back-heading .back-button:active svg{filter:drop-shadow(0 0 calc(var(--p)*6) #e5faffa6);transition:filter .1s ease-out}
 .tree-node:after{content:"";position:absolute;z-index:1;inset:25% 0 0;background:linear-gradient(transparent,#03070980 48%,#030709ec);pointer-events:none}
-.chapter-progress{position:absolute;z-index:4;top:calc(var(--p)*12);right:calc(var(--p)*12);width:calc(var(--p)*40);height:calc(var(--p)*40);display:grid;place-items:center;border-radius:50%;background:#071017df;color:#f0f4f0;font-size:calc(var(--p)*14);font-weight:600;line-height:1;font-variant-numeric:tabular-nums;pointer-events:none}
+
 
 /* Connected story preview; reference card size stays 340 x 191.25. */
 .tree-board{position:relative;flex:none;width:calc(var(--p)*var(--tree-board-width));height:calc(var(--p)*var(--tree-board-height))}

@@ -178,7 +178,13 @@
       "name": "章节选择",
       "kind": "原版实拍",
       "motion": "点击即更新选中框；标题先用 130ms 淡出，再用 460ms 从侧面轻落位；背景 620ms 交叉淡入、1.4s 轻微推近。快速连点以最后一次选择为准。",
-      "interaction": "12 个章节均可点击；支持拖动、滚轮、左右按钮和方向键。点选使用无明显音高的轻空气反馈，按下时压低 Hover 尾音，重复点击同一张卡片也不播放琴音。"
+      "interaction": "12 个章节均可点击；支持拖动、滚轮、左右按钮和方向键。点选使用无明显音高的轻空气反馈，按下时压低 Hover 尾音，重复点击同一张卡片也不播放琴音。",
+      "progressDisplay": {
+        "location": "Below the selected chapter description in the main scene.",
+        "cardBadge": false,
+        "updatesWithSelection": true,
+        "accessibleRole": "progressbar"
+      }
     },
     {
       "id": "tree",
