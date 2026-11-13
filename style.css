@@ -190,3 +190,7 @@
 
 /* Keep the settings controls in their approved grid column after removing captions. */
 .settings-layout>.setting-group,.settings-layout>.setting-row.language{grid-column:2}
+
+/* Geometric separators share the text row center without font baseline offsets. */
+.hud-scene-label{display:block;line-height:1.4;white-space:nowrap}
+.hud-scene-separator{display:block;flex:none;width:max(1px,calc(var(--p)*2));height:max(1px,calc(var(--p)*2));border-radius:50%;background:currentColor;opacity:.8;letter-spacing:0}

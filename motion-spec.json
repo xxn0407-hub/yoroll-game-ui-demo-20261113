@@ -213,6 +213,17 @@
       "pointerEvents": "none",
       "ariaHidden": true,
       "reducedMotion": "Hide dust; retain static selected glow."
+    },
+    "hudScene": {
+      "revision": "hud-separator-align-20261113",
+      "labels": "Explicit text spans with a shared 1.4 line height.",
+      "separators": "2px circular elements, minimum 1px, vertically centered by the flex row.",
+      "appliesTo": [
+        "gameplay",
+        "choice",
+        "qte"
+      ],
+      "decorativeSeparatorsAriaHidden": true
     }
   },
   "pages": [
