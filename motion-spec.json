@@ -234,7 +234,15 @@
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
       "motion": "选中节点周围的细小光点以约 6–8 秒的错峰周期漂移、淡入淡出；切换选中态时以 400ms 交接，旧节点粒子暂停并淡出。节点与连线沿用当前入场，减少动态效果时隐藏浮尘。",
-      "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。 锁定节点悬停沿用可点击 hover 的同一音色，以更低的音高轻柔回应；110ms 停留意图与 650ms 限频防止划过连响，拖动和静音时不响。"
+      "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。 锁定节点悬停沿用可点击 hover 的同一音色，以更低的音高轻柔回应；110ms 停留意图与 650ms 限频防止划过连响，拖动和静音时不响。",
+      "nodeInformation": {
+        "revision": "tree-node-two-lines-20261113",
+        "layout": "Number on the first line; name on the second, aligned left.",
+        "numberPx": 28,
+        "namePx": 20,
+        "rowGapPx": 8,
+        "progress": "Explored progress remains at the right of the name row; locked nodes have no progress."
+      }
     },
     {
       "id": "saves",

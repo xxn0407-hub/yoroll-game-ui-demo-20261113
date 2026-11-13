@@ -71,7 +71,11 @@
 .chapter-card.is-selected:before,.tree-node.is-selected:before{opacity:1}
 /* Selected cards use their existing glow as the keyboard focus indicator. */
 .chapter-card:focus-visible,.tree-node:focus-visible{outline:none;outline-offset:0}
-.node-progress{position:relative;z-index:3;flex:0 0 calc(var(--p)*48);display:grid;gap:calc(var(--p)*7);color:#adb9b0;pointer-events:none}
+/* Stack the node number above its name; explored progress stays beside the name. */
+.tree-node .node-info{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:calc(var(--p)*12);row-gap:calc(var(--p)*8)}
+.node-number{grid-column:1;grid-row:1}
+.node-info strong{grid-column:1;grid-row:2}
+.node-progress{position:relative;z-index:3;grid-column:2;grid-row:2;align-self:center;width:calc(var(--p)*48);display:grid;gap:calc(var(--p)*7);color:#adb9b0;pointer-events:none}
 
 .node-progress-track{display:block;width:100%;height:1px;background:#c9d4c51f;border-radius:1px;overflow:hidden}
 .node-progress-fill{display:block;height:100%;background:#b5c2ae9c;border-radius:inherit;transition:width .45s var(--ease),background .4s}
