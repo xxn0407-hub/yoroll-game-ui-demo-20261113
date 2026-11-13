@@ -184,6 +184,15 @@
         "cardBadge": false,
         "updatesWithSelection": true,
         "accessibleRole": "progressbar"
+      },
+      "railEdgeFade": {
+        "type": "Transparent alpha mask with a multi-stop smooth opacity ramp.",
+        "widthAt1920": 86.4,
+        "extendsToFrameEdges": true,
+        "firstAndLastCardsFullyVisibleAtRest": true,
+        "keepsCardSizeAndSpacing": true,
+        "darkOverlay": false,
+        "innerShadow": false
       }
     },
     {

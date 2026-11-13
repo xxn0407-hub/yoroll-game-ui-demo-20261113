@@ -237,7 +237,7 @@ function bindChapterRail(){
   motionFrame=requestAnimationFrame(tick);
  }
  chapterRailMove=(direction,index)=>{
-  if(index!==undefined){const cell=strip.children[index];const margin=unit(18);if(cell.offsetLeft<strip.scrollLeft+margin)scrollTo(cell.offsetLeft-margin);else if(cell.offsetLeft+cell.offsetWidth>strip.scrollLeft+strip.clientWidth-margin)scrollTo(cell.offsetLeft+cell.offsetWidth-strip.clientWidth+margin);}
+  if(index!==undefined){const cell=strip.children[index];const margin=unit(18)+frame.clientWidth*.045;if(cell.offsetLeft<strip.scrollLeft+margin)scrollTo(cell.offsetLeft-margin);else if(cell.offsetLeft+cell.offsetWidth>strip.scrollLeft+strip.clientWidth-margin)scrollTo(cell.offsetLeft+cell.offsetWidth-strip.clientWidth+margin);}
   else scrollTo(strip.scrollLeft+direction*step()*3);
  };
  strip.scrollLeft=clamp(chapterRailLeft);update();
