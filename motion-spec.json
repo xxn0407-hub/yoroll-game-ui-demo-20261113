@@ -97,7 +97,17 @@
       "positionBothAxesPersistsPerChapter": true,
       "initialCamera": "Vertically centered on the selected fragment; horizontal origin retained.",
       "detailPanel": false,
-      "nodeActivation": "Click or Enter starts the explored fragment directly; normal 150ms page exit, no confirmation modal."
+      "nodeActivation": "Click or Enter starts the explored fragment directly; normal 150ms page exit, no confirmation modal.",
+      "edgeFade": {
+        "type": "Intersected horizontal and vertical alpha masks on the graph viewport.",
+        "horizontalMaxPx": 120,
+        "verticalMaxPx": 96,
+        "curve": "Smoothstep alpha samples at 0, .2, .4, .6, .8 and 1.",
+        "continuousDistanceBased": true,
+        "darkOverlay": false,
+        "innerShadow": false,
+        "sceneUnaffected": true
+      }
     }
   },
   "pages": [
@@ -133,7 +143,7 @@
       "id": "tree",
       "name": "剧情树",
       "kind": "原版实拍 + 分支示例",
-      "motion": "节点、连线和选中柔光沿用当前节奏；点击后以 150ms 页面退出衔接片段入场。键盘选择仍以 440ms 将节点带入视野，拖动松手后约 500ms 衰减。",
+      "motion": "节点与连线入场沿用当前节奏。渐隐宽度随剩余滚动距离连续变化，使用平滑透明度曲线衔接清晰区域；透明遮罩只影响剧情树内容。点击以 150ms 退出衔接片段入场，拖动松手约 500ms 衰减。",
       "interaction": "点击已探索节点直接从此处开始，无需额外按钮或确认弹窗。方向键选择、Enter 开始；未探索节点不可开始。拖动和滚轮可双向浏览，拖动卡片不会误触开始；返回保留所选片段与浏览位置。"
     },
     {

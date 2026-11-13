@@ -1,48 +1,54 @@
 {
-  "revision": "tree-direct-start-20261113",
-  "verifiedAt": "2026-11-13T06:55:16.881Z",
-  "viewport": {
-    "card": {
-      "height": 115.2421875,
-      "width": 204.8828125
+  "revision": "tree-soft-edges-20261113",
+  "verifiedAt": "2026-11-13T07:09:14.582Z",
+  "initial": {
+    "backgrounds": {
+      "graph": "rgba(0, 0, 0, 0)",
+      "viewport": "rgba(0, 0, 0, 0)"
     },
-    "detailCount": 0,
-    "frame": {
-      "height": 650.8125,
-      "width": 1157
-    },
+    "card": 204.8828125,
+    "composite": "intersect, intersect",
+    "edges": [
+      "0.00px",
+      "72.31px",
+      "57.85px",
+      "57.85px"
+    ],
     "locked": 22,
-    "progress": 6,
-    "referenceViewport": {
-      "height": 792.018150388937,
-      "width": 1747.208297320657
-    },
+    "lockedProgress": 0,
+    "mask": "linear-gradient(to right, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.318) 0px, rgba(0, 0, 0, 0.682) 0px, rgba(0, 0, 0, 0.94) 0px, rgb(0, 0, 0) 0px, rgb(0, 0, 0) calc(100% - 72.31px), rgba(0, 0, 0, 0.94) calc(100% - 57.848px), rgba(0, 0, 0, 0.682) calc(100% - 43.386px), rgba(0, 0, 0, 0.318) calc(100% - 28.924px), rgba(0, 0, 0, 0.06) calc(100% - 14.462px), rgba(0, 0, 0, 0) 100%), linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.06) 11.57px, rgba(0, 0, 0, 0.318) 23.14px, rgba(0, 0, 0, 0.682) 34.71px, rgba(0, 0, 0, 0.94) 46.28px, rgb(0, 0, 0) 57.85px, rgb(0, 0, 0) calc(100% - 57.85px), rgba(0, 0, 0, 0.94) calc(100% - 46.28px), rgba(0, 0, 0, 0.682) calc(100% - 34.71px), rgba(0, 0, 0, 0.318) calc(100% - 23.14px), rgba(0, 0, 0, 0.06) calc(100% - 11.57px), rgba(0, 0, 0, 0) 100%)",
+    "numberFont": "16.8729px",
+    "progressInsideInfo": true,
+    "progressValue": "22%",
+    "progressWidth": 28.921875,
     "scroll": {
       "x": 0,
       "y": 237.5
     },
-    "viewport": {
-      "height": 477.2734375,
-      "width": 1052.875,
-      "x": 52.0625,
-      "y": 284.6484375
+    "shadows": {
+      "graph": "none",
+      "viewport": "none"
     }
   },
-  "nodeClick": {
+  "scrolling": {
+    "background": "rgba(0, 0, 0, 0)",
+    "edges": [
+      "72.31px",
+      "72.31px",
+      "57.85px",
+      "0.50px"
+    ],
+    "overlayElements": 0,
+    "scroll": {
+      "x": 405,
+      "y": 474.5
+    },
+    "shadow": "none",
+    "stageScroll": 0
+  },
+  "nodeStart": {
     "dialogs": 0,
     "hud": "第 1 章 · 片段 09 · 黎明关口",
-    "page": "gameplay"
-  },
-  "lockedClickAndDrag": {
-    "dialogs": 0,
-    "page": "tree",
-    "selected": "09",
-    "x": 309.5,
-    "y": 442
-  },
-  "keyboardStart": {
-    "dialogs": 0,
-    "hud": "第 1 章 · 片段 01 · 整装待发",
     "page": "gameplay"
   }
 }

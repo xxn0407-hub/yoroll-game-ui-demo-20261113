@@ -286,7 +286,7 @@ function currentStoryState(){
 }
 function storyProgressMarkup(node){
  if(node.locked)return '';
- return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span><span class="node-progress-value" aria-hidden="true">${node.progress}%</span></span>`;
+ return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-value" aria-hidden="true">${node.progress}%</span><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span></span>`;
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
@@ -300,15 +300,15 @@ function treeView(){
  }).join('');
  const nodes=graph.nodes.map(node=>{
   const active=node.id===state.node,onRoute=state.path.includes(node.id);
-  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，点击从此处开始`}"><img src="${node.cover}" alt="" draggable="false">${storyProgressMarkup(node)}${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong></div></button></div>`;
+  return `<div class="tree-node-cell ${node.locked?'is-locked':''}" style="--node-x:${node.x};--node-y:${node.y}" data-enter="node" data-tree-depth="${node.column}" data-tree-row="${node.row}"><button class="tree-node ${active?'is-selected':''} ${onRoute?'is-route':''} ${node.locked?'is-locked':''}" data-story-node="${node.id}" aria-pressed="${active}" aria-disabled="${node.locked}" ${node.locked?'disabled':''} tabindex="${active&&!node.locked?0:-1}" aria-label="片段 ${node.id}，${node.name}，${node.locked?'未探索，已锁定':`游玩进度 ${node.progress}%，已探索，点击从此处开始`}"><img src="${node.cover}" alt="" draggable="false">${node.locked?`<span class="node-lock" aria-hidden="true">${icon('lock')}</span>`:''}<div class="node-info"><span class="node-number" aria-hidden="true">${node.id}</span><strong>${node.name}</strong>${storyProgressMarkup(node)}</div></button></div>`;
  }).join('');
- return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div><span class="tree-fade-top" aria-hidden="true"></span><span class="tree-fade-bottom" aria-hidden="true"></span></div></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 选择片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
+ return `${pageHeading('剧情树','chapters',`CHAPTER ${String(chapter.number).padStart(2,'0')}`)}<div class="tree-layout"><div class="tree-graph" role="group" aria-label="第 ${chapter.number} 章的剧情分支"><div class="tree-viewport" aria-label="可拖动浏览的剧情分支"><div class="tree-board" style="--tree-board-width:${layout.width};--tree-board-height:${layout.height}"><svg class="tree-connections" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true"><path class="tree-origin-line" d="M ${root.x-13} ${root.y+layout.nodeHeight/2} H ${root.x}"/>${edges}</svg><div class="tree-root" style="--root-x:${root.x-18};--root-y:${root.y+layout.nodeHeight/2-5}" data-enter="tree-line"></div>${nodes}</div></div></div></div>${footer(`<div class="tree-legend"><span><i class="legend-dot visited"></i> 已探索</span><span>${icon('lock')} 未探索</span><span><i class="legend-route"></i> 当前路线</span><span class="tree-browse-tip">拖动浏览 · Shift＋滚轮横移</span></div>`,'<span><span class="keycap">↑ ↓ ← →</span> 选择片段</span><span><span class="keycap">Enter</span> 从此处开始</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="tree-announcement" role="status" aria-live="polite"></div>`;
 }
 function disposeStoryScroll(){
  treeScrollCleanup?.();treeScrollCleanup=null;treeRevealNode=null;treeViewportMove=null;
 }
 function bindStoryScroll(){
- const viewport=$('.tree-viewport'),graphElement=$('.tree-graph');if(!viewport)return;
+ const viewport=$('.tree-viewport');if(!viewport)return;
  const state=currentStoryState(),graph=storyTree.create(activeChapter());
  const controller=new AbortController(),options={signal:controller.signal};
  let motionFrame=0,drag=null,wheelTarget=null;
@@ -318,10 +318,9 @@ function bindStoryScroll(){
  const update=()=>{
   state.scroll=viewport.scrollLeft/unit(1);state.scrollY=viewport.scrollTop/unit(1);
   const max=maximum();
-  graphElement.classList.toggle('can-scroll-back',viewport.scrollLeft>1);
-  graphElement.classList.toggle('can-scroll-next',viewport.scrollLeft<max.x-1);
-  graphElement.classList.toggle('can-scroll-up',viewport.scrollTop>1);
-  graphElement.classList.toggle('can-scroll-down',viewport.scrollTop<max.y-1);
+  // Fade the graph itself into the unchanged scene, with no dark edge overlays.
+  const edges={left:Math.min(unit(120),viewport.scrollLeft),right:Math.min(unit(120),max.x-viewport.scrollLeft),top:Math.min(unit(96),viewport.scrollTop),bottom:Math.min(unit(96),max.y-viewport.scrollTop)};
+  for(const [edge,distance] of Object.entries(edges))viewport.style.setProperty(`--tree-fade-${edge}`,`${Math.max(0,distance).toFixed(2)}px`);
  };
  const stop=()=>{cancelAnimationFrame(motionFrame);motionFrame=0;frame.dataset.treePanState='ready';};
  const place=point=>{viewport.scrollLeft=point.x;viewport.scrollTop=point.y;update();};

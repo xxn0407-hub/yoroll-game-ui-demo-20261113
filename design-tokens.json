@@ -262,7 +262,7 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-direct-start-20261113",
+    "revision": "tree-soft-edges-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
@@ -279,9 +279,9 @@
     ],
     "horizontalScroll": true,
     "fixedDetailColumn": false,
-    "nodeNumberPx": 42,
+    "nodeNumberPx": 28,
     "nodeNumberWeight": 300,
-    "nodeNumberStyle": "Two tabular digits, without underscore, separated from the title by a fine rule.",
+    "nodeNumberStyle": "Two smaller tabular digits with no divider; title keeps its approved size.",
     "lockedPreviewNodes": 22,
     "playablePreviewNodes": 6,
     "selectionGlowRadiusPx": [
@@ -289,8 +289,8 @@
       48
     ],
     "progressTrackCssPx": 1,
-    "progressValuePx": 14,
-    "progressValuePosition": "bottom right",
+    "progressValuePx": 12,
+    "progressValuePosition": "Right side of the bottom information row.",
     "verticalScroll": true,
     "variableLayerDensity": true,
     "nodesPerLayer": [
@@ -312,6 +312,17 @@
     ],
     "viewportWidthIncreasePercent": 39,
     "viewportSafeAreaPercent": 4.5,
-    "directNodeActivation": true
+    "directNodeActivation": true,
+    "progressTrackWidthPx": 48,
+    "edgeFade": {
+      "type": "Intersected horizontal and vertical alpha masks on the graph viewport.",
+      "horizontalMaxPx": 120,
+      "verticalMaxPx": 96,
+      "curve": "Smoothstep alpha samples at 0, .2, .4, .6, .8 and 1.",
+      "continuousDistanceBased": true,
+      "darkOverlay": false,
+      "innerShadow": false,
+      "sceneUnaffected": true
+    }
   }
 }
