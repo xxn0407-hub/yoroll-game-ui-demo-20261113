@@ -262,7 +262,7 @@
     "verification": "component-alignment.json"
   },
   "storyTreeLayout": {
-    "revision": "tree-states-20261113",
+    "revision": "tree-progress-line-20261113",
     "spec": "story-tree-spec.json",
     "nodeSizePx": [
       340,
@@ -282,12 +282,14 @@
     "nodeNumberPx": 42,
     "nodeNumberWeight": 300,
     "nodeNumberStyle": "Two tabular digits, without underscore, separated from the title by a fine rule.",
-    "progressBadgeDiameterPx": 44,
     "lockedPreviewNodes": 13,
     "playablePreviewNodes": 6,
     "selectionGlowRadiusPx": [
       22,
       48
-    ]
+    ],
+    "progressTrackCssPx": 1,
+    "progressValuePx": 14,
+    "progressValuePosition": "bottom right"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "revision": "tree-states-20261113",
+  "revision": "tree-progress-line-20261113",
   "units": "Reference pixels at 1920x1080; durations in milliseconds.",
   "dataScope": "Nineteen local preview fragments and sample percentages, not online Race story or save data.",
   "boardSizePx": [
@@ -184,8 +184,7 @@
     "outerStageCannotScroll": true
   },
   "progress": {
-    "display": "Ring and percentage on every node; selected percentage repeated in the detail panel.",
-    "diameterPx": 44,
+    "display": "Thin horizontal line and plain bottom-right percentage, reusing the established chapter progress treatment.",
     "sampleValues": {
       "01": 100,
       "02": 64,
@@ -206,7 +205,11 @@
       "17": 0,
       "18": 0,
       "19": 0
-    }
+    },
+    "trackCssPx": 1,
+    "trackInsetReferencePx": 20,
+    "valueReferencePx": 14,
+    "backgroundPlate": false
   },
   "numberStyle": {
     "font": "Helvetica Neue, Arial, sans-serif",

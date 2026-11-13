@@ -287,7 +287,7 @@ function currentStoryState(){
  return state;
 }
 function storyProgressMarkup(node){
- return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="node-progress-track" cx="22" cy="22" r="19"/><circle class="node-progress-fill" cx="22" cy="22" r="19" pathLength="100" stroke-dasharray="${node.progress} 100" transform="rotate(-90 22 22)"/></svg><span class="node-progress-value" aria-hidden="true">${node.progress}<small>%</small></span></span>`;
+ return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span><span class="node-progress-value" aria-hidden="true">${node.progress}%</span></span>`;
 }
 function storyDetailMarkup(node){
  const count=storyTree.create(activeChapter()).nodes.length;

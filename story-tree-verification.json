@@ -154,5 +154,16 @@
     "overflow": "clip",
     "scroll": 0,
     "selected": "03"
+  },
+  "progressStyleVerification": {
+    "circles": 0,
+    "display": "22%",
+    "fillRatio": 0.2199694122787852,
+    "lineHeight": 1,
+    "locked": 13,
+    "nodes": 19,
+    "progress": 19,
+    "stageScroll": 0,
+    "value": "22"
   }
 }
