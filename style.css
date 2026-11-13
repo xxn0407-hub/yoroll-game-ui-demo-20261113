@@ -187,3 +187,6 @@
 .empty-save:hover .plus,.empty-save:focus-visible .plus{background:#ecf0e2;box-shadow:0 0 calc(var(--p)*18) #d7e5ce1c}
 .empty-save small{font-size:calc(var(--p)*18);letter-spacing:.04em}
 @media(prefers-reduced-motion:reduce){.save-shell{transition:none}.save-card{animation:none;translate:0 0}}
+
+/* Keep the settings controls in their approved grid column after removing captions. */
+.settings-layout>.setting-group,.settings-layout>.setting-row.language{grid-column:2}

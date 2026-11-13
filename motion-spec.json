@@ -431,7 +431,10 @@
       "name": "设置",
       "kind": "原版实拍",
       "motion": "设置项按 42ms 错峰落位，650ms 渐停；下拉列表从上方 7px 进入，240ms 完成。",
-      "interaction": "主音量控制整体，音效音量控制界面反馈，音乐音量实际控制开场音。界面音效开关与试听可用；重播开场音可主动重播一次。"
+      "interaction": "主音量控制整体，音效音量控制界面反馈，音乐音量实际控制开场音。界面音效开关与试听可用；重播开场音可主动重播一次。",
+      "groupCaptions": false,
+      "cornerCaption": false,
+      "captionRevision": "settings-caption-clean-20261113"
     },
     {
       "id": "logout",
