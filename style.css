@@ -123,8 +123,10 @@
 .saves-grid{display:flex;align-items:center}
 .save-shell{display:flex;flex-direction:column;flex:1 1 0;min-width:0;transition:flex-grow .65s var(--ease)}
 .save-shell.is-active{flex-grow:1.18}
-/* Match the story tree's dust, anchored below the save metadata row. */
+/* Larger save cards use denser, clearer dust with the story tree's soft palette. */
 .save-dust{top:calc(var(--p)*18)}
+.save-dust i{background:#eef1da;box-shadow:0 0 calc(var(--p)*5) #e1edcdb3,0 0 calc(var(--p)*11) #dfeacd26;animation-name:save-dust-drift}
+@keyframes save-dust-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*6),0) scale(.82)}20%{opacity:.52}50%{opacity:.84}80%{opacity:.4}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--dust-dx)),calc(var(--p)*var(--dust-rise)),0) scale(1)}}
 .save-shell.is-active>.save-dust{opacity:1}
 .save-shell.is-active>.save-dust i{animation-play-state:running;will-change:transform,opacity}
 .game-frame[data-entry-state="entering"] .save-dust i{animation-play-state:paused}

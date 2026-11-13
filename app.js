@@ -288,14 +288,31 @@ function storyProgressMarkup(node){
  if(node.locked)return '';
  return `<span class="node-progress" role="progressbar" aria-label="游玩进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${node.progress}"><span class="node-progress-value" aria-hidden="true">${node.progress}%</span><span class="node-progress-track" aria-hidden="true"><span class="node-progress-fill" style="width:${node.progress}%"></span></span></span>`;
 }
-function storyDustMarkup(className='node-dust'){
- const motes=[
+function storyDustMarkup(className='node-dust',particleLayout){
+ const motes=particleLayout||[
   [18,6,1.6,-6,-24,6.4,-1.1], [59,7,1.8,5,-20,7.3,-4.8],
   [97,36,1.5,6,-26,6.8,-2.9], [72,96,2,-7,-22,7.8,-6.2],
   [28,98,1.7,5,-28,6.1,-3.7], [3,67,1.6,-4,-20,7.1,-.4],
   [2,28,1.5,5,-24,7.6,-5.5], [98,81,2.1,-5,-30,6.7,-2]
  ];
  return `<span class="${className}" aria-hidden="true">${motes.map(([x,y,size,dx,rise,duration,delay])=>`<i style="left:${x}%;top:${y}%;--dust-size:${size};--dust-dx:${dx};--dust-rise:${rise};--dust-duration:${duration}s;--dust-delay:${delay}s"></i>`).join('')}</span>`;
+}
+function saveDustMarkup(){
+ const motes=[
+  [8,5,2.8,-8,-28,6.4,-1.1], [24,3,3.4,6,-24,7.3,-4.8],
+  [41,7,2.6,-5,-32,7.8,-2.9], [57,2,3.8,8,-26,6.8,-5.4],
+  [75,5,3.1,-7,-30,7.1,-3.7], [91,6,2.7,5,-25,8.2,-.6],
+  [97,16,3.3,7,-29,7.4,-5.8], [94,32,2.6,-6,-34,6.6,-2],
+  [99,45,3.7,5,-26,7.9,-4.3], [96,61,2.9,8,-31,6.9,-.9],
+  [98,77,3.2,-5,-24,8.1,-6.1], [95,91,2.5,7,-35,7.2,-3.2],
+  [92,96,3.6,-8,-30,7.8,-6.2], [78,99,2.8,6,-26,6.5,-1.5],
+  [61,94,3.2,-5,-34,8.3,-4.9], [45,98,2.5,8,-28,7,-2.4],
+  [27,96,3.8,-7,-36,7.6,-5.7], [11,99,3,5,-29,6.8,-3.6],
+  [3,94,2.7,-5,-26,8,-.8], [5,80,3.5,7,-33,7.1,-4.1],
+  [1,63,2.5,-7,-28,7.7,-6.3], [4,48,3.2,6,-35,6.7,-2.7],
+  [2,31,3.6,-5,-25,8.4,-5.1], [5,14,2.8,8,-31,7.4,-1.8]
+ ];
+ return storyDustMarkup('node-dust save-dust',motes);
 }
 function treeView(){
  const chapter=activeChapter(),graph=storyTree.create(chapter),state=currentStoryState();
@@ -454,7 +471,7 @@ function saveView(){
  const cards=slots.map((save,index)=>{
   const active=Boolean(save)&&index===activeSlot;
   const number=save?String(Number(save.chapter.match(/\d+/)?.[0]||1)).padStart(2,'0'):'';
-  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div><span class="save-active" aria-hidden="${!active}">${icon('check')}当前存档</span><div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button>${save?storyDustMarkup('node-dust save-dust'):''}</div>`;
+  return `<div class="save-shell ${active?'is-active':''}" data-enter="save"><div class="save-meta">${save?`<span class="save-date">保存于 <span>${save.date}</span></span><button class="delete-save" data-action="delete-${index}" aria-label="删除存档位 ${index+1}">${icon('trash')}</button>`:''}</div><button class="save-card ${active?'selected':''} ${save?'':'empty-save'}" data-action="save-${index}" aria-label="存档位 ${index+1}${save?'，'+save.chapter+'，'+sceneLabel(save):'，创建新存档'}" ${save?`aria-pressed="${active}"`:''}>${save?`<div class="save-cover"><img src="assets/garage.jpg" alt=""></div><span class="save-active" aria-hidden="${!active}">${icon('check')}当前存档</span><div class="save-info"><div><span class="save-number" aria-hidden="true">${number}</span><h2>${sceneLabel(save)}</h2></div><span class="save-percent" aria-label="章节进度 ${save.progress}%">${save.progress}%</span></div>`:`<div class="save-empty-copy"><span class="plus" aria-hidden="true">＋</span><small>创建新存档</small></div>`}</button>${save?saveDustMarkup():''}</div>`;
  }).join('');
  return `${pageHeading('切换存档','home')}<section class="saves-layout"><div class="section-line" data-enter="section"><span>选择一个故事进度</span><span>本机存档 · ${slots.filter(Boolean).length} / 3</span></div><div class="saves-grid">${cards}</div></section>${footer()}`;
 }
