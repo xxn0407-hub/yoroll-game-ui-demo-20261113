@@ -10,6 +10,7 @@ window.YorollSound = (() => {
  const mixGain = .5;
  let context, output, compressor, activityGate, loading, contextChange, activityPoll;
  let activated = false, available = true, muted = false, volume = 1;
+ let autoplayRequested=false, autoplayState='idle', autoplayAttempt=null, activation='none';
  let loadFailed = false, lastCue = '', total = 0, previewId = 0;
  let pageAway=false, focusLost=!document.hasFocus(), lastDocumentFocus=document.hasFocus();
  let ownsAudio=true, previewPaused=false, lastActivity;
@@ -24,6 +25,7 @@ window.YorollSound = (() => {
   const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
   Object.assign(document.documentElement.dataset,{
    audioRevision:revision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
+   audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
    audioDecoded:String(buffers.size),audioVoices:String(voices.size),
    audioLifecycleRevision:'preview-pause-20261111',audioPreviewActive:String(isActive()),
@@ -68,6 +70,7 @@ window.YorollSound = (() => {
   if(focused!==lastDocumentFocus){
    lastDocumentFocus=focused;focusLost=!focused;
    if(focused&&activated)claimAudio();
+   if(focused&&autoplayState==='deferred')prepareAutoplay();
   }
   syncActivity();
  }
@@ -112,7 +115,7 @@ window.YorollSound = (() => {
    compressor.ratio.value=3;compressor.attack.value=.003;compressor.release.value=.16;
    activityGate=context.createGain();activityGate.gain.value=isActive()?1:0;
    output.connect(compressor);compressor.connect(activityGate);activityGate.connect(context.destination);
-   context.addEventListener('statechange',()=>{if(!isActive())syncActivity();publish();});
+   context.addEventListener('statechange',()=>{if(context.state==='running'&&autoplayRequested&&!activated)finishAutoplay();if(!isActive())syncActivity();publish();});
    loading=Promise.all(names.map(async name=>{
     const data=await bytes.get(name);
     if(!data){loadFailed=true;return;}
@@ -121,7 +124,36 @@ window.YorollSound = (() => {
   }catch{available=false;}
   publish();
  }
+ function finishAutoplay(){
+  if(activated)return context?.state==='running';
+  if(!context||context.state!=='running'||!isActive()){
+   if(context?.state==='running')syncActivity();
+   return false;
+  }
+  activated=true;activation='autoplay';autoplayState='allowed';claimAudio();syncActivity();publish();
+  return true;
+ }
+ async function prepareAutoplay(){
+  autoplayRequested=true;
+  if(activated)return context?.state==='running';
+  if(!previewPaused&&!pageAway&&!document.hidden&&!focusLost&&document.hasFocus())claimAudio();
+  if(!isActive()){autoplayState='deferred';publish();return false;}
+  if(autoplayAttempt)return autoplayAttempt;
+  ensureContext();
+  if(!context){autoplayState='unavailable';publish();return false;}
+  watchActivity();autoplayState='checking';publish();
+  // A blocked resume may stay pending. Keep it separate from gesture resumes,
+  // and never hold the page entrance waiting for browser permission.
+  const resume=context.resume().then(finishAutoplay).catch(()=>false);
+  autoplayAttempt=Promise.race([resume,new Promise(resolve=>setTimeout(()=>resolve(false),120))])
+   .then(allowed=>{
+    if(!activated)autoplayState=isActive()?'blocked':'deferred';
+    publish();return Boolean(allowed&&activated&&context.state==='running');
+   }).finally(()=>{autoplayAttempt=null;});
+  return autoplayAttempt;
+ }
  async function unlock(){
+  if(!activated){activation='gesture';if(autoplayRequested)autoplayState='gesture';}
   activated=true;focusLost=false;lastDocumentFocus=document.hasFocus();claimAudio();ensureContext();watchActivity();syncActivity();
   if(!context)return;
   try{await contextChange;await loading;}catch{}
@@ -177,10 +209,10 @@ window.YorollSound = (() => {
  document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.ctrlKey&&!event.altKey)unlock();},{capture:true});
  document.addEventListener('visibilitychange',pollActivity);
  window.addEventListener('blur',()=>{focusLost=true;lastDocumentFocus=document.hasFocus();syncActivity();});
- window.addEventListener('focus',()=>{focusLost=false;lastDocumentFocus=document.hasFocus();if(activated)claimAudio();syncActivity();});
+ window.addEventListener('focus',()=>{focusLost=false;lastDocumentFocus=document.hasFocus();if(activated)claimAudio();if(autoplayState==='deferred')prepareAutoplay();syncActivity();});
  window.addEventListener('pagehide',()=>{pageAway=true;syncActivity();clearInterval(activityPoll);activityPoll=0;});
  window.addEventListener('pageshow',()=>{pageAway=false;focusLost=!document.hasFocus();if(activated){claimAudio();watchActivity();}syncActivity();});
  syncActivity();
  publish();
- return {play,unlock,setLevels,audition,stopAll,suppressHover,isActive,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
+ return {play,unlock,prepareAutoplay,setLevels,audition,stopAll,suppressHover,isActive,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
 })();

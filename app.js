@@ -339,7 +339,6 @@ async function go(page,{replace=false,skipExit=false}={}){
  cancelPageMotion();
  previousPage=old;
  currentPage=page;
- window.YorollMusic.setScene(page);
  frame.dataset.page=page;
  frame.dataset.chapter=String(selectedChapter+1);frame.dataset.chapterTransition='ready';
  frame.dataset.entryState='entering';
@@ -351,6 +350,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  const url=new URL(location.href);url.searchParams.set('page',page);
  if(replace)history.replaceState({page},'',url);else history.pushState({page},'',url);
  $$('#review-pages button').forEach(b=>{if(b.dataset.route===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+ window.YorollMusic.setScene(page);
  enterPage();
  timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:page==='cover'?1900:page==='splash'?1800:page==='result'?1600:page==='chapters'?1600:1100);
  bindPageControls();
@@ -541,4 +541,10 @@ window.addEventListener('popstate',()=>go(new URLSearchParams(location.search).g
 document.addEventListener('visibilitychange',()=>{
  for(const a of enterAnimations){if(a.playState==='finished'||a.playState==='idle')continue;if(document.hidden)a.pause();else if(!(a===choiceAnimation&&choicePaused)&&!(a===playAnimation&&playbackPaused))a.play();}
 });
-go(params.get('page')||'home',{replace:true,skipExit:true});
+async function startPreview(){
+ const page=params.get('page')||'home';
+ frame.dataset.entryState='preparing';
+ try{await window.YorollMusic.prepareEntry(page);}catch{}
+ go(page,{replace:true,skipExit:true});
+}
+startPreview();

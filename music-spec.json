@@ -19,5 +19,15 @@
   "fadeOutStartSeconds": 7,
   "fadeOutCurve": "smootherstep",
   "fadeOutEndGain": 0,
-  "fadeOutGainIndependentFromPlaybackGain": true
+  "fadeOutGainIndependentFromPlaybackGain": true,
+  "entryAutoplay": {
+    "revision": "entry-autoplay-20261113",
+    "attemptOnLoad": true,
+    "requiresBrowserPermission": true,
+    "fallback": "First trusted click or key press when autoplay is blocked.",
+    "start": "At the same point as the page entrance.",
+    "permissionWaitLimitMs": 120,
+    "decodeWaitLimitMs": 1000,
+    "backgroundAutoplay": false
+  }
 }

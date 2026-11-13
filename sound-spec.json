@@ -176,7 +176,7 @@
     "tailDuckingGain": 0.28,
     "tailDuckingTimeConstantMs": 35,
     "masterTimesSfx": true,
-    "firstGestureRequired": true,
+    "firstGestureRequired": "Only when browser blocks audible autoplay.",
     "noSoundOnDrag": true,
     "chapterHoverTailGain": 0.6,
     "chapterHoverBlendTimeConstantMs": 90,
@@ -184,7 +184,15 @@
     "chapterTailBlendTimeConstantMs": 110,
     "chapterLevel": 0.62,
     "chapterRepeatLevel": 0.38,
-    "chapterThrottleMs": 220
+    "chapterThrottleMs": 220,
+    "autoplayAttemptOnEntry": true,
+    "autoplayPermissionWaitLimitMs": 120,
+    "backgroundAutoplay": false,
+    "autoplayPages": [
+      "splash",
+      "home",
+      "cover"
+    ]
   },
   "eventMap": {
     "hover": "Control focus",
@@ -197,5 +205,6 @@
     "success": "QTE success",
     "chapter": "Chapter activation; same timbre as hover, no stepped pitch or hard attack"
   },
-  "backgroundMusic": "music-spec.json"
+  "backgroundMusic": "music-spec.json",
+  "entryRevision": "entry-autoplay-20261113"
 }

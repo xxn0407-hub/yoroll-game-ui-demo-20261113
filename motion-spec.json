@@ -186,7 +186,7 @@
   "sound": {
     "spec": "sound-spec.json",
     "engine": "ui-sound.js",
-    "activation": "First trusted pointer-down or key press; no autoplay on page load.",
+    "activation": "Attempt audible autoplay during entry; fall back to the first trusted pointer-down or key press if the browser blocks it.",
     "hoverIntentMs": 70,
     "hoverThrottleMs": 180,
     "maxActiveVoices": 6,
@@ -217,7 +217,8 @@
       "hoverBlendTimeConstantMs": 90,
       "previousChapterTailGain": 0.2,
       "previousChapterTailTimeConstantMs": 110
-    }
+    },
+    "entryRevision": "entry-autoplay-20261113"
   },
   "backgroundMusic": {
     "spec": "music-spec.json",
@@ -239,11 +240,13 @@
       "resumeAfterReopenGesture": true,
       "oneActivePreview": true,
       "explicitPauseButton": true,
-      "hostPanelVisibilitySignalRequired": true
+      "hostPanelVisibilitySignalRequired": true,
+      "resumeAfterReopenAutoplayWhenAllowed": true
     },
     "fadeOutSeconds": 3,
     "fadeOutStartSeconds": 7,
     "fadeOutCurve": "smootherstep",
-    "fadeOutGainIndependentFromPlaybackGain": true
+    "fadeOutGainIndependentFromPlaybackGain": true,
+    "entryAutoplay": "Try on entry; start the prepared opening with the page entrance where permitted; never block the entrance on permission."
   }
 }

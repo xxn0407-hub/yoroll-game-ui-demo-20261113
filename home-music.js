@@ -46,7 +46,7 @@ window.YorollMusic = (() => {
   let phase='off';
   if(wanted&&loadFailed)phase='unavailable';
   else if(wanted&&hasFinished&&!voice)phase='ended';
-  else if(wanted&&!context)phase='locked';
+  else if(wanted&&(!context||document.documentElement.dataset.audioState==='locked'))phase='locked';
   else if(wanted&&!buffer)phase='loading';
   else if(voice)phase=!wanted?'fading':!window.YorollSound.isActive()||context.state!=='running'?'paused':tailSeconds()&&timelineOf(voice)>=duration()-tailSeconds()?'fading':'opening';
   else if(wanted)phase=hasStarted?'paused':'ready';
@@ -140,6 +140,16 @@ window.YorollMusic = (() => {
   if(wanted){load();maybeStart();}else fadeOut();
   publish();
  }
+ async function prepareEntry(page){
+  if(!openingPages.has(page))return false;
+  const attempt=window.YorollSound.prepareAutoplay();
+  load();
+  const allowed=await attempt;
+  // Decode before the entrance where possible; a slow connection must not
+  // leave the page waiting indefinitely on an audio asset.
+  if(allowed&&decoding)await Promise.race([decoding,new Promise(resolve=>setTimeout(resolve,1000))]);
+  return allowed;
+ }
  function replayOpening(){
   forceOpening=true;hasFinished=false;resumePosition=0;restoredFromStorage=false;
   if(wanted){load();maybeStart();}publish();
@@ -148,5 +158,5 @@ window.YorollMusic = (() => {
  document.addEventListener('preview-audio-activity',event=>{if(!event.detail.active)checkpoint(true);else maybeStart();publish();});
  window.addEventListener('pagehide',()=>checkpoint(true));
  publish();
- return {setScene,setLevels,replayOpening};
+ return {setScene,setLevels,replayOpening,prepareEntry};
 })();
