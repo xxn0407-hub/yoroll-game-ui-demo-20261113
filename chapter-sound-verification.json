@@ -1,17 +1,25 @@
 {
-  "revision": "chapter-ethereal-20261113",
-  "durationSeconds": 1.28,
+  "revision": "chapter-long-tail-20261113",
+  "durationSeconds": 2.8,
   "peak": 0.144989013671875,
-  "rmsDbfs": -36.69940617642582,
+  "rmsDbfs": -33.33,
   "boundarySamples": [
     0,
     0,
     0,
     0
   ],
-  "first20msRms": 0.00229196893230945,
-  "next50to100msRms": 0.05557565039192473,
+  "first20msRmsDbfs": -53.43,
+  "last20msRmsDbfs": -240.0,
+  "tailRmsDbfs1280to2300ms": -48.2,
+  "chapterLevel": 0.44,
+  "previousChapterLevel": 0.62,
+  "levelChangeDb": -2.98,
+  "chapterRepeatLevel": 0.27,
   "existingAudioFilesUnchanged": 10,
   "homeOpeningUnchanged": true,
-  "noLoopAsset": true
+  "noLoopAsset": true,
+  "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+  "renderScript": "scripts/extend_chapter_tail.py",
+  "audioLifecycleChecksPassed": 14
 }

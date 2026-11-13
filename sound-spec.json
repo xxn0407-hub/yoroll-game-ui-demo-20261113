@@ -1,7 +1,7 @@
 {
   "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "locked-hover-octave-20261113",
+  "revision": "chapter-long-tail-20261113",
   "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
@@ -136,12 +136,12 @@
     },
     "chapter": {
       "file": "assets/audio/ui-chapter.wav",
-      "durationMs": 1280,
+      "durationMs": 2800,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.145,
-      "rmsDbfs": -36.7,
-      "character": "A soft bloom of the existing hover harmonics with a diffuse stereo tail; no percussive attack or new musical note.",
+      "peak": 0.144989013671875,
+      "rmsDbfs": -33.33,
+      "character": "A quiet bloom of the existing hover harmonics, opening into a long, diffuse stereo room tail. No new note, noise, loop, or distinct rhythmic echo.",
       "source": "assets/audio/ui-hover.wav",
       "sourcePcmSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
       "processing": {
@@ -149,14 +149,18 @@
         "attackMs": 75,
         "lowpassHz": 2000,
         "pitchShiftSemitones": 0,
-        "addedNoise": false
+        "addedNoise": false,
+        "reverbNetwork": "Eight mutually diffused delay lines with orthogonal feedback.",
+        "feedbackRt60Seconds": 4.2,
+        "feedbackDampingHz": 4000,
+        "renderScript": "scripts/extend_chapter_tail.py"
       },
       "boundarySamples": [
         0,
         0
       ],
       "minFadeInMs": 75,
-      "fadeOutMs": 1120
+      "fadeOutMs": 900
     },
     "locked": {
       "file": "assets/audio/ui-hover.wav",
@@ -192,8 +196,8 @@
     "chapterHoverBlendTimeConstantMs": 90,
     "chapterPreviousTailGain": 0.2,
     "chapterTailBlendTimeConstantMs": 110,
-    "chapterLevel": 0.62,
-    "chapterRepeatLevel": 0.38,
+    "chapterLevel": 0.44,
+    "chapterRepeatLevel": 0.27,
     "chapterThrottleMs": 220,
     "autoplayAttemptOnEntry": true,
     "autoplayPermissionWaitLimitMs": 120,

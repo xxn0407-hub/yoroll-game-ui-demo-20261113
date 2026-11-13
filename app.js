@@ -205,10 +205,10 @@ async function switchChapterInfo(direction,request){
 }
 async function selectChapter(index,{focus=false}={}){
  if(currentPage!=='chapters'||index<0||index>=CHAPTER_PREVIEWS.length)return;
- if(index===selectedChapter){uiSound.play('chapter',{level:.38,throttle:220});if(focus)$(`.chapter-card[data-chapter-index="${index}"]`)?.focus({preventScroll:true});return;}
+ if(index===selectedChapter){uiSound.play('chapter',{level:.27,throttle:220});if(focus)$(`.chapter-card[data-chapter-index="${index}"]`)?.focus({preventScroll:true});return;}
  const direction=index>selectedChapter?1:-1;
  selectedChapter=index;
- uiSound.play('chapter',{level:.62,throttle:220});
+ uiSound.play('chapter',{level:.44,throttle:220});
  const chapter=activeChapter();const request=++chapterSwitchId;
  frame.dataset.chapter=String(chapter.number);frame.dataset.chapterTransition='changing';
  $$('.chapter-card').forEach((card,i)=>{const active=i===index;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active));card.tabIndex=active?0:-1;});
