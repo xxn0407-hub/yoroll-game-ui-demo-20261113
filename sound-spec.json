@@ -1,7 +1,7 @@
 {
   "origin": "Original glass-like harmonic synthesis and stereo reverb, with newly generated texture layers.",
   "format": "48 kHz stereo 16-bit PCM WAV",
-  "revision": "chapter-long-tail-20261113",
+  "revision": "chapter-continuous-tail-20261113",
   "character": "Transparent suspended harmonics, a clear delicate onset and a luminous diffuse stereo tail.",
   "reference": "https://blog.playstation.com/2020/10/15/first-look-playstation-5s-next-generation-user-experience/",
   "defaultMixGain": 0.5,
@@ -139,20 +139,26 @@
       "durationMs": 2800,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.144989013671875,
+      "peak": 0.10498046875,
       "rmsDbfs": -33.33,
-      "character": "A quiet bloom of the existing hover harmonics, opening into a long, diffuse stereo room tail. No new note, noise, loop, or distinct rhythmic echo.",
+      "character": "One phase-coherent sustain using the established hover colour. A single smooth decay replaces the fluctuating delay-network tail; quiet level and 2.8s duration are preserved.",
       "source": "assets/audio/ui-hover.wav",
       "sourcePcmSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
       "processing": {
-        "sourceOffsetMs": 85,
+        "sourceFitStartMs": 85,
+        "sourceFitWindowMs": 200,
         "attackMs": 75,
-        "lowpassHz": 2000,
-        "pitchShiftSemitones": 0,
+        "fixedPartialsHz": [
+          587.33,
+          880.995,
+          1174.66
+        ],
+        "pitchModulation": false,
+        "amplitudeModulation": false,
+        "echoFeedback": false,
+        "repeatedAudioSegments": false,
+        "decayTimeConstantSeconds": 0.7,
         "addedNoise": false,
-        "reverbNetwork": "Eight mutually diffused delay lines with orthogonal feedback.",
-        "feedbackRt60Seconds": 4.2,
-        "feedbackDampingHz": 4000,
         "renderScript": "scripts/extend_chapter_tail.py"
       },
       "boundarySamples": [

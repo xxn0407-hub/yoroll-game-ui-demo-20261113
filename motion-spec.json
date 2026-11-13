@@ -290,7 +290,7 @@
       "chapter wheel / trackpad scrolling"
     ],
     "visibility": "Stop voices and suspend audio while hidden; no stale sounds replayed.",
-    "revision": "chapter-long-tail-20261113",
+    "revision": "chapter-continuous-tail-20261113",
     "tailHandling": "Prior related tails duck to 28 percent with a 35ms smoothing constant; tails finish naturally.",
     "auditionStartSeconds": [
       0.06,
@@ -310,7 +310,9 @@
       "previousChapterTailTimeConstantMs": 110,
       "durationMs": 2800,
       "chapterRepeatLevel": 0.27,
-      "fadeOutMs": 900
+      "fadeOutMs": 900,
+      "tailMode": "Continuous phase-coherent sustain with one smooth decay, no tremolo or echo feedback.",
+      "amplitudeModulation": false
     },
     "entryRevision": "entry-autoplay-20261113",
     "masterMute": {

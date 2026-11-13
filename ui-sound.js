@@ -1,7 +1,7 @@
 'use strict';
 // Short original PCM assets; all playback stays local to this prototype.
 window.YorollSound = (() => {
- const revision = 'chapter-long-tail-20261113';
+ const revision = 'chapter-continuous-tail-20261113';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
