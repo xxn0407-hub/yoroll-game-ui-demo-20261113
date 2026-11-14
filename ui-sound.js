@@ -2,7 +2,7 @@
 // Finite local PCM cues; provenance is recorded in sound-spec.json.
 window.YorollSound = (() => {
  const revision = 'chapter-short-resonance-20261113';
- const completionRevision = 'completion-resonance-20261114';
+ const completionRevision = 'completion-brighter-20261114';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
