@@ -32,8 +32,9 @@ const icons = {
 };
 icons.heart='<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>';
 const icon = (name,extra='') => `<svg viewBox="0 0 24 24" aria-hidden="true" ${extra}>${icons[name]||icons.arrow}</svg>`;
-const button = (label,action,kind='',iconName='') => `<button class="btn ${kind}" data-action="${action}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
-const goButton = (label,route,kind='',iconName='') => `<button class="btn ${kind}" data-route="${route}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
+const buttonClasses = kind => `btn ${kind}${kind.split(/\s+/).includes('btn-primary')?' btn-glass':''}`;
+const button = (label,action,kind='',iconName='') => `<button class="${buttonClasses(kind)}" data-action="${action}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
+const goButton = (label,route,kind='',iconName='') => `<button class="${buttonClasses(kind)}" data-route="${route}">${iconName?icon(iconName):''}<span>${label}</span></button>`;
 let currentPage = 'home';
 let previousPage = 'home';
 let sceneKey = '';

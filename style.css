@@ -10,10 +10,6 @@
 .chapter-actions .btn{border-radius:999px;border-color:rgba(239,246,247,.55);background:rgba(12,17,19,.15);color:#f0f2ee;font-weight:400;letter-spacing:.04em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
 .chapter-actions .btn svg{font-size:calc(var(--p)*23)}
 .chapter-actions .btn:hover{background:rgba(227,240,244,.1);border-color:rgba(247,251,252,.85)}
-.chapter-actions .btn-primary{background:linear-gradient(180deg,rgba(244,249,252,.28),rgba(207,223,230,.1) 48%,rgba(231,242,248,.25));border-color:rgba(239,248,252,.63);box-shadow:inset 0 2px 7px rgba(255,255,255,.27),inset 0 -2px 7px rgba(255,255,255,.18),0 0 8px rgba(236,248,255,.05)}
-.chapter-actions .btn-primary:before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 24% 0%,rgba(255,255,255,.55),transparent 35%),radial-gradient(ellipse at 78% 100%,rgba(255,255,255,.42),transparent 38%);pointer-events:none;opacity:.7;transition:opacity .2s}
-.chapter-actions .btn-primary:hover{background:linear-gradient(180deg,rgba(244,249,252,.34),rgba(207,223,230,.16) 48%,rgba(231,242,248,.31));border-color:rgba(249,253,255,.86)}
-.chapter-actions .btn-primary:hover:before{opacity:1}
 .chapter-card.is-locked:disabled{opacity:1;cursor:default;border-color:rgba(201,217,211,.2)}
 .chapter-card.is-locked img{opacity:.48;filter:saturate(.4) brightness(.75)}
 .chapter-card.is-locked .card-label{color:#9ca6a2}.chapter-card.is-locked .card-label small{font-size:calc(var(--p)*15);color:#8d9b93}
@@ -236,10 +232,6 @@
 .result-actions{display:flex;flex-direction:column;align-items:center;gap:calc(var(--p)*18)}
 .result-actions .btn{width:calc(var(--p)*196);border-radius:999px;background:#11171936;border-color:#eef1e58c;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#edf0e8;box-shadow:none;letter-spacing:.04em}
 .result-actions .btn:hover{background:#e3f0f41a;border-color:#f7fbf2d9}
-.result-actions .btn-primary{background:linear-gradient(180deg,#f4f9fc45,#cfdfE619 48%,#e7f2f83d);border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e;overflow:visible}
-.result-actions .btn-primary:before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 24% 0%,#ffffff8c,transparent 35%),radial-gradient(ellipse at 78% 100%,#ffffff6b,transparent 38%);pointer-events:none;opacity:.7;transition:opacity .2s}
-.result-actions .btn-primary:hover:before{opacity:1}
-.result-actions .btn-primary:hover{background:linear-gradient(180deg,#f4f9fc57,#cfdfE629 48%,#e7f2f84f)}
 .result-actions .btn:focus-visible{outline:none;border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}
 .result-actions .btn>span{position:relative}
 .result-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
@@ -267,13 +259,16 @@
 .chapter-rail .chapter-card{display:block}
 .chapter-rail .chapter-rail-arrow{top:50%}
 
-/* Breathe the existing rim and broad glass highlights, with a visible light range. */
-:is(.chapter-actions,.result-actions) .btn-primary{--glass-light-min:.08;--glass-light-max:.95;--glass-hover-boost:0;isolation:isolate;overflow:visible;animation:glass-capsule-rim-breathe 3.8s ease-in-out infinite}
-:is(.chapter-actions,.result-actions) .btn-primary:is(:hover,:focus-visible){--glass-light-min:.4;--glass-light-max:1;--glass-hover-boost:.06}
-:is(.chapter-actions,.result-actions) .btn-primary:focus-visible{animation:none}
-:is(.chapter-actions,.result-actions) .btn-primary>span,:is(.chapter-actions,.result-actions) .btn-primary>svg{position:relative;z-index:1}
-:is(.chapter-actions,.result-actions) .btn-primary:before{animation:glass-capsule-breathe 3.8s ease-in-out infinite}
-:is(.chapter-actions,.result-actions) .btn-primary:after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,#f5fbff40,transparent 40%,transparent 60%,#f5fbff33);opacity:var(--glass-light-min);animation:glass-capsule-breathe 3.8s ease-in-out infinite}
+/* Every primary action shares the same glass material and breathing light. */
+.btn:focus-visible{outline:none;border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}
+.chapter-actions{--glass-label-color:#f0f2ee}
+.btn.btn-glass{--glass-light-min:.08;--glass-light-max:.95;--glass-hover-boost:0;color:var(--glass-label-color,#edf0e8);background:linear-gradient(180deg,rgba(244,249,252,.28),rgba(207,223,230,.1) 48%,rgba(231,242,248,.25));border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);isolation:isolate;overflow:visible;animation:glass-capsule-rim-breathe 3.8s ease-in-out infinite}
+.btn.btn-glass:is(:hover,:focus-visible){--glass-light-min:.4;--glass-light-max:1;--glass-hover-boost:.06;background:linear-gradient(180deg,rgba(244,249,252,.34),rgba(207,223,230,.16) 48%,rgba(231,242,248,.31))}
+.btn.btn-glass:focus-visible{animation:none;outline:none;border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}
+.btn.btn-glass>span,.btn.btn-glass>svg{position:relative;z-index:1}
+.btn.btn-glass:before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;background:radial-gradient(ellipse at 24% 0%,#ffffff8c,transparent 35%),radial-gradient(ellipse at 78% 100%,#ffffff6b,transparent 38%);pointer-events:none;opacity:.7;animation:glass-capsule-breathe 3.8s ease-in-out infinite}
+.btn.btn-glass:after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,#f5fbff40,transparent 40%,transparent 60%,#f5fbff33);opacity:var(--glass-light-min);animation:glass-capsule-breathe 3.8s ease-in-out infinite}
+.btn.btn-glass:disabled,.btn.btn-glass:disabled:before,.btn.btn-glass:disabled:after{animation:none}
 @keyframes glass-capsule-breathe{0%,100%{opacity:var(--glass-light-min)}50%{opacity:var(--glass-light-max)}}
 @keyframes glass-capsule-rim-breathe{0%,100%{border-color:rgba(239,248,252,calc(.28 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*1) calc(var(--p)*4) rgba(255,255,255,calc(.08 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-1) calc(var(--p)*4) rgba(255,255,255,calc(.05 + var(--glass-hover-boost))),0 0 calc(var(--p)*3) rgba(223,243,255,var(--glass-hover-boost))}50%{border-color:rgba(249,253,255,calc(.94 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*10) rgba(255,255,255,calc(.65 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-2) calc(var(--p)*10) rgba(255,255,255,calc(.48 + var(--glass-hover-boost))),0 0 calc(var(--p)*16) rgba(223,243,255,calc(.27 + var(--glass-hover-boost)))}}
-@media(prefers-reduced-motion:reduce){:is(.chapter-actions,.result-actions) .btn-primary{animation:none;border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e}:is(.chapter-actions,.result-actions) .btn-primary:before{animation:none;opacity:.7}:is(.chapter-actions,.result-actions) .btn-primary:after{animation:none;opacity:.2}}
+@media(prefers-reduced-motion:reduce){.btn.btn-glass{animation:none;border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e}.btn.btn-glass:before{animation:none;opacity:.7}.btn.btn-glass:after{animation:none;opacity:.2}.btn.btn-glass:focus-visible{border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}}

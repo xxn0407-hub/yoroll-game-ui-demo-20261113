@@ -226,10 +226,9 @@
       "decorativeSeparatorsAriaHidden": true
     },
     "glassButtonLight": {
-      "revision": "glass-button-breathe-v2-20261114",
+      "revision": "glass-button-shared-20261114",
       "appliesTo": [
-        ".chapter-actions .btn-primary",
-        ".result-actions .btn-primary"
+        ".btn-glass"
       ],
       "durationMs": 3800,
       "opacity": [
@@ -245,7 +244,17 @@
         0.28,
         0.94
       ],
-      "keyboardFocusKeepsStaticRim": true
+      "keyboardFocusKeepsStaticRim": true,
+      "component": "Primary variants from both button() and goButton() automatically receive btn-glass.",
+      "contexts": [
+        "Chapter continue/start game",
+        "Completion next chapter/return home",
+        "Login and logout confirmations",
+        "Save activation and save switching confirmations",
+        "Exit confirmation"
+      ],
+      "buttonGeometry": "Inherits the existing context size and corner radius",
+      "disabledState": "Static light; native disabled interaction preserved"
     }
   },
   "pages": [
