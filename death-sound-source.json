@@ -1,6 +1,6 @@
 {
-  "revision": "death-glitch-b-20261114",
-  "sourceType": "Edited CC0 stock sound effect",
+  "revision": "death-glitch-resonance-20261114",
+  "sourceType": "Softened CC0 B glitch plus the existing approved opening resonance",
   "candidate": "B",
   "selectionFeedback": "B 更接近",
   "title": "DSGNRythm_Glitch, One-shot, Stutter, Pitched, Hard, Digital, Chaotic_07_JW Audio",
@@ -11,31 +11,108 @@
   "sourceSha256": "d6fded83f2d4c22d08f8f2698aa120aa2bed084caef5d2d6350e590377d6ba2a",
   "additionalGenerationUsed": false,
   "webProcessing": {
-    "candidate": "B",
-    "sourceId": "freesound-834153",
-    "sourceTitle": "DSGNRythm_Glitch, One-shot, Stutter, Pitched, Hard, Digital, Chaotic_07_JW Audio",
-    "sourceAuthor": "JW_Audio",
-    "sourcePageUrl": "https://freesound.org/people/JW_Audio/sounds/834153/",
-    "sourceSha256": "d6fded83f2d4c22d08f8f2698aa120aa2bed084caef5d2d6350e590377d6ba2a",
-    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
-    "processing": "pan=mono|c0=c0,highpass=f=300:p=2,highpass=f=300:p=2,treble=g=-7:f=2900,lowpass=f=4800:p=2,acompressor=threshold=0.10:ratio=2.5:attack=6:release=65:knee=3:makeup=1",
-    "timeStretch": false,
-    "pitchShift": false,
-    "preservesSourceGestureTiming": true,
-    "bassOrResonanceLayerAdded": false,
-    "fadeInMs": 6,
-    "fadeOutMs": 80,
-    "sampleRate": 48000,
-    "channels": 2,
-    "durationMs": 887,
-    "peak": 0.160003662109375,
-    "rmsDbfs": -32.35956552261076,
-    "sha256": "77888e41b6ef1f8e8302f1c3c627002a056aee8c763ada8da06fb63be5d640f3",
-    "revision": "death-glitch-b-20261114",
-    "monoLossDb": 0,
-    "stereoCorrelation": 1,
-    "channelMode": "centered dual mono",
-    "newPaidGeneration": false
+    "revision": "death-glitch-resonance-20261114",
+    "method": "Softened approved B glitch plus one quiet lower resonance from the approved opening decay.",
+    "asset": {
+      "file": "ui-death.wav",
+      "durationMs": 3213,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.10028076171875,
+      "rmsDbfs": -38.08800144839795,
+      "monoLossDb": 0,
+      "stereoCorrelation": 1,
+      "boundarySamples": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "sha256": "f89f94cb8e86b5108457006cb582fbaa05fd4e3a9c3af0d3ae7a9491cbcf2ec2"
+    },
+    "layers": {
+      "glitch": {
+        "file": "glitch-softened.wav",
+        "durationMs": 887,
+        "sampleRate": 48000,
+        "channels": 2,
+        "peak": 0.10028076171875,
+        "rmsDbfs": -36.00533876512407,
+        "monoLossDb": 0,
+        "stereoCorrelation": 1,
+        "boundarySamples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "sha256": "ddc78352ae1832371bd3a700654a17c3a6bd1fa6a7eca497a69cacee23972f25",
+        "source": "outputs/game-ui-refresh/death-stock-auditions-20261114/glitch-b-softened.wav",
+        "sourceSha256": "77888e41b6ef1f8e8302f1c3c627002a056aee8c763ada8da06fb63be5d640f3",
+        "processing": "pan=mono|c0=c0,treble=g=-3.5:f=2600,lowpass=f=3900:p=2,volume=0.70",
+        "fixedGainDb": -3.1,
+        "normalizesBackUp": false,
+        "originalTimingPreserved": true,
+        "pitchShiftSemitones": 0,
+        "rmsReductionDb": 3.65
+      },
+      "failureResonance": {
+        "file": "failure-resonance.wav",
+        "durationMs": 3213,
+        "sampleRate": 48000,
+        "channels": 2,
+        "peak": 0.053009033203125,
+        "rmsDbfs": -40.59684105481034,
+        "monoLossDb": 0,
+        "stereoCorrelation": 1,
+        "boundarySamples": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "sha256": "a29604b3f2b43c2e56e0681c41ba7e36b2c8997bdd6ab2ab9abf18d1cf0df73b",
+        "source": "assets/audio/home-opening.wav",
+        "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+        "sourceExcerptSeconds": [
+          6.65,
+          9.2
+        ],
+        "processing": "atrim=start=6.65:end=9.20,asetpts=PTS-STARTPTS,pan=mono|c0=c0,asetrate=38098,aresample=48000,highpass=f=110:p=2,highpass=f=110:p=2,lowpass=f=1150:p=2",
+        "pitchShiftSemitones": -4,
+        "attackMs": 280,
+        "fadeOutMs": 1600,
+        "singleDecay": true,
+        "repetitions": 0,
+        "addedEchoOrReverb": false,
+        "addedBassImpact": false
+      }
+    },
+    "playback": {
+      "entryDelayMs": 170,
+      "level": 0.8,
+      "sharedMixGain": 0.5,
+      "loop": false
+    },
+    "checks": {
+      "dualMono": true,
+      "zeroStartAndEnd": true,
+      "noClipping": true,
+      "noBassImpactLayer": true,
+      "noNewPaidGeneration": true
+    }
   },
-  "processingNote": "Use the exact softened B audition. Preserve the source timing and pitch; remove low impacts with a fourth-order 300Hz high-pass, reduce sharp highs, softly compress, and apply a 6ms attack and 80ms fade. No added bass, resonance bed, echo, stretch, or repeated cue."
+  "processingNote": "Keep the B source gesture and pitch. Reduce its fixed gain by 3.10dB, soften the upper shelf and low-pass at 3.9kHz without renormalizing. Add one quiet resonance excerpt from 6.65–9.20s of the approved opening, four semitones lower, with a 280ms attack and continuous 1.6s release. Use the opening decay after its main impact; add no echo, repetition, sub-bass hit or drum. Both layers remain centered dual mono."
 }
