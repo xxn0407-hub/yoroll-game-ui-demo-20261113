@@ -277,6 +277,18 @@
         "aspectRatio": "3:4",
         "manifest": "wall/assets/covers/manifest.json",
         "motionPreserved": true
+      },
+      "menuHover": {
+        "revision": "home-menu-hover-glow-20261114",
+        "appearance": "Warm-white text bloom, feathered oval light behind the current item, softly lit existing dot and arrow",
+        "enterMs": 380,
+        "expandMs": 550,
+        "appliesTo": [
+          "hover",
+          "focus-visible"
+        ],
+        "layoutPreserved": true,
+        "reducedMotion": "Static glow without transitions"
       }
     },
     {

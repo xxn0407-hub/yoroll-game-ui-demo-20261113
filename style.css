@@ -385,3 +385,45 @@
 @keyframes glass-capsule-breathe{0%,100%{opacity:var(--glass-light-min)}50%{opacity:var(--glass-light-max)}}
 @keyframes glass-capsule-rim-breathe{0%,100%{border-color:rgba(239,248,252,calc(.28 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*1) calc(var(--p)*4) rgba(255,255,255,calc(.08 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-1) calc(var(--p)*4) rgba(255,255,255,calc(.05 + var(--glass-hover-boost))),0 0 calc(var(--p)*3) rgba(223,243,255,var(--glass-hover-boost))}50%{border-color:rgba(249,253,255,calc(.94 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*10) rgba(255,255,255,calc(.65 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-2) calc(var(--p)*10) rgba(255,255,255,calc(.48 + var(--glass-hover-boost))),0 0 calc(var(--p)*16) rgba(223,243,255,calc(.27 + var(--glass-hover-boost)))}}
 @media(prefers-reduced-motion:reduce){.btn.btn-glass{animation:none;border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e}.btn.btn-glass:before{animation:none;opacity:.7}.btn.btn-glass:after{animation:none;opacity:.2}.btn.btn-glass:focus-visible{border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}}
+
+/* Menu hover follows the warm-white selection light used by cards and controls. */
+.home-menu button{
+  isolation:isolate;
+  text-shadow:0 0 calc(var(--p)*9) #f6f0dc00,0 0 calc(var(--p)*24) #e4dcc600;
+  transition:color .25s,transform .35s var(--ease),text-shadow .35s var(--soft);
+}
+.home-menu button::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:calc(var(--p)*-35);
+  right:calc(var(--p)*-30);
+  top:50%;
+  height:calc(var(--p)*68);
+  border-radius:50%;
+  background:radial-gradient(ellipse at 36% 50%,#f0eddb42 0%,#e2dbc61f 38%,#d8c7a508 62%,transparent 80%);
+  filter:blur(calc(var(--p)*13));
+  opacity:0;
+  transform:translateY(-50%) scale(.94,.82);
+  pointer-events:none;
+  transition:opacity .38s var(--soft),transform .55s var(--ease);
+}
+.home-menu button:is(:hover,:focus-visible){
+  text-shadow:0 0 calc(var(--p)*9) #f6f0dc66,0 0 calc(var(--p)*24) #e4dcc638;
+}
+.home-menu button:is(:hover,:focus-visible)::after{
+  opacity:.86;
+  transform:translateY(-50%) scale(1);
+}
+.home-menu button::before{box-shadow:0 0 calc(var(--p)*9) #f0dfb98c;}
+.home-menu .menu-mark{
+  filter:drop-shadow(0 0 calc(var(--p)*5) #eadcbb00);
+  transition:opacity .2s,filter .3s var(--soft);
+}
+.home-menu button:is(:hover,:focus-visible) .menu-mark{
+  opacity:1;
+  filter:drop-shadow(0 0 calc(var(--p)*5) #eadcbb8c);
+}
+@media(prefers-reduced-motion:reduce){
+  .home-menu button,.home-menu button::before,.home-menu button::after,.home-menu .menu-mark{transition:none;}
+}
