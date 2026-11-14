@@ -267,9 +267,13 @@
 .chapter-rail .chapter-card{display:block}
 .chapter-rail .chapter-rail-arrow{top:50%}
 
-/* Let the glass rim breathe independently of text, geometry and hover highlights. */
-:is(.chapter-actions,.result-actions) .btn-primary{isolation:isolate;overflow:visible}
+/* Breathe the existing rim and broad glass highlights, with a visible light range. */
+:is(.chapter-actions,.result-actions) .btn-primary{--glass-light-min:.08;--glass-light-max:.95;--glass-hover-boost:0;isolation:isolate;overflow:visible;animation:glass-capsule-rim-breathe 3.8s ease-in-out infinite}
+:is(.chapter-actions,.result-actions) .btn-primary:is(:hover,:focus-visible){--glass-light-min:.4;--glass-light-max:1;--glass-hover-boost:.06}
+:is(.chapter-actions,.result-actions) .btn-primary:focus-visible{animation:none}
 :is(.chapter-actions,.result-actions) .btn-primary>span,:is(.chapter-actions,.result-actions) .btn-primary>svg{position:relative;z-index:1}
-:is(.chapter-actions,.result-actions) .btn-primary:after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,#f4fbff26,transparent 36%,transparent 64%,#f4fbff21);box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff66,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff4d,0 0 calc(var(--p)*12) #e5f6ff18;opacity:.12;animation:glass-capsule-breathe 5.6s ease-in-out infinite}
-@keyframes glass-capsule-breathe{0%,100%{opacity:.12}50%{opacity:.72}}
-@media(prefers-reduced-motion:reduce){:is(.chapter-actions,.result-actions) .btn-primary:after{animation:none;opacity:.4}}
+:is(.chapter-actions,.result-actions) .btn-primary:before{animation:glass-capsule-breathe 3.8s ease-in-out infinite}
+:is(.chapter-actions,.result-actions) .btn-primary:after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,#f5fbff40,transparent 40%,transparent 60%,#f5fbff33);opacity:var(--glass-light-min);animation:glass-capsule-breathe 3.8s ease-in-out infinite}
+@keyframes glass-capsule-breathe{0%,100%{opacity:var(--glass-light-min)}50%{opacity:var(--glass-light-max)}}
+@keyframes glass-capsule-rim-breathe{0%,100%{border-color:rgba(239,248,252,calc(.28 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*1) calc(var(--p)*4) rgba(255,255,255,calc(.08 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-1) calc(var(--p)*4) rgba(255,255,255,calc(.05 + var(--glass-hover-boost))),0 0 calc(var(--p)*3) rgba(223,243,255,var(--glass-hover-boost))}50%{border-color:rgba(249,253,255,calc(.94 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*10) rgba(255,255,255,calc(.65 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-2) calc(var(--p)*10) rgba(255,255,255,calc(.48 + var(--glass-hover-boost))),0 0 calc(var(--p)*16) rgba(223,243,255,calc(.27 + var(--glass-hover-boost)))}}
+@media(prefers-reduced-motion:reduce){:is(.chapter-actions,.result-actions) .btn-primary{animation:none;border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e}:is(.chapter-actions,.result-actions) .btn-primary:before{animation:none;opacity:.7}:is(.chapter-actions,.result-actions) .btn-primary:after{animation:none;opacity:.2}}

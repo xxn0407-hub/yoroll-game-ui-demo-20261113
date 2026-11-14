@@ -226,21 +226,26 @@
       "decorativeSeparatorsAriaHidden": true
     },
     "glassButtonLight": {
-      "revision": "glass-button-breathe-20261114",
+      "revision": "glass-button-breathe-v2-20261114",
       "appliesTo": [
         ".chapter-actions .btn-primary",
         ".result-actions .btn-primary"
       ],
-      "durationMs": 5600,
+      "durationMs": 3800,
       "opacity": [
-        0.12,
-        0.72
+        0.08,
+        0.95
       ],
       "easing": "ease-in-out",
-      "animatedProperty": "Decorative light-layer opacity only",
+      "animatedProperty": "Rim border and shadow, existing highlights and broad glass-light opacity",
       "geometryStable": true,
-      "hoverHighlightIndependent": true,
-      "reducedMotion": "Static light at opacity .4"
+      "reducedMotion": "Static original rim and highlights",
+      "hoverRaisesLightFloor": true,
+      "borderAlpha": [
+        0.28,
+        0.94
+      ],
+      "keyboardFocusKeepsStaticRim": true
     }
   },
   "pages": [
