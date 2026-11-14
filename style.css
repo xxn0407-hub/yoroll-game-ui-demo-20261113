@@ -492,14 +492,24 @@
   content:"";
   position:absolute;
   z-index:-1;
-  inset:0 0 calc(var(--p)*-12);
+  inset:0;
   background:linear-gradient(90deg,#18252a00,#30424826 25%,#4a5c6233 50%,#30424826 75%,#18252a00);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 86%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000 86%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
+  mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
   -webkit-mask-composite:source-in;
   mask-composite:intersect;
+  pointer-events:none;
+}
+.modal::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent 4%,#dce8df66 28%,#edf3e8a6 50%,#dce8df66 72%,transparent 96%);
   pointer-events:none;
 }
 .modal>.modal-caption{

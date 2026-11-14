@@ -257,13 +257,14 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "soft-compact-dialogs-20261114",
+      "revision": "banner-bottom-rule-20261114",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
         "Low-opacity frosted band; maximum fill alpha 20%, local blur 16px",
         "Both sides feather through 22% of viewport width to full transparency",
         "Fine fading header lines and subtle header fill",
-        "Clear dimmed scene beyond the banner"
+        "Clear dimmed scene beyond the banner",
+        "Independent 1px cool-white lower edge, clear in the center and transparent at both ends; frost stops at this edge"
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
       "modalMotion": "Existing 220ms backdrop, 420ms panel and 150ms exit retained verbatim",
