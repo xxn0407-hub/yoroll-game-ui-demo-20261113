@@ -316,6 +316,14 @@
         "placement": "behind card",
         "sharedDust": "common.selectedDust",
         "onlySelectedRuns": true
+      },
+      "exploredPresentation": {
+        "revision": "tree-explored-light-20261114",
+        "exploredImageOpacity": 0.92,
+        "lockedImageOpacity": 0.29,
+        "exploredLegendVisible": false,
+        "selectionGlowAndDustPreserved": true,
+        "stateTransitionMs": 450
       }
     },
     {
@@ -501,7 +509,7 @@
       "id": "result",
       "name": "章节结果",
       "kind": "用户提供原版 UI",
-      "motion": "金色徽记 1.25s 柔和入场；标题 850ms、分隔线 1000ms、说明 650ms 依次落位；两按钮以 85ms 错峰。32 个低透明度远中近金色浮尘持续轻缓上浮；减少动态效果时不显示浮尘。",
+      "motion": "徽记、标题、分隔线、说明和两个按钮沿用已定入场；底部金色光雾缓慢流动。20 个远景细尘、28 个中景亮点与 16 个近景虚焦光斑以不同路径和 7–20 秒周期上浮，4 个亮点带柔和星芒，透明度与尺寸持续渐变。减少动态效果时不显示粒子与光雾。",
       "interaction": "进入下一章前进到下一示例章节，最后一章返回首页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。",
       "reference": "comparison/before/13-result-user.png",
       "referenceRevision": "result-reference-20261114",
@@ -516,8 +524,23 @@
         "buttonLabelPx": 20,
         "buttonGapPx": 18,
         "emblemWidthPx": 350,
-        "particleCount": 32,
+        "particleCount": 64,
         "particleDepthLayers": 3
+      },
+      "particlesRevision": "completion-gold-particles-20261114",
+      "particleLayers": {
+        "far": 20,
+        "mid": 28,
+        "near": 16,
+        "glints": 4,
+        "nearBokehSizePx": [
+          18,
+          42
+        ],
+        "durationSeconds": [
+          7,
+          20
+        ]
       }
     },
     {

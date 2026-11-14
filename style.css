@@ -83,6 +83,8 @@
 
 .tree-node-cell.is-locked{cursor:not-allowed}
 .tree-node.is-locked:disabled{opacity:1;pointer-events:none;border-color:#c4d4ca1f;box-shadow:none;transform:none}
+/* Explored cards stay lit independently of the current selection. */
+.tree-node.is-explored:not(.is-selected):not(:hover) img{opacity:.92;filter:saturate(.94) brightness(1.03)}
 .tree-node.is-locked:disabled img{opacity:.29;filter:grayscale(.65) brightness(.8)}
 .tree-node.is-locked .node-number,.tree-node.is-locked .node-info strong{color:#8b9790}
 .tree-node.is-locked .node-progress{color:#7f8b83}
@@ -240,10 +242,18 @@
 .result-actions .btn:focus-visible{outline:none;border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}
 .result-actions .btn>span{position:relative}
 .result-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.result-atmosphere:before{content:"";position:absolute;left:0;right:0;bottom:calc(var(--p)*-40);height:calc(var(--p)*180);background:radial-gradient(ellipse at 65% 100%,#c6a34d1c,#b99b3b05 58%,transparent 76%)}
-.result-atmosphere i{--mote-strength:.46;position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));border-radius:50%;background:#e8d399;box-shadow:0 0 calc(var(--p)*7) #eac76845;filter:blur(calc(var(--p)*.4));opacity:0;animation:result-mote-drift var(--mote-duration) linear var(--mote-delay) infinite both}
-.result-atmosphere i:nth-child(3n+2){--mote-strength:.28;filter:blur(calc(var(--p)*1));background:#d5bd7d}
-.result-atmosphere i:nth-child(3n){--mote-strength:.16;filter:blur(calc(var(--p)*2));background:#d8c697}
+/* Warm completion light: sharp midground points, soft foreground bokeh and distant dust. */
+.result-atmosphere{mix-blend-mode:screen}
+.result-atmosphere:before{content:"";position:absolute;left:-5%;right:-5%;bottom:calc(var(--p)*-52);height:calc(var(--p)*230);background:radial-gradient(ellipse at 55% 100%,#e9b92f73,#dba72826 46%,#c5951700 76%);animation:result-gold-haze 16s ease-in-out infinite alternate}
+.result-atmosphere:after{content:"";position:absolute;left:0;right:0;bottom:calc(var(--p)*-20);height:calc(var(--p)*100);background:radial-gradient(ellipse at 20% 100%,#e9be4338,transparent 55%),radial-gradient(ellipse at 84% 100%,#e2b33126,transparent 46%);opacity:.7;animation:result-gold-haze 21s ease-in-out -7s infinite alternate-reverse}
+.result-atmosphere .result-mote{position:absolute;border-radius:50%;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));opacity:0;animation:result-mote-drift var(--mote-duration) linear var(--mote-delay) infinite both;will-change:transform,opacity}
+.result-mote--far{background:#e7cd87;box-shadow:0 0 calc(var(--p)*5) #e3b43c59;filter:blur(calc(var(--p)*.35))}
+.result-mote--mid{background:radial-gradient(circle,#fff7d5 0 14%,#ffe7a0 28%,#f0c44a 52%,#d6a32a38 72%,transparent 100%);box-shadow:0 0 calc(var(--p)*7) #ffda79a3,0 0 calc(var(--p)*20) #f7c63859;filter:blur(calc(var(--p)*.3))}
+.result-mote--near{background:radial-gradient(circle,#fff3c7e6 0 13%,#f8d76dcc 25%,#e0ad3d99 48%,#c78b1b38 68%,transparent 80%);filter:blur(calc(var(--p)*1.8));box-shadow:0 0 calc(var(--p)*22) #e8b6324d}
+.result-mote.is-spark:before,.result-mote.is-spark:after{content:"";position:absolute;left:50%;top:50%;width:calc(var(--p)*17);height:max(.5px,calc(var(--p)*.8));background:linear-gradient(90deg,transparent,#fff8d9,transparent);opacity:0;animation:result-gold-glint calc(var(--mote-duration)*1.37) ease-in-out calc(var(--mote-delay)*.7) infinite both}
+.result-mote.is-spark:after{--glint-angle:90deg;width:calc(var(--p)*12)}
 .game-frame[data-page="result"] .page-footer{z-index:2}
-@keyframes result-mote-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*12),0)}20%{opacity:var(--mote-strength)}70%{opacity:var(--mote-strength)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--mote-dx)),calc(var(--p)*var(--mote-rise)*-1),0)}}
+@keyframes result-mote-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*16),0) scale(.7)}18%{opacity:calc(var(--mote-strength)*.8)}45%{opacity:var(--mote-strength);transform:translate3d(calc(var(--p)*var(--mote-dx)*.4),calc(var(--p)*var(--mote-rise)*-.42),0) scale(.95)}78%{opacity:calc(var(--mote-strength)*.6)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--mote-dx)),calc(var(--p)*var(--mote-rise)*-1),0) scale(1.12)}}
+@keyframes result-gold-haze{from{opacity:.65;transform:translateX(-2%) scaleX(.98)}to{opacity:1;transform:translateX(2%) scaleX(1.04)}}
+@keyframes result-gold-glint{0%,28%,70%,100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(.4)}47%{opacity:.8;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(1)}58%{opacity:.12;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(.65)}}
 @media(prefers-reduced-motion:reduce){.result-atmosphere{display:none}}
