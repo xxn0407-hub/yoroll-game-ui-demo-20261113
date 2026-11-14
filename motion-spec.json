@@ -632,7 +632,7 @@
       "id": "failure",
       "name": "失败",
       "kind": "用户提供原版 UI",
-      "motion": "警示三角以不规则断纹显现；偏灰标题与细描边错层柔和落位，分隔线恢复双重相向切口。52 个红色碎片分为远 18、中 22、近 12 个，包含 44 块不规则切片和 8 根火星，以 8–19s 独立漂移、旋转和渐隐；主按钮延续原有呼吸光。死亡音在 170ms 随标题播放一次，2.56s 后柔和结束。",
+      "motion": "警示三角以不规则断纹显现；偏灰标题与细描边错层柔和落位，分隔线恢复双重相向切口。52 个红色碎片分为远 18、中 22、近 12 个，包含 44 块不规则切片和 8 根火星，以 8–19s 独立漂移、旋转和渐隐；主按钮延续原有呼吸光。死亡音在 170ms 随标题播放一次，2.56s 后柔和结束。 中近景碎片放大约 50%，提亮红色核心与边缘余光；火星加粗并延长亮段，更清楚地呈现漂浮轨迹。",
       "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。",
       "reference": "comparison/before/failure-user.png",
       "referenceRevision": "outcome-pages-20261114",
@@ -658,8 +658,8 @@
           12
         ],
         "sizePx": [
-          1.8,
-          16
+          2.4,
+          24
         ],
         "durationSeconds": [
           8,
@@ -672,9 +672,62 @@
         ],
         "entryDelayMs": 220,
         "entryDurationMs": 1400,
-        "pointerEvents": "none"
+        "pointerEvents": "none",
+        "layerSizesPx": [
+          [
+            2.4,
+            4.4
+          ],
+          [
+            7,
+            12
+          ],
+          [
+            15,
+            24
+          ]
+        ],
+        "layerPeakOpacity": [
+          [
+            0.42,
+            0.66
+          ],
+          [
+            0.74,
+            0.98
+          ],
+          [
+            0.66,
+            0.9
+          ]
+        ],
+        "streakWidthPx": 2,
+        "streakLengthSizeMultiplier": 4.5,
+        "opacityEnvelope": [
+          {
+            "offset": 0,
+            "strength": 0
+          },
+          {
+            "offset": 0.12,
+            "strength": 0.9
+          },
+          {
+            "offset": 0.46,
+            "strength": 1
+          },
+          {
+            "offset": 0.82,
+            "strength": 0.72
+          },
+          {
+            "offset": 1,
+            "strength": 0
+          }
+        ],
+        "nearGlowRadiusPx": 6
       },
-      "particlesRevision": "death-soft-rupture-20261114",
+      "particlesRevision": "death-embers-visible-20261114",
       "deathAudioRevision": "death-soft-rupture-20261114",
       "title": {
         "color": "#cdd0d2",
