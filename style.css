@@ -263,6 +263,11 @@
 .failure-title-group h1{position:relative;z-index:1}
 .failure-title-glow{position:absolute;z-index:0;inset:24% -5% -10%;background:radial-gradient(ellipse,#87312e33,transparent 72%);filter:blur(calc(var(--p)*12));pointer-events:none}
 .result-emblem.failure-emblem{width:calc(var(--p)*330);top:calc(var(--p)*-175)}
+.failure-emblem-art{display:block;will-change:transform,opacity}
+.failure-glitch-slice{position:absolute;inset:0;display:block;opacity:0;filter:brightness(1.6);pointer-events:none;will-change:transform,opacity}
+.failure-glitch-slice--0{clip-path:inset(23% 0 60% 0)}
+.failure-glitch-slice--1{clip-path:inset(44% 0 45% 0)}
+.failure-glitch-slice--2{clip-path:inset(67% 0 23% 0)}
 .failure-divider{position:relative;width:100%;height:calc(var(--p)*10);margin:calc(var(--p)*25) 0 calc(var(--p)*21);background:linear-gradient(90deg,transparent,#a8322c80 15%,#ae3831a6 46%,transparent 48%,transparent 52%,#ae3831a6 54%,#a8322c80 85%,transparent) center/100% 1px no-repeat}
 .failure-divider i{position:absolute;left:calc(50% - var(--p)*24);top:50%;translate:0 -50%;width:calc(var(--p)*17);height:calc(var(--p)*9);background:#b44137;opacity:.85;clip-path:polygon(100% 0,55% 50%,100% 100%,0 50%)}
 .failure-divider i:nth-child(2){left:calc(50% - var(--p)*35);opacity:.5}

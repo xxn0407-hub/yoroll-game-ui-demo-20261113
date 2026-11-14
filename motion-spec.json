@@ -632,8 +632,8 @@
       "id": "failure",
       "name": "失败",
       "kind": "用户提供原版 UI",
-      "motion": "警示三角以不规则断纹显现；偏灰标题与细描边错层柔和落位，分隔线恢复双重相向切口。52 个红色碎片分为远 18、中 22、近 12 个，包含 44 块不规则切片和 8 根火星，以 8–19s 独立漂移、旋转和渐隐；主按钮延续原有呼吸光。死亡音在 170ms 随标题播放一次，2.56s 后柔和结束。 中近景碎片放大约 50%，提亮红色核心与边缘余光；火星加粗并延长亮段，更清楚地呈现漂浮轨迹。",
-      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。",
+      "motion": "警示图形先柔和显现，再以三层横向切片在 470–660ms 与 790–980ms 形成两段短促错位、闪断和红色残影，随后恢复稳定；glitch 时间轴与既有死亡音均从 170ms 启动，撕裂段对齐声音主体。保持已确认的标题、按钮落位和增强的红色碎片漂浮；无持续故障循环或全屏闪光。",
+      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。 重播同时重放警示 glitch 与已有死亡音；静音时视觉仍运行，减少动态效果时仅保留静态警示图。",
       "reference": "comparison/before/failure-user.png",
       "referenceRevision": "outcome-pages-20261114",
       "reducedMotion": "Static settled composition; disable decorative drift and entry.",
@@ -744,7 +744,44 @@
       "emblem": {
         "irregularScanlineMask": true,
         "staticRoughEdges": true,
-        "flashing": false
+        "glitchRevision": "death-emblem-glitch-20261114",
+        "dynamicGlitch": true,
+        "sliceLayers": 3,
+        "bursts": 2,
+        "timelineDelayMs": 170,
+        "timelineDurationMs": 1000,
+        "tearWindowsMs": [
+          [
+            470,
+            660
+          ],
+          [
+            790,
+            980
+          ]
+        ],
+        "sliceShiftPx": [
+          -18,
+          22,
+          -12
+        ],
+        "easing": "steps(1,end)",
+        "localOpacityCuts": true,
+        "fullScreenFlash": false,
+        "continuousLoop": false,
+        "settledState": {
+          "baseOpacity": 1,
+          "baseTransform": "none",
+          "sliceOpacity": 0
+        },
+        "sourceAssetUnchanged": true,
+        "sound": {
+          "cue": "death",
+          "timelineStartMs": 170,
+          "level": 0.68,
+          "newGeneration": false
+        },
+        "reducedMotion": "Static original warning image; sliced copies stay invisible."
       }
     },
     {

@@ -585,7 +585,8 @@ function failureEmbersMarkup(){
  }).join('')).join('')}</div>`;
 }
 function failureView(){
- return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><img src="assets/failure-emblem.svg?v=death-soft-rupture-20261114" alt="" draggable="false"></div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败"><span class="failure-title-outline" aria-hidden="true">YOU ARE DEAD</span>YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
+ const warning='<img src="assets/failure-emblem.svg?v=death-soft-rupture-20261114" alt="" draggable="false">';
+ return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><span class="failure-emblem-art">${warning}</span>${[0,1,2].map(i=>`<span class="failure-glitch-slice failure-glitch-slice--${i}">${warning}</span>`).join('')}</div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败"><span class="failure-title-outline" aria-hidden="true">YOU ARE DEAD</span>YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
 }
 function gameoverView(){
  return `<div class="gameover-atmosphere" data-enter="gameover-atmosphere" aria-hidden="true"><div class="gameover-halo"></div></div><section class="gameover-layout" aria-labelledby="gameover-title"><div class="gameover-mark" data-enter="gameover-mark" aria-hidden="true"><svg class="gameover-diamonds" viewBox="0 0 420 420" fill="none"><path class="gameover-diamond-outer" d="M210 12 408 210 210 408 12 210Z"/><path class="gameover-diamond-inner" d="M210 55 365 210 210 365 55 210Z"/></svg><div class="gameover-flecks">${[0,1,2,3,4].map(i=>`<i style="--fleck:${i}"></i>`).join('')}</div></div><div class="gameover-heading"><span class="gameover-line gameover-line--left" data-enter="gameover-line" aria-hidden="true"></span><div class="gameover-title-group" data-enter="gameover-title"><h1 id="gameover-title">GAME OVER</h1></div><span class="gameover-line gameover-line--right" data-enter="gameover-line" aria-hidden="true"></span></div><div class="result-actions gameover-actions" data-enter="gameover-action">${goButton('返回主菜单','home','btn-primary')}</div></section>`;
@@ -637,7 +638,16 @@ function enterPage(){
  $$('[data-enter="result-title-light"]').forEach(el=>animate(el,[{opacity:0,transform:'scale3d(.38,.65,1)',offset:0,easing:'cubic-bezier(.22,.61,.36,1)'},{opacity:.9,transform:'scale3d(1.04,1.08,1)',offset:.46,easing:'cubic-bezier(.45,0,.55,1)'},{opacity:.46,transform:'scale3d(1,1,1)',offset:1}],{duration:1500,delay:160,easing:'linear'}));
  $$('[data-enter="result-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.7)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:260,easing:'cubic-bezier(.16,1,.3,1)'}));
  $$('[data-enter="result-atmosphere"]').forEach(el=>enter(el,{y:0,delay:180,duration:1400}));
- $$('[data-enter="failure-emblem"]').forEach(el=>enter(el,{y:unit(10),scale:.965,blur:1,delay:40,duration:1200}));
+ $$('[data-enter="failure-emblem"]').forEach(el=>{
+  enter(el,{y:unit(10),scale:.965,blur:1,delay:40,duration:1200});
+  const frames=poses=>poses.map(([offset,opacity,x])=>({offset,opacity,transform:`translate3d(${unit(x)}px,0,0)`,easing:'steps(1,end)'}));
+  // The two local tears meet the body of the existing cue, which starts at 170ms.
+  animate(el.querySelector('.failure-emblem-art'),frames([[0,1,0],[.26,1,0],[.3,.7,-3],[.36,.94,2],[.43,.64,-1],[.5,1,0],[.6,1,0],[.62,.67,3],[.69,.94,-2],[.75,.78,1],[.82,1,0],[1,1,0]]),{duration:1000,delay:170,easing:'linear'});
+  el.querySelectorAll('.failure-glitch-slice').forEach((slice,i)=>{
+   const shift=[-18,22,-12][i];
+   animate(slice,frames([[0,0,0],[.29,0,0],[.3,.72,shift],[.38,.9,shift*-.55],[.49,0,0],[.61,0,0],[.62,.82,shift*-.7],[.72,.68,shift*.4],[.81,0,0],[1,0,0]]),{duration:1000,delay:170,easing:'linear'});
+  });
+ });
  $$('[data-enter="failure-title"]').forEach(el=>enter(el,{y:unit(16),scale:.99,delay:170,duration:900}));
  $$('[data-enter="failure-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.65)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:280,easing:'cubic-bezier(.16,1,.3,1)'}));
  $$('[data-enter="failure-copy"]').forEach(el=>enter(el,{y:unit(14),delay:340,duration:700}));
