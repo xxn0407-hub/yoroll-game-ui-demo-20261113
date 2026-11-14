@@ -224,6 +224,23 @@
         "qte"
       ],
       "decorativeSeparatorsAriaHidden": true
+    },
+    "glassButtonLight": {
+      "revision": "glass-button-breathe-20261114",
+      "appliesTo": [
+        ".chapter-actions .btn-primary",
+        ".result-actions .btn-primary"
+      ],
+      "durationMs": 5600,
+      "opacity": [
+        0.12,
+        0.72
+      ],
+      "easing": "ease-in-out",
+      "animatedProperty": "Decorative light-layer opacity only",
+      "geometryStable": true,
+      "hoverHighlightIndependent": true,
+      "reducedMotion": "Static light at opacity .4"
     }
   },
   "pages": [
