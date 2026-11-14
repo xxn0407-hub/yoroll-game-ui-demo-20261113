@@ -791,7 +791,7 @@
       "id": "gameover",
       "name": "游戏结束",
       "kind": "用户提供原版 UI",
-      "motion": "双层柔光、错峰菱形描线、标题背光、左右细线与按钮沿用已定入场。42 个粒子分远中近三层，在中心附近从小而淡逐渐出现，随后沿各自方向向四周舒展、减速并消散；持续错峰补入，保持中间密度。34 个核心粒子的发散半径控制在 82–152px，8 个外围粒子到 160–220px，不再统一向上漂浮。",
+      "motion": "双层柔光、错峰菱形描线、标题背光、左右细线与按钮沿用已定入场。42 个粒子分远中近三层，在中心附近从小而淡逐渐出现，随后沿各自方向向四周舒展、减速并消散；持续错峰补入，保持中间密度。34 个核心粒子的发散半径控制在 100–180px，8 个外围粒子到 185–250px，不再统一向上漂浮。 发散行程加长，三层寿命收为 14–21s / 9–14s / 11–17s，前半段向外舒展更明确，末尾仍平滑减速和渐隐，中心持续补入。",
       "interaction": "最后一章完成后的查看结局进入此页，结束音与标题在 230ms 一起起步；低而柔和的单次共鸣约 4s 渐出。进入时先停止上一段完成音，不叠加通用切页声。返回主菜单、预览直达、重播、Esc、Tab 与 Enter 沿用现有行为。预览面板可“试听结束音”；总静音、音效音量、关闭预览与待播请求清理均走共用规则，静音入场不补播。",
       "reference": "comparison/before/gameover-user.png",
       "referenceRevision": "outcome-pages-20261114",
@@ -862,16 +862,16 @@
         ],
         "layerDurationsSeconds": [
           [
-            19,
-            29
-          ],
-          [
-            13,
+            14,
             21
           ],
           [
-            16,
-            25
+            9,
+            14
+          ],
+          [
+            11,
+            17
           ]
         ],
         "layerEntryDelayMs": [
@@ -899,16 +899,16 @@
           50
         ],
         "coreEndRadiusPx": [
-          82,
-          152
+          100,
+          180
         ],
         "outerEndRadiusPx": [
-          160,
-          220
+          185,
+          250
         ],
         "verticalRadiusRatio": 0.8,
         "radialOutflow": true,
-        "movementEasing": "cubic-bezier(.22,.25,.55,1)",
+        "movementEasing": "cubic-bezier(.18,.3,.5,1)",
         "scaleEnvelope": [
           0.4,
           1
@@ -937,7 +937,7 @@
         ]
       },
       "gameoverAudioRevision": "gameover-resonance-20261114",
-      "motionRevision": "gameover-particle-emission-20261114",
+      "motionRevision": "gameover-particle-spread-20261114",
       "entryTimeline": {
         "atmosphere": {
           "delayMs": 0,

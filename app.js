@@ -592,10 +592,10 @@ function failureView(){
 }
 function gameoverParticlesMarkup(){
  const sample=(i,salt)=>{const n=Math.sin((i+1)*83.71+salt*179.3)*43758.51;return n-Math.floor(n);};
- const layers=[{name:'far',count:18,size:[1.8,3.5],strength:[.16,.32],duration:[19,29]},{name:'mid',count:16,size:[3.5,6.5],strength:[.26,.48],duration:[13,21]},{name:'near',count:8,size:[7,12],strength:[.16,.3],duration:[16,25]}];
+ const layers=[{name:'far',count:18,size:[1.8,3.5],strength:[.16,.32],duration:[14,21]},{name:'mid',count:16,size:[3.5,6.5],strength:[.26,.48],duration:[9,14]},{name:'near',count:8,size:[7,12],strength:[.16,.3],duration:[11,17]}];
  return `<div class="gameover-particle-field" aria-hidden="true">${layers.map((layer,depth)=>`<div class="gameover-particle-layer gameover-particle-layer--${layer.name}" data-enter="gameover-particles">${Array.from({length:layer.count},(_,index)=>{
   const i=index+depth*37,pick=(range,salt)=>range[0]+sample(i,salt)*(range[1]-range[0]),angle=sample(i,1)*Math.PI*2,outer=index%6===0;
-  const start=outer?pick([22,50],2):pick([6,26],2),end=outer?pick([160,220],5):pick([82,152],5);
+  const start=outer?pick([22,50],2):pick([6,26],2),end=outer?pick([185,250],5):pick([100,180],5);
   const x=Math.cos(angle)*start,y=Math.sin(angle)*start*.8,dx=Math.cos(angle)*(end-start),dy=Math.sin(angle)*(end-start)*.8;
   return `<i class="gameover-mote gameover-mote--${layer.name}${index%4===1?' is-hollow':''}${depth===0&&index%3!==0?' is-point':''}" data-region="${outer?'outer':'core'}" style="left:calc(50% + var(--p)*${x.toFixed(2)});top:calc(50% + var(--p)*${y.toFixed(2)});--mote-size:${pick(layer.size,3).toFixed(2)};--mote-strength:${pick(layer.strength,4).toFixed(2)};--mote-dx:${dx.toFixed(2)};--mote-dy:${dy.toFixed(2)};--mote-duration:${pick(layer.duration,7).toFixed(2)}s;--mote-delay:${(-sample(i,8)*32).toFixed(2)}s"></i>`;
  }).join('')}</div>`).join('')}</div>`;

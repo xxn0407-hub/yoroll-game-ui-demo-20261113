@@ -301,7 +301,7 @@
 .gameover-particle-layer--far{z-index:0}
 .gameover-particle-layer--mid{z-index:1}
 .gameover-particle-layer--near{z-index:2}
-.gameover-mote{position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));opacity:0;animation:gameover-mote-emit var(--mote-duration) cubic-bezier(.22,.25,.55,1) var(--mote-delay) infinite both}
+.gameover-mote{position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));opacity:0;animation:gameover-mote-emit var(--mote-duration) cubic-bezier(.18,.3,.5,1) var(--mote-delay) infinite both}
 .gameover-mote:before{content:"";position:absolute;inset:0;rotate:45deg;background:#cbe6df;box-shadow:0 0 calc(var(--p)*5) #b3ddd84d}
 .gameover-mote--far{filter:blur(calc(var(--p)*.55))}
 .gameover-mote--mid{filter:blur(calc(var(--p)*.08))}
