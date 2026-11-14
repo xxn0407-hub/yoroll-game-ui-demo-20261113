@@ -203,13 +203,28 @@
       "durationMs": 2560,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.201812744140625,
-      "rmsDbfs": -29.499997527112527,
-      "attackMs": 45,
+      "peak": 0.219818115234375,
+      "rmsDbfs": -27.500004100616096,
+      "monoRmsDbfs": -27.500004100616096,
+      "monoLossDb": 0.0,
+      "stereoCorrelation": 1.0,
+      "boundarySamples": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "sha256": "fd8c5b3d94de670807b95be40af5c1999b95c308d4391f0622b9d88be893b143",
+      "attackMs": 60,
       "fadeOutMs": 1000,
-      "highpassHz": 65,
+      "highpassHz": 110,
       "lowpassHz": 2400,
-      "sha256": "70e1ca00217049f7a580ee3bd999487984f830308e90f54b0e52983c40534647",
+      "pitchShiftSemitones": 12,
+      "channelMode": "centered dual mono",
       "sourceManifest": "death-sound-source.json"
     }
   },
@@ -265,7 +280,7 @@
     "success": "Completion page entrance and explicit result replay; plays once with the title.",
     "chapter": "Chapter activation and keyboard story selection; quiet low resonance with a continuous gentle tail.",
     "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive.",
-    "death": "Failure entrance and explicit failure replay; one event with the title, independent from the completion cue."
+    "death": "Failure entrance, explicit failure replay and contextual death audition. Each action plays one finite cue."
   },
   "backgroundMusic": "music-spec.json",
   "entryRevision": "entry-autoplay-20261113",
@@ -300,12 +315,12 @@
     "sourceManifest": "completion-sound-source.json"
   },
   "deathCue": {
-    "revision": "death-soft-rupture-20261114",
+    "revision": "death-audible-20261114",
     "cue": "death",
     "file": "assets/audio/ui-death.wav",
     "durationMs": 2560,
     "entryDelayMs": 170,
-    "level": 0.68,
+    "level": 0.8,
     "oncePerEntrance": true,
     "replayIncluded": true,
     "loop": false,
@@ -315,7 +330,9 @@
     "mutedEntryNotBackfilled": true,
     "genericFailureTransitionCue": false,
     "completionCueOnFailure": false,
-    "character": "One soft short rupture followed by low airy resonance, gently fading to silence.",
-    "sourceManifest": "death-sound-source.json"
+    "character": "Centered, mono-compatible soft rupture in the audible low-mid range, fading once to silence.",
+    "sourceManifest": "death-sound-source.json",
+    "contextualAudition": true,
+    "auditionControlLabel": "试听死亡音"
   }
 }

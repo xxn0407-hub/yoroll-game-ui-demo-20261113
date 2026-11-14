@@ -73,7 +73,7 @@ function syncSoundControls(){
    if(button.dataset.muted!==String(audioMuted)){button.dataset.muted=String(audioMuted);button.innerHTML=icon(audioMuted?'volume-off':'volume');}
   }
  });
- $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;});
+ $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;const label=currentPage==='failure'?'试听死亡音':'试听音效';if(button.textContent!==label)button.textContent=label;});
  $$('[data-action="restart-music"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result','failure','gameover'].includes(currentPage);});
  const status=$('#sound-status');
  if(status){const state=document.documentElement.dataset.audioState;const text=audioMuted?'全部声音已关闭':settingState.master===0||settingState.sfx===0?'界面音量为零':state==='unavailable'?'声音暂不可用':state==='locked'?'首次点击后启用声音':state==='loading'?'声音准备中':'Hover · 点击 · 页面切换';if(status.textContent!==text)status.textContent=text;}
@@ -786,7 +786,7 @@ function tryFailureSound(){
  if(uiSound.isMuted()||settingState.master===0||settingState.sfx===0){failureSoundRequest=null;frame.dataset.failureSound='muted';return;}
  if(!request.due||document.documentElement.dataset.audioState!=='ready'||!uiSound.isActive())return;
  failureSoundRequest=null;frame.dataset.failureSound='played';
- if(!uiSound.play('death',{level:.68})){failureSoundRequest=request;frame.dataset.failureSound='pending';}
+ if(!uiSound.play('death',{level:.8})){failureSoundRequest=request;frame.dataset.failureSound='pending';}
 }
 function startFailureSound(){
  const request=failureSoundRequest={due:false};frame.dataset.failureSound='pending';
@@ -843,7 +843,7 @@ const actions={
  'qte-hit':qteHit,
  'mute':toggleInterfaceSound,
  'sound-toggle':toggleInterfaceSound,
- 'audition-sound':()=>uiSound.audition(),
+ 'audition-sound':()=>{if(currentPage==='failure'){failureSoundRequest=null;uiSound.stopAll();startFailureSound();}else uiSound.audition();},
  'restart-music':()=>{uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();},
  'toggle-preview-audio':()=>uiSound.setPreviewPaused(document.documentElement.dataset.audioPreviewPaused!=='true'),
  'playback':()=>{playbackPaused=!playbackPaused;if(playbackPaused)playAnimation?.pause();else playAnimation?.play();const b=$('[data-action="playback"]');b.innerHTML=icon(playbackPaused?'play':'pause')+`<span>${playbackPaused?'已暂停':'播放中'}</span>`;b.setAttribute('aria-label',playbackPaused?'继续播放':'暂停播放');}

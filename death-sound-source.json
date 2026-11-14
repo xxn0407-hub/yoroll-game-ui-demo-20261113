@@ -1,5 +1,5 @@
 {
-  "revision": "death-soft-rupture-20261114",
+  "revision": "death-audible-20261114",
   "provider": "ChatCut / ElevenLabs sound effects",
   "projectId": "c2db9bc2-0bc4-4908-b9fe-0a90100ec61b",
   "projectUrl": "https://app.chatcut.io/zh/editor/c2db9bc2-0bc4-4908-b9fe-0a90100ec61b",
@@ -17,19 +17,63 @@
     "reasonNotUsed": "Choppy TV static is too harsh and noisy for the requested low, soft UI resonance."
   },
   "webProcessing": {
-    "revision": "death-soft-rupture-20261114",
-    "durationMs": 2560,
-    "sampleRate": 48000,
-    "channels": 2,
-    "gain": 0.4779131088026448,
-    "peak": 0.201812744140625,
-    "rmsDbfs": -29.499997527112527,
-    "attackMs": 45,
-    "fadeOutMs": 1000,
-    "highpassHz": 65,
+    "revision": "death-audible-20261114",
+    "source": "work/game-ui-refresh/source-audio/death-soft-rupture-20261114/generated.mp3",
+    "sourceSha256": "e9cbd6aabfce97e577e40b9efae6cb182633323083f8e19c1e4ad775afc651e7",
+    "channelMode": "Original left channel, centered identically in both output channels.",
+    "pitchShiftSemitones": 12,
+    "durationPreserved": true,
+    "highpassHz": 110,
     "lowpassHz": 2400,
-    "sha256": "70e1ca00217049f7a580ee3bd999487984f830308e90f54b0e52983c40534647",
-    "sourceSha256": "e9cbd6aabfce97e577e40b9efae6cb182633323083f8e19c1e4ad775afc651e7"
+    "attackMs": 60,
+    "fadeOutMs": 1000,
+    "gain": 0.6905929812957811,
+    "before": {
+      "durationMs": 2560,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.201812744140625,
+      "rmsDbfs": -29.499997527112527,
+      "monoRmsDbfs": -38.267359374712335,
+      "monoLossDb": 8.767361847599808,
+      "stereoCorrelation": -0.7464537565603011,
+      "boundarySamples": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "sha256": "70e1ca00217049f7a580ee3bd999487984f830308e90f54b0e52983c40534647"
+    },
+    "after": {
+      "durationMs": 2560,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.219818115234375,
+      "rmsDbfs": -27.500004100616096,
+      "monoRmsDbfs": -27.500004100616096,
+      "monoLossDb": 0.0,
+      "stereoCorrelation": 1.0,
+      "boundarySamples": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "sha256": "fd8c5b3d94de670807b95be40af5c1999b95c308d4391f0622b9d88be893b143"
+    },
+    "monoRmsIncreaseDb": 10.76735527409624,
+    "newGeneration": false
   },
-  "processingNote": "Web asset preparation: remove sub-bass and sharp treble, 45ms soft attack, one-second fade, fixed gain to match the existing UI palette. No new echo, repeated segments, beat, or additional generated outputs."
+  "processingNote": "The previous version had anti-correlated channels and lost 8.77dB when folded to mono. Use the original left channel, transpose the low body up one octave while preserving duration, and center the result identically in both channels. Apply a 110Hz high-pass, 2.4kHz low-pass, 60ms attack and one-second fade; normalize to -27.5dBFS RMS. No additional generation, echo or repetition.",
+  "originalGenerationRevision": "death-soft-rupture-20261114",
+  "additionalGenerationUsed": false
 }

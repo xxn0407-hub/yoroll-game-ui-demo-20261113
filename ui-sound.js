@@ -3,7 +3,7 @@
 window.YorollSound = (() => {
  const revision = 'chapter-short-resonance-20261113';
  const completionRevision = 'completion-brighter-20261114';
- const deathRevision = 'death-soft-rupture-20261114';
+ const deathRevision = 'death-audible-20261114';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked','death'];
  const buffers = new Map();
  const voices = new Set();

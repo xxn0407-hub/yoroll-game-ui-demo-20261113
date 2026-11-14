@@ -633,7 +633,7 @@
       "name": "失败",
       "kind": "用户提供原版 UI",
       "motion": "警示图形先柔和显现，再以三层横向切片在 470–660ms 与 790–980ms 形成两段短促错位、闪断和红色残影，随后恢复稳定；glitch 时间轴与既有死亡音均从 170ms 启动，撕裂段对齐声音主体。保持已确认的标题、按钮落位和增强的红色碎片漂浮；无持续故障循环或全屏闪光。",
-      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。 重播同时重放警示 glitch 与已有死亡音；静音时视觉仍运行，减少动态效果时仅保留静态警示图。",
+      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。 重播同时重放警示 glitch 与已有死亡音；静音时视觉仍运行，减少动态效果时仅保留静态警示图。 死亡音已修复声道反相造成的单声道抵消，主体移到可听的中低频；预览面板提供“试听死亡音”，无需重播整个页面。",
       "reference": "comparison/before/failure-user.png",
       "referenceRevision": "outcome-pages-20261114",
       "reducedMotion": "Static settled composition; disable decorative drift and entry.",
@@ -728,7 +728,7 @@
         "nearGlowRadiusPx": 6
       },
       "particlesRevision": "death-embers-visible-20261114",
-      "deathAudioRevision": "death-soft-rupture-20261114",
+      "deathAudioRevision": "death-audible-20261114",
       "title": {
         "color": "#cdd0d2",
         "offsetOutlinePx": [
@@ -778,8 +778,9 @@
         "sound": {
           "cue": "death",
           "timelineStartMs": 170,
-          "level": 0.68,
-          "newGeneration": false
+          "level": 0.8,
+          "newGeneration": false,
+          "cueRevision": "death-audible-20261114"
         },
         "reducedMotion": "Static original warning image; sliced copies stay invisible."
       }
@@ -905,12 +906,12 @@
       "pitchShiftSemitones": 1
     },
     "deathCue": {
-      "revision": "death-soft-rupture-20261114",
+      "revision": "death-audible-20261114",
       "cue": "death",
       "file": "assets/audio/ui-death.wav",
       "durationMs": 2560,
       "entryDelayMs": 170,
-      "level": 0.68,
+      "level": 0.8,
       "oncePerEntrance": true,
       "replayIncluded": true,
       "loop": false,
@@ -920,8 +921,10 @@
       "mutedEntryNotBackfilled": true,
       "genericFailureTransitionCue": false,
       "completionCueOnFailure": false,
-      "character": "One soft short rupture followed by low airy resonance, gently fading to silence.",
-      "sourceManifest": "death-sound-source.json"
+      "character": "Centered, mono-compatible soft rupture in the audible low-mid range, fading once to silence.",
+      "sourceManifest": "death-sound-source.json",
+      "contextualAudition": true,
+      "auditionControlLabel": "试听死亡音"
     }
   },
   "backgroundMusic": {
