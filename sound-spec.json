@@ -200,31 +200,21 @@
     },
     "death": {
       "file": "assets/audio/ui-death.wav",
-      "durationMs": 2560,
+      "durationMs": 887,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.219818115234375,
-      "rmsDbfs": -27.500004100616096,
-      "monoRmsDbfs": -27.500004100616096,
-      "monoLossDb": 0.0,
-      "stereoCorrelation": 1.0,
-      "boundarySamples": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          0
-        ]
-      ],
-      "sha256": "fd8c5b3d94de670807b95be40af5c1999b95c308d4391f0622b9d88be893b143",
-      "attackMs": 60,
-      "fadeOutMs": 1000,
-      "highpassHz": 110,
-      "lowpassHz": 2400,
-      "pitchShiftSemitones": 12,
+      "peak": 0.160003662109375,
+      "rmsDbfs": -32.35956552261076,
+      "monoLossDb": 0,
+      "stereoCorrelation": 1,
+      "sha256": "77888e41b6ef1f8e8302f1c3c627002a056aee8c763ada8da06fb63be5d640f3",
       "channelMode": "centered dual mono",
+      "attackMs": 6,
+      "fadeOutMs": 80,
+      "highpassHz": 300,
+      "highpassOrder": 4,
+      "lowpassHz": 4800,
+      "trebleDb": -7,
       "sourceManifest": "death-sound-source.json"
     }
   },
@@ -315,10 +305,10 @@
     "sourceManifest": "completion-sound-source.json"
   },
   "deathCue": {
-    "revision": "death-audible-20261114",
+    "revision": "death-glitch-b-20261114",
     "cue": "death",
     "file": "assets/audio/ui-death.wav",
-    "durationMs": 2560,
+    "durationMs": 887,
     "entryDelayMs": 170,
     "level": 0.8,
     "oncePerEntrance": true,
@@ -330,9 +320,33 @@
     "mutedEntryNotBackfilled": true,
     "genericFailureTransitionCue": false,
     "completionCueOnFailure": false,
-    "character": "Centered, mono-compatible soft rupture in the audible low-mid range, fading once to silence.",
+    "character": "Softened B digital glitch: original irregular stutters and signal tears, no repeated low impacts or added resonance bed.",
     "sourceManifest": "death-sound-source.json",
     "contextualAudition": true,
-    "auditionControlLabel": "试听死亡音"
+    "auditionControlLabel": "试听死亡音",
+    "sourceType": "CC0 stock sound",
+    "candidate": "B",
+    "audioGestureWindowsMs": [
+      [
+        0,
+        440
+      ],
+      [
+        600,
+        850
+      ]
+    ],
+    "entryGestureWindowsMs": [
+      [
+        170,
+        610
+      ],
+      [
+        770,
+        1020
+      ]
+    ],
+    "fadeOutMs": 80,
+    "addedBassImpact": false
   }
 }

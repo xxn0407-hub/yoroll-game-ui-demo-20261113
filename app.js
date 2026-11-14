@@ -641,11 +641,11 @@ function enterPage(){
  $$('[data-enter="failure-emblem"]').forEach(el=>{
   enter(el,{y:unit(10),scale:.965,blur:1,delay:40,duration:1200});
   const frames=poses=>poses.map(([offset,opacity,x])=>({offset,opacity,transform:`translate3d(${unit(x)}px,0,0)`,easing:'steps(1,end)'}));
-  // The two local tears meet the body of the existing cue, which starts at 170ms.
-  animate(el.querySelector('.failure-emblem-art'),frames([[0,1,0],[.26,1,0],[.3,.7,-3],[.36,.94,2],[.43,.64,-1],[.5,1,0],[.6,1,0],[.62,.67,3],[.69,.94,-2],[.75,.78,1],[.82,1,0],[1,1,0]]),{duration:1000,delay:170,easing:'linear'});
+  // Follow the selected B cue's two gestures without stretching or repeating it.
+  animate(el.querySelector('.failure-emblem-art'),frames([[0,1,0],[.02,.7,-3],[.12,.94,2],[.24,.64,-1],[.34,.9,2],[.44,1,0],[.6,1,0],[.62,.67,3],[.69,.94,-2],[.79,.78,1],[.85,1,0],[1,1,0]]),{duration:1000,delay:170,easing:'linear'});
   el.querySelectorAll('.failure-glitch-slice').forEach((slice,i)=>{
    const shift=[-18,22,-12][i];
-   animate(slice,frames([[0,0,0],[.29,0,0],[.3,.72,shift],[.38,.9,shift*-.55],[.49,0,0],[.61,0,0],[.62,.82,shift*-.7],[.72,.68,shift*.4],[.81,0,0],[1,0,0]]),{duration:1000,delay:170,easing:'linear'});
+   animate(slice,frames([[0,0,0],[.01,0,0],[.02,.5,shift],[.1,.85,shift*-.55],[.18,.3,shift*.3],[.27,.72,shift*-.4],[.36,.5,shift*.25],[.44,0,0],[.61,0,0],[.62,.82,shift*-.7],[.72,.68,shift*.4],[.85,0,0],[1,0,0]]),{duration:1000,delay:170,easing:'linear'});
   });
  });
  $$('[data-enter="failure-title"]').forEach(el=>enter(el,{y:unit(16),scale:.99,delay:170,duration:900}));

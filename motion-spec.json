@@ -632,8 +632,8 @@
       "id": "failure",
       "name": "失败",
       "kind": "用户提供原版 UI",
-      "motion": "警示图形先柔和显现，再以三层横向切片在 470–660ms 与 790–980ms 形成两段短促错位、闪断和红色残影，随后恢复稳定；glitch 时间轴与既有死亡音均从 170ms 启动，撕裂段对齐声音主体。保持已确认的标题、按钮落位和增强的红色碎片漂浮；无持续故障循环或全屏闪光。",
-      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。 重播同时重放警示 glitch 与已有死亡音；静音时视觉仍运行，减少动态效果时仅保留静态警示图。 死亡音已修复声道反相造成的单声道抵消，主体移到可听的中低频；预览面板提供“试听死亡音”，无需重播整个页面。",
+      "motion": "警示图形柔和显现，三层横向切片在 190–610ms 与 790–1020ms 两段错位、闪断，与 B 音效原有的两段数字故障衔接；随后稳定。标题、按钮落位和 52 个红色碎片漂浮保持，无持续故障循环或全屏闪光。",
+      "interaction": "QTE 超时进入失败页；重新尝试保留当前章。入场、重播和“试听死亡音”各播放一次 B 音效，延迟 170ms，不叠加通用切页或成功声。总声音关闭或音效音量为零时静音，静音入场不补播；离开页面取消待播请求，关闭预览停止声音。减少动态效果时保留静态警示图。返回、Esc、Tab 与 Enter 沿用当前行为。",
       "reference": "comparison/before/failure-user.png",
       "referenceRevision": "outcome-pages-20261114",
       "reducedMotion": "Static settled composition; disable decorative drift and entry.",
@@ -728,7 +728,7 @@
         "nearGlowRadiusPx": 6
       },
       "particlesRevision": "death-embers-visible-20261114",
-      "deathAudioRevision": "death-audible-20261114",
+      "deathAudioRevision": "death-glitch-b-20261114",
       "title": {
         "color": "#cdd0d2",
         "offsetOutlinePx": [
@@ -744,7 +744,7 @@
       "emblem": {
         "irregularScanlineMask": true,
         "staticRoughEdges": true,
-        "glitchRevision": "death-emblem-glitch-20261114",
+        "glitchRevision": "death-glitch-b-20261114",
         "dynamicGlitch": true,
         "sliceLayers": 3,
         "bursts": 2,
@@ -752,12 +752,12 @@
         "timelineDurationMs": 1000,
         "tearWindowsMs": [
           [
-            470,
-            660
+            190,
+            610
           ],
           [
             790,
-            980
+            1020
           ]
         ],
         "sliceShiftPx": [
@@ -780,7 +780,9 @@
           "timelineStartMs": 170,
           "level": 0.8,
           "newGeneration": false,
-          "cueRevision": "death-audible-20261114"
+          "cueRevision": "death-glitch-b-20261114",
+          "sourceGesturePreserved": true,
+          "cueDurationMs": 887
         },
         "reducedMotion": "Static original warning image; sliced copies stay invisible."
       }
@@ -906,10 +908,10 @@
       "pitchShiftSemitones": 1
     },
     "deathCue": {
-      "revision": "death-audible-20261114",
+      "revision": "death-glitch-b-20261114",
       "cue": "death",
       "file": "assets/audio/ui-death.wav",
-      "durationMs": 2560,
+      "durationMs": 887,
       "entryDelayMs": 170,
       "level": 0.8,
       "oncePerEntrance": true,
@@ -921,10 +923,34 @@
       "mutedEntryNotBackfilled": true,
       "genericFailureTransitionCue": false,
       "completionCueOnFailure": false,
-      "character": "Centered, mono-compatible soft rupture in the audible low-mid range, fading once to silence.",
+      "character": "Softened B digital glitch: original irregular stutters and signal tears, no repeated low impacts or added resonance bed.",
       "sourceManifest": "death-sound-source.json",
       "contextualAudition": true,
-      "auditionControlLabel": "试听死亡音"
+      "auditionControlLabel": "试听死亡音",
+      "sourceType": "CC0 stock sound",
+      "candidate": "B",
+      "audioGestureWindowsMs": [
+        [
+          0,
+          440
+        ],
+        [
+          600,
+          850
+        ]
+      ],
+      "entryGestureWindowsMs": [
+        [
+          170,
+          610
+        ],
+        [
+          770,
+          1020
+        ]
+      ],
+      "fadeOutMs": 80,
+      "addedBassImpact": false
     }
   },
   "backgroundMusic": {
