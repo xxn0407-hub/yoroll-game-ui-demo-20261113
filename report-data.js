@@ -97,11 +97,12 @@ window.YOROLL_REPORT = {
       "name": "设置",
       "before": "06-settings.jpg",
       "kind": "原版实拍",
-      "change": "移除「音频」「通用」分组字样，以及右上角「SETTINGS」和短线。设置控件沿用已确认的字号、尺寸与位置，音量、全局静音与语言入口沿用现有交互。",
+      "change": "设置页移除「试听音效」按钮，将「全部声音」开关放到该行最右侧，与音量数值右边缘对齐；沿用当前设置项比例、行距与分组简化。",
       "ratio": "标签约 40px → 24px；百分比约 48px → 20px；行距 120px → 80px。",
       "motion": "设置项按 42ms 错峰落位，650ms 渐停；下拉列表从上方 7px 进入，240ms 完成。",
-      "interaction": "主音量控制整体，音效音量控制界面反馈，音乐音量实际控制开场音。界面音效开关与试听可用；重播开场音可主动重播一次。",
-      "captionRevision": "settings-caption-clean-20261113"
+      "interaction": "主音量控制整体，音效音量控制界面反馈，音乐音量控制开场音。右侧全部声音开关与首页同步，关闭后停用开场音和全部交互音效。",
+      "captionRevision": "settings-caption-clean-20261113",
+      "soundControlsRevision": "settings-sound-align-20261114"
     },
     {
       "id": "logout",
