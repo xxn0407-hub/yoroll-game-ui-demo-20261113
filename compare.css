@@ -3,3 +3,5 @@
 .slider-row[hidden],#replay-motion[hidden],.still-stage[hidden],.before-layer>img[hidden]{display:none!important}
 .report-header{padding-top:22px;padding-bottom:14px}.scope{padding-top:8px;padding-bottom:8px}.report-layout{padding-top:24px}.comparison.fit-stage:not([data-mode=pair]){width:100%;max-width:calc((100vh - 320px)*16/9);margin-inline:auto}
 .comparison[data-mode=wipe] .still-stage{cursor:ew-resize;touch-action:none;user-select:none}
+/* Keep every page reachable as the comparison gains additional states. */
+.page-sidebar nav{max-height:calc(100dvh - 260px);min-height:160px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#81948940 transparent}

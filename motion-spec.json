@@ -164,7 +164,7 @@
     },
     "viewport": {
       "revision": "viewport-backgrounds-20261113",
-      "appliesTo": "All 15 page states",
+      "appliesTo": "All 17 page states",
       "background": "Fill the viewport with proportional cover cropping.",
       "posterWall": "Recalculate the existing poster grid when viewport size changes.",
       "uiScale": "min(viewportWidth / 1920, viewportHeight / 1080)",
@@ -572,14 +572,14 @@
       "name": "QTE",
       "kind": "补充动效示例",
       "motion": "控件由 94% 轻推至 100%，650ms 落位；8s 环形计时；成功反馈后平滑进入结果页。",
-      "interaction": "按 E 或点击成功；超时给出重试反馈。"
+      "interaction": "按 E 或点击完成换挡并进入章节完成页；超时显示错过时机，再进入失败页，可重新尝试。"
     },
     {
       "id": "result",
-      "name": "章节结果",
+      "name": "章节完成",
       "kind": "用户提供原版 UI",
       "motion": "徽记先显现；COMPLETED 与横向金色光带从 160ms 同步入场并一起落位，文字 850ms、光带 1500ms。光带由中心展开提亮，再柔和收成 46% 常亮底光；分隔线于 260ms 展开，并带偏右的柔和亮点。原有说明和按钮入场、底部金色光雾及 64 个远近粒子继续运行。",
-      "interaction": "进入下一章前进到下一示例章节，最后一章返回首页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。 完成标题入场时播放一次与首页同源、稍明亮轻快的共鸣音（4.64s），重播也会播放；遵循总声音开关与音效音量。",
+      "interaction": "进入下一章前进到下一示例章节，最后一章进入游戏结束页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。 完成标题入场时播放一次与首页同源、稍明亮轻快的共鸣音（4.64s），重播也会播放；遵循总声音开关与音效音量。",
       "reference": "comparison/before/13-result-user.png",
       "referenceRevision": "result-reference-20261114",
       "layout": {
@@ -629,6 +629,67 @@
       }
     },
     {
+      "id": "failure",
+      "name": "失败",
+      "kind": "用户提供原版 UI",
+      "motion": "警示徽记先显现；标题延后 170ms 柔和落位，分隔线随后由中间展开，说明与两个按钮依次进入。42 个远近余烬以 7–16s 错峰向上飘散，主按钮延续 3.8s 呼吸光感。",
+      "interaction": "QTE 超时进入失败页；重新尝试回到同一章的 QTE，重新计时。返回章节选择或 Esc 保留当前章。支持预览导航、重播、Tab 和 Enter；不播放完成共鸣音。",
+      "reference": "comparison/before/failure-user.png",
+      "referenceRevision": "outcome-pages-20261114",
+      "reducedMotion": "Static settled composition; disable decorative drift and entry.",
+      "layout": {
+        "panelWidthPx": 640,
+        "titlePx": 88,
+        "descriptionPx": 18,
+        "buttonSizePx": [
+          196,
+          52
+        ],
+        "emblemWidthPx": 330
+      },
+      "particles": {
+        "count": 42,
+        "depthLayers": 3,
+        "durationSeconds": [
+          7,
+          16
+        ],
+        "entryDelayMs": 220,
+        "entryDurationMs": 1400
+      }
+    },
+    {
+      "id": "gameover",
+      "name": "游戏结束",
+      "kind": "用户提供原版 UI",
+      "motion": "冷色光场先柔和亮起，菱形以 94%→100% 舒展；标题在 230ms 开始，1.25s 由虚到实落位。两侧细线从文字向外延伸，主按钮最后进入；柔光约 13s 呼吸，小菱形独立缓慢漂移。",
+      "interaction": "最后一章完成后的查看结局进入此页；返回主菜单可继续浏览。支持预览直达、重播、Esc、Tab 与 Enter；不播放胜利共鸣音或背景循环。",
+      "reference": "comparison/before/gameover-user.png",
+      "referenceRevision": "outcome-pages-20261114",
+      "reducedMotion": "Static settled composition; disable decorative drift and entry.",
+      "layout": {
+        "titlePx": 84,
+        "diamondSizePx": [
+          400,
+          400
+        ],
+        "buttonSizePx": [
+          196,
+          52
+        ],
+        "centerYViewportFraction": 0.47,
+        "buttonTopViewportFraction": 0.765
+      },
+      "particles": {
+        "diamonds": 5,
+        "durationSeconds": [
+          9,
+          14.2
+        ],
+        "haloPeriodSeconds": 13
+      }
+    },
+    {
       "id": "exit",
       "name": "退出确认",
       "kind": "原版退出后黑屏",
@@ -639,7 +700,8 @@
   "interactionTimers": {
     "choice": 16000,
     "qte": 8000,
-    "qteSuccessToResult": 1100
+    "qteSuccessToResult": 1100,
+    "qteTimeoutToFailure": 500
   },
   "reducedMotion": "Decorative entries, zooms and completion dust are skipped. The title light stays at its settled static glow. Timed interaction progress remains functional.",
   "lifecycle": "Page animations and timers cancel on navigation. Active tracks pause while the document is hidden. Hover transforms use separate entry wrappers.",

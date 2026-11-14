@@ -13,7 +13,7 @@ if(params.has('capture'))document.body.classList.add('capture');
 const pages = [
  ['splash','启动'],['home','默认首页'],['cover','封面首页'],['chapters','章节选择'],
  ['tree','剧情树'],['affinity','角色好感度'],['saves','切换存档'],['settings','设置'],['logout','退出登录'],
- ['gameplay','游戏内'],['pause','暂停'],['choice','限时选择'],['qte','QTE'],['result','章节结果'],['exit','退出确认']
+ ['gameplay','游戏内'],['pause','暂停'],['choice','限时选择'],['qte','QTE'],['result','章节完成'],['failure','失败'],['gameover','游戏结束'],['exit','退出确认']
 ];
 const pageNames = Object.fromEntries(pages);
 const icons = {
@@ -73,7 +73,7 @@ function syncSoundControls(){
   }
  });
  $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;});
- $$('[data-action="restart-music"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result'].includes(currentPage);});
+ $$('[data-action="restart-music"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result','failure','gameover'].includes(currentPage);});
  const status=$('#sound-status');
  if(status){const state=document.documentElement.dataset.audioState;const text=audioMuted?'全部声音已关闭':settingState.master===0||settingState.sfx===0?'界面音量为零':state==='unavailable'?'声音暂不可用':state==='locked'?'首次点击后启用声音':state==='loading'?'声音准备中':'Hover · 点击 · 页面切换';if(status.textContent!==text)status.textContent=text;}
  const musicStatus=$('#music-status');
@@ -571,11 +571,24 @@ function resultDustMarkup(){
 }
 function resultView(){
  const last=selectedChapter===CHAPTER_PREVIEWS.length-1;
- return `${resultDustMarkup()}<section class="result-layout" aria-labelledby="result-title"><div class="result-emblem" data-enter="result-emblem" aria-hidden="true"><img src="assets/completion-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><div class="result-title-group" data-enter="result-title"><div class="result-title-light" data-enter="result-title-light" aria-hidden="true"><i class="result-title-ray"></i><i class="result-title-ray"></i><i class="result-title-ray"></i></div><h1 id="result-title" aria-label="章节完成">COMPLETED</h1></div><div class="result-divider" data-enter="result-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="result-copy">苦战至此，终得凯旋。感谢各位队友默契相伴，<br>所有付出皆有回响，让我们收下这份来之不易的胜利。</p></div><div class="result-actions"><div data-enter="result-action">${button(last?'返回主菜单':'进入下一章','result-next','btn-primary')}</div><div data-enter="result-action">${goButton('返回章节选择','chapters')}</div></div></section>${footer('')}`;
+ return `${resultDustMarkup()}<section class="result-layout" aria-labelledby="result-title"><div class="result-emblem" data-enter="result-emblem" aria-hidden="true"><img src="assets/completion-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><div class="result-title-group" data-enter="result-title"><div class="result-title-light" data-enter="result-title-light" aria-hidden="true"><i class="result-title-ray"></i><i class="result-title-ray"></i><i class="result-title-ray"></i></div><h1 id="result-title" aria-label="章节完成">COMPLETED</h1></div><div class="result-divider" data-enter="result-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="result-copy">苦战至此，终得凯旋。感谢各位队友默契相伴，<br>所有付出皆有回响，让我们收下这份来之不易的胜利。</p></div><div class="result-actions"><div data-enter="result-action">${button(last?'查看结局':'进入下一章','result-next','btn-primary')}</div><div data-enter="result-action">${goButton('返回章节选择','chapters')}</div></div></section>${footer('')}`;
 }
-const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
+function failureEmbersMarkup(){
+ const sample=(i,salt)=>{const n=Math.sin((i+1)*97.31+salt*219.7)*41753.29;return n-Math.floor(n);};
+ return `<div class="failure-atmosphere" data-enter="failure-atmosphere" aria-hidden="true">${Array.from({length:42},(_,i)=>{
+  const depth=i%3,streak=i%6===0,size=depth===0?1.5+sample(i,1)*1.8:depth===1?3+sample(i,1)*2.5:6+sample(i,1)*5;
+  return `<i class="failure-ember failure-ember--${['far','mid','near'][depth]}${streak?' is-streak':''}" style="left:${(3+sample(i,2)*94).toFixed(2)}%;top:${(12+sample(i,3)*100).toFixed(2)}%;--ember-size:${size.toFixed(2)};--ember-dx:${(-70+sample(i,4)*120).toFixed(2)};--ember-rise:${(100+sample(i,5)*160).toFixed(2)};--ember-angle:${(-35+sample(i,6)*80).toFixed(2)}deg;--ember-strength:${([.3,.65,.46][depth]+sample(i,7)*.15).toFixed(2)};--ember-duration:${(7+sample(i,8)*9).toFixed(2)}s;--ember-delay:${(-sample(i,9)*22).toFixed(2)}s"></i>`;
+ }).join('')}</div>`;
+}
+function failureView(){
+ return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><img src="assets/failure-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败">YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
+}
+function gameoverView(){
+ return `<div class="gameover-atmosphere" data-enter="gameover-atmosphere" aria-hidden="true"><div class="gameover-halo"></div></div><section class="gameover-layout" aria-labelledby="gameover-title"><div class="gameover-mark" data-enter="gameover-mark" aria-hidden="true"><svg class="gameover-diamonds" viewBox="0 0 420 420" fill="none"><path class="gameover-diamond-outer" d="M210 12 408 210 210 408 12 210Z"/><path class="gameover-diamond-inner" d="M210 55 365 210 210 365 55 210Z"/></svg><div class="gameover-flecks">${[0,1,2,3,4].map(i=>`<i style="--fleck:${i}"></i>`).join('')}</div></div><div class="gameover-heading"><span class="gameover-line gameover-line--left" data-enter="gameover-line" aria-hidden="true"></span><div class="gameover-title-group" data-enter="gameover-title"><h1 id="gameover-title">GAME OVER</h1></div><span class="gameover-line gameover-line--right" data-enter="gameover-line" aria-hidden="true"></span></div><div class="result-actions gameover-actions" data-enter="gameover-action">${goButton('返回主菜单','home','btn-primary')}</div></section>`;
+}
+const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,failure:failureView,gameover:gameoverView,exit:()=>homeView()};
 function setScene(page){
- const fragment=['gameplay','pause','choice','qte','result'].includes(page)&&playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null;
+ const fragment=['gameplay','pause','choice','qte','result','failure','gameover'].includes(page)&&playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null;
  const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','affinity','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
  if(key!==sceneKey){
   sceneKey=key;
@@ -620,6 +633,17 @@ function enterPage(){
  $$('[data-enter="result-title-light"]').forEach(el=>animate(el,[{opacity:0,transform:'scale3d(.38,.65,1)',offset:0,easing:'cubic-bezier(.22,.61,.36,1)'},{opacity:.9,transform:'scale3d(1.04,1.08,1)',offset:.46,easing:'cubic-bezier(.45,0,.55,1)'},{opacity:.46,transform:'scale3d(1,1,1)',offset:1}],{duration:1500,delay:160,easing:'linear'}));
  $$('[data-enter="result-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.7)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:260,easing:'cubic-bezier(.16,1,.3,1)'}));
  $$('[data-enter="result-atmosphere"]').forEach(el=>enter(el,{y:0,delay:180,duration:1400}));
+ $$('[data-enter="failure-emblem"]').forEach(el=>enter(el,{y:unit(10),scale:.965,blur:1,delay:40,duration:1200}));
+ $$('[data-enter="failure-title"]').forEach(el=>enter(el,{y:unit(16),scale:.99,delay:170,duration:900}));
+ $$('[data-enter="failure-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.65)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:280,easing:'cubic-bezier(.16,1,.3,1)'}));
+ $$('[data-enter="failure-copy"]').forEach(el=>enter(el,{y:unit(14),delay:340,duration:700}));
+ $$('[data-enter="failure-action"]').forEach((el,i)=>enter(el,{y:unit(18),delay:460+i*85,duration:720}));
+ $$('[data-enter="failure-atmosphere"]').forEach(el=>enter(el,{y:0,delay:220,duration:1400}));
+ $$('[data-enter="gameover-atmosphere"]').forEach(el=>enter(el,{y:0,duration:1700}));
+ $$('[data-enter="gameover-mark"]').forEach(el=>enter(el,{y:0,scale:.94,blur:1,delay:80,duration:1600}));
+ $$('[data-enter="gameover-title"]').forEach(el=>enter(el,{y:unit(12),scale:.985,blur:3,delay:230,duration:1250}));
+ $$('[data-enter="gameover-line"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.25)'},{opacity:1,transform:'scaleX(1)'}],{duration:1300,delay:330,easing:'cubic-bezier(.16,1,.3,1)'}));
+ $$('[data-enter="gameover-action"]').forEach(el=>enter(el,{y:unit(16),delay:650,duration:900}));
  animateScene();
 }
 async function go(page,{replace=false,skipExit=false}={}){
@@ -655,7 +679,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  $$('#review-pages button').forEach(b=>{if(b.dataset.route===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  window.YorollMusic.setScene(page);
  enterPage();
- timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:page==='cover'?1900:page==='splash'?1800:page==='result'?1600:page==='chapters'?1600:1100);
+ timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:page==='cover'?1900:page==='splash'?1800:['result','failure','gameover'].includes(page)?1700:page==='chapters'?1600:1100);
  bindPageControls();
  if(page==='exit')timeout(showExit,180);
  if(page==='logout')timeout(showLogout,180);
@@ -691,7 +715,7 @@ function startQte(){
  qteDone=false;
  const circle=$('#qte-progress');if(!circle)return;
  qteAnimation=track(circle.animate([{strokeDashoffset:'0'},{strokeDashoffset:'352'}],{duration:8000,delay:700,easing:'linear',fill:'both'}),false);
- qteAnimation.finished.then(()=>{if(currentPage==='qte'&&!qteDone){qteDone=true;toast('再来一次，把握下一个时机');timeout(()=>go('qte',{skipExit:true}),1400);}}).catch(()=>{});
+ qteAnimation.finished.then(()=>{if(currentPage==='qte'&&!qteDone){qteDone=true;$('.qte-key').disabled=true;$('.qte-label').textContent='错过时机';$('.qte-tip').textContent='';timeout(()=>go('failure'),500);}}).catch(()=>{});
 }
 function choose(index,timedOut=false){
  const options=$$('.choice-option'),selected=options[index];
@@ -737,7 +761,7 @@ function startResultSound(){
 document.addEventListener('ui-audio-state',tryResultSound);
 function continueAfterResult(){
  if(currentPage!=='result'||screen.getAttribute('aria-busy')==='true')return;
- if(selectedChapter===CHAPTER_PREVIEWS.length-1){go('home');return;}
+ if(selectedChapter===CHAPTER_PREVIEWS.length-1){go('gameover');return;}
  selectedChapter+=1;playbackStoryNode=null;playbackPaused=false;chapterRailLeft=0;
  go('gameplay');
 }
@@ -777,6 +801,7 @@ function deleteAction(index){openModal({title:'删除这个存档？',message:'�
 function showLogout(){openModal({title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}
 const actions={
  'result-next':continueAfterResult,
+ 'failure-retry':()=>{if(currentPage!=='failure'||screen.getAttribute('aria-busy')==='true')return;playbackPaused=false;go('qte');},
  'logout':()=>{if(signedIn)showLogout();else openModal({title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
@@ -852,7 +877,7 @@ document.addEventListener('keydown',event=>{
   event.preventDefault();
   if(!$('#review-panel').hidden){uiSound.play('back');$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');return;}
   if($('#language-options')&&!$('#language-options').hidden){uiSound.play('back');$('#language-options').hidden=true;$('#language-select').setAttribute('aria-expanded','false');return;}
-  if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='affinity')go(affinityReturnPage);else if(currentPage==='tree'||currentPage==='result')go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
+  if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='affinity')go(affinityReturnPage);else if(['tree','result','failure'].includes(currentPage))go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}
  if(currentPage==='tree'&&!event.metaKey&&!event.ctrlKey){

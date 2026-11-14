@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 380" fill="none">
+  <defs>
+    <linearGradient id="warning" x1="190" y1="14" x2="190" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#962f29" stop-opacity=".82"/><stop offset=".58" stop-color="#762a29" stop-opacity=".48"/><stop offset="1" stop-color="#5f2526" stop-opacity="0"/></linearGradient>
+    <pattern id="breaks" width="380" height="7" patternUnits="userSpaceOnUse"><rect width="380" height="5" fill="white"/><path d="M35 5h23m112 0h15m92 0h42" stroke="white" stroke-width=".8"/></pattern>
+    <mask id="grain"><rect width="380" height="380" fill="url(#breaks)"/></mask>
+  </defs>
+  <g mask="url(#grain)" fill="url(#warning)">
+    <path fill-rule="evenodd" d="M174 21a18.5 18.5 0 0 1 32 0l168 291c7.1 12.3-1.8 27.7-16 27.7H22c-14.2 0-23.1-15.4-16-27.7L174 21Zm16 18L23 328h334L190 39Z"/>
+    <path d="M176 112h28c5 0 8 3 7 8l-8 118c-.3 4-3 6-7 6h-12c-4 0-6.7-2-7-6l-8-118c-1-5 2-8 7-8Z"/>
+    <circle cx="190" cy="274" r="13"/>
+  </g>
+  <path d="M20 191h62m216 0h62" stroke="#722725" stroke-opacity=".25"/>
+</svg>
