@@ -1,5 +1,5 @@
 {
-  "revision": "affinity-page-20261113",
+  "revision": "affinity-atmosphere-20261114",
   "reference": {
     "source": "User supplied previous affinity-page UI",
     "image": "comparison/before/10-affinity-user.png",
@@ -10,10 +10,16 @@
   },
   "portraits": {
     "asset": "assets/affinity-characters.png",
-    "treatment": "Original screenshot reused unchanged, clipped as CSS sprites with inverse horizontal shear.",
+    "treatment": "Original screenshot reused unchanged. Full-height portraits are aligned to reference Y=164; inverse-sheared CSS sprites, with the source captions fully masked before our independent labels.",
     "sourceWidthPerPortrait": 314,
     "inverseShearX": 0.096,
-    "replacement": "Replace sprite art with per-character portrait assets when available."
+    "replacement": "Replace sprite art with per-character portrait assets when available.",
+    "sourceCaptionExclusion": {
+      "firstSourceCaptionY": 855,
+      "portraitTopY": 164,
+      "artMaskEndsAtCardHeightFraction": 0.8,
+      "labelsOutsideMask": true
+    }
   },
   "layout": {
     "referenceCanvas": [
@@ -22,12 +28,13 @@
     ],
     "cards": [
       280,
-      480
+      760
     ],
     "rowWidth": 1480,
     "gap": 20,
     "namePx": 22,
-    "heartPx": 20
+    "heartPx": 20,
+    "infoBottomPx": 72
   },
   "characters": [
     {
@@ -35,35 +42,35 @@
       "name": "Bjorn",
       "score": 2.5,
       "spriteX": 144,
-      "spriteY": 230
+      "spriteY": 164
     },
     {
       "id": "liuyan",
       "name": "Liuyan",
       "score": 4,
       "spriteX": 498,
-      "spriteY": 260
+      "spriteY": 164
     },
     {
       "id": "starry",
       "name": "Starry",
       "score": 3.5,
       "spriteX": 857,
-      "spriteY": 305
+      "spriteY": 164
     },
     {
       "id": "kaelen",
       "name": "Kaelen",
       "score": 1.5,
       "spriteX": 1214,
-      "spriteY": 245
+      "spriteY": 164
     },
     {
       "id": "vis",
       "name": "Vis",
       "score": 5,
       "spriteX": 1571,
-      "spriteY": 345
+      "spriteY": 164
     }
   ],
   "scoreMaximum": 6,
@@ -86,9 +93,96 @@
     "selectionHandoffMs": 400,
     "selectedDust": "motion-spec.json common.selectedDust",
     "portraitRevealOnLoadMs": 700,
-    "portraitLoadAware": true
+    "portraitLoadAware": true,
+    "cornerFragmentsPerCard": 3,
+    "cornerFragmentSizesPx": [
+      12,
+      8,
+      6
+    ],
+    "cornerFragmentCycleMs": 5400,
+    "cornerFragmentCardStaggered": true,
+    "selectedCornerGlintMs": 6600,
+    "ambientLightCycleMs": 17000,
+    "ambientOrbCycleMs": 19000,
+    "reducedMotion": "Static glint and fragments; ambient movement and rear dust disabled."
   },
   "verification": {
+    "revision": "affinity-atmosphere-20261114",
+    "verifiedAt": "2026-11-14T04:44:44.634590+00:00",
+    "viewport": [
+      1280,
+      720
+    ],
+    "fivePortraitsLoaded": true,
+    "cardSizeLogicalPx": [
+      280,
+      760
+    ],
+    "nameAndHeartSizesPreserved": true,
+    "sixHeartsAndFractionalValuesPreserved": true,
+    "wholeSurfaceFadesWhileLabelsRemainOpaque": true,
+    "sourceCaptionsExcludedByMask": true,
+    "pointerKeyboardAndReplayPassed": true,
+    "oneSelectedCardAnd24RearDustMotes": true,
+    "cornerFragments": 15,
+    "cornerPhasesStaggeredAcrossFiveCards": true,
+    "ambientLightBehindCards": true,
+    "softOrbs": 3,
+    "backgroundCoversViewport": true,
+    "sourcePortraitBytesUnchanged": true,
+    "allAudioBytesUnchanged": true,
+    "soundPreferenceRestored": true,
+    "status": "verified locally"
+  },
+  "surface": {
+    "skewXDegrees": -5.5,
+    "heightPx": 760,
+    "backgroundAndBorderFadeTogether": true,
+    "maskAlphaStops": [
+      [
+        0,
+        1
+      ],
+      [
+        0.66,
+        1
+      ],
+      [
+        0.76,
+        0.96
+      ],
+      [
+        0.85,
+        0.76
+      ],
+      [
+        0.92,
+        0.42
+      ],
+      [
+        0.97,
+        0.12
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "rootBackground": "transparent",
+    "textAndHeartsOutsideMask": true,
+    "rootOutlineOrBoxShadow": false
+  },
+  "background": {
+    "pageScoped": true,
+    "warmUpperRightGlow": true,
+    "coolLeftFill": true,
+    "perspectiveWireframeOpacity": 0.11,
+    "softLensOrbs": 3,
+    "lightsBehindCards": true,
+    "sceneSaturation": 0.45
+  },
+  "previousVerification": {
     "fiveCharactersLoaded": true,
     "sixHeartsEach": true,
     "halfHeartsVerified": true,

@@ -493,11 +493,11 @@ function refreshSaveSelection(){
 }
 // Demonstration values; portraits are composed from the user-supplied previous UI.
 const AFFINITY_CHARACTERS=[
- {id:'bjorn',name:'Bjorn',score:2.5,x:144,y:230},
- {id:'liuyan',name:'Liuyan',score:4,x:498,y:260},
- {id:'starry',name:'Starry',score:3.5,x:857,y:305},
- {id:'kaelen',name:'Kaelen',score:1.5,x:1214,y:245},
- {id:'vis',name:'Vis',score:5,x:1571,y:345}
+ {id:'bjorn',name:'Bjorn',score:2.5,x:144,y:164},
+ {id:'liuyan',name:'Liuyan',score:4,x:498,y:164},
+ {id:'starry',name:'Starry',score:3.5,x:857,y:164},
+ {id:'kaelen',name:'Kaelen',score:1.5,x:1214,y:164},
+ {id:'vis',name:'Vis',score:5,x:1571,y:164}
 ];
 let selectedAffinity=0;
 let affinityReturnPage='home';
@@ -505,8 +505,9 @@ function affinityHearts(score){
  return `<span class="affinity-hearts" aria-hidden="true">${Array.from({length:6},(_,i)=>{const fill=Math.max(0,Math.min(1,score-i))*100;return `<span class="affinity-heart">${icon('heart')}<span class="affinity-heart-fill" data-fill="${fill}" style="width:${fill}%">${icon('heart')}</span></span>`;}).join('')}</span>`;
 }
 function affinityView(){
- const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-art" aria-hidden="true"><img src="assets/affinity-characters.png?v=affinity-page-20261113-r2" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
- return `${pageHeading('角色好感度',affinityReturnPage)}<section class="affinity-layout" aria-label="角色好感度">${cards}</section>${footer('','<span><span class="keycap">←</span><span class="keycap">→</span> 选择角色</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="affinity-announcement" role="status" aria-live="polite"></div>`;
+ const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity" style="--affinity-order:${index}"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-surface" aria-hidden="true"><span class="affinity-art"><img src="assets/affinity-characters.png?v=affinity-page-20261113-r2" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span><span class="affinity-fragments" aria-hidden="true"><i></i><i></i><i></i></span><span class="affinity-glint" aria-hidden="true"></span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
+ const atmosphere='<div class="affinity-atmosphere" aria-hidden="true"><div class="affinity-ambient"></div><svg class="affinity-wireframe" viewBox="0 0 1920 1080" preserveAspectRatio="none"><path d="M-120 60 960 610 2040 60M-120 290 960 665 2040 290M-120 565 960 720 2040 565M-120 855 960 775 2040 855M-120 1180 960 830 2040 1180M180-100V1180M365-100V1180M1555-100V1180M1740-100V1180"/></svg><i class="affinity-orb"></i><i class="affinity-orb"></i><i class="affinity-orb"></i></div>';
+ return `${pageHeading('角色好感度',affinityReturnPage)}${atmosphere}<section class="affinity-layout" aria-label="角色好感度">${cards}</section>${footer('','<span><span class="keycap">←</span><span class="keycap">→</span> 选择角色</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="affinity-announcement" role="status" aria-live="polite"></div>`;
 }
 function selectAffinity(index,{focus=false}={}){
  if(currentPage!=='affinity'||index<0||index>=AFFINITY_CHARACTERS.length)return;

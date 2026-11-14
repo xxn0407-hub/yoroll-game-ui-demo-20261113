@@ -48,7 +48,7 @@
 .tree-route.is-active{opacity:1}
 .tree-node img{opacity:.64;filter:saturate(.74);transition:opacity .45s var(--soft),filter .45s var(--soft)}
 .tree-node.is-route{border-color:#c9cfaa70}
-.chapter-card.is-selected,.tree-node.is-selected,.affinity-card.is-selected{border-color:#f6efd5;box-shadow:0 0 0 1px #eee6cb5c,0 0 calc(var(--p)*22) #e7f0d23d,0 0 calc(var(--p)*48) #bedce526}
+.chapter-card.is-selected,.tree-node.is-selected{border-color:#f6efd5;box-shadow:0 0 0 1px #eee6cb5c,0 0 calc(var(--p)*22) #e7f0d23d,0 0 calc(var(--p)*48) #bedce526}
 .tree-node.is-selected img,.tree-node:hover img{opacity:.98;filter:saturate(.94)}
 
 .legend-route{display:block;width:calc(var(--p)*20);height:1px;background:#dbd3b8}
@@ -64,7 +64,7 @@
 
 /* Per-fragment progress, locked branches and a soft selection glow. */
 .chapter-card:before,.tree-node:before{content:"";position:absolute;z-index:1;inset:0;border-radius:inherit;background:linear-gradient(135deg,#fff6d51f,transparent 45%,#c7e8ed17);opacity:0;pointer-events:none;transition:opacity .4s}
-.chapter-card.is-selected:before,.tree-node.is-selected:before,.affinity-card.is-selected:before{opacity:1}
+.chapter-card.is-selected:before,.tree-node.is-selected:before{opacity:1}
 /* Selected cards use their existing glow as the keyboard focus indicator. */
 .chapter-card:focus-visible,.tree-node:focus-visible{outline:none;outline-offset:0}
 /* Stack the node number above its name; explored progress stays beside the name. */
@@ -102,20 +102,24 @@
 /* Transparent edge falloff keeps the scene visible without an inset shadow. */
 .tree-viewport{--tree-mask-x:linear-gradient(to right,#0000 0,#0000000f calc(var(--tree-fade-left,0px)*0.2),#00000051 calc(var(--tree-fade-left,0px)*0.4),#000000ae calc(var(--tree-fade-left,0px)*0.6),#000000f0 calc(var(--tree-fade-left,0px)*0.8),#000 var(--tree-fade-left,0px),#000 calc(100% - var(--tree-fade-right,0px)),#000000f0 calc(100% - var(--tree-fade-right,0px)*0.8),#000000ae calc(100% - var(--tree-fade-right,0px)*0.6),#00000051 calc(100% - var(--tree-fade-right,0px)*0.4),#0000000f calc(100% - var(--tree-fade-right,0px)*0.2),#0000 100%);--tree-mask-y:linear-gradient(to bottom,#0000 0,#0000000f calc(var(--tree-fade-top,0px)*0.2),#00000051 calc(var(--tree-fade-top,0px)*0.4),#000000ae calc(var(--tree-fade-top,0px)*0.6),#000000f0 calc(var(--tree-fade-top,0px)*0.8),#000 var(--tree-fade-top,0px),#000 calc(100% - var(--tree-fade-bottom,0px)),#000000f0 calc(100% - var(--tree-fade-bottom,0px)*0.8),#000000ae calc(100% - var(--tree-fade-bottom,0px)*0.6),#00000051 calc(100% - var(--tree-fade-bottom,0px)*0.4),#0000000f calc(100% - var(--tree-fade-bottom,0px)*0.2),#0000 100%);-webkit-mask-image:var(--tree-mask-x),var(--tree-mask-y);mask-image:var(--tree-mask-x),var(--tree-mask-y);-webkit-mask-composite:source-in;mask-composite:intersect;-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
 
-/* Character affinity keeps the previous portrait/name/hearts layout at the current UI scale. */
-.affinity-layout{position:absolute;left:50%;top:52%;width:calc(var(--p)*1480);max-width:calc(100% - var(--safe)*2);translate:-50% -50%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(var(--p)*20)}
+/* Tall slanted portraits dissolve independently of the crisp names and hearts. */
+.affinity-layout{position:absolute;z-index:1;left:50%;top:52%;width:calc(var(--p)*1480);max-width:calc(100% - var(--safe)*2);translate:-50% -50%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(var(--p)*20)}
 .affinity-cell{position:relative;min-width:0}
-.affinity-card{position:relative;display:block;width:100%;height:calc(var(--p)*480);padding:0;overflow:hidden;text-align:left;border:1px solid #c3d0c738;border-radius:calc(var(--p)*10);background:#10171b;transform:skewX(-5.5deg);transition:border-color .35s,box-shadow .4s var(--ease),transform .4s var(--ease)}
-.affinity-card:focus-visible{outline:none;border-color:#f6efd5}
-.affinity-card:hover{border-color:#e5e7d58c;transform:translateY(calc(var(--p)*-3)) skewX(-5.5deg)}
-.affinity-art{position:absolute;inset:0;overflow:hidden;opacity:0;transform:scale(1.005);transform-origin:center;transition:transform 1s var(--soft),opacity .7s var(--soft);-webkit-mask-image:linear-gradient(#000 0%,#000 58%,#000b3 75%,#0000 90%);mask-image:linear-gradient(#000 0%,#000 58%,#000b3 75%,#0000 90%)}
+.affinity-card{position:relative;z-index:1;display:block;width:100%;height:calc(var(--p)*760);padding:0;overflow:visible;text-align:left;border:1px solid transparent;border-radius:calc(var(--p)*10);background:transparent;transform:skewX(-5.5deg);transition:transform .4s var(--ease)}
+.affinity-card:focus-visible{outline:none}
+.affinity-card:hover{transform:translateY(calc(var(--p)*-3)) skewX(-5.5deg)}
+.affinity-surface{position:absolute;inset:-1px;overflow:hidden;border:1px solid #d3ddcf47;border-radius:inherit;background:#0a1114;box-shadow:inset 0 0 calc(var(--p)*18) #07101433;pointer-events:none;transition:border-color .4s,box-shadow .4s;-webkit-mask-image:linear-gradient(#000 0%,#000 66%,#000000f5 76%,#000000c2 85%,#0000006b 92%,#0000001f 97%,#0000 100%);mask-image:linear-gradient(#000 0%,#000 66%,#000000f5 76%,#000000c2 85%,#0000006b 92%,#0000001f 97%,#0000 100%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.affinity-card.is-selected .affinity-surface{border-color:#f3efdcba;box-shadow:inset 0 0 0 1px #eee6cb26,inset 0 0 calc(var(--p)*24) #cde1d71a}
+.affinity-card:hover .affinity-surface,.affinity-card:focus-visible .affinity-surface{border-color:#f6efd5e6}
+.affinity-art{position:absolute;inset:0;overflow:hidden;opacity:0;transform:scale(1.005);transform-origin:center;transition:transform 1s var(--soft),opacity .7s var(--soft);-webkit-mask-image:linear-gradient(#000 0%,#000 53%,#000000ed 60%,#0000009c 69%,#00000030 76%,#0000 80%);mask-image:linear-gradient(#000 0%,#000 53%,#000000ed 60%,#0000009c 69%,#00000030 76%,#0000 80%)}
 .affinity-art.is-ready{opacity:1}
-.affinity-art img{position:absolute;display:block;max-width:none;width:calc(var(--p)*280*1920/314);height:auto;left:calc(var(--p)*280*var(--source-x)/-314);top:calc(var(--p)*280*var(--source-y)/-314);transform:matrix(1,0,.096,1,0,0);transform-origin:0 0;filter:saturate(.82) brightness(.75);transition:filter .55s var(--soft);user-select:none;-webkit-user-drag:none}
+.affinity-art img{position:absolute;display:block;max-width:none;width:calc(var(--p)*280*1920/314);height:auto;left:calc(var(--p)*280*var(--source-x)/-314);top:calc(var(--p)*280*var(--source-y)/-314);transform:matrix(1,0,.096,1,0,0);transform-origin:0 0;filter:saturate(.86) brightness(.82);transition:filter .55s var(--soft);user-select:none;-webkit-user-drag:none}
 .affinity-card.is-selected .affinity-art{transform:scale(1.025)}
 .affinity-card.is-selected .affinity-art img,.affinity-card:hover .affinity-art img{filter:saturate(.92) brightness(.98)}
-.affinity-card:before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,#e8f0dc12,transparent 58%);opacity:0;transition:opacity .4s;pointer-events:none}
-.affinity-card:after{content:"";position:absolute;inset:46% 0 0;z-index:2;background:linear-gradient(transparent,#080e12d9 72%,#080e12);pointer-events:none}
-.affinity-card-info{position:absolute;z-index:3;left:calc(var(--p)*22);right:calc(var(--p)*22);bottom:calc(var(--p)*24);display:flex;flex-direction:column;gap:calc(var(--p)*13);transform:skewX(5.5deg)}
+.affinity-surface:before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,#e8f0dc12,transparent 58%);opacity:0;transition:opacity .4s}
+.affinity-card.is-selected .affinity-surface:before{opacity:1}
+.affinity-surface:after{content:"";position:absolute;inset:44% 0 0;z-index:2;background:linear-gradient(transparent,#080e1257 45%,#080e12ba 80%,#080e12)}
+.affinity-card-info{position:absolute;z-index:3;left:calc(var(--p)*22);right:calc(var(--p)*22);bottom:calc(var(--p)*72);display:flex;flex-direction:column;gap:calc(var(--p)*13);transform:skewX(5.5deg)}
 .affinity-name{font-size:calc(var(--p)*22);line-height:1.25;font-weight:500;font-style:italic;letter-spacing:.025em;color:#c9d3c8;transition:color .35s}
 .affinity-card.is-selected .affinity-name{color:#f0f0e6}
 .affinity-hearts{display:flex;gap:calc(var(--p)*7);color:#d1dcc574}
@@ -127,10 +131,33 @@
 .affinity-card.is-selected + .affinity-dust{opacity:1}
 .affinity-dust{transform:skewX(-5.5deg)}
 .affinity-card.is-selected + .affinity-dust i{animation-play-state:running;will-change:transform,opacity}
+.affinity-fragments{position:absolute;z-index:4;top:0;right:calc(var(--p)*2);width:calc(var(--p)*18);height:calc(var(--p)*2);opacity:.55;pointer-events:none;transition:opacity .4s}
+.affinity-fragments i{--fragment-x:0;--fragment-y:0;--fragment-size:12;position:absolute;right:0;top:0;display:block;width:calc(var(--p)*var(--fragment-size));height:calc(var(--p)*var(--fragment-size));background:#f1f1df;opacity:0;box-shadow:0 0 calc(var(--p)*6) #eef0d925;animation:affinity-corner-dissolve 5.4s linear calc(-1.6s - var(--affinity-order)*.37s) infinite}
+.affinity-fragments i:nth-child(2){--fragment-x:5;--fragment-y:-13;--fragment-size:8;animation-delay:calc(-3.4s - var(--affinity-order)*.43s)}
+.affinity-fragments i:nth-child(3){--fragment-x:10;--fragment-y:-26;--fragment-size:6;animation-delay:calc(-.3s - var(--affinity-order)*.59s)}
+.affinity-card.is-selected .affinity-fragments{opacity:1}
+.affinity-glint{position:absolute;z-index:4;left:0;top:0;translate:-50% -50%;width:calc(var(--p)*32);height:calc(var(--p)*32);opacity:0;pointer-events:none;transition:opacity .4s;filter:drop-shadow(0 0 calc(var(--p)*6) #f1efca80)}
+.affinity-glint:before{content:"";position:absolute;inset:0;background:#f4f2df;clip-path:polygon(50% 0,55% 43%,100% 50%,55% 57%,50% 100%,45% 57%,0 50%,45% 43%)}
+.affinity-card.is-selected .affinity-glint{animation:affinity-corner-glint 6.6s ease-in-out infinite}
+@keyframes affinity-corner-dissolve{0%{opacity:0;transform:translate3d(calc(var(--p)*var(--fragment-x)),calc(var(--p)*var(--fragment-y)),0) scale(1) rotate(9deg)}18%{opacity:.78}55%{opacity:.4}100%{opacity:0;transform:translate3d(calc(var(--p)*(var(--fragment-x) + 9)),calc(var(--p)*(var(--fragment-y) - 28)),0) scale(.42) rotate(16deg)}}
+@keyframes affinity-corner-glint{0%,100%{opacity:.38;transform:scale(.83)}50%{opacity:.95;transform:scale(1.12)}}
+
+/* The affinity page has its own quiet light field, behind every card and label. */
+.affinity-backdrop .scene{filter:blur(28px) brightness(.42) saturate(.45)}
+.affinity-backdrop .scene-shade{background:linear-gradient(180deg,#081113a3,#071015d9 70%,#05090bf2)}
+.affinity-atmosphere{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 88% 8%,#dccb8b38,transparent 63%),radial-gradient(ellipse at 6% 45%,#709a9b1f,transparent 64%)}
+.affinity-ambient{position:absolute;inset:-12%;background:radial-gradient(ellipse at 86% 5%,#ddd2a82b,transparent 46%),radial-gradient(ellipse at 25% 58%,#7da6a017,transparent 50%);animation:affinity-ambient-breathe 17s ease-in-out infinite alternate}
+.affinity-wireframe{position:absolute;inset:0;width:100%;height:100%;stroke:#cbd8c4;stroke-width:.8;opacity:.11;fill:none;-webkit-mask-image:linear-gradient(#0005,#000d 40%,#000 76%,#0002);mask-image:linear-gradient(#0005,#000d 40%,#000 76%,#0002)}
+.affinity-orb{position:absolute;display:block;left:93%;top:4.6%;width:calc(var(--p)*58);height:calc(var(--p)*58);border-radius:50%;background:radial-gradient(circle,#d7e7cd22,#b9ceaf0d 42%,transparent 70%);filter:blur(calc(var(--p)*2));animation:affinity-orb-drift 19s ease-in-out infinite alternate}
+.affinity-orb:nth-last-child(2){left:90%;top:2%;width:calc(var(--p)*24);height:calc(var(--p)*24);opacity:.62;animation-delay:-8s}
+.affinity-orb:last-child{left:96%;top:10%;width:calc(var(--p)*115);height:calc(var(--p)*115);opacity:.4;filter:blur(calc(var(--p)*7));animation-delay:-13s}
+@keyframes affinity-ambient-breathe{from{opacity:.6;transform:translate3d(0,0,0) scale(1)}to{opacity:1;transform:translate3d(-1%,1%,0) scale(1.035)}}
+@keyframes affinity-orb-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(var(--p)*-16),calc(var(--p)*18),0)}}
+@media(prefers-reduced-motion:reduce){.affinity-ambient,.affinity-orb,.affinity-card.is-selected .affinity-glint{animation:none}.affinity-ambient{opacity:.8}.affinity-fragments i{animation:none;opacity:.3;transform:translate3d(calc(var(--p)*var(--fragment-x)),calc(var(--p)*var(--fragment-y)),0) rotate(9deg)}.affinity-card.is-selected .affinity-glint{opacity:.72}}
 
 /* All selected cards share rear dust with near, middle and far depth groups. */
 .chapter-cell,.tree-node-cell,.affinity-cell{isolation:isolate}
-.chapter-card,.tree-node,.affinity-card{z-index:1;background-color:#10171b}
+.chapter-card,.tree-node{z-index:1;background-color:#10171b}
 .node-dust{position:absolute;z-index:0;inset:calc(var(--p)*-26);opacity:0;pointer-events:none;user-select:none;transition:opacity .4s var(--soft)}
 .node-dust i{--dust-strength:.65;--dust-spread:1;--dust-drift-scale:1;position:absolute;display:block;width:calc(var(--p)*var(--dust-size)*var(--dust-spread));height:calc(var(--p)*var(--dust-size)*var(--dust-spread));border-radius:50%;background:#e5ebda;box-shadow:0 0 calc(var(--p)*4) #dce8cf40;filter:blur(calc(var(--p)*.25));opacity:0;animation:story-dust-drift var(--dust-duration) linear var(--dust-delay) infinite both;animation-play-state:paused}
 .node-dust i:nth-child(3n + 2){--dust-strength:.43;--dust-spread:1.2;--dust-drift-scale:.85;filter:blur(calc(var(--p)*.8));animation-duration:calc(var(--dust-duration)*1.15)}

@@ -369,12 +369,12 @@
       "id": "affinity",
       "name": "角色好感度",
       "kind": "用户提供原版 UI",
-      "motion": "五张角色卡以 55ms 间隔、650ms 时长逐项落位；爱心 620ms 逐项显现。选中沿用当前柔光和后景近、中、远三层浮尘，400ms 平滑交接。",
+      "motion": "五张修长角色卡以 55ms 间隔、650ms 时长落位；卡面、底色和边框整体向底部渐隐，名字与六颗爱心独立保持清晰。顶部三个小方片以 5.4s 周期、逐卡错相上浮消散，当前角色左上星点以 6.6s 呼吸；24 个远近浮尘仍在后面。背景暖光 17s 缓慢变化，三个虚焦光斑 19s 轻漂，透视线条保持静态。",
       "interaction": "首页和封面首页新增好感度入口；点击或左右方向键选择角色，Home/End 选择首尾；返回和 Esc 回到进入时的首页，所选角色在本次访问中保留。",
       "reference": "comparison/before/10-affinity-user.png",
       "cardSizePx": [
         280,
-        480
+        760
       ],
       "rowWidthPx": 1480,
       "gapPx": 20,
@@ -386,19 +386,22 @@
       "selectedParticles": {
         "count": 24,
         "sharedDust": "common.selectedDust",
-        "placement": "behind opaque card"
+        "placement": "Behind the card surface; visible through the soft lower falloff."
       },
       "shape": {
-        "revision": "affinity-slanted-cards-20261114",
+        "revision": "affinity-atmosphere-20261114",
         "skewXDegrees": -5.5,
         "informationCounterSkewDegrees": 5.5,
         "cardSizePx": [
           280,
-          480
+          760
         ],
         "hoverPreservesSkew": true,
-        "rearDustMatchesSkew": true
-      }
+        "rearDustMatchesSkew": true,
+        "wholeSurfaceBottomFade": true,
+        "labelsRemainOpaque": true
+      },
+      "atmosphereRevision": "affinity-atmosphere-20261114"
     },
     {
       "id": "saves",
