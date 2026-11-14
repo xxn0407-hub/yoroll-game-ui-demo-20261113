@@ -257,22 +257,22 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "immersive-banner-dialogs-20261114",
-      "source": "Previously captured original preview confirmation dialog",
+      "revision": "cinematic-banner-dialogs-20261114",
+      "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
-        "Viewport-wide neutral frosted band",
-        "Feathered sides and top/bottom",
-        "Silver prompt strip across the viewport",
-        "Original central typography and capsule controls"
+        "Viewport-wide neutral frosted band with a local 22px blur",
+        "Silver prompt header with dark type and paired dots",
+        "Clear dimmed scene beyond the banner",
+        "Uniform body copy and existing capsule controls"
       ],
-      "dialogGeometry": "Banner fills viewport width; central content bounds, font sizes, button dimensions and vertical layout retained",
+      "dialogGeometry": "1920x1080 reference: full-viewport width, about 424px high; 30px header, 24px body, existing 48px-high buttons with 18px labels and a 92px gap",
       "modalMotion": "Existing 220ms backdrop, 420ms panel and 150ms exit retained verbatim",
       "toast": "Neutral frosted capsule with fine edge light; geometry and 2600ms animation retained",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
       "authPageReviewed": false,
       "originalDeleteEntryClicked": false,
-      "dialogPresentation": "Immersive horizontal band instead of an isolated compact panel"
+      "dialogPresentation": "One prompt title, one two-line body block and centered capsule actions; no additional large title"
     }
   },
   "pages": [
