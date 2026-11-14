@@ -386,44 +386,84 @@
 @keyframes glass-capsule-rim-breathe{0%,100%{border-color:rgba(239,248,252,calc(.28 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*1) calc(var(--p)*4) rgba(255,255,255,calc(.08 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-1) calc(var(--p)*4) rgba(255,255,255,calc(.05 + var(--glass-hover-boost))),0 0 calc(var(--p)*3) rgba(223,243,255,var(--glass-hover-boost))}50%{border-color:rgba(249,253,255,calc(.94 + var(--glass-hover-boost)));box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*10) rgba(255,255,255,calc(.65 + var(--glass-hover-boost))),inset 0 calc(var(--p)*-2) calc(var(--p)*10) rgba(255,255,255,calc(.48 + var(--glass-hover-boost))),0 0 calc(var(--p)*16) rgba(223,243,255,calc(.27 + var(--glass-hover-boost)))}}
 @media(prefers-reduced-motion:reduce){.btn.btn-glass{animation:none;border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e}.btn.btn-glass:before{animation:none;opacity:.7}.btn.btn-glass:after{animation:none;opacity:.2}.btn.btn-glass:focus-visible{border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}}
 
-/* Menu hover follows the warm-white selection light used by cards and controls. */
+/* Fine edge light shares the restrained glass treatment used elsewhere. */
 .home-menu button{
   isolation:isolate;
-  text-shadow:0 0 calc(var(--p)*9) #f6f0dc00,0 0 calc(var(--p)*24) #e4dcc600;
-  transition:color .25s,transform .35s var(--ease),text-shadow .35s var(--soft);
+  min-width:calc(var(--p)*168);
+  text-shadow:0 0 calc(var(--p)*6) #eaf1e400,0 0 calc(var(--p)*14) #c8e1e800;
+  transition:color .25s,transform .35s var(--ease),text-shadow .3s var(--soft);
 }
 .home-menu button::after{
   content:"";
   position:absolute;
   z-index:-1;
-  left:calc(var(--p)*-35);
-  right:calc(var(--p)*-30);
-  top:50%;
-  height:calc(var(--p)*68);
-  border-radius:50%;
-  background:radial-gradient(ellipse at 36% 50%,#f0eddb42 0%,#e2dbc61f 38%,#d8c7a508 62%,transparent 80%);
-  filter:blur(calc(var(--p)*13));
+  inset:0 calc(var(--p)*-10);
+  background:linear-gradient(90deg,transparent 2%,#eef3df24 24%,#eef3df6b 48%,#d6e6e532 70%,transparent 98%) left top / 100% 1px no-repeat,
+             linear-gradient(90deg,transparent 2%,#dce9e216 24%,#dce9e23d 48%,#c6dde520 70%,transparent 98%) left bottom / 100% 1px no-repeat;
   opacity:0;
-  transform:translateY(-50%) scale(.94,.82);
+  transform:translateX(calc(var(--p)*-4)) scaleX(.9);
   pointer-events:none;
-  transition:opacity .38s var(--soft),transform .55s var(--ease);
+  transition:opacity .28s var(--soft),transform .42s var(--ease);
 }
 .home-menu button:is(:hover,:focus-visible){
-  text-shadow:0 0 calc(var(--p)*9) #f6f0dc66,0 0 calc(var(--p)*24) #e4dcc638;
+  color:#f7f6ee;
+  text-shadow:0 0 calc(var(--p)*6) #eaf1e438,0 0 calc(var(--p)*14) #c8e1e81c;
 }
-.home-menu button:is(:hover,:focus-visible)::after{
-  opacity:.86;
-  transform:translateY(-50%) scale(1);
+.home-menu button:is(:hover,:focus-visible)::after{opacity:.8;transform:none;}
+.home-menu button:focus-visible{outline:none;}
+.home-menu button::before{background:#e7ebdf;box-shadow:0 0 calc(var(--p)*6) #dce8dc4d;}
+
+/* Playback speed stays in the existing footer; its menu floats above it. */
+.playback-tools{display:flex;align-items:center;gap:calc(var(--p)*28);}
+.playback-speed{position:relative;z-index:6;}
+.playback-speed-toggle{
+  justify-content:center;
+  min-width:calc(var(--p)*90);
+  height:calc(var(--p)*38);
+  padding:0 calc(var(--p)*12);
+  gap:calc(var(--p)*9);
+  border:1px solid #dce8e02e;
+  border-radius:calc(var(--p)*20);
+  background:linear-gradient(180deg,#e0e9e408,transparent);
+  font-variant-numeric:tabular-nums;
+  transition:color .22s,border-color .22s,background .22s,box-shadow .28s;
 }
-.home-menu button::before{box-shadow:0 0 calc(var(--p)*9) #f0dfb98c;}
-.home-menu .menu-mark{
-  filter:drop-shadow(0 0 calc(var(--p)*5) #eadcbb00);
-  transition:opacity .2s,filter .3s var(--soft);
+.playback-speed-toggle:is(:hover,:focus-visible,[aria-expanded="true"]){
+  color:#f3f4e9;
+  border-color:#e6eddb73;
+  background:#dae5df0b;
+  box-shadow:0 0 calc(var(--p)*12) #dce8df17;
 }
-.home-menu button:is(:hover,:focus-visible) .menu-mark{
-  opacity:1;
-  filter:drop-shadow(0 0 calc(var(--p)*5) #eadcbb8c);
+.playback-speed-toggle svg{width:calc(var(--p)*12);height:calc(var(--p)*12);opacity:.65;transition:transform .28s var(--ease);}
+.playback-speed-toggle[aria-expanded="true"] svg{transform:rotate(180deg);}
+.playback-speed-options{
+  position:absolute;
+  right:0;
+  bottom:calc(100% + var(--p)*12);
+  width:calc(var(--p)*150);
+  padding:calc(var(--p)*6);
+  border:1px solid #dce8df30;
+  border-radius:calc(var(--p)*10);
+  background:linear-gradient(145deg,#1a2529ed,#0b1419f5);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 calc(var(--p)*12) calc(var(--p)*40) #0005,inset 0 1px 0 #f0f6ef0a;
+  transform-origin:90% 100%;
 }
+.playback-speed-options[hidden]{display:none;}
+.playback-speed-options[inert]{pointer-events:none;}
+.playback-speed-options button{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;height:calc(var(--p)*38);padding:0 calc(var(--p)*12);
+  border-radius:calc(var(--p)*5);
+  color:#9fada8;font-size:calc(var(--p)*16);font-variant-numeric:tabular-nums;
+  transition:color .18s,background .18s;
+}
+.playback-speed-options button:is(:hover,:focus-visible){color:#f0f3e8;background:#dce8df0e;outline:none;}
+.playback-speed-options button[aria-checked="true"]{color:#ecedde;background:linear-gradient(90deg,#e5ead516,#e5ead506);}
+.playback-speed-check{opacity:0;color:#d8c7a5;transition:opacity .18s;}
+.playback-speed-check svg{width:calc(var(--p)*14);height:calc(var(--p)*14);}
+.playback-speed-options button[aria-checked="true"] .playback-speed-check{opacity:1;}
 @media(prefers-reduced-motion:reduce){
-  .home-menu button,.home-menu button::before,.home-menu button::after,.home-menu .menu-mark{transition:none;}
+  .home-menu button,.home-menu button::before,.home-menu button::after,.playback-speed-toggle,.playback-speed-toggle svg,.playback-speed-options button,.playback-speed-check{transition:none;}
 }

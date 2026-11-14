@@ -48,6 +48,11 @@ let modalPreviousFocus = null;
 let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
+let playbackRate = 1;
+let playbackPosition = 0;
+let playbackSpeedMenuMotion = null;
+const PLAYBACK_RATES = [1,1.25,1.5,2];
+const PLAYBACK_DURATION = 24000;
 let playbackStoryNode = null;
 let qteDone = false;
 let audioMuted = uiSound.isMuted();
@@ -125,6 +130,8 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
  return animate(element,[{opacity:0,transform:`translate3d(${x}px,${y}px,0) scale(${scale})`,filter:`blur(${blur}px)`},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0px)'}],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)'});
 }
 function cancelPageMotion(){
+ rememberPlaybackPosition();
+ playbackSpeedMenuMotion=null;
  resultSoundRequest=null;delete frame.dataset.resultSound;
  failureSoundRequest=null;delete frame.dataset.failureSound;
  gameoverSoundRequest=null;delete frame.dataset.gameoverSound;
@@ -149,7 +156,7 @@ function header(){
  return `<header class="topbar"><button class="brand" data-route="home" aria-label="Yoroll 首页" data-enter="brand"><img src="assets/yoroll-logo.png" alt="yoroll"></button><div class="header-actions"><div data-enter="header">${soundButton()}</div><div data-enter="header"><button class="icon-button" data-route="settings" aria-label="设置">${icon('settings')}</button></div><div data-enter="header"><button class="account" data-action="logout" aria-label="账号"><span class="avatar">${icon('user')}</span><span>${signedIn?'演示玩家':'未登录'}</span></button></div></div></header>`;
 }
 function homeView(cover=false){
- return `${header()}<nav class="home-menu" aria-label="游戏菜单">${[[saveProgress()>0?'继续游戏':'开始游戏','gameplay'],['章节选择','chapters'],['好感度','affinity'],['切换存档','saves'],['退出','exit']].map(([label,route])=>`<div data-enter="menu"><button data-route="${route}">${label}<span class="menu-mark">${icon('arrow')}</span></button></div>`).join('')}</nav>${cover?'<div class="cover-wordmark" data-enter="wordmark"><img src="wall/assets/nocturne-logo.webp" alt="Nocturne"></div>':''}`;
+ return `${header()}<nav class="home-menu" aria-label="游戏菜单">${[[saveProgress()>0?'继续游戏':'开始游戏','gameplay'],['章节选择','chapters'],['好感度','affinity'],['切换存档','saves'],['退出','exit']].map(([label,route])=>`<div data-enter="menu"><button data-route="${route}"><span class="home-menu-label">${label}</span></button></div>`).join('')}</nav>${cover?'<div class="cover-wordmark" data-enter="wordmark"><img src="wall/assets/nocturne-logo.webp" alt="Nocturne"></div>':''}`;
 }
 function splashView(){return `<div class="splash-logo" data-enter="splash-logo"><img src="assets/yoroll-logo.png" alt="yoroll"></div><button class="splash-start" data-route="home" data-enter="splash-start"><span>点击任意位置开始</span></button><div class="splash-copy" data-enter="footer">YOROLL · INTERACTIVE STORIES</div>`;}
 function chaptersView(){
@@ -474,6 +481,7 @@ function startStoryNode(id=currentStoryState().node){
  if(!storyTree.canPlay(node))return;
  selectStoryNode(id,{sound:false});
  playbackStoryNode={...node,chapter:selectedChapter};
+ playbackPosition=0;playbackPaused=false;
  go('gameplay');
 }
 
@@ -554,7 +562,10 @@ function settingsView(){
 }
 function playbackLabel(){return playbackStoryNode?.chapter===selectedChapter?`片段 ${playbackStoryNode.id} · ${playbackStoryNode.name}`:activeChapter().name;}
 function hud({showPause=true}={}){const chapter=activeChapter(),fragment=playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null,labels=[`第 ${chapter.number} 章`,...(fragment?[`片段 ${fragment.id}`,fragment.name]:[chapter.name])];return `<div class="game-hud"><div class="hud-scene" data-enter="heading">${labels.map(label=>`<span class="hud-scene-label">${label}</span>`).join('<span class="hud-scene-separator" aria-hidden="true"></span>')}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div>${showPause?`<div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div>`:''}</div></div>`;}
-function gameplayView(){return `${hud({showPause:false})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div>`;}
+function playbackSpeedMarkup(){
+ return `<div class="playback-speed"><button class="play-control playback-speed-toggle" id="playback-speed-toggle" data-action="playback-speed" aria-label="播放速度，当前 ${playbackRate} 倍" aria-haspopup="menu" aria-expanded="false" aria-controls="playback-speed-options"><span id="playback-speed-label">${playbackRate}×</span>${icon('chevron')}</button><div class="playback-speed-options" id="playback-speed-options" role="menu" aria-label="播放速度" hidden>${PLAYBACK_RATES.map(rate=>`<button type="button" role="menuitemradio" aria-checked="${rate===playbackRate}" data-speed-rate="${rate}" tabindex="-1"><span>${rate}×</span><span class="playback-speed-check">${icon('check')}</span></button>`).join('')}</div><span class="sr-only" id="playback-speed-announcement" role="status" aria-live="polite"></span></div>`;
+}
+function gameplayView(){return `${hud({showPause:false})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><div class="playback-tools">${playbackSpeedMarkup()}<button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div>`;}
 function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${playbackLabel()}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
 function choiceView(){
  const outline='<svg class="choice-outline" viewBox="0 0 196 52" preserveAspectRatio="none" aria-hidden="true"><path d="M90 51H26A25 25 0 0 1 26 1H170A25 25 0 0 1 170 51H106" vector-effect="non-scaling-stroke"/><circle cx="98" cy="51" r="1.6"/></svg>';
@@ -693,7 +704,8 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(old==='chapters')disposeChapterControls();
  cancelPageMotion();
  previousPage=old;
- if(page==='gameplay'&&['home','cover','chapters','splash'].includes(old))playbackStoryNode=null;
+ if(page==='gameplay'&&['home','cover','chapters','splash'].includes(old)){playbackStoryNode=null;playbackPosition=0;playbackPaused=false;}
+ if(page==='gameplay'&&old==='pause')playbackPaused=false;
  currentPage=page;
  frame.dataset.page=page;
  frame.dataset.chapter=String(selectedChapter+1);frame.dataset.chapterTransition='ready';
@@ -768,11 +780,55 @@ function qteHit(){
  timeout(()=>go('result'),1100);
 }
 let playAnimation;
+function rememberPlaybackPosition(){
+ if(currentPage!=='gameplay'||!playAnimation||playAnimation.playState==='idle'||playAnimation.currentTime===null)return;
+ const position=Number(playAnimation.currentTime);
+ playbackPosition=position>=PLAYBACK_DURATION?0:Math.max(0,position);
+}
+function setPlaybackSpeedMenu(open,{restoreFocus=false}={}){
+ const menu=$('#playback-speed-options'),toggle=$('#playback-speed-toggle');
+ if(!menu||!toggle)return;
+ const expanded=toggle.getAttribute('aria-expanded')==='true';
+ if(open===expanded)return;
+ const wasHidden=menu.hidden,pose=getComputedStyle(menu);
+ const from={opacity:wasHidden?0:pose.opacity,transform:wasHidden?`translate3d(0,${unit(8)}px,0) scale(.98)`:pose.transform};
+ playbackSpeedMenuMotion?.cancel();
+ toggle.setAttribute('aria-expanded',String(open));
+ if(open){
+  menu.hidden=false;menu.inert=false;
+  playbackSpeedMenuMotion=animate(menu,[from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
+  menu.querySelector('[aria-checked="true"]')?.focus({preventScroll:true});
+ }else{
+  menu.inert=true;
+  if(restoreFocus)toggle.focus({preventScroll:true});
+  const hide=()=>{if(toggle.getAttribute('aria-expanded')==='false')menu.hidden=true;};
+  if(motionPreference.matches){hide();return;}
+  playbackSpeedMenuMotion=animate(menu,[from,{opacity:0,transform:`translate3d(0,${unit(5)}px,0) scale(.985)`}],{duration:160,easing:'cubic-bezier(.4,0,1,1)'});
+  playbackSpeedMenuMotion?.finished.then(hide).catch(()=>{});
+ }
+}
+function setPlaybackRate(rate){
+ if(currentPage!=='gameplay'||!PLAYBACK_RATES.includes(rate))return;
+ const changed=rate!==playbackRate;
+ playbackRate=rate;
+ // Update the live timeline so choosing a rate keeps its current position.
+ playAnimation?.updatePlaybackRate(rate);
+ frame.dataset.playbackRate=String(rate);
+ const label=$('#playback-speed-label');label.textContent=`${rate}×`;
+ $('#playback-speed-toggle').setAttribute('aria-label',`播放速度，当前 ${rate} 倍`);
+ $$('.playback-speed-options [data-speed-rate]').forEach(option=>option.setAttribute('aria-checked',String(Number(option.dataset.speedRate)===rate)));
+ $('#playback-speed-announcement').textContent=`播放速度已设置为 ${rate} 倍`;
+ if(changed)animate(label,[{opacity:.4,transform:`translateY(${unit(3)}px)`},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'cubic-bezier(.16,1,.3,1)'});
+ setPlaybackSpeedMenu(false,{restoreFocus:true});
+}
 function startPlayback(){
  const progress=$('#play-progress');if(!progress)return;
- playAnimation=track(progress.animate([{width:'12%'},{width:'100%'}],{duration:24000,easing:'linear',fill:'both'}),false);
- if(playbackPaused)playAnimation.pause();
- playAnimation.finished.then(()=>{if(currentPage==='gameplay')go('choice');}).catch(()=>{});
+ const animation=playAnimation=track(progress.animate([{width:'12%'},{width:'100%'}],{duration:PLAYBACK_DURATION,easing:'linear',fill:'both'}),false);
+ animation.currentTime=playbackPosition;
+ animation.updatePlaybackRate(playbackRate);
+ frame.dataset.playbackRate=String(playbackRate);
+ if(playbackPaused||document.hidden)animation.pause();
+ animation.finished.then(()=>{if(playAnimation===animation&&currentPage==='gameplay')go('choice');}).catch(()=>{});
 }
 function tryResultSound(){
  const request=resultSoundRequest;
@@ -793,7 +849,7 @@ document.addEventListener('ui-audio-state',tryResultSound);
 function continueAfterResult(){
  if(currentPage!=='result'||screen.getAttribute('aria-busy')==='true')return;
  if(selectedChapter===CHAPTER_PREVIEWS.length-1){go('gameover');return;}
- selectedChapter+=1;playbackStoryNode=null;playbackPaused=false;chapterRailLeft=0;
+ selectedChapter+=1;playbackStoryNode=null;playbackPaused=false;playbackPosition=0;chapterRailLeft=0;
  go('gameplay');
 }
 function tryFailureSound(){
@@ -877,6 +933,7 @@ const actions={
  'audition-sound':()=>{if(currentPage==='failure'){failureSoundRequest=null;uiSound.stopAll();startFailureSound();}else if(currentPage==='gameover'){gameoverSoundRequest=null;uiSound.stopAll();startGameoverSound();}else uiSound.audition();},
  'restart-music':()=>{uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();},
  'toggle-preview-audio':()=>uiSound.setPreviewPaused(document.documentElement.dataset.audioPreviewPaused!=='true'),
+ 'playback-speed':()=>setPlaybackSpeedMenu($('#playback-speed-toggle').getAttribute('aria-expanded')!=='true'),
  'playback':()=>{playbackPaused=!playbackPaused;if(playbackPaused)playAnimation?.pause();else playAnimation?.play();const b=$('[data-action="playback"]');b.innerHTML=icon(playbackPaused?'play':'pause')+`<span>${playbackPaused?'已暂停':'播放中'}</span>`;b.setAttribute('aria-label',playbackPaused?'继续播放':'暂停播放');}
 };
 // Only deliberate controls sound; scrolling and dragging stay quiet.
@@ -914,6 +971,9 @@ document.addEventListener('click',event=>{
  uiSound.play(control.dataset.action==='modal-confirm'?'confirm':control.hasAttribute('data-language')?'select':'click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
+ if(!event.target.closest('.playback-speed'))setPlaybackSpeedMenu(false);
+ const speedOption=event.target.closest('.playback-speed-options [data-speed-rate]');
+ if(speedOption){setPlaybackRate(Number(speedOption.dataset.speedRate));return;}
  const affinityCard=event.target.closest('[data-affinity-index]');
  if(affinityCard){selectAffinity(Number(affinityCard.dataset.affinityIndex));return;}
  const storyCard=event.target.closest('[data-story-node]');
@@ -934,6 +994,21 @@ document.addEventListener('keydown',event=>{
   return;
  }
  if(event.target.matches('input,select'))return;
+ if(currentPage==='gameplay'){
+  const toggle=$('#playback-speed-toggle'),menu=$('#playback-speed-options');
+  if(toggle?.getAttribute('aria-expanded')==='true'){
+   if(event.key==='Escape'){event.preventDefault();setPlaybackSpeedMenu(false,{restoreFocus:true});return;}
+   if(event.key==='Tab'){setPlaybackSpeedMenu(false,{restoreFocus:true});return;}
+   if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
+    event.preventDefault();
+    const options=Array.from(menu.querySelectorAll('button')),index=options.indexOf(document.activeElement);
+    const next=event.key==='Home'?0:event.key==='End'?options.length-1:(index+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;
+    options[next].focus({preventScroll:true});uiSound.play('hover',{level:.4,throttle:180});return;
+   }
+  }else if(event.target===toggle&&['ArrowUp','ArrowDown'].includes(event.key)){
+   event.preventDefault();setPlaybackSpeedMenu(true);return;
+  }
+ }
  if(event.key==='Escape'){
   event.preventDefault();
   if(!$('#review-panel').hidden){uiSound.play('back');$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');return;}
@@ -955,7 +1030,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure','gameover'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(['failure','gameover'].includes(currentPage)){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:currentPage==='gameover'?2000:1700);if(currentPage==='failure')startFailureSound();else startGameoverSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure','gameover'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();if(currentPage==='gameplay'){playbackPosition=0;playbackPaused=false;}const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(['failure','gameover'].includes(currentPage)){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:currentPage==='gameover'?2000:1700);if(currentPage==='failure')startFailureSound();else startGameoverSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});

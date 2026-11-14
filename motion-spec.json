@@ -279,16 +279,16 @@
         "motionPreserved": true
       },
       "menuHover": {
-        "revision": "home-menu-hover-glow-20261114",
-        "appearance": "Warm-white text bloom, feathered oval light behind the current item, softly lit existing dot and arrow",
-        "enterMs": 380,
-        "expandMs": 550,
+        "revision": "menu-light-playback-speed-20261114",
+        "appearance": "Cool-white text-edge light and two tapered hairlines; existing dot retained; right arrow removed",
+        "enterMs": 280,
+        "expandMs": 420,
         "appliesTo": [
           "hover",
           "focus-visible"
         ],
-        "layoutPreserved": true,
-        "reducedMotion": "Static glow without transitions"
+        "fontAndSpacingPreserved": true,
+        "reducedMotion": "Static light without transitions"
       }
     },
     {
@@ -552,10 +552,29 @@
       "id": "gameplay",
       "name": "游戏内",
       "kind": "场景帧实拍",
-      "motion": "字幕由下方 12px 柔和显现；HUD 先后进入；进度条连续变化。",
-      "interaction": "底部可暂停 / 继续播放；右上角只保留声音开关，Esc 可进入暂停菜单。场景与播放进度为本地交互演示。",
+      "motion": "字幕和 HUD 沿用当前入场；倍速菜单 260ms 从下方轻浮展开，160ms 淡出，倍率数字 240ms 轻柔替换，选择时不重播底部控制栏。",
+      "interaction": "底部可暂停 / 继续播放，倍速提供 1×、1.25×、1.5×、2× 四个演示档位。切换立即影响当前播放进度，保留播放位置和暂停状态；Esc 先关闭倍速菜单，再进入暂停页，返回播放页保留位置与速度。键盘上下键、Home / End、Enter 和 Tab 可操作，点击外部收起。速度不改变 UI 入场、声音或选项倒计时；场景与进度仍为本地交互演示。",
       "hudRevision": "gameplay-hud-clean-20261114",
-      "topRightPauseVisible": false
+      "topRightPauseVisible": false,
+      "playbackSpeed": {
+        "revision": "menu-light-playback-speed-20261114",
+        "rates": [
+          1,
+          1.25,
+          1.5,
+          2
+        ],
+        "defaultRate": 1,
+        "sourceEntryVerified": true,
+        "ratesArePrototypeChoices": true,
+        "preservesPosition": true,
+        "preservesPausedState": true,
+        "persistsAcrossPages": true,
+        "menuEnterMs": 260,
+        "menuExitMs": 160,
+        "labelChangeMs": 240,
+        "affects": "Demonstration playback timeline only; UI animations, audio and timed choices remain independent"
+      }
     },
     {
       "id": "pause",
