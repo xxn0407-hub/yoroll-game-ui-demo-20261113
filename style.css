@@ -301,7 +301,7 @@
 .gameover-particle-layer--far{z-index:0}
 .gameover-particle-layer--mid{z-index:1}
 .gameover-particle-layer--near{z-index:2}
-.gameover-mote{position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));opacity:0;animation:gameover-mote-drift var(--mote-duration) linear var(--mote-delay) infinite both}
+.gameover-mote{position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));opacity:0;animation:gameover-mote-emit var(--mote-duration) cubic-bezier(.22,.25,.55,1) var(--mote-delay) infinite both}
 .gameover-mote:before{content:"";position:absolute;inset:0;rotate:45deg;background:#cbe6df;box-shadow:0 0 calc(var(--p)*5) #b3ddd84d}
 .gameover-mote--far{filter:blur(calc(var(--p)*.55))}
 .gameover-mote--mid{filter:blur(calc(var(--p)*.08))}
@@ -320,7 +320,7 @@
 @keyframes gameover-light-breathe{from{opacity:.55;transform:scale(.95)}to{opacity:.85;transform:scale(1.06)}}
 @keyframes gameover-veil-drift{from{opacity:.3;transform:translate3d(-2%,2%,0) scale(.96)}to{opacity:.6;transform:translate3d(3%,-3%,0) scale(1.05)}}
 @keyframes gameover-orbit-sway{from{transform:translate3d(0,calc(var(--p)*3),0) rotate(-.45deg)}to{transform:translate3d(0,calc(var(--p)*-3),0) rotate(.45deg)}}
-@keyframes gameover-mote-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*8),0) scale(.55)}18%{opacity:calc(var(--mote-strength)*.7)}43%{opacity:var(--mote-strength);transform:translate3d(calc(var(--p)*var(--mote-dx)*.42),calc(var(--p)*var(--mote-rise)*-.42),0) scale(1)}76%{opacity:calc(var(--mote-strength)*.45)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--mote-dx)),calc(var(--p)*var(--mote-rise)*-1),0) scale(.85)}}
+@keyframes gameover-mote-emit{0%{opacity:0;transform:translate3d(0,0,0) scale(.4)}12%{opacity:calc(var(--mote-strength)*.8)}38%{opacity:var(--mote-strength)}70%{opacity:calc(var(--mote-strength)*.5)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--mote-dx)),calc(var(--p)*var(--mote-dy)),0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.failure-ember,.gameover-particle-field{display:none}.failure-atmosphere:before,.gameover-halo,.gameover-light-veil,.gameover-orbit{animation:none}.failure-atmosphere:before{opacity:.5}.gameover-halo{opacity:.7}.gameover-light-veil{opacity:.4}}
 .game-frame[data-page="result"] .scene-shade{background:linear-gradient(90deg,#070a0b10 0%,#090d1047 38%,#090c10d9 68%,#080b0ee8 100%),linear-gradient(0deg,#080c10ae,transparent 48%,#080b0d20)}
 .result-layout{left:auto;right:var(--safe);top:27%;bottom:18%;width:calc(var(--p)*640);display:flex;flex-direction:column;justify-content:space-between;align-items:center;isolation:isolate;text-align:center;z-index:1}

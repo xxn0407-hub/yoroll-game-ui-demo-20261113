@@ -791,7 +791,7 @@
       "id": "gameover",
       "name": "游戏结束",
       "kind": "用户提供原版 UI",
-      "motion": "双层冷色柔光先亮起；外、内菱形线条相隔 180ms 勾勒，图形缓慢浮沉。标题和已定结束音仍在 230ms 起步，标题背光展开后缓缓收稳；左右细线错开 60ms 向外延伸，主按钮在 790ms 开始落位。42 个细碎点缀分远、中、近三层，其中 34 个聚集在菱形周围和内部，8 个在外围维持景深；按 190/330/470ms 渐显，各自以不同大小、透明度、虚焦、寿命和方向漂移、出现、消散。整体约 2s 舒展完成，之后保留轻柔呼吸与粒子循环。",
+      "motion": "双层柔光、错峰菱形描线、标题背光、左右细线与按钮沿用已定入场。42 个粒子分远中近三层，在中心附近从小而淡逐渐出现，随后沿各自方向向四周舒展、减速并消散；持续错峰补入，保持中间密度。34 个核心粒子的发散半径控制在 82–152px，8 个外围粒子到 160–220px，不再统一向上漂浮。",
       "interaction": "最后一章完成后的查看结局进入此页，结束音与标题在 230ms 一起起步；低而柔和的单次共鸣约 4s 渐出。进入时先停止上一段完成音，不叠加通用切页声。返回主菜单、预览直达、重播、Esc、Tab 与 Enter 沿用现有行为。预览面板可“试听结束音”；总静音、音效音量、关闭预览与待播请求清理均走共用规则，静音入场不补播。",
       "reference": "comparison/before/gameover-user.png",
       "referenceRevision": "outcome-pages-20261114",
@@ -889,12 +889,55 @@
         "markFloatPeriodSeconds": 14,
         "coreCount": 34,
         "outerCount": 8,
-        "distribution": "Center-weighted density without an empty inner ring",
-        "coreDriftMultiplier": 0.55,
-        "coreRiseMultiplier": 0.6
+        "distribution": "Continuous center emission: appear, spread radially, fade, and replenish",
+        "coreBirthRadiusPx": [
+          6,
+          26
+        ],
+        "outerBirthRadiusPx": [
+          22,
+          50
+        ],
+        "coreEndRadiusPx": [
+          82,
+          152
+        ],
+        "outerEndRadiusPx": [
+          160,
+          220
+        ],
+        "verticalRadiusRatio": 0.8,
+        "radialOutflow": true,
+        "movementEasing": "cubic-bezier(.22,.25,.55,1)",
+        "scaleEnvelope": [
+          0.4,
+          1
+        ],
+        "opacityEnvelope": [
+          [
+            0,
+            0
+          ],
+          [
+            0.12,
+            0.8
+          ],
+          [
+            0.38,
+            1
+          ],
+          [
+            0.7,
+            0.5
+          ],
+          [
+            1,
+            0
+          ]
+        ]
       },
       "gameoverAudioRevision": "gameover-resonance-20261114",
-      "motionRevision": "gameover-particles-clustered-20261114",
+      "motionRevision": "gameover-particle-emission-20261114",
       "entryTimeline": {
         "atmosphere": {
           "delayMs": 0,
