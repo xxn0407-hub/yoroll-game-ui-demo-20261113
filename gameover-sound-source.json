@@ -1,0 +1,50 @@
+{
+  "revision": "gameover-resonance-20261114",
+  "method": "One continuous post-impact decay from the approved opening, five semitones lower.",
+  "asset": {
+    "file": "assets/audio/ui-gameover.wav",
+    "durationMs": 4005,
+    "sampleRate": 48000,
+    "channels": 2,
+    "peak": 0.084991455078125,
+    "rmsDbfs": -36.78298240882221,
+    "monoLossDb": 0,
+    "stereoCorrelation": 1,
+    "boundarySamples": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "attackMs": 340,
+    "fadeOutMs": 2200,
+    "loop": false,
+    "character": "One quiet lowered opening resonance, slowly resolving to silence.",
+    "sha256": "383d27bf0444e66ad1a946cf4a2a407533b0e28d43aaa3fd73cc22e04022a66a",
+    "sourceManifest": "gameover-sound-source.json"
+  },
+  "source": "assets/audio/home-opening.wav",
+  "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+  "sourceExcerptSeconds": [
+    6.55,
+    9.55
+  ],
+  "processing": "atrim=start=6.55:end=9.55,asetpts=PTS-STARTPTS,pan=mono|c0=c0,asetrate=35959,aresample=48000,highpass=f=105:p=2,highpass=f=105:p=2,lowpass=f=1250:p=2",
+  "pitchShiftSemitones": -5,
+  "attackMs": 340,
+  "fadeOutMs": 2200,
+  "newGenerationCredits": 0,
+  "addedDrums": false,
+  "addedGlitch": false,
+  "addedEchoOrReverb": false,
+  "repetitions": 0,
+  "playback": {
+    "entryDelayMs": 230,
+    "level": 0.8,
+    "sharedMixGain": 0.5
+  }
+}

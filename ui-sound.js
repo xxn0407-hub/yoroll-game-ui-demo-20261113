@@ -4,7 +4,8 @@ window.YorollSound = (() => {
  const revision = 'chapter-short-resonance-20261113';
  const completionRevision = 'completion-brighter-20261114';
  const deathRevision = 'death-glitch-resonance-20261114';
- const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked','death'];
+ const gameoverRevision = 'gameover-resonance-20261114';
+ const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked','death','gameover'];
  const buffers = new Map();
  const voices = new Set();
  const lastPlayed = new Map();
@@ -20,7 +21,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:revision}`)
+ const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:name==='gameover'?gameoverRevision:revision}`)
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
@@ -28,7 +29,7 @@ window.YorollSound = (() => {
  function publish(){
   const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
   Object.assign(document.documentElement.dataset,{
-   audioRevision:revision,audioCompletionRevision:completionRevision,audioDeathRevision:deathRevision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
+   audioRevision:revision,audioCompletionRevision:completionRevision,audioDeathRevision:deathRevision,audioGameoverRevision:gameoverRevision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
    audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
    audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
@@ -180,13 +181,13 @@ window.YorollSound = (() => {
   const requested=performance.now();
   const interval=throttle??(name==='locked'?650:name==='hover'?180:name==='transition'?220:55);
   if(requested-(lastPlayed.get(name)??-Infinity)<interval)return false;
-  if(!sequence&&name==='transition'&&['confirm','open','success','death'].some(cue=>requested-(lastPlayed.get(cue)??-Infinity)<180))return false;
+  if(!sequence&&name==='transition'&&['confirm','open','success','death','gameover'].some(cue=>requested-(lastPlayed.get(cue)??-Infinity)<180))return false;
   lastPlayed.set(name,requested);
   if(name==='select')suppressHover();
   const run=()=>{
    if(!context||context.state!=='running'||muted||volume===0||!isActive()||!buffers.has(name))return false;
    if(performance.now()-requested>200)return false; // Never replay stale interactions after a slow load.
-   const channel=['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':['success','death'].includes(name)?'result':'control';
+   const channel=['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':['success','death','gameover'].includes(name)?'result':'control';
    if(!sequence){
     previewId++;
     for(const voice of voices){

@@ -285,6 +285,32 @@
       },
       "channelMode": "centered dual mono",
       "fadeOutMs": 1600
+    },
+    "gameover": {
+      "file": "assets/audio/ui-gameover.wav",
+      "durationMs": 4005,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.084991455078125,
+      "rmsDbfs": -36.78298240882221,
+      "monoLossDb": 0,
+      "stereoCorrelation": 1,
+      "boundarySamples": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "attackMs": 340,
+      "fadeOutMs": 2200,
+      "loop": false,
+      "character": "One quiet lowered opening resonance, slowly resolving to silence.",
+      "sha256": "383d27bf0444e66ad1a946cf4a2a407533b0e28d43aaa3fd73cc22e04022a66a",
+      "sourceManifest": "gameover-sound-source.json"
     }
   },
   "sourceQuality": {
@@ -319,7 +345,8 @@
       "home",
       "cover",
       "result",
-      "failure"
+      "failure",
+      "gameover"
     ],
     "lockedHoverIntentMs": 110,
     "lockedHoverThrottleMs": 650,
@@ -339,7 +366,8 @@
     "success": "Completion page entrance and explicit result replay; plays once with the title.",
     "chapter": "Chapter activation and keyboard story selection; quiet low resonance with a continuous gentle tail.",
     "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive.",
-    "death": "Failure entrance, explicit failure replay and contextual death audition. Each action plays one finite cue."
+    "death": "Failure entrance, explicit failure replay and contextual death audition. Each action plays one finite cue.",
+    "gameover": "Game-over entrance, explicit replay, and contextual ending audition; each plays one finite low resonance."
   },
   "backgroundMusic": "music-spec.json",
   "entryRevision": "entry-autoplay-20261113",
@@ -424,5 +452,26 @@
     "resonancePitchShiftSemitones": -4,
     "resonanceAttackMs": 280,
     "addedEcho": false
+  },
+  "gameoverCue": {
+    "revision": "gameover-resonance-20261114",
+    "cue": "gameover",
+    "file": "assets/audio/ui-gameover.wav",
+    "durationMs": 4005,
+    "entryDelayMs": 230,
+    "level": 0.8,
+    "oncePerEntrance": true,
+    "replayIncluded": true,
+    "loop": false,
+    "masterMuteAndSfxVolume": true,
+    "waitForReadyWhileOnGameover": true,
+    "cancelOnNavigation": true,
+    "mutedEntryNotBackfilled": true,
+    "genericGameoverTransitionCue": false,
+    "previousCompletionTailStopped": true,
+    "character": "One quiet lowered opening resonance, slowly resolving to silence.",
+    "sourceManifest": "gameover-sound-source.json",
+    "contextualAudition": true,
+    "auditionControlLabel": "试听结束音"
   }
 }

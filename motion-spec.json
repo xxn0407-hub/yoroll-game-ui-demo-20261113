@@ -792,7 +792,7 @@
       "name": "游戏结束",
       "kind": "用户提供原版 UI",
       "motion": "冷色光场先柔和亮起，菱形以 94%→100% 舒展；标题在 230ms 开始，1.25s 由虚到实落位。两侧细线从文字向外延伸，主按钮最后进入；柔光约 13s 呼吸，小菱形独立缓慢漂移。",
-      "interaction": "最后一章完成后的查看结局进入此页；返回主菜单可继续浏览。支持预览直达、重播、Esc、Tab 与 Enter；不播放胜利共鸣音或背景循环。",
+      "interaction": "最后一章完成后的查看结局进入此页，结束音与标题在 230ms 一起起步；低而柔和的单次共鸣约 4s 渐出。进入时先停止上一段完成音，不叠加通用切页声。返回主菜单、预览直达、重播、Esc、Tab 与 Enter 沿用现有行为。预览面板可“试听结束音”；总静音、音效音量、关闭预览与待播请求清理均走共用规则，静音入场不补播。",
       "reference": "comparison/before/gameover-user.png",
       "referenceRevision": "outcome-pages-20261114",
       "reducedMotion": "Static settled composition; disable decorative drift and entry.",
@@ -816,7 +816,8 @@
           14.2
         ],
         "haloPeriodSeconds": 13
-      }
+      },
+      "gameoverAudioRevision": "gameover-resonance-20261114"
     },
     {
       "id": "exit",
@@ -958,6 +959,27 @@
       "resonancePitchShiftSemitones": -4,
       "resonanceAttackMs": 280,
       "addedEcho": false
+    },
+    "gameoverCue": {
+      "revision": "gameover-resonance-20261114",
+      "cue": "gameover",
+      "file": "assets/audio/ui-gameover.wav",
+      "durationMs": 4005,
+      "entryDelayMs": 230,
+      "level": 0.8,
+      "oncePerEntrance": true,
+      "replayIncluded": true,
+      "loop": false,
+      "masterMuteAndSfxVolume": true,
+      "waitForReadyWhileOnGameover": true,
+      "cancelOnNavigation": true,
+      "mutedEntryNotBackfilled": true,
+      "genericGameoverTransitionCue": false,
+      "previousCompletionTailStopped": true,
+      "character": "One quiet lowered opening resonance, slowly resolving to silence.",
+      "sourceManifest": "gameover-sound-source.json",
+      "contextualAudition": true,
+      "auditionControlLabel": "试听结束音"
     }
   },
   "backgroundMusic": {

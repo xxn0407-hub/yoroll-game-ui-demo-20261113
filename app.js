@@ -43,6 +43,7 @@ let enterAnimations = new Set();
 let timers = new Set();
 let resultSoundRequest = null;
 let failureSoundRequest = null;
+let gameoverSoundRequest = null;
 let modalPreviousFocus = null;
 let confirmAction = null;
 let choicePaused = false;
@@ -73,7 +74,7 @@ function syncSoundControls(){
    if(button.dataset.muted!==String(audioMuted)){button.dataset.muted=String(audioMuted);button.innerHTML=icon(audioMuted?'volume-off':'volume');}
   }
  });
- $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;const label=currentPage==='failure'?'试听死亡音':'试听音效';if(button.textContent!==label)button.textContent=label;});
+ $$('[data-action="audition-sound"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.sfx===0;const label=currentPage==='failure'?'试听死亡音':currentPage==='gameover'?'试听结束音':'试听音效';if(button.textContent!==label)button.textContent=label;});
  $$('[data-action="restart-music"]').forEach(button=>{button.disabled=audioMuted||settingState.master===0||settingState.music===0||['gameplay','pause','choice','qte','result','failure','gameover'].includes(currentPage);});
  const status=$('#sound-status');
  if(status){const state=document.documentElement.dataset.audioState;const text=audioMuted?'全部声音已关闭':settingState.master===0||settingState.sfx===0?'界面音量为零':state==='unavailable'?'声音暂不可用':state==='locked'?'首次点击后启用声音':state==='loading'?'声音准备中':'Hover · 点击 · 页面切换';if(status.textContent!==text)status.textContent=text;}
@@ -126,6 +127,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
 function cancelPageMotion(){
  resultSoundRequest=null;delete frame.dataset.resultSound;
  failureSoundRequest=null;delete frame.dataset.failureSound;
+ gameoverSoundRequest=null;delete frame.dataset.gameoverSound;
  disposeStoryScroll();
  treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
@@ -666,7 +668,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  const old=currentPage;
  if(page==='affinity'&&['home','cover'].includes(old))affinityReturnPage=old;
  cancelPendingHover();
- if(screen.children.length&&page!==old&&!['result','failure'].includes(page))uiSound.play('transition',{level:.85,delay:.03});
+ if(screen.children.length&&page!==old&&!['result','failure','gameover'].includes(page))uiSound.play('transition',{level:.85,delay:.03});
  closeModal(true);
  if(!skipExit&&!motionPreference.matches&&screen.children.length){
   screen.setAttribute('aria-busy','true');
@@ -702,6 +704,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(page==='gameplay')startPlayback();
  if(page==='result')startResultSound();
  if(page==='failure')startFailureSound();
+ if(page==='gameover'){uiSound.stopAll();startGameoverSound();}
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
@@ -795,6 +798,21 @@ function startFailureSound(){
  uiSound.prepareAutoplay().catch(()=>{});
 }
 document.addEventListener('ui-audio-state',tryFailureSound);
+function tryGameoverSound(){
+ const request=gameoverSoundRequest;
+ if(!request||currentPage!=='gameover'||screen.getAttribute('aria-busy')==='true')return;
+ if(uiSound.isMuted()||settingState.master===0||settingState.sfx===0){gameoverSoundRequest=null;frame.dataset.gameoverSound='muted';return;}
+ if(!request.due||document.documentElement.dataset.audioState!=='ready'||!uiSound.isActive())return;
+ gameoverSoundRequest=null;frame.dataset.gameoverSound='played';
+ if(!uiSound.play('gameover',{level:.8})){gameoverSoundRequest=request;frame.dataset.gameoverSound='pending';}
+}
+function startGameoverSound(){
+ const request=gameoverSoundRequest={due:false};frame.dataset.gameoverSound='pending';
+ tryGameoverSound();if(gameoverSoundRequest!==request)return;
+ timeout(()=>{if(gameoverSoundRequest!==request)return;request.due=true;tryGameoverSound();},230);
+ uiSound.prepareAutoplay().catch(()=>{});
+}
+document.addEventListener('ui-audio-state',tryGameoverSound);
 function toast(message){
  const el=$('#toast');el.innerHTML=icon('check')+`<span>${message}</span>`;
  savedToastAnimation?.cancel();
@@ -843,7 +861,7 @@ const actions={
  'qte-hit':qteHit,
  'mute':toggleInterfaceSound,
  'sound-toggle':toggleInterfaceSound,
- 'audition-sound':()=>{if(currentPage==='failure'){failureSoundRequest=null;uiSound.stopAll();startFailureSound();}else uiSound.audition();},
+ 'audition-sound':()=>{if(currentPage==='failure'){failureSoundRequest=null;uiSound.stopAll();startFailureSound();}else if(currentPage==='gameover'){gameoverSoundRequest=null;uiSound.stopAll();startGameoverSound();}else uiSound.audition();},
  'restart-music':()=>{uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();},
  'toggle-preview-audio':()=>uiSound.setPreviewPaused(document.documentElement.dataset.audioPreviewPaused!=='true'),
  'playback':()=>{playbackPaused=!playbackPaused;if(playbackPaused)playAnimation?.pause();else playAnimation?.play();const b=$('[data-action="playback"]');b.innerHTML=icon(playbackPaused?'play':'pause')+`<span>${playbackPaused?'已暂停':'播放中'}</span>`;b.setAttribute('aria-label',playbackPaused?'继续播放':'暂停播放');}
@@ -924,7 +942,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(currentPage==='failure'){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:1700);startFailureSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure','gameover'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(['failure','gameover'].includes(currentPage)){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:1700);if(currentPage==='failure')startFailureSound();else startGameoverSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});
