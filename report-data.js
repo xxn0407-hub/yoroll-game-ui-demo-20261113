@@ -167,14 +167,15 @@ window.YOROLL_REPORT = {
       "kind": "用户提供原版 UI",
       "change": "按原版恢复右侧 COMPLETED 标题、金色几何徽记、星点分隔线与上下排列的胶囊操作；去掉示意评级、进度和额外页眉，保留当前游戏场景。",
       "ratio": "标题 92px、说明 18px；胶囊按钮 196×52px、文字 20px、纵向间距 18px；右侧内容宽 640px。以当前 1920×1080 基准等比缩放。",
-      "motion": "徽记、标题、分隔线、说明和按钮依次落位；底部暖黄色光雾缓慢流动，64 个粒子分为远景细尘、中景亮点、近景虚焦光斑，以不同速度上浮漂移。4 个亮点柔和闪出星芒，尺寸和透明度自然变化。Hover 与点击反馈沿用当前版本。 玻璃主按钮的整圈边缘和上下高光以 3.8s 周期呼吸，暗部收光、亮部增强；按钮与文字保持稳定，悬停进一步提亮。",
+      "motion": "徽记先显现；标题与三层金色横向光带同步落位，光带在 1.5s 内展开提亮后缓缓收光。分隔线增加偏右的柔和亮点。底部暖色光雾和 64 个远近粒子、主按钮 3.8s 呼吸继续运行。",
       "interaction": "进入下一章会前进到下一示例章节；最后一章改为返回主菜单。返回章节选择保留当前章节，Esc 同样返回；支持 Tab、Enter 和重播。 完成标题入场时播放一次与首页同源、稍明亮轻快的共鸣音（4.64s），重播同样带音效，遵循全局声音开关和音效音量。",
       "beforeSource": "user",
       "beforeNote": "旧版完成 UI 由用户提供；新版保留当前故事场景，重点对比右侧构图、比例和动效。",
       "referenceRevision": "result-reference-20261114",
       "particlesRevision": "completion-gold-particles-20261114",
       "buttonLightRevision": "glass-button-breathe-v2-20261114",
-      "completionAudioRevision": "completion-cue-20261114"
+      "completionAudioRevision": "completion-cue-20261114",
+      "titleLightRevision": "result-title-light-20261114"
     },
     {
       "id": "exit",

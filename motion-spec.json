@@ -569,7 +569,7 @@
       "id": "result",
       "name": "章节结果",
       "kind": "用户提供原版 UI",
-      "motion": "徽记、标题、分隔线、说明和两个按钮沿用已定入场；底部金色光雾缓慢流动。20 个远景细尘、28 个中景亮点与 16 个近景虚焦光斑以不同路径和 7–20 秒周期上浮，4 个亮点带柔和星芒，透明度与尺寸持续渐变。减少动态效果时不显示粒子与光雾。",
+      "motion": "徽记先显现；COMPLETED 与横向金色光带从 160ms 同步入场并一起落位，文字 850ms、光带 1500ms。光带由中心展开提亮，再柔和收成 46% 常亮底光；分隔线于 260ms 展开，并带偏右的柔和亮点。原有说明和按钮入场、底部金色光雾及 64 个远近粒子继续运行。",
       "interaction": "进入下一章前进到下一示例章节，最后一章返回首页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。 完成标题入场时播放一次与首页同源、稍明亮轻快的共鸣音（4.64s），重播也会播放；遵循总声音开关与音效音量。",
       "reference": "comparison/before/13-result-user.png",
       "referenceRevision": "result-reference-20261114",
@@ -602,7 +602,22 @@
           20
         ]
       },
-      "completionAudioRevision": "completion-brighter-20261114"
+      "completionAudioRevision": "completion-brighter-20261114",
+      "titleLightRevision": "result-title-light-20261114",
+      "titleLight": {
+        "sameEntryGroupAsTitle": true,
+        "rays": 3,
+        "delayMs": 160,
+        "durationMs": 1500,
+        "peakOpacity": 0.9,
+        "peakOffset": 0.46,
+        "settledOpacity": 0.46,
+        "continuousLoop": false,
+        "pointerEvents": "none",
+        "dividerFlarePositionFraction": 0.72,
+        "dividerFlareWidthPx": 180,
+        "reducedMotion": "Static settled light with no entry bloom."
+      }
     },
     {
       "id": "exit",
@@ -617,7 +632,7 @@
     "qte": 8000,
     "qteSuccessToResult": 1100
   },
-  "reducedMotion": "Decorative entries, zooms and completion dust are skipped. Timed interaction progress remains functional.",
+  "reducedMotion": "Decorative entries, zooms and completion dust are skipped. The title light stays at its settled static glow. Timed interaction progress remains functional.",
   "lifecycle": "Page animations and timers cancel on navigation. Active tracks pause while the document is hidden. Hover transforms use separate entry wrappers.",
   "sound": {
     "spec": "sound-spec.json",

@@ -557,7 +557,7 @@ function resultDustMarkup(){
 }
 function resultView(){
  const last=selectedChapter===CHAPTER_PREVIEWS.length-1;
- return `${resultDustMarkup()}<section class="result-layout" aria-labelledby="result-title"><div class="result-emblem" data-enter="result-emblem" aria-hidden="true"><img src="assets/completion-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><h1 id="result-title" data-enter="result-title" aria-label="章节完成">COMPLETED</h1><div class="result-divider" data-enter="result-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="result-copy">苦战至此，终得凯旋。感谢各位队友默契相伴，<br>所有付出皆有回响，让我们收下这份来之不易的胜利。</p></div><div class="result-actions"><div data-enter="result-action">${button(last?'返回主菜单':'进入下一章','result-next','btn-primary')}</div><div data-enter="result-action">${goButton('返回章节选择','chapters')}</div></div></section>${footer('')}`;
+ return `${resultDustMarkup()}<section class="result-layout" aria-labelledby="result-title"><div class="result-emblem" data-enter="result-emblem" aria-hidden="true"><img src="assets/completion-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><div class="result-title-group" data-enter="result-title"><div class="result-title-light" data-enter="result-title-light" aria-hidden="true"><i class="result-title-ray"></i><i class="result-title-ray"></i><i class="result-title-ray"></i></div><h1 id="result-title" aria-label="章节完成">COMPLETED</h1></div><div class="result-divider" data-enter="result-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="result-copy">苦战至此，终得凯旋。感谢各位队友默契相伴，<br>所有付出皆有回响，让我们收下这份来之不易的胜利。</p></div><div class="result-actions"><div data-enter="result-action">${button(last?'返回主菜单':'进入下一章','result-next','btn-primary')}</div><div data-enter="result-action">${goButton('返回章节选择','chapters')}</div></div></section>${footer('')}`;
 }
 const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
 function setScene(page){
@@ -603,6 +603,7 @@ function enterPage(){
  $$('[data-enter="wordmark"]').forEach(el=>enter(el,{y:unit(18),scale:.975,blur:5,delay:200,duration:1600}));
  $$('[data-enter="result-emblem"]').forEach(el=>enter(el,{y:unit(12),scale:.95,blur:2,delay:40,duration:1250}));
  $$('[data-enter="result-title"]').forEach(el=>enter(el,{y:unit(16),scale:.985,delay:160,duration:850}));
+ $$('[data-enter="result-title-light"]').forEach(el=>animate(el,[{opacity:0,transform:'scale3d(.38,.65,1)',offset:0,easing:'cubic-bezier(.22,.61,.36,1)'},{opacity:.9,transform:'scale3d(1.04,1.08,1)',offset:.46,easing:'cubic-bezier(.45,0,.55,1)'},{opacity:.46,transform:'scale3d(1,1,1)',offset:1}],{duration:1500,delay:160,easing:'linear'}));
  $$('[data-enter="result-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.7)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:260,easing:'cubic-bezier(.16,1,.3,1)'}));
  $$('[data-enter="result-atmosphere"]').forEach(el=>enter(el,{y:0,delay:180,duration:1400}));
  animateScene();
