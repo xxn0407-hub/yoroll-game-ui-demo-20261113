@@ -791,11 +791,11 @@
       "id": "gameover",
       "name": "游戏结束",
       "kind": "用户提供原版 UI",
-      "motion": "冷色光场先柔和亮起，菱形以 94%→100% 舒展；标题在 230ms 开始，1.25s 由虚到实落位。两侧细线从文字向外延伸，主按钮最后进入；柔光约 13s 呼吸，小菱形独立缓慢漂移。",
+      "motion": "双层冷色柔光先亮起；外、内菱形线条相隔 180ms 勾勒，图形缓慢浮沉。标题和已定结束音仍在 230ms 起步，标题背光展开后缓缓收稳；左右细线错开 60ms 向外延伸，主按钮在 790ms 开始落位。42 个细碎点缀分远、中、近三层，按 190/330/470ms 渐显，各自以不同大小、透明度、虚焦、寿命和方向漂移、出现、消散。整体约 2s 舒展完成，之后保留轻柔呼吸与粒子循环。",
       "interaction": "最后一章完成后的查看结局进入此页，结束音与标题在 230ms 一起起步；低而柔和的单次共鸣约 4s 渐出。进入时先停止上一段完成音，不叠加通用切页声。返回主菜单、预览直达、重播、Esc、Tab 与 Enter 沿用现有行为。预览面板可“试听结束音”；总静音、音效音量、关闭预览与待播请求清理均走共用规则，静音入场不补播。",
       "reference": "comparison/before/gameover-user.png",
       "referenceRevision": "outcome-pages-20261114",
-      "reducedMotion": "Static settled composition; disable decorative drift and entry.",
+      "reducedMotion": "Static settled composition; hide decorative particle field and stop halo, veil, and diamond drifting. Both full diamond paths remain visible.",
       "layout": {
         "titlePx": 84,
         "diamondSizePx": [
@@ -810,14 +810,125 @@
         "buttonTopViewportFraction": 0.765
       },
       "particles": {
-        "diamonds": 5,
-        "durationSeconds": [
-          9,
-          14.2
+        "count": 42,
+        "depthLayers": 3,
+        "layerCounts": [
+          18,
+          16,
+          8
         ],
-        "haloPeriodSeconds": 13
+        "shapes": [
+          "filled diamond",
+          "outlined diamond",
+          "distant round point"
+        ],
+        "fieldSizePx": [
+          880,
+          660
+        ],
+        "centerYViewportFraction": 0.47,
+        "layerSizesPx": [
+          [
+            1.8,
+            3.5
+          ],
+          [
+            3.5,
+            6.5
+          ],
+          [
+            7,
+            12
+          ]
+        ],
+        "layerPeakOpacity": [
+          [
+            0.16,
+            0.32
+          ],
+          [
+            0.26,
+            0.48
+          ],
+          [
+            0.16,
+            0.3
+          ]
+        ],
+        "layerBlurPx": [
+          0.55,
+          0.08,
+          0.9
+        ],
+        "layerDurationsSeconds": [
+          [
+            19,
+            29
+          ],
+          [
+            13,
+            21
+          ],
+          [
+            16,
+            25
+          ]
+        ],
+        "layerEntryDelayMs": [
+          190,
+          330,
+          470
+        ],
+        "layerEntryDurationMs": 1100,
+        "fadeAtLoopBoundary": true,
+        "independentNegativePhases": true,
+        "behindTitleAndControls": true,
+        "pointerEvents": "none",
+        "haloPeriodSeconds": 13,
+        "veilPeriodSeconds": 19,
+        "markFloatPeriodSeconds": 14
       },
-      "gameoverAudioRevision": "gameover-resonance-20261114"
+      "gameoverAudioRevision": "gameover-resonance-20261114",
+      "motionRevision": "gameover-layered-particles-20261114",
+      "entryTimeline": {
+        "atmosphere": {
+          "delayMs": 0,
+          "durationMs": 1500
+        },
+        "mark": {
+          "delayMs": 80,
+          "durationMs": 1400
+        },
+        "outerDiamond": {
+          "delayMs": 130,
+          "durationMs": 1500
+        },
+        "innerDiamond": {
+          "delayMs": 310,
+          "durationMs": 1600
+        },
+        "title": {
+          "delayMs": 230,
+          "durationMs": 1350
+        },
+        "titleLight": {
+          "delayMs": 230,
+          "durationMs": 1600,
+          "settledOpacity": 0.4
+        },
+        "sideLines": {
+          "delayMs": [
+            380,
+            440
+          ],
+          "durationMs": 1300
+        },
+        "button": {
+          "delayMs": 790,
+          "durationMs": 900
+        },
+        "readyMs": 2000
+      }
     },
     {
       "id": "exit",

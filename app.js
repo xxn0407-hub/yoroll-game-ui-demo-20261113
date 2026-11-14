@@ -590,8 +590,17 @@ function failureView(){
  const warning='<img src="assets/failure-emblem.svg?v=death-soft-rupture-20261114" alt="" draggable="false">';
  return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><span class="failure-emblem-art">${warning}</span>${[0,1,2].map(i=>`<span class="failure-glitch-slice failure-glitch-slice--${i}">${warning}</span>`).join('')}</div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败"><span class="failure-title-outline" aria-hidden="true">YOU ARE DEAD</span>YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
 }
+function gameoverParticlesMarkup(){
+ const sample=(i,salt)=>{const n=Math.sin((i+1)*83.71+salt*179.3)*43758.51;return n-Math.floor(n);};
+ const layers=[{name:'far',count:18,size:[1.8,3.5],strength:[.16,.32],duration:[19,29],rise:[14,30],drift:18},{name:'mid',count:16,size:[3.5,6.5],strength:[.26,.48],duration:[13,21],rise:[24,52],drift:27},{name:'near',count:8,size:[7,12],strength:[.16,.3],duration:[16,25],rise:[34,70],drift:34}];
+ return `<div class="gameover-particle-field" aria-hidden="true">${layers.map((layer,depth)=>`<div class="gameover-particle-layer gameover-particle-layer--${layer.name}" data-enter="gameover-particles">${Array.from({length:layer.count},(_,index)=>{
+  const i=index+depth*37,pick=(range,salt)=>range[0]+sample(i,salt)*(range[1]-range[0]),angle=sample(i,1)*Math.PI*2,radius=pick([.34,.98],2);
+  const x=50+Math.cos(angle)*radius*45,y=50+Math.sin(angle)*radius*43;
+  return `<i class="gameover-mote gameover-mote--${layer.name}${index%4===1?' is-hollow':''}${depth===0&&index%3!==0?' is-point':''}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;--mote-size:${pick(layer.size,3).toFixed(2)};--mote-strength:${pick(layer.strength,4).toFixed(2)};--mote-dx:${pick([-layer.drift,layer.drift],5).toFixed(2)};--mote-rise:${pick(layer.rise,6).toFixed(2)};--mote-duration:${pick(layer.duration,7).toFixed(2)}s;--mote-delay:${(-sample(i,8)*32).toFixed(2)}s"></i>`;
+ }).join('')}</div>`).join('')}</div>`;
+}
 function gameoverView(){
- return `<div class="gameover-atmosphere" data-enter="gameover-atmosphere" aria-hidden="true"><div class="gameover-halo"></div></div><section class="gameover-layout" aria-labelledby="gameover-title"><div class="gameover-mark" data-enter="gameover-mark" aria-hidden="true"><svg class="gameover-diamonds" viewBox="0 0 420 420" fill="none"><path class="gameover-diamond-outer" d="M210 12 408 210 210 408 12 210Z"/><path class="gameover-diamond-inner" d="M210 55 365 210 210 365 55 210Z"/></svg><div class="gameover-flecks">${[0,1,2,3,4].map(i=>`<i style="--fleck:${i}"></i>`).join('')}</div></div><div class="gameover-heading"><span class="gameover-line gameover-line--left" data-enter="gameover-line" aria-hidden="true"></span><div class="gameover-title-group" data-enter="gameover-title"><h1 id="gameover-title">GAME OVER</h1></div><span class="gameover-line gameover-line--right" data-enter="gameover-line" aria-hidden="true"></span></div><div class="result-actions gameover-actions" data-enter="gameover-action">${goButton('返回主菜单','home','btn-primary')}</div></section>`;
+ return `<div class="gameover-atmosphere" data-enter="gameover-atmosphere" aria-hidden="true"><div class="gameover-halo"></div><div class="gameover-light-veil"></div></div><section class="gameover-layout" aria-labelledby="gameover-title"><div class="gameover-mark" data-enter="gameover-mark" aria-hidden="true"><div class="gameover-orbit"><svg class="gameover-diamonds" viewBox="0 0 420 420" fill="none"><path class="gameover-diamond-outer" data-enter="gameover-diamond" pathLength="1" d="M210 12 408 210 210 408 12 210Z"/><path class="gameover-diamond-inner" data-enter="gameover-diamond" pathLength="1" d="M210 55 365 210 210 365 55 210Z"/></svg></div></div>${gameoverParticlesMarkup()}<div class="gameover-heading"><span class="gameover-line gameover-line--left" data-enter="gameover-line" aria-hidden="true"></span><div class="gameover-title-group" data-enter="gameover-title"><div class="gameover-title-light" data-enter="gameover-title-light" aria-hidden="true"></div><h1 id="gameover-title">GAME OVER</h1></div><span class="gameover-line gameover-line--right" data-enter="gameover-line" aria-hidden="true"></span></div><div class="result-actions gameover-actions" data-enter="gameover-action">${goButton('返回主菜单','home','btn-primary')}</div></section>`;
 }
 const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,failure:failureView,gameover:gameoverView,exit:()=>homeView()};
 function setScene(page){
@@ -655,11 +664,14 @@ function enterPage(){
  $$('[data-enter="failure-copy"]').forEach(el=>enter(el,{y:unit(14),delay:340,duration:700}));
  $$('[data-enter="failure-action"]').forEach((el,i)=>enter(el,{y:unit(18),delay:460+i*85,duration:720}));
  $$('[data-enter="failure-atmosphere"]').forEach(el=>enter(el,{y:0,delay:220,duration:1400}));
- $$('[data-enter="gameover-atmosphere"]').forEach(el=>enter(el,{y:0,duration:1700}));
- $$('[data-enter="gameover-mark"]').forEach(el=>enter(el,{y:0,scale:.94,blur:1,delay:80,duration:1600}));
- $$('[data-enter="gameover-title"]').forEach(el=>enter(el,{y:unit(12),scale:.985,blur:3,delay:230,duration:1250}));
- $$('[data-enter="gameover-line"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.25)'},{opacity:1,transform:'scaleX(1)'}],{duration:1300,delay:330,easing:'cubic-bezier(.16,1,.3,1)'}));
- $$('[data-enter="gameover-action"]').forEach(el=>enter(el,{y:unit(16),delay:650,duration:900}));
+ $$('[data-enter="gameover-atmosphere"]').forEach(el=>enter(el,{y:0,duration:1500}));
+ $$('[data-enter="gameover-mark"]').forEach(el=>enter(el,{y:0,scale:.96,blur:1,delay:80,duration:1400}));
+ $$('[data-enter="gameover-diamond"]').forEach((el,i)=>animate(el,[{opacity:0,strokeDashoffset:1},{opacity:i?.18:.32,strokeDashoffset:0}],{duration:1500+i*100,delay:130+i*180,easing:'cubic-bezier(.22,.61,.36,1)'}));
+ $$('[data-enter="gameover-particles"]').forEach((el,i)=>enter(el,{y:0,delay:190+i*140,duration:1100}));
+ $$('[data-enter="gameover-title"]').forEach(el=>enter(el,{y:unit(12),scale:.985,blur:2,delay:230,duration:1350}));
+ $$('[data-enter="gameover-title-light"]').forEach(el=>animate(el,[{opacity:0,transform:'scale3d(.5,.7,1)',offset:0,easing:'cubic-bezier(.22,.61,.36,1)'},{opacity:.8,transform:'scale3d(1.06,1.08,1)',offset:.5,easing:'cubic-bezier(.45,0,.55,1)'},{opacity:.4,transform:'scale3d(1,1,1)',offset:1}],{duration:1600,delay:230,easing:'linear'}));
+ $$('[data-enter="gameover-line"]').forEach((el,i)=>animate(el,[{opacity:0,transform:'scaleX(.18)'},{opacity:1,transform:'scaleX(1)'}],{duration:1300,delay:380+i*60,easing:'cubic-bezier(.16,1,.3,1)'}));
+ $$('[data-enter="gameover-action"]').forEach(el=>enter(el,{y:unit(14),delay:790,duration:900}));
  animateScene();
 }
 async function go(page,{replace=false,skipExit=false}={}){
@@ -695,7 +707,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  $$('#review-pages button').forEach(b=>{if(b.dataset.route===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  window.YorollMusic.setScene(page);
  enterPage();
- timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:page==='cover'?1900:page==='splash'?1800:['result','failure','gameover'].includes(page)?1700:page==='chapters'?1600:1100);
+ timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:page==='gameover'?2000:page==='cover'?1900:page==='splash'?1800:['result','failure'].includes(page)?1700:page==='chapters'?1600:1100);
  bindPageControls();
  if(page==='exit')timeout(showExit,180);
  if(page==='logout')timeout(showLogout,180);
@@ -942,7 +954,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure','gameover'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(['failure','gameover'].includes(currentPage)){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:1700);if(currentPage==='failure')startFailureSound();else startGameoverSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure','gameover'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(['failure','gameover'].includes(currentPage)){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:currentPage==='gameover'?2000:1700);if(currentPage==='failure')startFailureSound();else startGameoverSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});
