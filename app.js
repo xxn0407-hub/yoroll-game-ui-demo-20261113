@@ -892,7 +892,7 @@ function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',d
  uiSound.play('open',{level:.8});
  modalPreviousFocus=document.activeElement;
  confirmAction=onConfirm;
- modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><div class="eyebrow">${eyebrow}</div><h2 id="modal-title">${title}</h2><p id="modal-message">${message}</p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm',`btn-small ${danger?'':'btn-primary'}`)}</div></section></div>`;
+ modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><div class="eyebrow">提示</div><h2 id="modal-title">${title}</h2><p id="modal-message">${message}</p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm',`btn-small ${danger?'':'btn-primary'}`)}</div></section></div>`;
  screen.inert=true;
  enter($('.modal-scrim'),{y:0,duration:220});
  enter($('.modal'),{y:unit(16),scale:.99,duration:420});

@@ -255,6 +255,23 @@
       ],
       "buttonGeometry": "Inherits the existing context size and corner radius",
       "disabledState": "Static light; native disabled interaction preserved"
+    },
+    "feedbackAppearance": {
+      "revision": "dialogs-toast-reference-20261114",
+      "source": "Previously captured original preview confirmation dialog",
+      "dialogMaterials": [
+        "Frosted neutral panel with feathered side edges",
+        "Silver prompt strip",
+        "Centered content",
+        "Capsule button outline"
+      ],
+      "dialogGeometry": "Existing 650px reference width and all content padding/type/button dimensions retained",
+      "modalMotion": "Existing 220ms backdrop, 420ms panel and 150ms exit retained verbatim",
+      "toast": "Neutral frosted capsule with fine edge light; geometry and 2600ms animation retained",
+      "audio": "All sound calls and assets unchanged",
+      "sourceToastCaptured": false,
+      "authPageReviewed": false,
+      "originalDeleteEntryClicked": false
     }
   },
   "pages": [
