@@ -296,7 +296,7 @@
 .gameover-diamonds path{stroke-dasharray:1;stroke-dashoffset:0}
 .gameover-diamond-outer{opacity:.32}
 .gameover-diamond-inner{opacity:.18;stroke-width:.7}
-.gameover-particle-field{position:absolute;left:50%;top:47%;translate:-50% -50%;width:calc(var(--p)*880);height:calc(var(--p)*660);pointer-events:none;z-index:0}
+.gameover-particle-field{position:absolute;left:50%;top:47%;translate:-50% -50%;width:calc(var(--p)*640);height:calc(var(--p)*500);pointer-events:none;z-index:0}
 .gameover-particle-layer{position:absolute;inset:0;pointer-events:none}
 .gameover-particle-layer--far{z-index:0}
 .gameover-particle-layer--mid{z-index:1}

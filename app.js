@@ -594,9 +594,10 @@ function gameoverParticlesMarkup(){
  const sample=(i,salt)=>{const n=Math.sin((i+1)*83.71+salt*179.3)*43758.51;return n-Math.floor(n);};
  const layers=[{name:'far',count:18,size:[1.8,3.5],strength:[.16,.32],duration:[19,29],rise:[14,30],drift:18},{name:'mid',count:16,size:[3.5,6.5],strength:[.26,.48],duration:[13,21],rise:[24,52],drift:27},{name:'near',count:8,size:[7,12],strength:[.16,.3],duration:[16,25],rise:[34,70],drift:34}];
  return `<div class="gameover-particle-field" aria-hidden="true">${layers.map((layer,depth)=>`<div class="gameover-particle-layer gameover-particle-layer--${layer.name}" data-enter="gameover-particles">${Array.from({length:layer.count},(_,index)=>{
-  const i=index+depth*37,pick=(range,salt)=>range[0]+sample(i,salt)*(range[1]-range[0]),angle=sample(i,1)*Math.PI*2,radius=pick([.34,.98],2);
-  const x=50+Math.cos(angle)*radius*45,y=50+Math.sin(angle)*radius*43;
-  return `<i class="gameover-mote gameover-mote--${layer.name}${index%4===1?' is-hollow':''}${depth===0&&index%3!==0?' is-point':''}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;--mote-size:${pick(layer.size,3).toFixed(2)};--mote-strength:${pick(layer.strength,4).toFixed(2)};--mote-dx:${pick([-layer.drift,layer.drift],5).toFixed(2)};--mote-rise:${pick(layer.rise,6).toFixed(2)};--mote-duration:${pick(layer.duration,7).toFixed(2)}s;--mote-delay:${(-sample(i,8)*32).toFixed(2)}s"></i>`;
+  const i=index+depth*37,pick=(range,salt)=>range[0]+sample(i,salt)*(range[1]-range[0]),angle=sample(i,1)*Math.PI*2,outer=index%6===0;
+  const radius=outer?pick([.72,.96],2):.03+Math.pow(sample(i,2),.9)*.62;
+  const x=50+Math.cos(angle)*radius*45,y=52+Math.sin(angle)*radius*43;
+  return `<i class="gameover-mote gameover-mote--${layer.name}${index%4===1?' is-hollow':''}${depth===0&&index%3!==0?' is-point':''}" data-region="${outer?'outer':'core'}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;--mote-size:${pick(layer.size,3).toFixed(2)};--mote-strength:${pick(layer.strength,4).toFixed(2)};--mote-dx:${(pick([-layer.drift,layer.drift],5)*(outer?1:.55)).toFixed(2)};--mote-rise:${(pick(layer.rise,6)*(outer?1:.6)).toFixed(2)};--mote-duration:${pick(layer.duration,7).toFixed(2)}s;--mote-delay:${(-sample(i,8)*32).toFixed(2)}s"></i>`;
  }).join('')}</div>`).join('')}</div>`;
 }
 function gameoverView(){
