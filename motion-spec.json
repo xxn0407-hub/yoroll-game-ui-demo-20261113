@@ -348,6 +348,17 @@
         "count": 24,
         "sharedDust": "common.selectedDust",
         "placement": "behind opaque card"
+      },
+      "shape": {
+        "revision": "affinity-slanted-cards-20261114",
+        "skewXDegrees": -5.5,
+        "informationCounterSkewDegrees": 5.5,
+        "cardSizePx": [
+          280,
+          480
+        ],
+        "hoverPreservesSkew": true,
+        "rearDustMatchesSkew": true
       }
     },
     {
