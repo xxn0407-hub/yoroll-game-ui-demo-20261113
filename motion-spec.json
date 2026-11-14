@@ -467,7 +467,9 @@
       "name": "游戏内",
       "kind": "场景帧实拍",
       "motion": "字幕由下方 12px 柔和显现；HUD 先后进入；进度条连续变化。",
-      "interaction": "暂停、界面音效静音、播放状态与继续按钮均可演示；静音会实际关闭本地界面声音。本地为截图场景与进度动画，没有移植原视频播放内核。"
+      "interaction": "底部可暂停 / 继续播放；右上角只保留声音开关，Esc 可进入暂停菜单。场景与播放进度为本地交互演示。",
+      "hudRevision": "gameplay-hud-clean-20261114",
+      "topRightPauseVisible": false
     },
     {
       "id": "pause",
