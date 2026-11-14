@@ -71,11 +71,12 @@ window.YOROLL_REPORT = {
       "beforeSource": "user",
       "beforeNote": "旧版 UI 由用户提供，并非本次 Race 线上预览采集。",
       "kind": "用户提供原版 UI",
-      "change": "按旧版补回修长倾斜卡片、底部整体渐隐、上角碎片与星点，以及后方暖色光晕、淡透视线和虚焦光斑。",
+      "change": "修正背景网格为统一消失点的地面透视；主光场改为暖光、冷光与柔光带独立漂移，增加可见的位移和明暗变化。",
       "ratio": "沿用当前 UI 基准：卡片 280×760px、整行 1480px、间距 20px；斜切角 -5.5°，名字 22px、爱心 20px。",
-      "motion": "卡片沿用逐项落位；底色与边框整体渐隐，文字和爱心保持清晰。上角方片错峰上浮消散，选中星点柔和呼吸；暖光与虚焦光斑缓慢移动，近中远浮尘仍在卡片后面。",
+      "motion": "角色卡与消散碎片沿用当前效果；地面网格保持静态，暖光 12s、冷光 16s、柔光带 18s 错峰循环，三个虚焦光斑各自缓慢漂移。",
       "interaction": "点击或左右方向键选择五个角色；支持 Home/End、返回、Esc 和重播。爱心支持半颗，演示数值不代表真实游戏数据。",
-      "shapeRevision": "affinity-atmosphere-20261114"
+      "shapeRevision": "affinity-atmosphere-20261114",
+      "atmosphereRevision": "affinity-perspective-light-20261114"
     },
     {
       "id": "saves",

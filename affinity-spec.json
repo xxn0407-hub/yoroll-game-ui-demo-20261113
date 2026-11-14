@@ -1,5 +1,5 @@
 {
-  "revision": "affinity-atmosphere-20261114",
+  "revision": "affinity-perspective-light-20261114",
   "reference": {
     "source": "User supplied previous affinity-page UI",
     "image": "comparison/before/10-affinity-user.png",
@@ -103,36 +103,66 @@
     "cornerFragmentCycleMs": 5400,
     "cornerFragmentCardStaggered": true,
     "selectedCornerGlintMs": 6600,
-    "ambientLightCycleMs": 17000,
-    "ambientOrbCycleMs": 19000,
-    "reducedMotion": "Static glint and fragments; ambient movement and rear dust disabled."
+    "reducedMotion": "Static glint and fragments; ambient movement and rear dust disabled.",
+    "ambientLightCyclesMs": [
+      12000,
+      16000
+    ],
+    "softRayCycleMs": 18000,
+    "ambientOrbCyclesMs": [
+      17000,
+      13000,
+      21000
+    ],
+    "backgroundLayersStartWithDifferentNegativeDelays": true
   },
   "verification": {
-    "revision": "affinity-atmosphere-20261114",
-    "verifiedAt": "2026-11-14T04:44:44.634590+00:00",
+    "revision": "affinity-perspective-light-20261114",
+    "verifiedAt": "2026-11-14T05:59:17.022404+00:00",
     "viewport": [
       1280,
       720
     ],
+    "cardGeometryTypographyMasksAndValuesPreserved": true,
+    "maxSettledCardBoundsDeltaPx": 0,
     "fivePortraitsLoaded": true,
-    "cardSizeLogicalPx": [
-      280,
-      760
-    ],
-    "nameAndHeartSizesPreserved": true,
-    "sixHeartsAndFractionalValuesPreserved": true,
-    "wholeSurfaceFadesWhileLabelsRemainOpaque": true,
-    "sourceCaptionsExcludedByMask": true,
-    "pointerKeyboardAndReplayPassed": true,
-    "oneSelectedCardAnd24RearDustMotes": true,
-    "cornerFragments": 15,
-    "cornerPhasesStaggeredAcrossFiveCards": true,
-    "ambientLightBehindCards": true,
-    "softOrbs": 3,
-    "backgroundCoversViewport": true,
-    "sourcePortraitBytesUnchanged": true,
-    "allAudioBytesUnchanged": true,
-    "soundPreferenceRestored": true,
+    "pointerKeyboardAndReplayVerified": true,
+    "singleBackgroundWithSixLightLayers": true,
+    "perspective": {
+      "depthRays": 25,
+      "crossRows": 23,
+      "derivedVanishingPoint": [
+        960.0,
+        360.0
+      ],
+      "maxRayDistanceFromVanishingPoint": 0.0,
+      "uniformWorldDepthSpacingRelativeError": 8.058637496606826e-05,
+      "farRowsDenserThanNearRows": true,
+      "gridStaticWhileLightsMove": true
+    },
+    "backgroundMotionPixelDifference": {
+      "region": [
+        832,
+        22,
+        1203,
+        86
+      ],
+      "startMeanLuma": 77.83,
+      "endMeanLuma": 78.447,
+      "meanAbsoluteLumaChange": 6.317
+    },
+    "staticPortraitPixelDifference": {
+      "region": [
+        190,
+        195,
+        240,
+        235
+      ],
+      "startMeanLuma": 95.596,
+      "endMeanLuma": 95.596,
+      "meanAbsoluteLumaChange": 0.0
+    },
+    "allAudioAndPortraitAssetsUnchanged": true,
     "status": "verified locally"
   },
   "surface": {
@@ -177,10 +207,40 @@
     "pageScoped": true,
     "warmUpperRightGlow": true,
     "coolLeftFill": true,
-    "perspectiveWireframeOpacity": 0.11,
+    "perspectiveWireframeOpacity": 0.15,
     "softLensOrbs": 3,
     "lightsBehindCards": true,
-    "sceneSaturation": 0.45
+    "sceneSaturation": 0.45,
+    "perspective": {
+      "type": "One-point projected X/Z ground plane",
+      "vanishingPoint": [
+        960,
+        360
+      ],
+      "viewBox": [
+        1920,
+        1080
+      ],
+      "cameraFocalLength": 900,
+      "cameraHeight": 480,
+      "worldXRange": [
+        -2400,
+        2400
+      ],
+      "nearZ": 600,
+      "farZ": 7200,
+      "depthRays": 25,
+      "crossRows": 23,
+      "uniformWorldGridSpacing": true,
+      "gridRemainsStatic": true
+    },
+    "lightMotion": {
+      "warm": "12s closed loop; drift, scale and opacity .48-.94",
+      "cool": "16s closed loop with independent phase",
+      "rays": "18s soft diagonal sweep",
+      "orbs": "17s, 13s and 21s depth layers",
+      "mainLightFieldAnimated": true
+    }
   },
   "previousVerification": {
     "fiveCharactersLoaded": true,

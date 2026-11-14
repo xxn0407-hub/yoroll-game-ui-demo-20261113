@@ -504,9 +504,23 @@ let affinityReturnPage='home';
 function affinityHearts(score){
  return `<span class="affinity-hearts" aria-hidden="true">${Array.from({length:6},(_,i)=>{const fill=Math.max(0,Math.min(1,score-i))*100;return `<span class="affinity-heart">${icon('heart')}<span class="affinity-heart-fill" data-fill="${fill}" style="width:${fill}%">${icon('heart')}</span></span>`;}).join('')}</span>`;
 }
+function affinityPerspectiveGridMarkup(){
+ // Project one flat X/Z ground plane through a shared pinhole camera.
+ const project=(x,z)=>[960+900*x/z,360+900*480/z];
+ const segment=(a,b)=>`M${a.map(v=>v.toFixed(3)).join(' ')}L${b.map(v=>v.toFixed(3)).join(' ')}`;
+ const depth=Array.from({length:25},(_,i)=>{
+  const x=(i-12)*200;
+  return `<path data-grid-axis="depth" class="${i%3===0?'is-major':''}" d="${segment(project(x,600),project(x,7200))}"/>`;
+ }).join('');
+ const cross=Array.from({length:23},(_,i)=>{
+  const z=600+i*300;
+  return `<path data-grid-axis="cross" class="${i%3===0?'is-major':''}" d="${segment(project(-2400,z),project(2400,z))}"/>`;
+ }).join('');
+ return `<svg class="affinity-wireframe" viewBox="0 0 1920 1080" preserveAspectRatio="none" data-vanishing-point="960 360"><g class="affinity-grid-depth">${depth}</g><g class="affinity-grid-cross">${cross}</g></svg>`;
+}
 function affinityView(){
  const cards=AFFINITY_CHARACTERS.map((character,index)=>`<div class="affinity-cell" data-enter="affinity" style="--affinity-order:${index}"><button class="affinity-card ${index===selectedAffinity?'is-selected':''}" data-affinity-index="${index}" aria-pressed="${index===selectedAffinity}" tabindex="${index===selectedAffinity?0:-1}" aria-label="${character.name}，好感度 ${character.score} / 6"><span class="affinity-surface" aria-hidden="true"><span class="affinity-art"><img src="assets/affinity-characters.png?v=affinity-page-20261113-r2" alt="" draggable="false" style="--source-x:${character.x};--source-y:${character.y}"></span></span><span class="affinity-card-info"><span class="affinity-name">${character.name}</span>${affinityHearts(character.score)}</span><span class="affinity-fragments" aria-hidden="true"><i></i><i></i><i></i></span><span class="affinity-glint" aria-hidden="true"></span></button>${largeCardDustMarkup('node-dust affinity-dust')}</div>`).join('');
- const atmosphere='<div class="affinity-atmosphere" aria-hidden="true"><div class="affinity-ambient"></div><svg class="affinity-wireframe" viewBox="0 0 1920 1080" preserveAspectRatio="none"><path d="M-120 60 960 610 2040 60M-120 290 960 665 2040 290M-120 565 960 720 2040 565M-120 855 960 775 2040 855M-120 1180 960 830 2040 1180M180-100V1180M365-100V1180M1555-100V1180M1740-100V1180"/></svg><i class="affinity-orb"></i><i class="affinity-orb"></i><i class="affinity-orb"></i></div>';
+ const atmosphere=`<div class="affinity-atmosphere" aria-hidden="true"><div class="affinity-ambient affinity-ambient--warm"></div><div class="affinity-ambient affinity-ambient--cool"></div><div class="affinity-rays"></div>${affinityPerspectiveGridMarkup()}<i class="affinity-orb"></i><i class="affinity-orb"></i><i class="affinity-orb"></i></div>`;
  return `${pageHeading('角色好感度',affinityReturnPage)}${atmosphere}<section class="affinity-layout" aria-label="角色好感度">${cards}</section>${footer('','<span><span class="keycap">←</span><span class="keycap">→</span> 选择角色</span><span><span class="keycap">Esc</span> 返回</span>')}<div class="sr-only" id="affinity-announcement" role="status" aria-live="polite"></div>`;
 }
 function selectAffinity(index,{focus=false}={}){

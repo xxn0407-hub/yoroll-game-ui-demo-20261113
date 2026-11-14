@@ -145,15 +145,24 @@
 /* The affinity page has its own quiet light field, behind every card and label. */
 .affinity-backdrop .scene{filter:blur(28px) brightness(.42) saturate(.45)}
 .affinity-backdrop .scene-shade{background:linear-gradient(180deg,#081113a3,#071015d9 70%,#05090bf2)}
-.affinity-atmosphere{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 88% 8%,#dccb8b38,transparent 63%),radial-gradient(ellipse at 6% 45%,#709a9b1f,transparent 64%)}
-.affinity-ambient{position:absolute;inset:-12%;background:radial-gradient(ellipse at 86% 5%,#ddd2a82b,transparent 46%),radial-gradient(ellipse at 25% 58%,#7da6a017,transparent 50%);animation:affinity-ambient-breathe 17s ease-in-out infinite alternate}
-.affinity-wireframe{position:absolute;inset:0;width:100%;height:100%;stroke:#cbd8c4;stroke-width:.8;opacity:.11;fill:none;-webkit-mask-image:linear-gradient(#0005,#000d 40%,#000 76%,#0002);mask-image:linear-gradient(#0005,#000d 40%,#000 76%,#0002)}
-.affinity-orb{position:absolute;display:block;left:93%;top:4.6%;width:calc(var(--p)*58);height:calc(var(--p)*58);border-radius:50%;background:radial-gradient(circle,#d7e7cd22,#b9ceaf0d 42%,transparent 70%);filter:blur(calc(var(--p)*2));animation:affinity-orb-drift 19s ease-in-out infinite alternate}
-.affinity-orb:nth-last-child(2){left:90%;top:2%;width:calc(var(--p)*24);height:calc(var(--p)*24);opacity:.62;animation-delay:-8s}
-.affinity-orb:last-child{left:96%;top:10%;width:calc(var(--p)*115);height:calc(var(--p)*115);opacity:.4;filter:blur(calc(var(--p)*7));animation-delay:-13s}
-@keyframes affinity-ambient-breathe{from{opacity:.6;transform:translate3d(0,0,0) scale(1)}to{opacity:1;transform:translate3d(-1%,1%,0) scale(1.035)}}
-@keyframes affinity-orb-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(var(--p)*-16),calc(var(--p)*18),0)}}
-@media(prefers-reduced-motion:reduce){.affinity-ambient,.affinity-orb,.affinity-card.is-selected .affinity-glint{animation:none}.affinity-ambient{opacity:.8}.affinity-fragments i{animation:none;opacity:.3;transform:translate3d(calc(var(--p)*var(--fragment-x)),calc(var(--p)*var(--fragment-y)),0) rotate(9deg)}.affinity-card.is-selected .affinity-glint{opacity:.72}}
+.affinity-atmosphere{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 75% 5%,#baa66a12,transparent 66%),linear-gradient(0deg,#02060926,transparent 65%)}
+.affinity-ambient{position:absolute;inset:-26%;pointer-events:none}
+.affinity-ambient--warm{opacity:.65;background:radial-gradient(ellipse at 78% 22%,#e2ce8757,#c3a95125 32%,transparent 58%);animation:affinity-warm-drift 12s ease-in-out -2s infinite}
+.affinity-ambient--cool{inset:-22%;opacity:.5;background:radial-gradient(ellipse at 22% 48%,#76a3a13b,#4b7e8118 30%,transparent 54%);animation:affinity-cool-drift 16s ease-in-out -7s infinite}
+.affinity-rays{position:absolute;inset:-22%;opacity:.4;pointer-events:none;background:linear-gradient(117deg,transparent 33%,#f8e3a500 40%,#f8e3a51a 47%,#fff1c026 50%,#f8e3a508 55%,transparent 62%),linear-gradient(117deg,transparent 58%,#d4dcb80d 65%,transparent 72%);animation:affinity-rays-drift 18s ease-in-out -4s infinite}
+.affinity-wireframe{position:absolute;inset:0;width:100%;height:100%;stroke:#bfcbb7;stroke-width:.7;opacity:.15;fill:none;-webkit-mask-image:linear-gradient(transparent 32%,#0000004d 50%,#000000cc 74%,#0000008c 88%,transparent);mask-image:linear-gradient(transparent 32%,#0000004d 50%,#000000cc 74%,#0000008c 88%,transparent)}
+.affinity-wireframe path{vector-effect:non-scaling-stroke;opacity:.5}
+.affinity-wireframe path.is-major{opacity:1}
+.affinity-grid-depth{opacity:.9}
+.affinity-grid-cross{opacity:.7}
+.affinity-orb{--orb-strength:1;position:absolute;display:block;left:93%;top:4.6%;width:calc(var(--p)*58);height:calc(var(--p)*58);border-radius:50%;background:radial-gradient(circle,#d7e7cd22,#b9ceaf0d 42%,transparent 70%);filter:blur(calc(var(--p)*2));animation:affinity-orb-drift 17s ease-in-out -2s infinite}
+.affinity-orb:nth-last-child(2){--orb-strength:.62;left:90%;top:2%;width:calc(var(--p)*24);height:calc(var(--p)*24);animation-duration:13s;animation-delay:-7s}
+.affinity-orb:last-child{--orb-strength:.4;left:96%;top:10%;width:calc(var(--p)*115);height:calc(var(--p)*115);filter:blur(calc(var(--p)*7));animation-duration:21s;animation-delay:-13s}
+@keyframes affinity-warm-drift{0%,100%{opacity:.48;transform:translate3d(-3%,-2%,0) scale(.97)}28%{opacity:.82;transform:translate3d(-9%,3%,0) scale(1.04)}60%{opacity:.94;transform:translate3d(2%,8%,0) scale(1.12)}82%{opacity:.68;transform:translate3d(6%,2%,0) scale(1.04)}}
+@keyframes affinity-cool-drift{0%,100%{opacity:.42;transform:translate3d(0,3%,0) scale(1)}50%{opacity:.85;transform:translate3d(7%,-4%,0) scale(1.12)}}
+@keyframes affinity-rays-drift{0%,100%{opacity:.25;transform:translate3d(-9%,0,0) rotate(-2deg)}50%{opacity:.7;transform:translate3d(9%,3%,0) rotate(2deg)}}
+@keyframes affinity-orb-drift{0%,100%{opacity:calc(var(--orb-strength)*.45);transform:translate3d(calc(var(--p)*-10),calc(var(--p)*-10),0)}50%{opacity:calc(var(--orb-strength)*.9);transform:translate3d(calc(var(--p)*-72),calc(var(--p)*48),0)}}
+@media(prefers-reduced-motion:reduce){.affinity-ambient,.affinity-rays,.affinity-orb,.affinity-card.is-selected .affinity-glint{animation:none}.affinity-ambient--warm{opacity:.65}.affinity-ambient--cool{opacity:.5}.affinity-rays{opacity:.3}.affinity-orb{opacity:var(--orb-strength)}.affinity-fragments i{animation:none;opacity:.3;transform:translate3d(calc(var(--p)*var(--fragment-x)),calc(var(--p)*var(--fragment-y)),0) rotate(9deg)}.affinity-card.is-selected .affinity-glint{opacity:.72}}
 
 /* All selected cards share rear dust with near, middle and far depth groups. */
 .chapter-cell,.tree-node-cell,.affinity-cell{isolation:isolate}

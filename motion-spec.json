@@ -369,7 +369,7 @@
       "id": "affinity",
       "name": "角色好感度",
       "kind": "用户提供原版 UI",
-      "motion": "五张修长角色卡以 55ms 间隔、650ms 时长落位；卡面、底色和边框整体向底部渐隐，名字与六颗爱心独立保持清晰。顶部三个小方片以 5.4s 周期、逐卡错相上浮消散，当前角色左上星点以 6.6s 呼吸；24 个远近浮尘仍在后面。背景暖光 17s 缓慢变化，三个虚焦光斑 19s 轻漂，透视线条保持静态。",
+      "motion": "角色卡、上角碎片与后景浮尘沿用已定效果。背景网格为单一消失点的地面透视，纵深线同点收束，横线近疏远密；网格固定不变形。暖光 12s、冷光 16s 与柔光带 18s 错峰漂移并变化明暗，虚焦光斑分别以 17/13/21s 周期移动。",
       "interaction": "首页和封面首页新增好感度入口；点击或左右方向键选择角色，Home/End 选择首尾；返回和 Esc 回到进入时的首页，所选角色在本次访问中保留。",
       "reference": "comparison/before/10-affinity-user.png",
       "cardSizePx": [
@@ -401,7 +401,16 @@
         "wholeSurfaceBottomFade": true,
         "labelsRemainOpaque": true
       },
-      "atmosphereRevision": "affinity-atmosphere-20261114"
+      "atmosphereRevision": "affinity-perspective-light-20261114",
+      "backgroundPerspective": {
+        "vanishingPoint": [
+          960,
+          360
+        ],
+        "depthRays": 25,
+        "crossRows": 23,
+        "projection": "single pinhole camera"
+      }
     },
     {
       "id": "saves",
