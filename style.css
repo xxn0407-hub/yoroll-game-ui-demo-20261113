@@ -500,6 +500,13 @@
   mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
   -webkit-mask-composite:source-in;
   mask-composite:intersect;
+  -webkit-mask-size:100% 100%,100% 100%;
+  mask-size:100% 100%,100% 100%;
+  -webkit-mask-position:center;
+  mask-position:center;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  animation:dialog-material-unfold 700ms cubic-bezier(.22,.61,.36,1) both;
   pointer-events:none;
 }
 .modal::after{
@@ -510,6 +517,8 @@
   bottom:0;
   height:1px;
   background:linear-gradient(90deg,transparent 4%,#dce8df66 28%,#edf3e8a6 50%,#dce8df66 72%,transparent 96%);
+  transform-origin:50% 50%;
+  animation:dialog-line-unfold 700ms cubic-bezier(.22,.61,.36,1) both;
   pointer-events:none;
 }
 .modal>.modal-caption{
@@ -538,6 +547,8 @@
   background:linear-gradient(90deg,transparent 6%,#dce8dd26 32%,#edf2e54d 50%,#dce8dd26 68%,transparent 94%) left top / 100% 1px no-repeat,
              linear-gradient(90deg,transparent 6%,#dce8dd1a 32%,#edf2e533 50%,#dce8dd1a 68%,transparent 94%) left bottom / 100% 1px no-repeat,
              linear-gradient(90deg,transparent 6%,#bdd0c30d 28%,#d1e0d31f 50%,#bdd0c30d 72%,transparent 94%);
+  transform-origin:50% 50%;
+  animation:dialog-line-unfold 700ms cubic-bezier(.22,.61,.36,1) both;
   pointer-events:none;
 }
 .modal-caption::after{
@@ -550,8 +561,10 @@
   background:radial-gradient(circle,#c5d1c0 0 1.4px,transparent 1.8px) left center / 4px 4px no-repeat,
              radial-gradient(circle,#c5d1c0 0 1.4px,transparent 1.8px) right center / 4px 4px no-repeat;
   opacity:.6;
+  animation:dialog-detail-appear 380ms cubic-bezier(.16,1,.3,1) 180ms both;
   pointer-events:none;
 }
+.modal-caption-label{display:block;}
 .modal p{
   margin-block:0 calc(var(--p)*28);
   text-align:center;
@@ -579,6 +592,18 @@
   box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e;
 }
 .modal-actions [data-action="modal-confirm"]:not(.btn-glass):hover{border-color:#f4f6eac4;}
+@keyframes dialog-material-unfold{
+  from{opacity:0;-webkit-mask-size:4% 100%,100% 100%;mask-size:4% 100%,100% 100%;}
+  to{opacity:1;-webkit-mask-size:100% 100%,100% 100%;mask-size:100% 100%,100% 100%;}
+}
+@keyframes dialog-line-unfold{
+  from{opacity:0;transform:scaleX(.04);}
+  to{opacity:1;transform:scaleX(1);}
+}
+@keyframes dialog-detail-appear{from{opacity:0;}to{opacity:.6;}}
+@media(prefers-reduced-motion:reduce){
+  .modal::before,.modal::after,.modal-caption::before,.modal-caption::after{animation:none;}
+}
 /* Toast timing, text, icon size and anchor are unchanged. */
 .toast{
   isolation:isolate;

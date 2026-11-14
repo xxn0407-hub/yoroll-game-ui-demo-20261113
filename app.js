@@ -892,10 +892,12 @@ function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',d
  uiSound.play('open',{level:.8});
  modalPreviousFocus=document.activeElement;
  confirmAction=onConfirm;
- modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><h2 class="modal-caption" id="modal-title">提示</h2><p id="modal-message"><span>${title}</span><span>${message}</span></p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm',`btn-small ${danger?'':'btn-primary'}`)}</div></section></div>`;
+ modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><h2 class="modal-caption" id="modal-title"><span class="modal-caption-label">提示</span></h2><p id="modal-message"><span>${title}</span><span>${message}</span></p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm',`btn-small ${danger?'':'btn-primary'}`)}</div></section></div>`;
  screen.inert=true;
  enter($('.modal-scrim'),{y:0,duration:220});
- enter($('.modal'),{y:unit(16),scale:.99,duration:420});
+ enter($('.modal-caption-label'),{y:unit(4),blur:unit(.8),delay:180,duration:380});
+ $$('#modal-message>span').forEach((el,index)=>enter(el,{y:unit(6),blur:unit(1.2),delay:230+index*45,duration:440}));
+ $$('.modal-actions>button').forEach((el,index)=>enter(el,{y:unit(6),blur:unit(1),delay:310+index*45,duration:420}));
  $('.modal [data-action="modal-cancel"]').focus({preventScroll:true});
 }
 async function closeModal(immediate=false){

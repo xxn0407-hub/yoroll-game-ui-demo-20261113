@@ -22,13 +22,53 @@
     ],
     "modal": {
       "backdrop": 220,
-      "panel": 420,
+      "panel": 700,
       "exit": 150,
-      "translateY": 16,
+      "translateY": 0,
       "scale": [
-        0.99,
+        1,
         1
-      ]
+      ],
+      "surface": {
+        "property": "mask-size",
+        "from": "4% 100%, 100% 100%",
+        "to": "100% 100%, 100% 100%",
+        "origin": "center",
+        "duration": 700,
+        "easing": "cubic-bezier(.22,.61,.36,1)",
+        "preserveBackdropSampling": true
+      },
+      "headerAndBottomEdge": {
+        "scaleX": [
+          0.04,
+          1
+        ],
+        "duration": 700,
+        "origin": "center"
+      },
+      "caption": {
+        "delay": 180,
+        "duration": 380,
+        "translateY": 4,
+        "blur": 0.8
+      },
+      "bodyLines": {
+        "delay": 230,
+        "stagger": 45,
+        "duration": 440,
+        "translateY": 6,
+        "blur": 1.2
+      },
+      "buttons": {
+        "delay": 310,
+        "stagger": 45,
+        "duration": 420,
+        "translateY": 6,
+        "blur": 1
+      },
+      "entryComplete": 775,
+      "reducedMotion": "Immediate static layout without unfold or content delay",
+      "revision": "banner-unfold-motion-20261114"
     },
     "cover": {
       "duration": 3600,
@@ -257,7 +297,7 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "banner-bottom-rule-20261114",
+      "revision": "banner-unfold-motion-20261114",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
         "Low-opacity frosted band; maximum fill alpha 20%, local blur 16px",
@@ -267,7 +307,7 @@
         "Independent 1px cool-white lower edge, clear in the center and transparent at both ends; frost stops at this edge"
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
-      "modalMotion": "Existing 220ms backdrop, 420ms panel and 150ms exit retained verbatim",
+      "modalMotion": "背景通过居中的柔边蒙版在 700ms 内向左右展开，原取景和文字比例不变；标题 180ms、两行正文 230/275ms、按钮 310/355ms 起步，约 775ms 完成。退出保持 150ms。",
       "toast": "Neutral frosted capsule with fine edge light; geometry and 2600ms animation retained",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
