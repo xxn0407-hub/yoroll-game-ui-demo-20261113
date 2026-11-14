@@ -293,7 +293,15 @@
         "placement": "behind card",
         "sharedDust": "common.selectedDust"
       },
-      "chapterEyebrowRevision": "chapter-heading-clean-20261113"
+      "chapterEyebrowRevision": "chapter-heading-clean-20261113",
+      "verticalLayout": {
+        "revision": "chapter-fixed-gap-20261114",
+        "mode": "Single bottom-anchored flow",
+        "summaryToCardGapPx": 64,
+        "bottomInsetPx": 80,
+        "railPaddingPx": 38,
+        "arrowsFollowRail": true
+      }
     },
     {
       "id": "tree",

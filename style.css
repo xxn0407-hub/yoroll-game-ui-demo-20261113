@@ -258,3 +258,11 @@
 @keyframes result-gold-haze{from{opacity:.65;transform:translateX(-2%) scaleX(.98)}to{opacity:1;transform:translateX(2%) scaleX(1.04)}}
 @keyframes result-gold-glint{0%,28%,70%,100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(.4)}47%{opacity:.8;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(1)}58%{opacity:.12;transform:translate(-50%,-50%) rotate(var(--glint-angle,0deg)) scale(.65)}}
 @media(prefers-reduced-motion:reduce){.result-atmosphere{display:none}}
+
+/* Keep the chapter summary and rail in one bottom-anchored flow. */
+.chapter-browser{position:absolute;left:0;right:0;bottom:calc(var(--p)*80);display:flex;flex-direction:column;gap:calc(var(--p)*26)}
+.chapter-browser .chapter-summary{position:relative;left:auto;right:auto;top:auto;margin-inline:var(--safe)}
+.chapter-rail{position:relative;min-width:0}
+.chapter-rail .chapter-strip{position:relative;bottom:auto}
+.chapter-rail .chapter-card{display:block}
+.chapter-rail .chapter-rail-arrow{top:50%}
