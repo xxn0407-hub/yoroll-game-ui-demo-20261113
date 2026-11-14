@@ -1,7 +1,8 @@
 'use strict';
-// Short local PCM assets; provenance is recorded in sound-spec.json.
+// Finite local PCM cues; provenance is recorded in sound-spec.json.
 window.YorollSound = (() => {
  const revision = 'chapter-short-resonance-20261113';
+ const completionRevision = 'completion-resonance-20261114';
  const names = ['hover','click','select','chapter','back','transition','open','confirm','success','locked'];
  const buffers = new Map();
  const voices = new Set();
@@ -18,7 +19,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${revision}`)
+ const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:revision}`)
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
@@ -26,7 +27,7 @@ window.YorollSound = (() => {
  function publish(){
   const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
   Object.assign(document.documentElement.dataset,{
-   audioRevision:revision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
+   audioRevision:revision,audioCompletionRevision:completionRevision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
    audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
    audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),

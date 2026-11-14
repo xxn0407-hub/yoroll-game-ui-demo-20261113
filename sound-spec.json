@@ -1,5 +1,5 @@
 {
-  "origin": "Existing interface palette; chapter activation derives a lower resonance from the same hover partials.",
+  "origin": "Existing interface palette; completion derives from the approved home opening resonance.",
   "format": "48 kHz stereo 16-bit PCM WAV",
   "revision": "chapter-short-resonance-20261113",
   "character": "Quiet, low resonant chapter selection with a continuous gentle tail.",
@@ -120,19 +120,36 @@
     },
     "success": {
       "file": "assets/audio/ui-success.wav",
-      "durationMs": 2050,
-      "bodyMs": 480,
+      "durationMs": 5050,
+      "bodyMs": 2000,
       "sampleRate": 48000,
       "channels": 2,
-      "peak": 0.25,
-      "rmsDbfs": -31.4,
-      "reverbRt60Seconds": 1.4,
+      "peak": 0.23,
+      "rmsDbfs": -29.44,
+      "character": "The approved home opening resonance, with its full bloom and a smooth continuous release.",
+      "source": "assets/audio/home-opening.wav",
+      "sourcePcmSha256": "64e885fb9ef4aacd8185ee20c10c4627c748fc82f9d7f5e34116a8853a3dc717",
+      "sourceManifest": "completion-sound-source.json",
+      "pcmSha256": "47ef3da6d0336c2f224a564cc899aae305f7bb20cce761dfd71858a5d794222f",
       "boundarySamples": [
         0,
         0
       ],
-      "minFadeInMs": 12,
-      "fadeOutMs": 120
+      "minFadeInMs": 160,
+      "fadeOutMs": 2200,
+      "loop": false,
+      "processing": {
+        "sourceStartSeconds": 4.95,
+        "sourceEndSeconds": 10.0,
+        "retainsOriginalSpectrumAndHarmony": true,
+        "addedInstruments": false,
+        "pitchShiftSemitones": 0,
+        "timeStretch": false,
+        "addedDelayOrReverb": false,
+        "repetitions": 0,
+        "addedNoise": false,
+        "drums": false
+      }
     },
     "chapter": {
       "file": "assets/audio/ui-chapter.wav",
@@ -244,10 +261,10 @@
     "openingDoesNotStartWhenTurningOff": true
   },
   "completionCue": {
-    "revision": "completion-cue-20261114",
+    "revision": "completion-resonance-20261114",
     "cue": "success",
     "file": "assets/audio/ui-success.wav",
-    "durationMs": 2050,
+    "durationMs": 5050,
     "entryDelayMs": 180,
     "level": 0.8,
     "oncePerEntrance": true,
@@ -257,6 +274,8 @@
     "cancelOnNavigation": true,
     "mutedEntryNotBackfilled": true,
     "qteImmediateCue": "confirm at level .6",
-    "genericResultTransitionCue": false
+    "genericResultTransitionCue": false,
+    "character": "The approved home opening resonance, with its full bloom and a smooth continuous release.",
+    "sourceManifest": "completion-sound-source.json"
   }
 }

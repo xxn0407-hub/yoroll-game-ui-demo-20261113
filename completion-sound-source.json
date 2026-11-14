@@ -1,0 +1,42 @@
+{
+  "revision": "completion-resonance-20261114",
+  "method": "One complete bloom from the already approved opening; only gain and boundary envelopes.",
+  "asset": {
+    "file": "assets/audio/ui-success.wav",
+    "durationMs": 5050,
+    "bodyMs": 2000,
+    "sampleRate": 48000,
+    "channels": 2,
+    "peak": 0.23,
+    "rmsDbfs": -29.44,
+    "character": "The approved home opening resonance, with its full bloom and a smooth continuous release.",
+    "source": "assets/audio/home-opening.wav",
+    "sourcePcmSha256": "64e885fb9ef4aacd8185ee20c10c4627c748fc82f9d7f5e34116a8853a3dc717",
+    "sourceManifest": "completion-sound-source.json",
+    "pcmSha256": "47ef3da6d0336c2f224a564cc899aae305f7bb20cce761dfd71858a5d794222f",
+    "boundarySamples": [
+      0,
+      0
+    ],
+    "minFadeInMs": 160,
+    "fadeOutMs": 2200,
+    "loop": false,
+    "processing": {
+      "sourceStartSeconds": 4.95,
+      "sourceEndSeconds": 10.0,
+      "retainsOriginalSpectrumAndHarmony": true,
+      "addedInstruments": false,
+      "pitchShiftSemitones": 0,
+      "timeStretch": false,
+      "addedDelayOrReverb": false,
+      "repetitions": 0,
+      "addedNoise": false,
+      "drums": false
+    }
+  },
+  "additionalGenerationCredits": 0,
+  "playbackMix": {
+    "master": 0.5,
+    "resultLevel": 0.8
+  }
+}
