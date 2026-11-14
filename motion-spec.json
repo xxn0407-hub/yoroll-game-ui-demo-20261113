@@ -553,7 +553,7 @@
       "name": "章节结果",
       "kind": "用户提供原版 UI",
       "motion": "徽记、标题、分隔线、说明和两个按钮沿用已定入场；底部金色光雾缓慢流动。20 个远景细尘、28 个中景亮点与 16 个近景虚焦光斑以不同路径和 7–20 秒周期上浮，4 个亮点带柔和星芒，透明度与尺寸持续渐变。减少动态效果时不显示粒子与光雾。",
-      "interaction": "进入下一章前进到下一示例章节，最后一章返回首页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。",
+      "interaction": "进入下一章前进到下一示例章节，最后一章返回首页；返回章节选择和 Esc 保留当前章。快速重复点击只前进一章；支持重播与键盘焦点。 完成标题入场时播放一次原成功提示音，重播也会播放；遵循总声音开关与音效音量。",
       "reference": "comparison/before/13-result-user.png",
       "referenceRevision": "result-reference-20261114",
       "layout": {
@@ -584,7 +584,8 @@
           7,
           20
         ]
-      }
+      },
+      "completionAudioRevision": "completion-cue-20261114"
     },
     {
       "id": "exit",
@@ -611,7 +612,7 @@
     "voiceStopFadeMs": 100,
     "volume": "0.5 * master / 100 * sfx / 100; zero when muted",
     "layering": "Route buttons play one transition cue; modal actions play their own cue; suppress immediate transition after confirm.",
-    "controls": "Settings and preview panel share mute and audition; in-game mute controls the same bus.",
+    "controls": "Settings and preview panel share master mute; the preview panel provides audition. In-game mute controls the same bus.",
     "silentInteractions": [
       "chapter dragging",
       "chapter wheel / trackpad scrolling"
@@ -657,6 +658,17 @@
       "preserveVolumeLevels": true,
       "closingHasNoConfirmationCue": true,
       "openingDoesNotStartWhenTurningOff": true
+    },
+    "completionCue": {
+      "revision": "completion-cue-20261114",
+      "cue": "success",
+      "entryDelayMs": 180,
+      "level": 0.8,
+      "oncePerEntrance": true,
+      "replayIncluded": true,
+      "cancelOnNavigation": true,
+      "waitForAudioReady": true,
+      "respectsMuteAndVolume": true
     }
   },
   "backgroundMusic": {

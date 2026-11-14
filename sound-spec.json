@@ -224,8 +224,8 @@
     "back": "Modal cancel",
     "transition": "Page navigation",
     "open": "Modal opening",
-    "confirm": "Confirmation",
-    "success": "QTE success",
+    "confirm": "Confirmation and the quiet immediate QTE response.",
+    "success": "Completion page entrance and explicit result replay; plays once with the title.",
     "chapter": "Chapter activation and keyboard story selection; quiet low resonance with a continuous gentle tail.",
     "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive."
   },
@@ -242,5 +242,21 @@
     "preserveVolumeLevels": true,
     "closingHasNoConfirmationCue": true,
     "openingDoesNotStartWhenTurningOff": true
+  },
+  "completionCue": {
+    "revision": "completion-cue-20261114",
+    "cue": "success",
+    "file": "assets/audio/ui-success.wav",
+    "durationMs": 2050,
+    "entryDelayMs": 180,
+    "level": 0.8,
+    "oncePerEntrance": true,
+    "replayIncluded": true,
+    "masterMuteAndSfxVolume": true,
+    "waitForReadyWhileOnResult": true,
+    "cancelOnNavigation": true,
+    "mutedEntryNotBackfilled": true,
+    "qteImmediateCue": "confirm at level .6",
+    "genericResultTransitionCue": false
   }
 }

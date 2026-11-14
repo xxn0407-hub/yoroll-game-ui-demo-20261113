@@ -40,6 +40,7 @@ let sceneKey = '';
 let transitionId = 0;
 let enterAnimations = new Set();
 let timers = new Set();
+let resultSoundRequest = null;
 let modalPreviousFocus = null;
 let confirmAction = null;
 let choicePaused = false;
@@ -121,6 +122,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
  return animate(element,[{opacity:0,transform:`translate3d(${x}px,${y}px,0) scale(${scale})`,filter:`blur(${blur}px)`},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0px)'}],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)'});
 }
 function cancelPageMotion(){
+ resultSoundRequest=null;delete frame.dataset.resultSound;
  disposeStoryScroll();
  treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
@@ -609,7 +611,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  const old=currentPage;
  if(page==='affinity'&&['home','cover'].includes(old))affinityReturnPage=old;
  cancelPendingHover();
- if(screen.children.length&&page!==old)uiSound.play('transition',{level:.85,delay:.03});
+ if(screen.children.length&&page!==old&&page!=='result')uiSound.play('transition',{level:.85,delay:.03});
  closeModal(true);
  if(!skipExit&&!motionPreference.matches&&screen.children.length){
   screen.setAttribute('aria-busy','true');
@@ -643,6 +645,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(page==='choice')startChoiceTimer();
  if(page==='qte')startQte();
  if(page==='gameplay')startPlayback();
+ if(page==='result')startResultSound();
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
@@ -685,7 +688,7 @@ function choose(index,timedOut=false){
 }
 function qteHit(){
  if(currentPage!=='qte'||qteDone)return;
- uiSound.play('success');
+ uiSound.play('confirm',{level:.6});
  qteDone=true;qteAnimation?.pause();
  const button=$('.qte-key');button.innerHTML=icon('check');button.disabled=true;
  $('.qte-label').textContent='换挡成功';$('.qte-tip').textContent='继续前进';
@@ -699,6 +702,22 @@ function startPlayback(){
  if(playbackPaused)playAnimation.pause();
  playAnimation.finished.then(()=>{if(currentPage==='gameplay')go('choice');}).catch(()=>{});
 }
+function tryResultSound(){
+ const request=resultSoundRequest;
+ if(!request||currentPage!=='result'||screen.getAttribute('aria-busy')==='true')return;
+ if(uiSound.isMuted()||settingState.master===0||settingState.sfx===0){resultSoundRequest=null;frame.dataset.resultSound='muted';return;}
+ if(!request.due||document.documentElement.dataset.audioState!=='ready'||!uiSound.isActive())return;
+ // Consume before play(), which synchronously publishes another audio-state event.
+ resultSoundRequest=null;frame.dataset.resultSound='played';
+ if(!uiSound.play('success',{level:.8})){resultSoundRequest=request;frame.dataset.resultSound='pending';}
+}
+function startResultSound(){
+ const request=resultSoundRequest={due:false};frame.dataset.resultSound='pending';
+ tryResultSound();if(resultSoundRequest!==request)return;
+ timeout(()=>{if(resultSoundRequest!==request)return;request.due=true;tryResultSound();},180);
+ uiSound.prepareAutoplay().catch(()=>{});
+}
+document.addEventListener('ui-audio-state',tryResultSound);
 function continueAfterResult(){
  if(currentPage!=='result'||screen.getAttribute('aria-busy')==='true')return;
  if(selectedChapter===CHAPTER_PREVIEWS.length-1){go('home');return;}
@@ -833,7 +852,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(currentPage==='result')uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});

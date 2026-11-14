@@ -168,12 +168,13 @@ window.YOROLL_REPORT = {
       "change": "按原版恢复右侧 COMPLETED 标题、金色几何徽记、星点分隔线与上下排列的胶囊操作；去掉示意评级、进度和额外页眉，保留当前游戏场景。",
       "ratio": "标题 92px、说明 18px；胶囊按钮 196×52px、文字 20px、纵向间距 18px；右侧内容宽 640px。以当前 1920×1080 基准等比缩放。",
       "motion": "徽记、标题、分隔线、说明和按钮依次落位；底部暖黄色光雾缓慢流动，64 个粒子分为远景细尘、中景亮点、近景虚焦光斑，以不同速度上浮漂移。4 个亮点柔和闪出星芒，尺寸和透明度自然变化。Hover 与点击反馈沿用当前版本。 玻璃主按钮的边缘光以 5.6s 周期柔和呼吸；文字与按钮尺寸保持稳定，悬停提亮独立叠加。",
-      "interaction": "进入下一章会前进到下一示例章节；最后一章改为返回主菜单。返回章节选择保留当前章节，Esc 同样返回；支持 Tab、Enter 和重播。",
+      "interaction": "进入下一章会前进到下一示例章节；最后一章改为返回主菜单。返回章节选择保留当前章节，Esc 同样返回；支持 Tab、Enter 和重播。 完成标题入场时播放一次原成功提示音，重播同样带音效，遵循全局声音开关和音效音量。",
       "beforeSource": "user",
       "beforeNote": "旧版完成 UI 由用户提供；新版保留当前故事场景，重点对比右侧构图、比例和动效。",
       "referenceRevision": "result-reference-20261114",
       "particlesRevision": "completion-gold-particles-20261114",
-      "buttonLightRevision": "glass-button-breathe-20261114"
+      "buttonLightRevision": "glass-button-breathe-20261114",
+      "completionAudioRevision": "completion-cue-20261114"
     },
     {
       "id": "exit",
