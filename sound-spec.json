@@ -197,6 +197,20 @@
       "channels": 2,
       "character": "The exact playable-hover recording one octave lower, preserving its delicate onset, harmonics and diffuse stereo tail. The existing .44 cue level is unchanged.",
       "sharedSourceWith": "hover"
+    },
+    "death": {
+      "file": "assets/audio/ui-death.wav",
+      "durationMs": 2560,
+      "sampleRate": 48000,
+      "channels": 2,
+      "peak": 0.201812744140625,
+      "rmsDbfs": -29.499997527112527,
+      "attackMs": 45,
+      "fadeOutMs": 1000,
+      "highpassHz": 65,
+      "lowpassHz": 2400,
+      "sha256": "70e1ca00217049f7a580ee3bd999487984f830308e90f54b0e52983c40534647",
+      "sourceManifest": "death-sound-source.json"
     }
   },
   "sourceQuality": {
@@ -229,7 +243,9 @@
     "autoplayPages": [
       "splash",
       "home",
-      "cover"
+      "cover",
+      "result",
+      "failure"
     ],
     "lockedHoverIntentMs": 110,
     "lockedHoverThrottleMs": 650,
@@ -248,7 +264,8 @@
     "confirm": "Confirmation and the quiet immediate QTE response.",
     "success": "Completion page entrance and explicit result replay; plays once with the title.",
     "chapter": "Chapter activation and keyboard story selection; quiet low resonance with a continuous gentle tail.",
-    "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive."
+    "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive.",
+    "death": "Failure entrance and explicit failure replay; one event with the title, independent from the completion cue."
   },
   "backgroundMusic": "music-spec.json",
   "entryRevision": "entry-autoplay-20261113",
@@ -281,5 +298,24 @@
     "genericResultTransitionCue": false,
     "character": "The same opening resonance, one semitone brighter with a slightly quicker bloom and a continuous soft release.",
     "sourceManifest": "completion-sound-source.json"
+  },
+  "deathCue": {
+    "revision": "death-soft-rupture-20261114",
+    "cue": "death",
+    "file": "assets/audio/ui-death.wav",
+    "durationMs": 2560,
+    "entryDelayMs": 170,
+    "level": 0.68,
+    "oncePerEntrance": true,
+    "replayIncluded": true,
+    "loop": false,
+    "masterMuteAndSfxVolume": true,
+    "waitForReadyWhileOnFailure": true,
+    "cancelOnNavigation": true,
+    "mutedEntryNotBackfilled": true,
+    "genericFailureTransitionCue": false,
+    "completionCueOnFailure": false,
+    "character": "One soft short rupture followed by low airy resonance, gently fading to silence.",
+    "sourceManifest": "death-sound-source.json"
   }
 }

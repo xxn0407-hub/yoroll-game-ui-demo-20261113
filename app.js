@@ -42,6 +42,7 @@ let transitionId = 0;
 let enterAnimations = new Set();
 let timers = new Set();
 let resultSoundRequest = null;
+let failureSoundRequest = null;
 let modalPreviousFocus = null;
 let confirmAction = null;
 let choicePaused = false;
@@ -124,6 +125,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
 }
 function cancelPageMotion(){
  resultSoundRequest=null;delete frame.dataset.resultSound;
+ failureSoundRequest=null;delete frame.dataset.failureSound;
  disposeStoryScroll();
  treeRouteMotions.clear();
  for(const animation of enterAnimations)animation.cancel();
@@ -575,13 +577,15 @@ function resultView(){
 }
 function failureEmbersMarkup(){
  const sample=(i,salt)=>{const n=Math.sin((i+1)*97.31+salt*219.7)*41753.29;return n-Math.floor(n);};
- return `<div class="failure-atmosphere" data-enter="failure-atmosphere" aria-hidden="true">${Array.from({length:42},(_,i)=>{
-  const depth=i%3,streak=i%6===0,size=depth===0?1.5+sample(i,1)*1.8:depth===1?3+sample(i,1)*2.5:6+sample(i,1)*5;
-  return `<i class="failure-ember failure-ember--${['far','mid','near'][depth]}${streak?' is-streak':''}" style="left:${(3+sample(i,2)*94).toFixed(2)}%;top:${(12+sample(i,3)*100).toFixed(2)}%;--ember-size:${size.toFixed(2)};--ember-dx:${(-70+sample(i,4)*120).toFixed(2)};--ember-rise:${(100+sample(i,5)*160).toFixed(2)};--ember-angle:${(-35+sample(i,6)*80).toFixed(2)}deg;--ember-strength:${([.3,.65,.46][depth]+sample(i,7)*.15).toFixed(2)};--ember-duration:${(7+sample(i,8)*9).toFixed(2)}s;--ember-delay:${(-sample(i,9)*22).toFixed(2)}s"></i>`;
- }).join('')}</div>`;
+ const shapes=['polygon(18% 8%,66% 0,100% 31%,78% 76%,30% 100%,0 62%)','polygon(35% 0,92% 12%,100% 62%,48% 100%,0 68%,14% 27%)','polygon(0 28%,52% 0,88% 18%,100% 70%,62% 100%,18% 80%)','polygon(26% 0,100% 32%,72% 94%,24% 100%,0 58%)'];
+ const layers=[{name:'far',count:18,size:[1.8,3.6],duration:[12,19],strength:[.32,.55],rise:[100,190],drift:62},{name:'mid',count:22,size:[4.5,8.5],duration:[8,14],strength:[.6,.86],rise:[130,250],drift:92},{name:'near',count:12,size:[10,16],duration:[10,18],strength:[.48,.75],rise:[150,300],drift:125}];
+ return `<div class="failure-atmosphere" data-enter="failure-atmosphere" aria-hidden="true">${layers.map((layer,depth)=>Array.from({length:layer.count},(_,index)=>{
+  const i=index+depth*31,pick=(range,salt)=>range[0]+sample(i,salt)*(range[1]-range[0]),streak=depth===0?index%6===0:depth===1&&index%5===0;
+  return `<i class="failure-ember failure-ember--${layer.name}${streak?' is-streak':''}" style="left:${pick([3,97],2).toFixed(2)}%;top:${pick([7,112],3).toFixed(2)}%;--ember-size:${pick(layer.size,1).toFixed(2)};--ember-dx:${pick([-layer.drift,layer.drift],4).toFixed(2)};--ember-rise:${pick(layer.rise,5).toFixed(2)};--ember-angle:${pick([-40,65],6).toFixed(2)}deg;--ember-turn:${pick([30,110],10).toFixed(2)}deg;--ember-shape:${shapes[index%shapes.length]};--ember-strength:${pick(layer.strength,7).toFixed(2)};--ember-duration:${pick(layer.duration,8).toFixed(2)}s;--ember-delay:${(-sample(i,9)*24).toFixed(2)}s"></i>`;
+ }).join('')).join('')}</div>`;
 }
 function failureView(){
- return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><img src="assets/failure-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败">YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
+ return `${failureEmbersMarkup()}<section class="result-layout failure-layout" aria-labelledby="failure-title"><div class="result-emblem failure-emblem" data-enter="failure-emblem" aria-hidden="true"><img src="assets/failure-emblem.svg?v=death-soft-rupture-20261114" alt="" draggable="false"></div><div class="result-copy"><div class="failure-title-group" data-enter="failure-title"><div class="failure-title-glow" aria-hidden="true"></div><h1 id="failure-title" aria-label="挑战失败"><span class="failure-title-outline" aria-hidden="true">YOU ARE DEAD</span>YOU ARE DEAD</h1></div><div class="failure-divider" data-enter="failure-divider" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p data-enter="failure-copy">失误止于此刻，故事还有另一种可能。<br>重新把握时机，让旅程继续。</p></div><div class="result-actions"><div data-enter="failure-action">${button('重新尝试','failure-retry','btn-primary')}</div><div data-enter="failure-action">${goButton('返回章节选择','chapters')}</div></div></section>`;
 }
 function gameoverView(){
  return `<div class="gameover-atmosphere" data-enter="gameover-atmosphere" aria-hidden="true"><div class="gameover-halo"></div></div><section class="gameover-layout" aria-labelledby="gameover-title"><div class="gameover-mark" data-enter="gameover-mark" aria-hidden="true"><svg class="gameover-diamonds" viewBox="0 0 420 420" fill="none"><path class="gameover-diamond-outer" d="M210 12 408 210 210 408 12 210Z"/><path class="gameover-diamond-inner" d="M210 55 365 210 210 365 55 210Z"/></svg><div class="gameover-flecks">${[0,1,2,3,4].map(i=>`<i style="--fleck:${i}"></i>`).join('')}</div></div><div class="gameover-heading"><span class="gameover-line gameover-line--left" data-enter="gameover-line" aria-hidden="true"></span><div class="gameover-title-group" data-enter="gameover-title"><h1 id="gameover-title">GAME OVER</h1></div><span class="gameover-line gameover-line--right" data-enter="gameover-line" aria-hidden="true"></span></div><div class="result-actions gameover-actions" data-enter="gameover-action">${goButton('返回主菜单','home','btn-primary')}</div></section>`;
@@ -652,7 +656,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  const old=currentPage;
  if(page==='affinity'&&['home','cover'].includes(old))affinityReturnPage=old;
  cancelPendingHover();
- if(screen.children.length&&page!==old&&page!=='result')uiSound.play('transition',{level:.85,delay:.03});
+ if(screen.children.length&&page!==old&&!['result','failure'].includes(page))uiSound.play('transition',{level:.85,delay:.03});
  closeModal(true);
  if(!skipExit&&!motionPreference.matches&&screen.children.length){
   screen.setAttribute('aria-busy','true');
@@ -687,6 +691,7 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(page==='qte')startQte();
  if(page==='gameplay')startPlayback();
  if(page==='result')startResultSound();
+ if(page==='failure')startFailureSound();
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
@@ -765,6 +770,21 @@ function continueAfterResult(){
  selectedChapter+=1;playbackStoryNode=null;playbackPaused=false;chapterRailLeft=0;
  go('gameplay');
 }
+function tryFailureSound(){
+ const request=failureSoundRequest;
+ if(!request||currentPage!=='failure'||screen.getAttribute('aria-busy')==='true')return;
+ if(uiSound.isMuted()||settingState.master===0||settingState.sfx===0){failureSoundRequest=null;frame.dataset.failureSound='muted';return;}
+ if(!request.due||document.documentElement.dataset.audioState!=='ready'||!uiSound.isActive())return;
+ failureSoundRequest=null;frame.dataset.failureSound='played';
+ if(!uiSound.play('death',{level:.68})){failureSoundRequest=request;frame.dataset.failureSound='pending';}
+}
+function startFailureSound(){
+ const request=failureSoundRequest={due:false};frame.dataset.failureSound='pending';
+ tryFailureSound();if(failureSoundRequest!==request)return;
+ timeout(()=>{if(failureSoundRequest!==request)return;request.due=true;tryFailureSound();},170);
+ uiSound.prepareAutoplay().catch(()=>{});
+}
+document.addEventListener('ui-audio-state',tryFailureSound);
 function toast(message){
  const el=$('#toast');el.innerHTML=icon('check')+`<span>${message}</span>`;
  savedToastAnimation?.cancel();
@@ -894,7 +914,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(currentPage==='result')uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else if(['result','failure'].includes(currentPage))uiSound.stopAll();else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')startResultSound();if(currentPage==='failure'){frame.dataset.entryState='entering';timeout(()=>{frame.dataset.entryState='ready';},motionPreference.matches?0:1700);startFailureSound();}if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});

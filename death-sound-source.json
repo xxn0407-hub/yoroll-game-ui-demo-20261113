@@ -1,0 +1,35 @@
+{
+  "revision": "death-soft-rupture-20261114",
+  "provider": "ChatCut / ElevenLabs sound effects",
+  "projectId": "c2db9bc2-0bc4-4908-b9fe-0a90100ec61b",
+  "projectUrl": "https://app.chatcut.io/zh/editor/c2db9bc2-0bc4-4908-b9fe-0a90100ec61b",
+  "jobId": "2df99157-9532-48b5-9712-00516073d0a6",
+  "assetId": "ea6404f8-d18a-46d4-9589-2753d450dd87",
+  "requestedDurationSeconds": 2.6,
+  "actualDurationMs": 2560,
+  "estimatedCredits": 0.38,
+  "chargedCredits": 0.38,
+  "settlement": "settled",
+  "promptInfluence": 0.7,
+  "prompt": "A single understated premium game UI death cue. Low warm resonant breath, one soft brief digital fabric tear at the onset, dissolving into a smooth airy minor resonance and a long gentle fade. Restrained, elegant, ethereal, dark but not frightening. Rounded soft attack, mellow low mids. No sharp treble, TV static, white noise bed, alarm, drums, beat, melody, ringing, repeated glitches or audible echo repeats. One event, clean silence at the end.",
+  "libraryCheck": {
+    "candidate": "library:sound:glitchy-tv-signal",
+    "reasonNotUsed": "Choppy TV static is too harsh and noisy for the requested low, soft UI resonance."
+  },
+  "webProcessing": {
+    "revision": "death-soft-rupture-20261114",
+    "durationMs": 2560,
+    "sampleRate": 48000,
+    "channels": 2,
+    "gain": 0.4779131088026448,
+    "peak": 0.201812744140625,
+    "rmsDbfs": -29.499997527112527,
+    "attackMs": 45,
+    "fadeOutMs": 1000,
+    "highpassHz": 65,
+    "lowpassHz": 2400,
+    "sha256": "70e1ca00217049f7a580ee3bd999487984f830308e90f54b0e52983c40534647",
+    "sourceSha256": "e9cbd6aabfce97e577e40b9efae6cb182633323083f8e19c1e4ad775afc651e7"
+  },
+  "processingNote": "Web asset preparation: remove sub-bass and sharp treble, 45ms soft attack, one-second fade, fixed gain to match the existing UI palette. No new echo, repeated segments, beat, or additional generated outputs."
+}

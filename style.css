@@ -257,22 +257,27 @@
 /* Completion reference: compact right-side composition, layered gold and glass capsules. */
 /* Outcome pages share the approved result scale; their atmosphere stays independent. */
 .game-frame[data-page="failure"] .scene-shade{background:linear-gradient(90deg,#07090c24 0%,#0b10114d 36%,#0c0d13e0 68%,#100c0ded 100%),linear-gradient(0deg,#090a0de0,transparent 60%,#080a0c47)}
-.result-layout.failure-layout h1{font-size:calc(var(--p)*88);color:#d9dcda;white-space:nowrap;text-shadow:calc(var(--p)*1) calc(var(--p)*2) 0 #292c35,calc(var(--p)*3) calc(var(--p)*5) 0 #a5a9af45,0 calc(var(--p)*8) calc(var(--p)*36) #0006}
+.result-layout.failure-layout h1{font-size:calc(var(--p)*88);color:#cdd0d2;white-space:nowrap;text-shadow:0 calc(var(--p)*2) 0 #1e232b,0 calc(var(--p)*8) calc(var(--p)*36) #0006}
+.failure-title-outline{position:absolute;inset:0;z-index:-1;translate:calc(var(--p)*3) calc(var(--p)*6);color:transparent;-webkit-text-stroke:max(.45px,calc(var(--p)*.7)) #a7adb459;pointer-events:none}
 .failure-title-group{position:relative;isolation:isolate}
 .failure-title-group h1{position:relative;z-index:1}
-.failure-title-glow{position:absolute;z-index:0;inset:24% -5% -10%;background:radial-gradient(ellipse,#8e3b3329,transparent 72%);filter:blur(calc(var(--p)*12));pointer-events:none}
+.failure-title-glow{position:absolute;z-index:0;inset:24% -5% -10%;background:radial-gradient(ellipse,#87312e33,transparent 72%);filter:blur(calc(var(--p)*12));pointer-events:none}
 .result-emblem.failure-emblem{width:calc(var(--p)*330);top:calc(var(--p)*-175)}
-.failure-divider{position:relative;width:100%;height:calc(var(--p)*10);margin:calc(var(--p)*25) 0 calc(var(--p)*21);background:linear-gradient(90deg,transparent,#983b3659 15%,#a33d3978 46%,transparent 48%,transparent 52%,#a33d3978 54%,#983b3659 85%,transparent) center/100% 1px no-repeat}
-.failure-divider i{position:absolute;left:calc(50% - var(--p)*26);top:50%;translate:0 -50%;width:calc(var(--p)*21);height:calc(var(--p)*9);background:#a3403b;opacity:.85;clip-path:polygon(100% 0,55% 50%,100% 100%,0 50%)}
-.failure-divider i:last-child{left:auto;right:calc(50% - var(--p)*26);scale:-1 1}
+.failure-divider{position:relative;width:100%;height:calc(var(--p)*10);margin:calc(var(--p)*25) 0 calc(var(--p)*21);background:linear-gradient(90deg,transparent,#a8322c80 15%,#ae3831a6 46%,transparent 48%,transparent 52%,#ae3831a6 54%,#a8322c80 85%,transparent) center/100% 1px no-repeat}
+.failure-divider i{position:absolute;left:calc(50% - var(--p)*24);top:50%;translate:0 -50%;width:calc(var(--p)*17);height:calc(var(--p)*9);background:#b44137;opacity:.85;clip-path:polygon(100% 0,55% 50%,100% 100%,0 50%)}
+.failure-divider i:nth-child(2){left:calc(50% - var(--p)*35);opacity:.5}
+.failure-divider i:nth-child(n+3){left:auto;right:calc(50% - var(--p)*24);scale:-1 1}
+.failure-divider i:nth-child(4){right:calc(50% - var(--p)*35);opacity:.5}
 .failure-layout .result-copy p{color:#bcc1c1}
-.failure-atmosphere{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;mix-blend-mode:screen}
+.failure-atmosphere{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .failure-atmosphere:before{content:"";position:absolute;inset:30% -8% -30% 45%;background:radial-gradient(ellipse,#7e2d2721,transparent 68%);opacity:.65;animation:failure-haze 15s ease-in-out -5s infinite alternate}
-.failure-ember{position:absolute;width:calc(var(--p)*var(--ember-size));height:calc(var(--p)*var(--ember-size)*1.35);border-radius:65% 25% 60% 30%;background:radial-gradient(ellipse at 35% 30%,#ed8a68,#c8402a 38%,#a52f2459 78%,transparent);opacity:0;box-shadow:0 0 calc(var(--p)*8) #c83f2d50;animation:failure-ember-rise var(--ember-duration) linear var(--ember-delay) infinite both;will-change:transform,opacity}
-.failure-ember--far{filter:blur(calc(var(--p)*.45));box-shadow:none}
-.failure-ember--near{filter:blur(calc(var(--p)*1.1))}
-.failure-ember.is-streak{height:calc(var(--p)*var(--ember-size)*4);width:max(.7px,calc(var(--p)*1.4));background:linear-gradient(0deg,#e9754a,#b631266e 50%,transparent);border-radius:50%}
-@keyframes failure-ember-rise{0%{opacity:0;transform:translate3d(0,calc(var(--p)*20),0) rotate(var(--ember-angle)) scale(.65)}18%{opacity:calc(var(--ember-strength)*.8)}46%{opacity:var(--ember-strength)}78%{opacity:calc(var(--ember-strength)*.48)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--ember-dx)),calc(var(--p)*var(--ember-rise)*-1),0) rotate(calc(var(--ember-angle) + 32deg)) scale(.85)}}
+.failure-ember{position:absolute;width:calc(var(--p)*var(--ember-size));height:calc(var(--p)*var(--ember-size)*1.35);opacity:0;filter:drop-shadow(0 0 calc(var(--p)*3) #d5413266);animation:failure-ember-rise var(--ember-duration) linear var(--ember-delay) infinite both;will-change:transform,opacity}
+.failure-ember:before{content:"";position:absolute;inset:0;clip-path:var(--ember-shape);background:linear-gradient(135deg,#ff8b5d,#f03927 32%,#c82c24 72%,#992420da)}
+.failure-ember--far{filter:blur(calc(var(--p)*.2))}
+.failure-ember--near{filter:blur(calc(var(--p)*.45)) drop-shadow(0 0 calc(var(--p)*4) #d5413270)}
+.failure-ember.is-streak{height:calc(var(--p)*var(--ember-size)*4);width:max(.7px,calc(var(--p)*1.4));filter:drop-shadow(0 0 calc(var(--p)*2) #b6372b70)}
+.failure-ember.is-streak:before{clip-path:none;border-radius:50%;background:linear-gradient(0deg,#f17c53,#c7392b99 50%,transparent)}
+@keyframes failure-ember-rise{0%{opacity:0;transform:translate3d(0,calc(var(--p)*20),0) rotate(var(--ember-angle)) scale(.7)}18%{opacity:calc(var(--ember-strength)*.8)}46%{opacity:var(--ember-strength)}78%{opacity:calc(var(--ember-strength)*.55)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--ember-dx)),calc(var(--p)*var(--ember-rise)*-1),0) rotate(calc(var(--ember-angle) + var(--ember-turn))) scale(.95)}}
 @keyframes failure-haze{from{transform:translate3d(-1%,2%,0) scale(.94);opacity:.35}to{transform:translate3d(3%,-2%,0) scale(1.08);opacity:.7}}
 .game-frame[data-page="gameover"] .scene{filter:blur(calc(var(--p)*18)) brightness(.65) saturate(.6);transform:scale(1.06)}
 .game-frame[data-page="gameover"] .scene-shade{background:radial-gradient(ellipse at 50% 47%,#102a2f24 0%,#06171975 45%,#03090de0 100%),linear-gradient(0deg,#020608e8,transparent 45%,#02080980)}

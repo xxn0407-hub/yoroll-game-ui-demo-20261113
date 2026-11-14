@@ -15,7 +15,7 @@ function updatePage(){
  $('#page-kind').textContent=page.kind;
  $('#page-count').textContent=`${String(index+1).padStart(2,'0')} / ${pages.length}`;
  $('#change').textContent=page.change;$('#ratio').textContent=page.ratio;$('#motion').textContent=page.motion;$('#interaction').textContent=page.interaction;
- $('#after-image').src=`comparison/after/${page.id}.jpg?v=outcome-pages-20261114`;
+ $('#after-image').src=`comparison/after/${page.id}.jpg?v=death-soft-rupture-20261114`;
  $('#after-image').alt=page.name+'修改后';
  $('#before-image').hidden=!page.before;
  $('#no-before').hidden=Boolean(page.before);
@@ -23,12 +23,12 @@ function updatePage(){
  else $('#before-image').removeAttribute('src');
  $('#before-note').textContent=page.beforeNote|| (page.kind==='沿用已定方案'?'沿用本聊天之前已确认的封面构图与素材。':'该状态未在这次线上预览中观察到。新版提供可操作的补充动效示例。');
  $('#image-note').textContent=mode==='motion'?'当前为可操作的实时动效。页面内可以继续导航，点击重播可回到所选页面。':page.before?(page.beforeSource==='user'?'原版来自用户提供的旧版 UI；新版为浏览器实际截图，重点对比尺寸、间距和动效。':'原版来自线上实际截图；新版为本地浏览器截图。底图部分不同，对比重点为 UI 占比、层级与位置。'):'左侧保留来源说明；右侧展示本轮方案。点击「播放动效」体验完整入场。';
- $('#open-prototype').href=`index.html?page=${page.id}&revision=outcome-pages-20261114`;
+ $('#open-prototype').href=`index.html?page=${page.id}&revision=death-soft-rupture-20261114`;
  document.querySelectorAll('[data-page]').forEach(button=>{if(button.dataset.page===page.id)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
  history.replaceState(null,'','#'+page.id);
  if(mode==='motion')loadMotion();
 }
-function loadMotion(){const page=pages[index];$('#motion-frame').src=`index.html?page=${page.id}&capture=1&revision=outcome-pages-20261114&replay=${++replay}`;}
+function loadMotion(){const page=pages[index];$('#motion-frame').src=`index.html?page=${page.id}&capture=1&revision=death-soft-rupture-20261114&replay=${++replay}`;}
 function setMode(value){
  mode=value;$('#comparison').dataset.mode=mode;
  document.querySelectorAll('button[data-mode]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.mode===mode)));

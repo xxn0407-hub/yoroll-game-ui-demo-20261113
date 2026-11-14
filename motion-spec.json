@@ -632,8 +632,8 @@
       "id": "failure",
       "name": "失败",
       "kind": "用户提供原版 UI",
-      "motion": "警示徽记先显现；标题延后 170ms 柔和落位，分隔线随后由中间展开，说明与两个按钮依次进入。42 个远近余烬以 7–16s 错峰向上飘散，主按钮延续 3.8s 呼吸光感。",
-      "interaction": "QTE 超时进入失败页；重新尝试回到同一章的 QTE，重新计时。返回章节选择或 Esc 保留当前章。支持预览导航、重播、Tab 和 Enter；不播放完成共鸣音。",
+      "motion": "警示三角以不规则断纹显现；偏灰标题与细描边错层柔和落位，分隔线恢复双重相向切口。52 个红色碎片分为远 18、中 22、近 12 个，包含 44 块不规则切片和 8 根火星，以 8–19s 独立漂移、旋转和渐隐；主按钮延续原有呼吸光。死亡音在 170ms 随标题播放一次，2.56s 后柔和结束。",
+      "interaction": "QTE 超时进入失败页；重新尝试仍回到同一章。入场和重播各播放一次 death，关闭总声音或音效音量为零时保持静音，离开页面取消尚未播放的请求。返回、Esc、Tab 与 Enter 保持现有行为。",
       "reference": "comparison/before/failure-user.png",
       "referenceRevision": "outcome-pages-20261114",
       "reducedMotion": "Static settled composition; disable decorative drift and entry.",
@@ -648,14 +648,50 @@
         "emblemWidthPx": 330
       },
       "particles": {
-        "count": 42,
+        "count": 52,
+        "shards": 44,
+        "streaks": 8,
         "depthLayers": 3,
-        "durationSeconds": [
-          7,
+        "layerCounts": [
+          18,
+          22,
+          12
+        ],
+        "sizePx": [
+          1.8,
           16
         ],
+        "durationSeconds": [
+          8,
+          19
+        ],
+        "normalBlend": true,
+        "independentRotationDegrees": [
+          30,
+          110
+        ],
         "entryDelayMs": 220,
-        "entryDurationMs": 1400
+        "entryDurationMs": 1400,
+        "pointerEvents": "none"
+      },
+      "particlesRevision": "death-soft-rupture-20261114",
+      "deathAudioRevision": "death-soft-rupture-20261114",
+      "title": {
+        "color": "#cdd0d2",
+        "offsetOutlinePx": [
+          3,
+          6
+        ],
+        "decorativeCopyAriaHidden": true
+      },
+      "divider": {
+        "chevrons": 4,
+        "twoDirections": true
+      },
+      "emblem": {
+        "irregularScanlineMask": true,
+        "staticRoughEdges": true,
+        "flashing": false
       }
     },
     {
@@ -777,6 +813,25 @@
       "fadeOutMs": 2200,
       "source": "assets/audio/home-opening.wav",
       "pitchShiftSemitones": 1
+    },
+    "deathCue": {
+      "revision": "death-soft-rupture-20261114",
+      "cue": "death",
+      "file": "assets/audio/ui-death.wav",
+      "durationMs": 2560,
+      "entryDelayMs": 170,
+      "level": 0.68,
+      "oncePerEntrance": true,
+      "replayIncluded": true,
+      "loop": false,
+      "masterMuteAndSfxVolume": true,
+      "waitForReadyWhileOnFailure": true,
+      "cancelOnNavigation": true,
+      "mutedEntryNotBackfilled": true,
+      "genericFailureTransitionCue": false,
+      "completionCueOnFailure": false,
+      "character": "One soft short rupture followed by low airy resonance, gently fading to silence.",
+      "sourceManifest": "death-sound-source.json"
     }
   },
   "backgroundMusic": {
