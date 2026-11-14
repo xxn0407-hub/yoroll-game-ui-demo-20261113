@@ -1,0 +1,342 @@
+{
+  "revision": "real-game-covers-20261114",
+  "source": "User-supplied game covers",
+  "aspectRatio": "3:4",
+  "processing": "Full artwork retained; resize to 810x1080; WebP quality 88; no crop or redraw.",
+  "artworkIncludesTitles": true,
+  "coverCount": 15,
+  "originalBytes": 30008119,
+  "webBytes": 2434508,
+  "covers": [
+    {
+      "key": "cover-040",
+      "src": "assets/covers/cover-040.webp",
+      "source": {
+        "filename": "Frame 40.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 780451,
+        "sha256": "6b60d348a25e31e3bd33d230602d002878546a8545ce00204054106f294caf8d"
+      },
+      "web": {
+        "filename": "cover-040.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 115360,
+        "sha256": "76656291eab6d7e3cc31e487caa1ccaa6ff3b296df018a7be90c9cd41bbd791f"
+      }
+    },
+    {
+      "key": "cover-041",
+      "src": "assets/covers/cover-041.webp",
+      "source": {
+        "filename": "Frame 41.jpg",
+        "dimensions": [
+          2430,
+          3240
+        ],
+        "bytes": 8089598,
+        "sha256": "2fb3f2c5e3a308345af0ffe2fe8d8d671e673ea011854780f4564fc8d2d6ed48"
+      },
+      "web": {
+        "filename": "cover-041.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 281056,
+        "sha256": "f46bc58e154da367496307ec3a3df215454c9730be412654303695386d34174b"
+      }
+    },
+    {
+      "key": "cover-042",
+      "src": "assets/covers/cover-042.webp",
+      "source": {
+        "filename": "Frame 42.jpg",
+        "dimensions": [
+          2430,
+          3240
+        ],
+        "bytes": 6966817,
+        "sha256": "a160f204bcf3dc13a0857fcc2cf87629bc5c1d298d0d23a568964209ef6bfc49"
+      },
+      "web": {
+        "filename": "cover-042.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 164760,
+        "sha256": "70faaba0b9e539af54b276f30a817813393297f0d5d11046cb41b7f798c3a250"
+      }
+    },
+    {
+      "key": "cover-043",
+      "src": "assets/covers/cover-043.webp",
+      "source": {
+        "filename": "Frame 43.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 921587,
+        "sha256": "825c16b3b0fce9c686246d21810c10643e14e0009984064289f78048a1d08fee"
+      },
+      "web": {
+        "filename": "cover-043.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 137120,
+        "sha256": "a7aaa44924c3e2a27b5a6940e64ed707bdb7ac78948e05db4aca956a11e1e187"
+      }
+    },
+    {
+      "key": "cover-044",
+      "src": "assets/covers/cover-044.webp",
+      "source": {
+        "filename": "Frame 44.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 897011,
+        "sha256": "41dc97c745968d2264ea93f2a27c11f0e0e68c42cb70fe4ccf3c783fac3b1857"
+      },
+      "web": {
+        "filename": "cover-044.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 129454,
+        "sha256": "e185c22d97f519ef3ec1fc01bbcc63d9347dbb207f260e3ac7e49213c63caa7e"
+      }
+    },
+    {
+      "key": "cover-046",
+      "src": "assets/covers/cover-046.webp",
+      "source": {
+        "filename": "Frame 46.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 823168,
+        "sha256": "92f31d8779bb0193ec1910fa1d8b7c0696ef0974f0c10a1309dd64b12564b81c"
+      },
+      "web": {
+        "filename": "cover-046.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 135696,
+        "sha256": "feb20de9108db97b78d246599635f33079b4a1d2dd4b90c78295d21af96e077c"
+      }
+    },
+    {
+      "key": "cover-047",
+      "src": "assets/covers/cover-047.webp",
+      "source": {
+        "filename": "Frame 47.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 962347,
+        "sha256": "f944450ae755ff8182f7f5dbfe4542865a28d0d30f4941e1bab78e9a10a6debf"
+      },
+      "web": {
+        "filename": "cover-047.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 166712,
+        "sha256": "ad8975ec1e9815cd304e5caffe8cc2f8b15eafe5cada96e5161467fbd01954e8"
+      }
+    },
+    {
+      "key": "cover-049",
+      "src": "assets/covers/cover-049.webp",
+      "source": {
+        "filename": "Frame 49.jpg",
+        "dimensions": [
+          2430,
+          3240
+        ],
+        "bytes": 3901190,
+        "sha256": "9488e26daba4d1b0bcfd01d50541330c058c3786e34d807a172c168c91cd6ba7"
+      },
+      "web": {
+        "filename": "cover-049.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 107500,
+        "sha256": "4d8f575df34d847399ad8b79294477c79d217a04dbfc0a3e00beca47df822900"
+      }
+    },
+    {
+      "key": "cover-186",
+      "src": "assets/covers/cover-186.webp",
+      "source": {
+        "filename": "Frame 186.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 976600,
+        "sha256": "ec180de542b4c85ced39a5b5e0a3f70f84a6a9feb16120f8670184071add1b59"
+      },
+      "web": {
+        "filename": "cover-186.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 157620,
+        "sha256": "6549a868a26c46057683adc81c726a4407a4f792119137e6c6349f112ecc6c27"
+      }
+    },
+    {
+      "key": "cover-187",
+      "src": "assets/covers/cover-187.webp",
+      "source": {
+        "filename": "Frame 187.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 671448,
+        "sha256": "b8c483493d38897597521d28ab8a1f10215ec58aa875c680ff87f13e6d8b2a4d"
+      },
+      "web": {
+        "filename": "cover-187.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 92302,
+        "sha256": "4f8fc37e3c3363a5c7dd77bab3d98afa99f24944ef2e9cc61dbac52398bf868e"
+      }
+    },
+    {
+      "key": "cover-188",
+      "src": "assets/covers/cover-188.webp",
+      "source": {
+        "filename": "Frame 188.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 1081506,
+        "sha256": "190438f0ed656a5598486e64da0b947c71647cb4fccfec5f675e3eff01663dfc"
+      },
+      "web": {
+        "filename": "cover-188.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 226488,
+        "sha256": "0aea2cec658789227afc6e43602127cc69bf1847ce8be532c26cc9222570d5fe"
+      }
+    },
+    {
+      "key": "cover-190",
+      "src": "assets/covers/cover-190.webp",
+      "source": {
+        "filename": "Frame 190.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 762670,
+        "sha256": "9f1ad739f4b26414cd07bf84c9a437f439294a81cd757e404fd17dc35cc5b7f8"
+      },
+      "web": {
+        "filename": "cover-190.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 135116,
+        "sha256": "2adc5aea3461d9761be531f105569e35b44351a211113b82f7b7b439713beb1b"
+      }
+    },
+    {
+      "key": "cover-191",
+      "src": "assets/covers/cover-191.webp",
+      "source": {
+        "filename": "Frame 191.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 706653,
+        "sha256": "1842e72c0b27527306db91401a48c0daf4f0e6b6028d564a1f9fd53178519e8a"
+      },
+      "web": {
+        "filename": "cover-191.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 102338,
+        "sha256": "e4fef8dbd5f8efadfa4787061431b67706a6563cf59663e74b3c6a14ef734f8d"
+      }
+    },
+    {
+      "key": "cover-192",
+      "src": "assets/covers/cover-192.webp",
+      "source": {
+        "filename": "Frame 192.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 1628286,
+        "sha256": "b2e667b88711d3a4904ab73bc7e07a3b007d9df5063f9dfe6efded41f85a8a23"
+      },
+      "web": {
+        "filename": "cover-192.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 352142,
+        "sha256": "8a40273333b2b29ac9fe54842be94a8e820be1d238603cc35dcec4a6d06d0242"
+      }
+    },
+    {
+      "key": "cover-193",
+      "src": "assets/covers/cover-193.webp",
+      "source": {
+        "filename": "Frame 193.jpg",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 838787,
+        "sha256": "4b8e604bccf2b9ef9e7ae9aa4dacf1b35a5ba8a1af600da6b3c49cb5a1d971a7"
+      },
+      "web": {
+        "filename": "cover-193.webp",
+        "dimensions": [
+          810,
+          1080
+        ],
+        "bytes": 130844,
+        "sha256": "42fd261dc8d321726152646a6bdb49c3267c75a2f434a1b7be4cffe08503c9b2"
+      }
+    }
+  ]
+}

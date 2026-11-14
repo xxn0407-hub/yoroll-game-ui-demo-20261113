@@ -1,11 +1,20 @@
-/* Replace these six image paths and titles with the platform's actual game posters. */
+/* Platform-provided 3:4 artwork already includes each game's title. */
 const POSTERS = [
-  {key:'vesper',title:'VESPER',subtitle:'BEYOND THE LAST HORIZON'},
-  {key:'ashen',title:'ASHEN CROWN',subtitle:'A KINGDOM LOST TO THE FLAME'},
-  {key:'ronin',title:'浪人',subtitle:'RONIN · ECHOES OF THE FALLEN'},
-  {key:'elysia',title:'ELYSIA',subtitle:'WHERE THE SKY BECOMES HOME'},
-  {key:'neon',title:'NIGHTSHIFT',subtitle:'AFTER DARK. BEYOND LIMITS.'},
-  {key:'nocturne',title:'Nocturne',subtitle:'THE FOREST REMEMBERS'}
+  {key:'cover-040',src:'assets/covers/cover-040.webp'},
+  {key:'cover-041',src:'assets/covers/cover-041.webp'},
+  {key:'cover-042',src:'assets/covers/cover-042.webp'},
+  {key:'cover-043',src:'assets/covers/cover-043.webp'},
+  {key:'cover-044',src:'assets/covers/cover-044.webp'},
+  {key:'cover-046',src:'assets/covers/cover-046.webp'},
+  {key:'cover-047',src:'assets/covers/cover-047.webp'},
+  {key:'cover-049',src:'assets/covers/cover-049.webp'},
+  {key:'cover-186',src:'assets/covers/cover-186.webp'},
+  {key:'cover-187',src:'assets/covers/cover-187.webp'},
+  {key:'cover-188',src:'assets/covers/cover-188.webp'},
+  {key:'cover-190',src:'assets/covers/cover-190.webp'},
+  {key:'cover-191',src:'assets/covers/cover-191.webp'},
+  {key:'cover-192',src:'assets/covers/cover-192.webp'},
+  {key:'cover-193',src:'assets/covers/cover-193.webp'}
 ];
 const root = document.documentElement;
 const experience = document.querySelector('#experience');
@@ -30,7 +39,7 @@ const CARD_WIDTH = 216;
 const CARD_HEIGHT = 288;
 const COLUMN_STEP = CARD_WIDTH + 20;
 const ROW_STEP = CARD_HEIGHT + 24;
-const POSTER_ORDER = [5,4,1,0,2,3];
+const POSTER_ORDER = [0,9,4,2,7,12,5,10,3,13,1,14,8,6,11];
 const COLUMN_HEADS = [.12,1.1,.43,1.72,.02,1.36,.78,2.1,.29,1.58,.92,.06];
 const FLIGHT_DURATION = 2200;
 const ENTRY_DURATION = FLIGHT_DURATION+300;
@@ -96,11 +105,8 @@ function fillGallery(){
       const reveal = document.createElement('div');reveal.className='poster-reveal';
       const floater = document.createElement('div');floater.className='poster-float';
       const card = document.createElement('div');card.className='poster';card.dataset.key=poster.key;
-      const img = new Image();img.src=`assets/${poster.key}.webp`;img.alt='';img.decoding='async';img.draggable=false;
-      const copy = document.createElement('div');copy.className='poster-copy';
-      const title = document.createElement('span');title.className='poster-title';title.textContent=poster.title;
-      const subtitle = document.createElement('span');subtitle.className='poster-subtitle';subtitle.textContent=poster.subtitle;
-      copy.append(title,subtitle);card.append(img,copy);floater.append(card);reveal.append(floater);slot.append(reveal);fragment.append(slot);
+      const img = new Image();img.src=poster.src;img.alt='';img.width=810;img.height=1080;img.decoding='async';img.draggable=false;
+      card.append(img);floater.append(card);reveal.append(floater);slot.append(reveal);fragment.append(slot);
       const centerX = x+CARD_WIDTH/2;
       const centerY = y+CARD_HEIGHT/2;
       posterEntries.push({element:reveal,surface:card,x:centerX,y:centerY,width,height});

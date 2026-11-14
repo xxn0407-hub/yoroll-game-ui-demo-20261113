@@ -270,7 +270,14 @@
       "name": "默认首页",
       "kind": "原版实拍",
       "motion": "菜单由上方 22px 逐项落位，560ms、间隔 65ms；右上角先头像、后设置，由右向左落位。",
-      "interaction": "菜单可进入章节、存档、游戏。只播放此前认可的原开场音，末尾 3s 柔和渐弱到静音后结束，不接背景循环。同次进入的页面操作不会重新触发开场；重播开场音和重播首页可主动重播。"
+      "interaction": "菜单可进入章节、存档、游戏。只播放此前认可的原开场音，末尾 3s 柔和渐弱到静音后结束，不接背景循环。同次进入的页面操作不会重新触发开场；重播开场音和重播首页可主动重播。",
+      "backgroundAssets": {
+        "revision": "real-game-covers-20261114",
+        "coverCount": 15,
+        "aspectRatio": "3:4",
+        "manifest": "wall/assets/covers/manifest.json",
+        "motionPreserved": true
+      }
     },
     {
       "id": "cover",

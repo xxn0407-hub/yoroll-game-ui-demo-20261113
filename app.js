@@ -609,7 +609,7 @@ function setScene(page){
  const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','affinity','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
  if(key!==sceneKey){
   sceneKey=key;
-  if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="wall/index.html?clean&revision=viewport-backgrounds-20261113" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
+  if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="wall/index.html?clean&revision=real-game-covers-20261114" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
   else if(key==='cover'){scene.className='scene';scene.innerHTML='<img src="wall/assets/nocturne-cover.webp" alt="">';}
   else{const chapter=activeChapter(),image=fragment||chapter;scene.className='scene';scene.innerHTML=`<img class="chapter-background" data-chapter-index="${selectedChapter}" src="${image.cover}" alt="" style="object-position:${image.position||'50% center'}">`;}
  }
