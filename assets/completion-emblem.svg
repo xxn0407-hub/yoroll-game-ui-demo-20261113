@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 440" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="190" y1="20" x2="190" y2="424" gradientUnits="userSpaceOnUse"><stop stop-color="#fff5b8"/><stop offset=".32" stop-color="#dec264"/><stop offset=".7" stop-color="#9e7f2d" stop-opacity=".34"/><stop offset="1" stop-color="#d6ba60" stop-opacity=".64"/></linearGradient>
+    <linearGradient id="face" x1="154" y1="80" x2="240" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#fff4c7"/><stop offset=".36" stop-color="#ddc263"/><stop offset="1" stop-color="#a2802a" stop-opacity=".1"/></linearGradient>
+    <linearGradient id="wing" x1="54" y1="190" x2="164" y2="340" gradientUnits="userSpaceOnUse"><stop stop-color="#d4b750" stop-opacity=".4"/><stop offset="1" stop-color="#c5a245" stop-opacity="0"/></linearGradient>
+    <radialGradient id="halo"><stop stop-color="#d7b94a" stop-opacity=".2"/><stop offset=".55" stop-color="#ba9726" stop-opacity=".08"/><stop offset="1" stop-color="#a4841c" stop-opacity="0"/></radialGradient>
+    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2"/></filter>
+    <path id="spark" d="M0-12 2.2-2.2 12 0 2.2 2.2 0 12-2.2 2.2-12 0-2.2-2.2Z"/>
+  </defs>
+  <ellipse cx="190" cy="220" rx="187" ry="213" fill="url(#halo)"/>
+  <path d="M190 20 350 241 190 424 30 241Z" fill="url(#gold)" fill-opacity=".08" stroke="url(#gold)" stroke-width="1.6"/>
+  <path d="M190 20 350 241 190 424 30 241Z" stroke="#f4d875" stroke-opacity=".32" stroke-width="2" filter="url(#soft)"/>
+  <path d="M190 72 307 246 190 382 73 246Z" fill="url(#face)" fill-opacity=".68"/>
+  <path d="M190 72V382L73 246Z" fill="url(#face)" fill-opacity=".32"/>
+  <path d="m54 146 136 147-103 32Z" fill="url(#wing)"/>
+  <path d="m326 146-136 147 103 32Z" fill="url(#wing)"/>
+  <path d="m190 125 9 22 16 10-16 9-9 25-9-25-16-9 16-10Z" fill="#8e752c"/>
+  <path d="m190 137 5 15 10 5-10 5-5 15-5-15-10-5 10-5Z" fill="#fff5ca"/>
+  <path d="m190 158 0 37M171 158h38" stroke="#fff6ce" stroke-opacity=".22"/>
+  <g fill="#fff4d4"><use href="#spark" transform="translate(190 72) scale(.72)"/><use href="#spark" transform="translate(54 146) scale(.42)" opacity=".65"/><use href="#spark" transform="translate(286 198) scale(.5)" opacity=".8"/></g>
+  <g stroke="#fff1bf" stroke-opacity=".2" stroke-width=".6"><path d="M160 72h60M190 44v56M39 146h30M54 130v32M272 198h28M286 184v28"/></g>
+</svg>

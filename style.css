@@ -218,3 +218,32 @@
 .choice-option:disabled:not(.is-chosen){opacity:.28;transform:translateY(calc(var(--p)*3))}
 .choice-option.is-chosen{color:#f1f0df;transform:none}
 .choice-option.is-chosen .choice-outline{opacity:1;filter:drop-shadow(0 0 calc(var(--p)*5) #e7f0d238)}
+
+/* Completion reference: compact right-side composition, layered gold and glass capsules. */
+.game-frame[data-page="result"] .scene-shade{background:linear-gradient(90deg,#070a0b10 0%,#090d1047 38%,#090c10d9 68%,#080b0ee8 100%),linear-gradient(0deg,#080c10ae,transparent 48%,#080b0d20)}
+.result-layout{left:auto;right:var(--safe);top:27%;bottom:18%;width:calc(var(--p)*640);display:flex;flex-direction:column;justify-content:space-between;align-items:center;isolation:isolate;text-align:center;z-index:1}
+.result-emblem{position:absolute;z-index:-1;left:50%;top:calc(var(--p)*-160);translate:-50% 0;width:calc(var(--p)*350);pointer-events:none}
+.result-emblem img{display:block;width:100%;height:auto}
+.result-copy{width:100%}
+.result-layout h1{margin:0;color:#f6f4e9;font-family:Impact,"Arial Black","Helvetica Neue",sans-serif;font-size:calc(var(--p)*92);font-weight:900;font-style:italic;line-height:1.08;letter-spacing:-.025em;text-shadow:0 calc(var(--p)*2) 0 #ad976951,0 calc(var(--p)*7) calc(var(--p)*30) #0003}
+.result-divider{height:calc(var(--p)*4);position:relative;margin:calc(var(--p)*28) 0 calc(var(--p)*24);background:linear-gradient(90deg,#ead99a00,#ead99a8c 20%,#f6e7adbd 50%,#ead99a8c 80%,#ead99a00) center/100% 1px no-repeat}
+.result-divider i{position:absolute;top:50%;left:0;width:calc(var(--p)*9);height:calc(var(--p)*14);translate:0 -50%;background:#f3e6b5;clip-path:polygon(50% 0,64% 38%,100% 50%,64% 62%,50% 100%,36% 62%,0 50%,36% 38%)}
+.result-divider i:last-child{left:auto;right:0}
+.result-copy p{margin:0;color:#d4d8ce;font-size:calc(var(--p)*18);font-weight:400;line-height:1.9;letter-spacing:.035em}
+.result-actions{display:flex;flex-direction:column;align-items:center;gap:calc(var(--p)*18)}
+.result-actions .btn{width:calc(var(--p)*196);border-radius:999px;background:#11171936;border-color:#eef1e58c;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#edf0e8;box-shadow:none;letter-spacing:.04em}
+.result-actions .btn:hover{background:#e3f0f41a;border-color:#f7fbf2d9}
+.result-actions .btn-primary{background:linear-gradient(180deg,#f4f9fc45,#cfdfE619 48%,#e7f2f83d);border-color:#eff8fca1;box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e;overflow:visible}
+.result-actions .btn-primary:before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 24% 0%,#ffffff8c,transparent 35%),radial-gradient(ellipse at 78% 100%,#ffffff6b,transparent 38%);pointer-events:none;opacity:.7;transition:opacity .2s}
+.result-actions .btn-primary:hover:before{opacity:1}
+.result-actions .btn-primary:hover{background:linear-gradient(180deg,#f4f9fc57,#cfdfE629 48%,#e7f2f84f)}
+.result-actions .btn:focus-visible{outline:none;border-color:#f7f5dc;box-shadow:0 0 calc(var(--p)*12) #e7e7c126,inset 0 0 calc(var(--p)*8) #ffffff19}
+.result-actions .btn>span{position:relative}
+.result-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.result-atmosphere:before{content:"";position:absolute;left:0;right:0;bottom:calc(var(--p)*-40);height:calc(var(--p)*180);background:radial-gradient(ellipse at 65% 100%,#c6a34d1c,#b99b3b05 58%,transparent 76%)}
+.result-atmosphere i{--mote-strength:.46;position:absolute;width:calc(var(--p)*var(--mote-size));height:calc(var(--p)*var(--mote-size));border-radius:50%;background:#e8d399;box-shadow:0 0 calc(var(--p)*7) #eac76845;filter:blur(calc(var(--p)*.4));opacity:0;animation:result-mote-drift var(--mote-duration) linear var(--mote-delay) infinite both}
+.result-atmosphere i:nth-child(3n+2){--mote-strength:.28;filter:blur(calc(var(--p)*1));background:#d5bd7d}
+.result-atmosphere i:nth-child(3n){--mote-strength:.16;filter:blur(calc(var(--p)*2));background:#d8c697}
+.game-frame[data-page="result"] .page-footer{z-index:2}
+@keyframes result-mote-drift{0%{opacity:0;transform:translate3d(0,calc(var(--p)*12),0)}20%{opacity:var(--mote-strength)}70%{opacity:var(--mote-strength)}100%{opacity:0;transform:translate3d(calc(var(--p)*var(--mote-dx)),calc(var(--p)*var(--mote-rise)*-1),0)}}
+@media(prefers-reduced-motion:reduce){.result-atmosphere{display:none}}

@@ -539,7 +539,16 @@ function choiceView(){
  return `${hud()}<section class="choice-panel" aria-label="剧情选项"><h2 data-enter="choice-title">你要怎么做？</h2><div class="choice-divider" data-enter="choice-time" aria-hidden="true"><span id="choice-progress"></span></div><div class="choice-options">${['勇敢面对','选择逃跑'].map((label,index)=>`<div data-enter="choice"><button class="choice-option" data-action="choice-${index}">${outline}<span class="choice-label">${label}</span></button></div>`).join('')}</div></section>${footer('<button class="time-toggle" data-action="choice-timer" aria-pressed="false">暂停计时</button>','<span><span class="keycap">1</span> / <span class="keycap">2</span> 选择</span><span><span class="keycap">Esc</span> 暂停</span>')}`;
 }
 function qteView(){return `${hud()}<div class="subtitle qte-subtitle" data-enter="subtitle"><span class="speaker">把握时机</span>在弯道前完成换挡。</div><div class="qte-widget" data-enter="qte"><div class="qte-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle id="qte-progress" cx="60" cy="60" r="56"/></svg><button class="qte-key" data-action="qte-hit" aria-label="完成换挡，按 E">E</button></div><div class="qte-label">换挡</div><div class="qte-tip">按下 E 或点击</div></div>${footer('','<span><span class="keycap">E</span> 换挡</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
-function resultView(){return `${pageHeading('章节结果','chapters','CHAPTER COMPLETE')}<section class="result-layout"><div class="eyebrow" data-enter="result">CHAPTER ${String(activeChapter().number).padStart(2,'0')} / COMPLETE</div><h1 data-enter="result">顺利抵达</h1><p data-enter="result">每一次选择，都让故事走向不同的远方。</p><dl class="result-stats"><div data-enter="result"><dt>章节进度</dt><dd><span data-count="100">100</span>%</dd></div><div data-enter="result"><dt>关键选择</dt><dd>02</dd></div><div data-enter="result"><dt>完成评级</dt><dd>A</dd></div></dl><div class="result-actions"><div data-enter="action">${goButton('查看剧情树','tree','','tree')}</div><div data-enter="action">${goButton('返回章节','chapters','btn-primary','arrow')}</div></div></section>${footer('')}`;}
+function resultDustMarkup(){
+ return `<div class="result-atmosphere" aria-hidden="true" data-enter="result-atmosphere">${Array.from({length:32},(_,i)=>{
+  const x=4+(i*29)%93,y=i%4===0?48+(i*7)%30:78+(i*13)%23;
+  return `<i style="left:${x}%;top:${y}%;--mote-size:${2+(i%5)*.7};--mote-dx:${(i%7-3)*6};--mote-rise:${35+(i%6)*9};--mote-duration:${7+(i%6)*1.2}s;--mote-delay:${-i*.83}s"></i>`;
+ }).join('')}</div>`;
+}
+function resultView(){
+ const last=selectedChapter===CHAPTER_PREVIEWS.length-1;
+ return `${resultDustMarkup()}<section class="result-layout" aria-labelledby="result-title"><div class="result-emblem" data-enter="result-emblem" aria-hidden="true"><img src="assets/completion-emblem.svg" alt="" draggable="false"></div><div class="result-copy"><h1 id="result-title" data-enter="result-title" aria-label="章节完成">COMPLETED</h1><div class="result-divider" data-enter="result-divider" aria-hidden="true"><i></i><i></i></div><p data-enter="result-copy">苦战至此，终得凯旋。感谢各位队友默契相伴，<br>所有付出皆有回响，让我们收下这份来之不易的胜利。</p></div><div class="result-actions"><div data-enter="result-action">${button(last?'返回主菜单':'进入下一章','result-next','btn-primary')}</div><div data-enter="result-action">${goButton('返回章节选择','chapters')}</div></div></section>${footer('')}`;
+}
 const renders={splash:splashView,home:()=>homeView(),cover:()=>homeView(true),chapters:chaptersView,tree:treeView,affinity:affinityView,saves:saveView,settings:settingsView,logout:()=>homeView(),gameplay:gameplayView,pause:pauseView,choice:choiceView,qte:qteView,result:resultView,exit:()=>homeView()};
 function setScene(page){
  const fragment=['gameplay','pause','choice','qte','result'].includes(page)&&playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null;
@@ -570,7 +579,7 @@ function enterPage(){
  $$('[data-enter="menu"]').forEach((el,i)=>enter(el,{y:unit(-22),delay:50+i*65,duration:560}));
  $$('[data-enter="heading"]').forEach(el=>enter(el,{x:unit(-18),y:0,delay:30,duration:560}));
  $$('[data-enter="meta"]').forEach(el=>enter(el,{x:unit(18),y:0,delay:90,duration:580}));
- const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], affinity:[170,55], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[270,65], 'choice-time':[200,40],result:[140,60] };
+ const groups={ 'chapter-copy':[140,65], 'chapter-card':[300,45], action:[310,65], section:[140,60], setting:[160,42], save:[170,65], affinity:[170,55], profile:[150,55], pause:[100,50], 'choice-title':[130,70],choice:[270,65], 'choice-time':[200,40], 'result-copy':[310,60], 'result-action':[440,85] };
  for(const [name,[delay,step]] of Object.entries(groups))$$(`[data-enter="${name}"]`).forEach((el,i)=>enter(el,{y:unit(18),delay:delay+i*step,duration:650}));
  $$('[data-enter="tree-line"]').forEach(el=>enter(el,{y:0,delay:140,duration:550}));
  $$('[data-enter="tree-connection"]').forEach(el=>animate(el,[{strokeDashoffset:1,opacity:0},{strokeDashoffset:0,opacity:1}],{duration:650,delay:180+Math.min(2,Number(el.dataset.treeDepth))*80,easing:'cubic-bezier(.22,.68,.25,1)'}));
@@ -582,6 +591,10 @@ function enterPage(){
  $$('[data-enter="splash-logo"]').forEach(el=>enter(el,{y:unit(10),scale:.97,duration:1500,blur:3}));
  $$('[data-enter="splash-start"]').forEach(el=>enter(el,{y:unit(10),delay:600,duration:1100}));
  $$('[data-enter="wordmark"]').forEach(el=>enter(el,{y:unit(18),scale:.975,blur:5,delay:200,duration:1600}));
+ $$('[data-enter="result-emblem"]').forEach(el=>enter(el,{y:unit(12),scale:.95,blur:2,delay:40,duration:1250}));
+ $$('[data-enter="result-title"]').forEach(el=>enter(el,{y:unit(16),scale:.985,delay:160,duration:850}));
+ $$('[data-enter="result-divider"]').forEach(el=>animate(el,[{opacity:0,transform:'scaleX(.7)'},{opacity:1,transform:'scaleX(1)'}],{duration:1000,delay:260,easing:'cubic-bezier(.16,1,.3,1)'}));
+ $$('[data-enter="result-atmosphere"]').forEach(el=>enter(el,{y:0,delay:180,duration:1400}));
  animateScene();
 }
 async function go(page,{replace=false,skipExit=false}={}){
@@ -624,7 +637,6 @@ async function go(page,{replace=false,skipExit=false}={}){
  if(page==='choice')startChoiceTimer();
  if(page==='qte')startQte();
  if(page==='gameplay')startPlayback();
- if(page==='result')animateCounters();
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
@@ -681,13 +693,11 @@ function startPlayback(){
  if(playbackPaused)playAnimation.pause();
  playAnimation.finished.then(()=>{if(currentPage==='gameplay')go('choice');}).catch(()=>{});
 }
-function animateCounters(){
- $$('[data-count]').forEach(el=>{
-  const target=Number(el.dataset.count);if(motionPreference.matches){el.textContent=String(target);return;}
-  const start=performance.now()+320;
-  function tick(now){if(currentPage!=='result'||!el.isConnected)return;const t=Math.max(0,Math.min(1,(now-start)/1100));el.textContent=String(Math.round(target*(1-(1-t)**4)));if(t<1)requestAnimationFrame(tick);}
-  requestAnimationFrame(tick);
- });
+function continueAfterResult(){
+ if(currentPage!=='result'||screen.getAttribute('aria-busy')==='true')return;
+ if(selectedChapter===CHAPTER_PREVIEWS.length-1){go('home');return;}
+ selectedChapter+=1;playbackStoryNode=null;playbackPaused=false;chapterRailLeft=0;
+ go('gameplay');
 }
 function toast(message){
  const el=$('#toast');el.innerHTML=icon('check')+`<span>${message}</span>`;
@@ -724,6 +734,7 @@ function saveAction(index){
 function deleteAction(index){openModal({title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
 function showLogout(){openModal({title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}
 const actions={
+ 'result-next':continueAfterResult,
  'logout':()=>{if(signedIn)showLogout();else openModal({title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
@@ -816,7 +827,7 @@ document.addEventListener('keydown',event=>{
  if(currentPage==='qte'&&event.key.toLowerCase()==='e')qteHit();
  if(event.key.toLowerCase()==='r'&&!event.target.closest('button'))replay();
 });
-function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='result')animateCounters();if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
+function replay(){if(['home','cover','splash'].includes(currentPage)){uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();}else uiSound.play('transition',{level:.7});if(currentPage==='chapters')disposeChapterControls();cancelPageMotion();const image=scene.querySelector(':scope > img');if(image)image.style.transform='scale(1)';screen.innerHTML=renders[currentPage]();enterPage();bindPageControls();if(currentPage==='choice')startChoiceTimer();if(currentPage==='qte')startQte();if(currentPage==='gameplay')startPlayback();if(currentPage==='exit')showExit();if(currentPage==='logout')showLogout();if(sceneKey==='wall')scene.querySelector('iframe')?.contentWindow.location.reload();}
 $('#review-pages').innerHTML=pages.map(([id,name],i)=>`<button data-route="${id}"><small>${String(i+1).padStart(2,'0')}</small>${name}</button>`).join('');
 $('#review-toggle').addEventListener('click',()=>{const p=$('#review-panel');p.hidden=!p.hidden;$('#review-toggle').setAttribute('aria-expanded',String(!p.hidden));if(!p.hidden)enter(p,{x:8,y:8,duration:260});});
 $('#review-close').addEventListener('click',()=>{$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');});
