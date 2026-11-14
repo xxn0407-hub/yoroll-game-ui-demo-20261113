@@ -471,9 +471,24 @@
     {
       "id": "choice",
       "name": "限时选择",
-      "kind": "补充动效示例",
-      "motion": "问题先出现，两项选择以 70ms 错峰入场；确认后轻亮反馈，再衔接 QTE。",
-      "interaction": "16s 倒计时可暂停；按 1/2 或点击选择。"
+      "kind": "用户提供原版 UI",
+      "motion": "问题先出现，分隔线随后落位，两个胶囊选项以 65ms 错峰入场；悬停轻提并提亮，确认后当前选项发光、另一项淡出，再衔接 QTE。",
+      "interaction": "保留 16s 倒计时与 1/2 快捷键；倒计时整合进分隔线，暂停入口移至页脚。重复确认只触发一次。",
+      "reference": "comparison/before/11-choice-user.png",
+      "referenceRevision": "choice-reference-20261114",
+      "layout": {
+        "questionPx": 28,
+        "panelWidthPx": 1120,
+        "bottomInsetPx": 124,
+        "buttonSizePx": [
+          196,
+          52
+        ],
+        "buttonGapPx": 112,
+        "buttonLabelPx": 20,
+        "buttonOutline": "Open capsule with a bottom-center gap and circular bead.",
+        "divider": "Thin symmetric line with center bead."
+      }
     },
     {
       "id": "qte",
