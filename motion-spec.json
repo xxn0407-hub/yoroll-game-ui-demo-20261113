@@ -50,25 +50,25 @@
         "delay": 180,
         "duration": 380,
         "translateY": 4,
-        "blur": 0.8
+        "blur": 0
       },
       "bodyLines": {
         "delay": 230,
         "stagger": 45,
         "duration": 440,
         "translateY": 6,
-        "blur": 1.2
+        "blur": 0
       },
       "buttons": {
         "delay": 310,
         "stagger": 45,
         "duration": 420,
         "translateY": 6,
-        "blur": 1
+        "blur": 0
       },
       "entryComplete": 775,
       "reducedMotion": "Immediate static layout without unfold or content delay",
-      "revision": "unified-dialogs-quick-close-20261115",
+      "revision": "crisp-dialog-motion-20261115",
       "close": {
         "contentFade": 110,
         "surfaceDelay": 80,
@@ -85,7 +85,8 @@
         "reducedMotion": "Immediate close without motion or content delay",
         "sharedTimingConfiguration": "MODAL_CLOSE_TIMING",
         "normalTotal": 360,
-        "earlyCloseTotal": 280
+        "earlyCloseTotal": 280,
+        "contentBlur": 0
       },
       "kinds": {
         "exit": "退出故事",
@@ -325,7 +326,7 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "global-dialog-backdrop-20261115",
+      "revision": "crisp-dialog-motion-20261115",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
         "Full-page dimmed backdrop with a 10px blur behind the confirmation",
@@ -358,7 +359,8 @@
         "actionBackdropFilter": "none",
         "bannerFillMaximumAlpha": 0.12,
         "timing": "Existing common.modal entry and close timings; no added blur delay",
-        "restore": "Backdrop layer is removed on close; base page filters remain unchanged"
+        "restore": "Backdrop layer is removed on close; base page filters remain unchanged",
+        "foregroundBlurDuringEntryAndClosePx": 0
       }
     },
     "homeMenuFocus": {

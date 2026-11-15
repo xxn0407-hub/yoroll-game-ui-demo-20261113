@@ -897,9 +897,9 @@ function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',d
  modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" data-dialog-kind="${kind}" data-destructive="${danger}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><h2 class="modal-caption" id="modal-title"><span class="modal-caption-label">提示</span></h2><p id="modal-message"><span>${title}</span><span>${message}</span></p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm','btn-small btn-primary')}</div></section></div>`;
  screen.inert=true;
  enter($('.modal-scrim'),{y:0,duration:220});
- enter($('.modal-caption-label'),{y:unit(4),blur:unit(.8),delay:180,duration:380});
- $$('#modal-message>span').forEach((el,index)=>enter(el,{y:unit(6),blur:unit(1.2),delay:230+index*45,duration:440}));
- $$('.modal-actions>button').forEach((el,index)=>enter(el,{y:unit(6),blur:unit(1),delay:310+index*45,duration:420}));
+ enter($('.modal-caption-label'),{y:unit(4),delay:180,duration:380});
+ $$('#modal-message>span').forEach((el,index)=>enter(el,{y:unit(6),delay:230+index*45,duration:440}));
+ $$('.modal-actions>button').forEach((el,index)=>enter(el,{y:unit(6),delay:310+index*45,duration:420}));
  $('.modal [data-action="modal-cancel"]').focus({preventScroll:true});
 }
 function clearModalEntryMotion(node){
@@ -959,7 +959,7 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
  modalCloseMotion=record;
  node.dataset.closing='true';
  for(const {element,opacity,transform,filter} of content){
-  const animation=element.animate([{opacity,transform,filter},{opacity:0,transform:`translate3d(0,${unit(-3)}px,0)`,filter:`blur(${unit(1)}px)`}],{duration:MODAL_CLOSE_TIMING.content,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  const animation=element.animate([{opacity,transform,filter},{opacity:0,transform:`translate3d(0,${unit(-3)}px,0)`,filter:'none'}],{duration:MODAL_CLOSE_TIMING.content,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
   animation.finished.catch(()=>{});
   record.animations.push(animation);
  }
