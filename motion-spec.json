@@ -326,11 +326,11 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "crisp-dialog-motion-20261115",
+      "revision": "lighter-dialog-band-20261115",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
         "Full-page dimmed backdrop with a 10px blur behind the confirmation",
-        "Unblurred banner with approximately 12% center fill and transparent sides",
+        "Lighter translucent cool-gray banner with approximately 18% center fill and transparent sides",
         "Crisp foreground text and capsule buttons without additional backdrop blur",
         "Shared 1px header and bottom rule with 30% center alpha and transparent ends"
       ],
@@ -357,10 +357,11 @@
         "scrim": "radial-gradient(ellipse at 50% 48%,#03070a4d 18%,#03070a80 100%),#03070a40",
         "bannerBackdropFilter": "none",
         "actionBackdropFilter": "none",
-        "bannerFillMaximumAlpha": 0.12,
+        "bannerFillMaximumAlpha": 0.18,
         "timing": "Existing common.modal entry and close timings; no added blur delay",
         "restore": "Backdrop layer is removed on close; base page filters remain unchanged",
-        "foregroundBlurDuringEntryAndClosePx": 0
+        "foregroundBlurDuringEntryAndClosePx": 0,
+        "bannerFill": "linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00)"
       }
     },
     "homeMenuFocus": {

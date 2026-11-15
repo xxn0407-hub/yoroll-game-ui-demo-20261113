@@ -515,7 +515,7 @@
   position:absolute;
   z-index:-1;
   inset:0;
-  background:linear-gradient(90deg,#14212b00,#14212b0d 25%,#1d303b1f 50%,#14212b0d 75%,#14212b00);
+  background:linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00);
   backdrop-filter:none;
   -webkit-backdrop-filter:none;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
