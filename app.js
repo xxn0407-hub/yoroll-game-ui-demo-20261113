@@ -59,7 +59,8 @@ let playbackStoryNode = null;
 let qteDone = false;
 let audioMuted = uiSound.isMuted();
 let signedIn = true;
-let savedToastAnimation;
+let toastMotion = null;
+const TOAST_MOTION = Object.freeze({duration:2600,surfaceEnter:440,contentDelay:140,contentEnter:280,contentExitStart:2050,contentExit:170,surfaceExitStart:2140});
 const saveTimestamp=()=>{const date=new Date(),part=value=>String(value).padStart(2,'0');return `${date.getFullYear()}-${part(date.getMonth()+1)}-${part(date.getDate())} ${part(date.getHours())}:${part(date.getMinutes())}`;};
 const initialSlots = [ {chapter:'第 1 章',scene:'race-start-2',date:saveTimestamp(),progress:22},null,null ];
 const slots = initialSlots.map(v=>v?{...v}:null);
@@ -885,9 +886,60 @@ function startGameoverSound(){
 }
 document.addEventListener('ui-audio-state',tryGameoverSound);
 function toast(message){
- const el=$('#toast');el.innerHTML=`<span class="toast-mark" aria-hidden="true"></span><span class="toast-copy">${message}</span>`;
- savedToastAnimation?.cancel();
- savedToastAnimation=el.animate([{opacity:0,transform:'translateY(-8px)',offset:0},{opacity:1,transform:'translateY(0)',offset:.12},{opacity:1,transform:'translateY(0)',offset:.78},{opacity:0,transform:'translateY(-4px)',offset:1}],{duration:2600,fill:'both',easing:'ease'});
+ const el=$('#toast'),wasVisible=el.dataset.toastActive==='true';
+ if(!el.querySelector('.toast-material'))el.innerHTML='<span class="toast-material" aria-hidden="true"></span><span class="toast-edge" aria-hidden="true"></span><span class="toast-content"><span class="toast-mark" aria-hidden="true"></span><span class="toast-copy"></span></span>';
+ const material=el.querySelector('.toast-material'),edge=el.querySelector('.toast-edge'),content=el.querySelector('.toast-content'),copy=el.querySelector('.toast-copy');
+ // Capture interrupted entry/closing before cancelling, so the background resumes in place.
+ const materialPose=getComputedStyle(material),edgePose=getComputedStyle(edge),contentPose=getComputedStyle(content);
+ const startMaterial={opacity:wasVisible?materialPose.opacity:0,maskSize:wasVisible?materialPose.maskSize:'4% 100%'};
+ const startEdge={opacity:wasVisible?edgePose.opacity:0,transform:wasVisible?edgePose.transform:'scaleX(.04)'};
+ const keepCopy=wasVisible&&copy.textContent===message&&Number(contentPose.opacity)>.5;
+ const startContent={opacity:keepCopy?contentPose.opacity:0,transform:keepCopy?contentPose.transform:`translate3d(0,${unit(3)}px,0)`};
+ toastMotion?.cancel();
+ copy.textContent=message;
+ el.style.opacity='1';el.dataset.toastActive='true';
+ const motion={animations:[],cancelled:false,cancel(){this.cancelled=true;this.animations.forEach(animation=>animation.cancel());}};
+ toastMotion=motion;
+ const total=TOAST_MOTION.duration,offset=ms=>ms/total;
+ const enterEase='cubic-bezier(.22,.61,.36,1)',exitEase='cubic-bezier(.4,0,.2,1)';
+ const add=(element,frames)=>{
+  const animation=element.animate(frames,{duration:total,fill:'both',easing:'linear'});
+  motion.animations.push(animation);
+ };
+ if(motionPreference.matches){
+  const still=pose=>[{...pose,offset:0},{...pose,offset:1}];
+  add(material,still({opacity:1,maskSize:'100% 100%'}));
+  add(edge,still({opacity:1,transform:'scaleX(1)'}));
+  add(content,still({opacity:1,transform:'none'}));
+ }else{
+  add(material,[
+   {...startMaterial,offset:0,easing:enterEase},
+   {opacity:1,maskSize:'100% 100%',offset:offset(TOAST_MOTION.surfaceEnter)},
+   {opacity:1,maskSize:'100% 100%',offset:offset(TOAST_MOTION.surfaceExitStart),easing:exitEase},
+   {opacity:0,maskSize:'4% 100%',offset:1}
+  ]);
+  add(edge,[
+   {...startEdge,offset:0,easing:enterEase},
+   {opacity:1,transform:'scaleX(1)',offset:offset(TOAST_MOTION.surfaceEnter)},
+   {opacity:1,transform:'scaleX(1)',offset:offset(TOAST_MOTION.surfaceExitStart),easing:exitEase},
+   {opacity:0,transform:'scaleX(.04)',offset:1}
+  ]);
+  const delay=keepCopy?0:TOAST_MOTION.contentDelay;
+  const copyFrames=[{...startContent,offset:0,easing:enterEase}];
+  if(delay)copyFrames.push({...startContent,offset:offset(delay),easing:enterEase});
+  copyFrames.push(
+   {opacity:1,transform:'translate3d(0,0,0)',offset:offset(delay+TOAST_MOTION.contentEnter)},
+   {opacity:1,transform:'translate3d(0,0,0)',offset:offset(TOAST_MOTION.contentExitStart),easing:exitEase},
+   {opacity:0,transform:`translate3d(0,${unit(-2)}px,0)`,offset:offset(TOAST_MOTION.contentExitStart+TOAST_MOTION.contentExit)},
+   {opacity:0,transform:`translate3d(0,${unit(-2)}px,0)`,offset:1}
+  );
+  add(content,copyFrames);
+ }
+ Promise.all(motion.animations.map(animation=>animation.finished)).then(()=>{
+  if(toastMotion!==motion||motion.cancelled)return;
+  el.style.opacity='0';el.dataset.toastActive='false';
+  motion.cancel();toastMotion=null;
+ }).catch(()=>{});
 }
 function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',danger=false,kind='confirm'}){
  closeModal(true);

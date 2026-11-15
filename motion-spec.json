@@ -336,7 +336,7 @@
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
       "modalMotion": "六类确认共用开合：入场背景 700ms 从中间展开、文字按钮错峰浮现；关闭内容 110ms 淡出，背景提前到 80ms 开始收拢，整体约 360ms 完成，遮罩在 160ms 开始淡出。",
-      "toast": "Top-centered feathered notification strip with fine edge light and a small neutral star; no enclosing capsule; 108px reference inset and existing 2600ms timing",
+      "toast": "Top-centered feathered strip: background and fine edges unfold first, copy follows; copy fades before the background folds inward; existing 2600ms lifetime",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
       "authPageReviewed": false,
@@ -363,7 +363,7 @@
         "foregroundBlurDuringEntryAndClosePx": 0,
         "bannerFill": "linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00)"
       },
-      "toastRevision": "toast-atmospheric-strip-20261115"
+      "toastRevision": "toast-layered-motion-20261115"
     },
     "homeMenuFocus": {
       "revision": "menu-highlight-motion-20261115",
@@ -416,33 +416,14 @@
       "reducedMotion": "Immediate state change with no transition or delay"
     },
     "toast": {
-      "revision": "toast-atmospheric-strip-20261115",
-      "scope": "All operation feedback uses the single shared toast function and container",
+      "revision": "toast-layered-motion-20261115",
+      "scope": "Shared notifications persist through page entry and do not use the page-motion cancellation queue",
       "anchor": "top center",
       "referenceTopInset": 108,
       "minimumTopInset": 16,
       "horizontalCenter": "50% with -50% translation",
       "duration": 2600,
-      "offsets": [
-        0,
-        0.12,
-        0.78,
-        1
-      ],
-      "opacity": [
-        0,
-        1,
-        1,
-        0
-      ],
-      "translateY": [
-        -8,
-        0,
-        0,
-        -4
-      ],
-      "easing": "ease",
-      "repeatedFeedback": "Cancel the prior animation and replace the message in the same container",
+      "repeatedFeedback": "Resume from the currently rendered background pose; keep visible identical copy; cancelled completion cannot hide the replacement",
       "pointerEvents": "none",
       "accessibility": "role=status and aria-live=polite; no focus change",
       "materialTypographyAndSounds": "Notification material redesigned; typography scale and sounds preserved",
@@ -461,7 +442,35 @@
         "fontSize": 17,
         "letterSpacing": ".045em",
         "foreground": "Sharp text; no foreground blur"
-      }
+      },
+      "surface": {
+        "property": "mask-size",
+        "from": "4% 100%",
+        "to": "100% 100%",
+        "enterMs": 440,
+        "enterEasing": "cubic-bezier(.22,.61,.36,1)",
+        "exitStartMs": 2140,
+        "exitMs": 460,
+        "exitEasing": "cubic-bezier(.4,0,.2,1)",
+        "preserveBackdropSampling": true
+      },
+      "edge": {
+        "property": "scaleX and opacity",
+        "from": 0.04,
+        "to": 1,
+        "synchronizedWith": "surface"
+      },
+      "content": {
+        "enterDelayMs": 140,
+        "enterMs": 280,
+        "enterTranslateY": 3,
+        "exitStartMs": 2050,
+        "exitMs": 170,
+        "exitTranslateY": -2,
+        "blur": 0
+      },
+      "rootMotion": "Fixed top-center position; opacity is cleared only after all layers finish",
+      "reducedMotion": "Show static fully open layers immediately for the same lifetime, then hide; no unfold or translation"
     }
   },
   "pages": [

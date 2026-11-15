@@ -687,8 +687,7 @@
   color:#e1e7df;
   box-shadow:none;
 }
-.toast::before{
-  content:"";
+.toast-material{
   position:absolute;
   z-index:-1;
   inset:0 calc(var(--p)*-18);
@@ -697,16 +696,21 @@
   -webkit-backdrop-filter:blur(10px);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);
+  -webkit-mask-size:4% 100%;mask-size:4% 100%;
+  -webkit-mask-position:center;mask-position:center;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  opacity:0;
   pointer-events:none;
 }
-.toast::after{
-  content:"";
+.toast-edge{
   position:absolute;
   inset:0 calc(var(--p)*-18);
   background:linear-gradient(90deg,transparent 8%,#dce8df17 32%,#edf2e542 50%,#dce8df17 68%,transparent 92%) top / 100% 1px no-repeat,
              linear-gradient(90deg,transparent 8%,#d3e1df12 32%,#e1e9dc2e 50%,#d3e1df12 68%,transparent 92%) bottom / 100% 1px no-repeat;
+  opacity:0;transform:scaleX(.04);transform-origin:center;
   pointer-events:none;
 }
+.toast-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:inherit;min-width:0;opacity:0;}
 .toast-mark{
   flex:0 0 calc(var(--p)*10);
   width:calc(var(--p)*10);height:calc(var(--p)*10);
