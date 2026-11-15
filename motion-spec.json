@@ -790,15 +790,17 @@
         "menuExitMs": 160,
         "labelChangeMs": 240,
         "affects": "Demonstration playback timeline only; UI animations, audio and timed choices remain independent",
-        "appearanceRevision": "playback-speed-light-menu-20261115",
+        "appearanceRevision": "speed-option-glass-20261115",
         "appearance": {
-          "surface": "Translucent cool-gray tint with feathered sides; no enclosing rounded frame",
-          "width": 150,
-          "rowHeight": 38,
+          "surface": "No enclosing panel; four independent dark glass capsule buttons",
+          "width": 130,
+          "rowHeight": 34,
+          "rowGap": 6,
           "rowFont": 16,
-          "surfaceBlurPx": 14,
-          "selected": "Bright label and restrained pale-gold check; no solid row fill",
-          "hoverAndKeyboardFocus": "Soft local light with a tapered hairline",
+          "surfaceBlurPx": 0,
+          "optionBlurPx": 12,
+          "selected": "Restrained silver inner-rim light, brighter edge and pale-gold check",
+          "hoverAndKeyboardFocus": "Subtle brighter border and local glass light; no extra focus outline",
           "reducedMotion": "Static light without transitions"
         }
       }
