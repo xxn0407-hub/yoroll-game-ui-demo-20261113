@@ -325,14 +325,13 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "unified-dialogs-quick-close-20261115",
+      "revision": "global-dialog-backdrop-20261115",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
-        "Low-opacity frosted band; maximum fill alpha 20%, local blur 16px",
-        "Both sides feather through 22% of viewport width to full transparency",
-        "Fine fading header lines and subtle header fill",
-        "Clear dimmed scene beyond the banner",
-        "Shared 1px header and bottom rule; identical gradient with 30% center alpha and transparent ends"
+        "Full-page dimmed backdrop with a 10px blur behind the confirmation",
+        "Unblurred banner with approximately 12% center fill and transparent sides",
+        "Crisp foreground text and capsule buttons without additional backdrop blur",
+        "Shared 1px header and bottom rule with 30% center alpha and transparent ends"
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
       "modalMotion": "六类确认共用开合：入场背景 700ms 从中间展开、文字按钮错峰浮现；关闭内容 110ms 淡出，背景提前到 80ms 开始收拢，整体约 360ms 完成，遮罩在 160ms 开始淡出。",
@@ -350,7 +349,17 @@
         "save-switch": "切换存档",
         "save-delete": "删除存档"
       },
-      "confirmButton": "All six confirmation types share the existing glass capsule and breathing highlight"
+      "confirmButton": "All six confirmation types share the existing glass capsule and breathing highlight",
+      "dialogBackdrop": {
+        "scope": "Entire game page behind the modal; foreground remains sharp",
+        "backdropBlurPx": 10,
+        "scrim": "radial-gradient(ellipse at 50% 48%,#03070a4d 18%,#03070a80 100%),#03070a40",
+        "bannerBackdropFilter": "none",
+        "actionBackdropFilter": "none",
+        "bannerFillMaximumAlpha": 0.12,
+        "timing": "Existing common.modal entry and close timings; no added blur delay",
+        "restore": "Backdrop layer is removed on close; base page filters remain unchanged"
+      }
     },
     "homeMenuFocus": {
       "revision": "menu-highlight-motion-20261115",

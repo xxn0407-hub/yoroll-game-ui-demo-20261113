@@ -491,9 +491,9 @@
 
 /* Reference hierarchy: one prompt header, body copy and capsule actions. */
 .modal-scrim{
-  background:radial-gradient(ellipse at 50% 48%,#03070a24 18%,#03070a85 100%),#03070a38;
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
+  background:radial-gradient(ellipse at 50% 48%,#03070a4d 18%,#03070a80 100%),#03070a40;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
 }
 .modal{
   --dialog-edge-light:linear-gradient(90deg,transparent 6%,#dce8dd26 32%,#edf2e54d 50%,#dce8dd26 68%,transparent 94%);
@@ -515,9 +515,9 @@
   position:absolute;
   z-index:-1;
   inset:0;
-  background:linear-gradient(90deg,#18252a00,#30424826 25%,#4a5c6233 50%,#30424826 75%,#18252a00);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  background:linear-gradient(90deg,#14212b00,#14212b0d 25%,#1d303b1f 50%,#14212b0d 75%,#14212b00);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
   mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent),linear-gradient(180deg,transparent,#000 7%,#000);
   -webkit-mask-composite:source-in;
@@ -604,6 +604,8 @@
 .modal-actions .btn{
   flex:0 1 calc(var(--p)*264);
   border-radius:calc(var(--p)*24);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 .modal-actions [data-action="modal-cancel"]{background:transparent;border-color:#d4ded573;color:#e7ebe3;}
 .modal-actions [data-action="modal-cancel"]:hover{background:#e2e9df0d;border-color:#f1f2e9b3;}
