@@ -351,6 +351,56 @@
         "save-delete": "删除存档"
       },
       "confirmButton": "All six confirmation types share the existing glass capsule and breathing highlight"
+    },
+    "homeMenuFocus": {
+      "revision": "menu-highlight-motion-20261115",
+      "pages": [
+        "home",
+        "cover"
+      ],
+      "referenceGeometry": {
+        "fontSize": 25,
+        "rowHeight": 51,
+        "rowGap": 17,
+        "minimumWidth": 168,
+        "selectedTranslateX": 5
+      },
+      "edgeLight": {
+        "origin": "center",
+        "scaleX": [
+          0.18,
+          1
+        ],
+        "enterTransform": 420,
+        "enterFade": 240,
+        "enterBlur": 280,
+        "blurPx": [
+          1.2,
+          0
+        ],
+        "exitFade": 160,
+        "exitTransform": 240
+      },
+      "dot": {
+        "delay": 15,
+        "enterFade": 180,
+        "enterTransform": 280,
+        "scale": [
+          0.55,
+          1
+        ]
+      },
+      "label": {
+        "colorDelay": 25,
+        "colorDuration": 200,
+        "glowDelay": 45,
+        "glowDuration": 340
+      },
+      "inactiveColor": "#b5bcbb",
+      "primaryEntryColor": "#f3f1e9",
+      "activeColor": "#f7f6ee",
+      "keyboardFocus": "Same reveal, no added outline",
+      "reducedMotion": "Immediate state change with no transition or delay"
     }
   },
   "pages": [
