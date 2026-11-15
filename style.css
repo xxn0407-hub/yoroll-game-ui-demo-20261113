@@ -669,8 +669,10 @@
   .modal-scrim[data-closing="true"] .modal::before,.modal-scrim[data-closing="true"] .modal::after,
   .modal-scrim[data-closing="true"] .modal-caption::before,.modal-scrim[data-closing="true"] .modal-caption::after{animation:none;}
 }
-/* Toast timing, text, icon size and anchor are unchanged. */
+/* Shared operation feedback sits below the header, clear of bottom controls. */
 .toast{
+  top:max(16px,calc(var(--p)*108));
+  bottom:auto;
   isolation:isolate;
   border-color:#e1e8df26;
   border-radius:calc(var(--p)*32);

@@ -887,7 +887,7 @@ document.addEventListener('ui-audio-state',tryGameoverSound);
 function toast(message){
  const el=$('#toast');el.innerHTML=icon('check')+`<span>${message}</span>`;
  savedToastAnimation?.cancel();
- savedToastAnimation=el.animate([{opacity:0,transform:'translateY(8px)',offset:0},{opacity:1,transform:'translateY(0)',offset:.12},{opacity:1,transform:'translateY(0)',offset:.78},{opacity:0,transform:'translateY(-4px)',offset:1}],{duration:2600,fill:'both',easing:'ease'});
+ savedToastAnimation=el.animate([{opacity:0,transform:'translateY(-8px)',offset:0},{opacity:1,transform:'translateY(0)',offset:.12},{opacity:1,transform:'translateY(0)',offset:.78},{opacity:0,transform:'translateY(-4px)',offset:1}],{duration:2600,fill:'both',easing:'ease'});
 }
 function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',danger=false,kind='confirm'}){
  closeModal(true);

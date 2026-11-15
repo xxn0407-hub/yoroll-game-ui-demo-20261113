@@ -336,7 +336,7 @@
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
       "modalMotion": "六类确认共用开合：入场背景 700ms 从中间展开、文字按钮错峰浮现；关闭内容 110ms 淡出，背景提前到 80ms 开始收拢，整体约 360ms 完成，遮罩在 160ms 开始淡出。",
-      "toast": "Neutral frosted capsule with fine edge light; geometry and 2600ms animation retained",
+      "toast": "Top-centered frosted capsule, 108px reference inset with a 16px minimum; existing material and 2600ms timing retained",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
       "authPageReviewed": false,
@@ -362,7 +362,8 @@
         "restore": "Backdrop layer is removed on close; base page filters remain unchanged",
         "foregroundBlurDuringEntryAndClosePx": 0,
         "bannerFill": "linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00)"
-      }
+      },
+      "toastRevision": "toast-top-center-20261115"
     },
     "homeMenuFocus": {
       "revision": "menu-highlight-motion-20261115",
@@ -413,6 +414,38 @@
       "activeColor": "#f7f6ee",
       "keyboardFocus": "Same reveal, no added outline",
       "reducedMotion": "Immediate state change with no transition or delay"
+    },
+    "toast": {
+      "revision": "toast-top-center-20261115",
+      "scope": "All operation feedback uses the single shared toast function and container",
+      "anchor": "top center",
+      "referenceTopInset": 108,
+      "minimumTopInset": 16,
+      "horizontalCenter": "50% with -50% translation",
+      "duration": 2600,
+      "offsets": [
+        0,
+        0.12,
+        0.78,
+        1
+      ],
+      "opacity": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "translateY": [
+        -8,
+        0,
+        0,
+        -4
+      ],
+      "easing": "ease",
+      "repeatedFeedback": "Cancel the prior animation and replace the message in the same container",
+      "pointerEvents": "none",
+      "accessibility": "role=status and aria-live=polite; no focus change",
+      "materialTypographyAndSounds": "Preserved"
     }
   },
   "pages": [
