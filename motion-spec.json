@@ -731,7 +731,18 @@
         "menuEnterMs": 260,
         "menuExitMs": 160,
         "labelChangeMs": 240,
-        "affects": "Demonstration playback timeline only; UI animations, audio and timed choices remain independent"
+        "affects": "Demonstration playback timeline only; UI animations, audio and timed choices remain independent",
+        "appearanceRevision": "playback-speed-light-menu-20261115",
+        "appearance": {
+          "surface": "Translucent cool-gray tint with feathered sides; no enclosing rounded frame",
+          "width": 150,
+          "rowHeight": 38,
+          "rowFont": 16,
+          "surfaceBlurPx": 14,
+          "selected": "Bright label and restrained pale-gold check; no solid row fill",
+          "hoverAndKeyboardFocus": "Soft local light with a tapered hairline",
+          "reducedMotion": "Static light without transitions"
+        }
       }
     },
     {
