@@ -363,7 +363,7 @@
         "foregroundBlurDuringEntryAndClosePx": 0,
         "bannerFill": "linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00)"
       },
-      "toastRevision": "toast-layered-motion-20261115"
+      "toastRevision": "toast-neutral-surface-20261115"
     },
     "homeMenuFocus": {
       "revision": "menu-highlight-motion-20261115",
@@ -429,7 +429,7 @@
       "materialTypographyAndSounds": "Notification material redesigned; typography scale and sounds preserved",
       "appearance": {
         "reference": "Current approved Yoroll visual system; supplementary notification design",
-        "surface": "Feathered translucent cool-gray strip with no enclosing capsule or solid border",
+        "surface": "Uniform neutral-charcoal tint with a constant-height body; horizontal feathering only",
         "surfaceBlurPx": 10,
         "edgeLight": "Low-opacity top and bottom hairlines fading at both sides",
         "ornament": "10px pale-gold four-point star, hidden from assistive technology",
@@ -441,7 +441,10 @@
         "cornerRadius": 0,
         "fontSize": 17,
         "letterSpacing": ".045em",
-        "foreground": "Sharp text; no foreground blur"
+        "foreground": "Sharp text; no foreground blur",
+        "surfaceFill": "#20202070",
+        "centerHotspot": false,
+        "parallelTopAndBottom": true
       },
       "surface": {
         "property": "mask-size",
@@ -470,7 +473,8 @@
         "blur": 0
       },
       "rootMotion": "Fixed top-center position; opacity is cleared only after all layers finish",
-      "reducedMotion": "Show static fully open layers immediately for the same lifetime, then hide; no unfold or translation"
+      "reducedMotion": "Show static fully open layers immediately for the same lifetime, then hide; no unfold or translation",
+      "appearanceRevision": "toast-neutral-surface-20261115"
     }
   },
   "pages": [
