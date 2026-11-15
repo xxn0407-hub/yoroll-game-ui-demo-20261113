@@ -336,7 +336,7 @@
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
       "modalMotion": "六类确认共用开合：入场背景 700ms 从中间展开、文字按钮错峰浮现；关闭内容 110ms 淡出，背景提前到 80ms 开始收拢，整体约 360ms 完成，遮罩在 160ms 开始淡出。",
-      "toast": "Top-centered frosted capsule, 108px reference inset with a 16px minimum; existing material and 2600ms timing retained",
+      "toast": "Top-centered feathered notification strip with fine edge light and a small neutral star; no enclosing capsule; 108px reference inset and existing 2600ms timing",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
       "authPageReviewed": false,
@@ -363,7 +363,7 @@
         "foregroundBlurDuringEntryAndClosePx": 0,
         "bannerFill": "linear-gradient(90deg,#84949d00,#84949d1f 25%,#a4b1b92e 50%,#84949d1f 75%,#84949d00)"
       },
-      "toastRevision": "toast-top-center-20261115"
+      "toastRevision": "toast-atmospheric-strip-20261115"
     },
     "homeMenuFocus": {
       "revision": "menu-highlight-motion-20261115",
@@ -416,7 +416,7 @@
       "reducedMotion": "Immediate state change with no transition or delay"
     },
     "toast": {
-      "revision": "toast-top-center-20261115",
+      "revision": "toast-atmospheric-strip-20261115",
       "scope": "All operation feedback uses the single shared toast function and container",
       "anchor": "top center",
       "referenceTopInset": 108,
@@ -445,7 +445,23 @@
       "repeatedFeedback": "Cancel the prior animation and replace the message in the same container",
       "pointerEvents": "none",
       "accessibility": "role=status and aria-live=polite; no focus change",
-      "materialTypographyAndSounds": "Preserved"
+      "materialTypographyAndSounds": "Notification material redesigned; typography scale and sounds preserved",
+      "appearance": {
+        "reference": "Current approved Yoroll visual system; supplementary notification design",
+        "surface": "Feathered translucent cool-gray strip with no enclosing capsule or solid border",
+        "surfaceBlurPx": 10,
+        "edgeLight": "Low-opacity top and bottom hairlines fading at both sides",
+        "ornament": "10px pale-gold four-point star, hidden from assistive technology",
+        "minimumWidth": 300,
+        "padding": [
+          14,
+          46
+        ],
+        "cornerRadius": 0,
+        "fontSize": 17,
+        "letterSpacing": ".045em",
+        "foreground": "Sharp text; no foreground blur"
+      }
     }
   },
   "pages": [

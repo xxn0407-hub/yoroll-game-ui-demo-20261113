@@ -674,19 +674,44 @@
   top:max(16px,calc(var(--p)*108));
   bottom:auto;
   isolation:isolate;
-  border-color:#e1e8df26;
-  border-radius:calc(var(--p)*32);
-  background:linear-gradient(180deg,#626a6d94,#28343bc4);
-  color:#e4e9df;
-  box-shadow:inset 0 1px 0 #edf2e51a;
+  justify-content:center;
+  min-width:calc(var(--p)*300);
+  max-width:calc(100% - var(--safe)*2);
+  gap:calc(var(--p)*12);
+  padding:calc(var(--p)*14) calc(var(--p)*46);
+  border:0;
+  border-radius:0;
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  color:#e1e7df;
+  box-shadow:none;
 }
 .toast::before{
   content:"";
   position:absolute;
-  inset:-1px;
-  border-radius:inherit;
-  background:linear-gradient(90deg,transparent 12%,#e8eee34d 50%,transparent 88%) left top / 100% 1px no-repeat,
-             linear-gradient(90deg,transparent 12%,#d3e1df26 50%,transparent 88%) left bottom / 100% 1px no-repeat;
+  z-index:-1;
+  inset:0 calc(var(--p)*-18);
+  background:linear-gradient(90deg,transparent,#1a2a35a3 24%,#3e505e9e 50%,#1a2a35a3 76%,transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);
   pointer-events:none;
 }
-.toast svg{color:#e4ead9;}
+.toast::after{
+  content:"";
+  position:absolute;
+  inset:0 calc(var(--p)*-18);
+  background:linear-gradient(90deg,transparent 8%,#dce8df17 32%,#edf2e542 50%,#dce8df17 68%,transparent 92%) top / 100% 1px no-repeat,
+             linear-gradient(90deg,transparent 8%,#d3e1df12 32%,#e1e9dc2e 50%,#d3e1df12 68%,transparent 92%) bottom / 100% 1px no-repeat;
+  pointer-events:none;
+}
+.toast-mark{
+  flex:0 0 calc(var(--p)*10);
+  width:calc(var(--p)*10);height:calc(var(--p)*10);
+  background:#d8c7a5;opacity:.8;
+  clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);
+  filter:drop-shadow(0 0 calc(var(--p)*4) #e7d9b366);
+}
+.toast-copy{min-width:0;text-align:center;letter-spacing:.045em;text-shadow:0 0 calc(var(--p)*12) #e3ece114;}
