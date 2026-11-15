@@ -46,6 +46,7 @@ let failureSoundRequest = null;
 let gameoverSoundRequest = null;
 let modalPreviousFocus = null;
 let modalCloseMotion = null;
+const MODAL_CLOSE_TIMING = Object.freeze({content:110,lead:80,surface:280,veil:200});
 let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
@@ -888,12 +889,12 @@ function toast(message){
  savedToastAnimation?.cancel();
  savedToastAnimation=el.animate([{opacity:0,transform:'translateY(8px)',offset:0},{opacity:1,transform:'translateY(0)',offset:.12},{opacity:1,transform:'translateY(0)',offset:.78},{opacity:0,transform:'translateY(-4px)',offset:1}],{duration:2600,fill:'both',easing:'ease'});
 }
-function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',danger=false}){
+function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',danger=false,kind='confirm'}){
  closeModal(true);
  uiSound.play('open',{level:.8});
  modalPreviousFocus=document.activeElement;
  confirmAction=onConfirm;
- modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><h2 class="modal-caption" id="modal-title"><span class="modal-caption-label">提示</span></h2><p id="modal-message"><span>${title}</span><span>${message}</span></p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm',`btn-small ${danger?'':'btn-primary'}`)}</div></section></div>`;
+ modalRoot.innerHTML=`<div class="modal-scrim"><section class="modal" data-context="${eyebrow}" data-dialog-kind="${kind}" data-destructive="${danger}" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message"><h2 class="modal-caption" id="modal-title"><span class="modal-caption-label">提示</span></h2><p id="modal-message"><span>${title}</span><span>${message}</span></p><div class="modal-actions">${button('取消','modal-cancel','btn-small')}${button(confirm,'modal-confirm','btn-small btn-primary')}</div></section></div>`;
  screen.inert=true;
  enter($('.modal-scrim'),{y:0,duration:220});
  enter($('.modal-caption-label'),{y:unit(4),blur:unit(.8),delay:180,duration:380});
@@ -939,7 +940,7 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
   const style=getComputedStyle(element);
   return {element,opacity:style.opacity,transform:style.transform,filter:style.filter};
  });
- const foldDelay=content.some(item=>Number(item.opacity)>.01)?140:0;
+ const foldDelay=content.some(item=>Number(item.opacity)>.01)?MODAL_CLOSE_TIMING.lead:0;
  const variables={
   '--dialog-fold-mask':surface.maskSize,
   '--dialog-fold-surface-opacity':surface.opacity,
@@ -948,7 +949,9 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
   '--dialog-fold-header-transform':header.transform,
   '--dialog-fold-header-opacity':header.opacity,
   '--dialog-fold-dots-opacity':dots.opacity,
-  '--dialog-fold-delay':`${foldDelay}ms`
+  '--dialog-fold-delay':`${foldDelay}ms`,
+  '--dialog-fold-duration':`${MODAL_CLOSE_TIMING.surface}ms`,
+  '--dialog-content-exit-duration':`${MODAL_CLOSE_TIMING.content}ms`
  };
  for(const [name,value] of Object.entries(variables))panel.style.setProperty(name,value);
  const veilOpacity=getComputedStyle(node).opacity;
@@ -956,11 +959,11 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
  modalCloseMotion=record;
  node.dataset.closing='true';
  for(const {element,opacity,transform,filter} of content){
-  const animation=element.animate([{opacity,transform,filter},{opacity:0,transform:`translate3d(0,${unit(-3)}px,0)`,filter:`blur(${unit(1)}px)`}],{duration:160,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  const animation=element.animate([{opacity,transform,filter},{opacity:0,transform:`translate3d(0,${unit(-3)}px,0)`,filter:`blur(${unit(1)}px)`}],{duration:MODAL_CLOSE_TIMING.content,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
   animation.finished.catch(()=>{});
   record.animations.push(animation);
  }
- const veil=node.animate([{opacity:veilOpacity},{opacity:0}],{duration:260,delay:foldDelay+200,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+ const veil=node.animate([{opacity:veilOpacity},{opacity:0}],{duration:MODAL_CLOSE_TIMING.veil,delay:foldDelay+MODAL_CLOSE_TIMING.surface-MODAL_CLOSE_TIMING.veil,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
  record.animations.push(veil);
  record.promise=(async()=>{
   await veil.finished.catch(()=>{});
@@ -980,18 +983,18 @@ async function confirmModal(){
  const action=confirmAction;
  if(await closeModal(false,{silent:true,restoreFocus:false}))action();
 }
-function showExit(){openModal({title:'离开当前故事？',message:'当前进度已保存在本地。你可以随时回来继续。',confirm:'退出',eyebrow:'LEAVE STORY',onConfirm:()=>{go('splash');}});}
+function showExit(){openModal({kind:'exit',title:'离开当前故事？',message:'当前进度已保存在本地。你可以随时回来继续。',confirm:'退出',eyebrow:'LEAVE STORY',onConfirm:()=>{go('splash');}});}
 function saveAction(index){
- if(!slots[index])openModal({title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters');toast('新的本地演示存档已建立');}});
+ if(!slots[index])openModal({kind:'save-create',title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters');toast('新的本地演示存档已建立');}});
  else if(index===activeSlot){uiSound.play('click',{level:.75});toast('已在使用这个存档');}
- else openModal({title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();toast('已切换存档');}});
+ else openModal({kind:'save-switch',title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();toast('已切换存档');}});
 }
-function deleteAction(index){openModal({title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
-function showLogout(){openModal({title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}
+function deleteAction(index){openModal({kind:'save-delete',title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
+function showLogout(){openModal({kind:'logout',title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}
 const actions={
  'result-next':continueAfterResult,
  'failure-retry':()=>{if(currentPage!=='failure'||screen.getAttribute('aria-busy')==='true')return;playbackPaused=false;go('qte');},
- 'logout':()=>{if(signedIn)showLogout();else openModal({title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
+ 'logout':()=>{if(signedIn)showLogout();else openModal({kind:'login',title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
  'reset-settings':()=>{Object.assign(settingState,{master:100,video:100,sfx:100,music:100,language:'跟随系统'});audioMuted=false;applySoundLevels();uiSound.play('confirm');go('settings',{skipExit:true});toast('已恢复默认设置');},

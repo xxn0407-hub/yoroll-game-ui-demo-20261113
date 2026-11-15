@@ -23,7 +23,7 @@
     "modal": {
       "backdrop": 220,
       "panel": 700,
-      "exit": 600,
+      "exit": 360,
       "translateY": 0,
       "scale": [
         1,
@@ -68,22 +68,35 @@
       },
       "entryComplete": 775,
       "reducedMotion": "Immediate static layout without unfold or content delay",
-      "revision": "banner-fold-close-20261115",
+      "revision": "unified-dialogs-quick-close-20261115",
       "close": {
-        "contentFade": 160,
-        "surfaceDelay": 140,
-        "surfaceDuration": 460,
+        "contentFade": 110,
+        "surfaceDelay": 80,
+        "surfaceDuration": 280,
         "surfaceEasing": "cubic-bezier(.4,0,.2,1)",
         "surfaceTargetMask": "4% 100%, 100% 100%",
-        "veilFade": 260,
-        "veilDelay": 340,
+        "veilFade": 200,
+        "veilDelay": 160,
         "resumeFromCurrentRenderedState": true,
         "skipContentDelayIfNothingVisible": true,
         "coalesceRepeatedClose": true,
         "confirmAfterSuccessfulClose": true,
         "cancelStaleConfirmationOnForcedNavigation": true,
-        "reducedMotion": "Immediate close without motion or content delay"
-      }
+        "reducedMotion": "Immediate close without motion or content delay",
+        "sharedTimingConfiguration": "MODAL_CLOSE_TIMING",
+        "normalTotal": 360,
+        "earlyCloseTotal": 280
+      },
+      "kinds": {
+        "exit": "退出故事",
+        "logout": "退出登录",
+        "login": "登录提示",
+        "save-create": "新建存档",
+        "save-switch": "切换存档",
+        "save-delete": "删除存档"
+      },
+      "sharedTemplate": true,
+      "sharedConfirmButton": "btn-small btn-primary btn-glass"
     },
     "cover": {
       "duration": 3600,
@@ -312,7 +325,7 @@
       "disabledState": "Static light; native disabled interaction preserved"
     },
     "feedbackAppearance": {
-      "revision": "banner-fold-close-20261115",
+      "revision": "unified-dialogs-quick-close-20261115",
       "source": "User-provided delete-confirmation reference and previously captured original logout preview",
       "dialogMaterials": [
         "Low-opacity frosted band; maximum fill alpha 20%, local blur 16px",
@@ -322,13 +335,22 @@
         "Shared 1px header and bottom rule; identical gradient with 30% center alpha and transparent ends"
       ],
       "dialogGeometry": "1920x1080 reference: full-viewport width, about 264px high; 36px header band, 20px header/body; preserved 264x48px buttons with 18px labels and a 40px gap",
-      "modalMotion": "入场保持背景 700ms 向两侧展开、文字与按钮错峰浮现；关闭先用 160ms 淡出内容，再沿当前展开程度向中央收拢，约 600ms 收尾。确认操作在收拢完成后执行。",
+      "modalMotion": "六类确认共用开合：入场背景 700ms 从中间展开、文字按钮错峰浮现；关闭内容 110ms 淡出，背景提前到 80ms 开始收拢，整体约 360ms 完成，遮罩在 160ms 开始淡出。",
       "toast": "Neutral frosted capsule with fine edge light; geometry and 2600ms animation retained",
       "audio": "All sound calls and assets unchanged",
       "sourceToastCaptured": false,
       "authPageReviewed": false,
       "originalDeleteEntryClicked": false,
-      "dialogPresentation": "One prompt title, one two-line body block and centered capsule actions; no additional large title"
+      "dialogPresentation": "One prompt title, one two-line body block and centered capsule actions; no additional large title",
+      "dialogKinds": {
+        "exit": "退出故事",
+        "logout": "退出登录",
+        "login": "登录提示",
+        "save-create": "新建存档",
+        "save-switch": "切换存档",
+        "save-delete": "删除存档"
+      },
+      "confirmButton": "All six confirmation types share the existing glass capsule and breathing highlight"
     }
   },
   "pages": [

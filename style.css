@@ -586,13 +586,6 @@
 }
 .modal-actions [data-action="modal-cancel"]{background:transparent;border-color:#d4ded573;color:#e7ebe3;}
 .modal-actions [data-action="modal-cancel"]:hover{background:#e2e9df0d;border-color:#f1f2e9b3;}
-.modal-actions [data-action="modal-confirm"]:not(.btn-glass){
-  background:linear-gradient(180deg,#f4f9fc47,#cfdfe61a 48%,#e7f2f840);
-  color:#edf0e8;
-  border-color:#eff8fca1;
-  box-shadow:inset 0 calc(var(--p)*2) calc(var(--p)*7) #ffffff45,inset 0 calc(var(--p)*-2) calc(var(--p)*7) #ffffff2e;
-}
-.modal-actions [data-action="modal-confirm"]:not(.btn-glass):hover{border-color:#f4f6eac4;}
 @keyframes dialog-material-unfold{
   from{opacity:0;-webkit-mask-size:4% 100%,100% 100%;mask-size:4% 100%,100% 100%;}
   to{opacity:1;-webkit-mask-size:100% 100%,100% 100%;mask-size:100% 100%,100% 100%;}
@@ -603,10 +596,10 @@
 }
 @keyframes dialog-detail-appear{from{opacity:0;}to{opacity:.6;}}
 .modal-scrim[data-closing="true"]{pointer-events:none;}
-.modal-scrim[data-closing="true"] .modal::before{animation:dialog-material-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
-.modal-scrim[data-closing="true"] .modal::after{animation:dialog-edge-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
-.modal-scrim[data-closing="true"] .modal-caption::before{animation:dialog-header-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
-.modal-scrim[data-closing="true"] .modal-caption::after{animation:dialog-detail-disappear 160ms ease-out both;}
+.modal-scrim[data-closing="true"] .modal::before{animation:dialog-material-fold var(--dialog-fold-duration,280ms) cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,80ms) both;}
+.modal-scrim[data-closing="true"] .modal::after{animation:dialog-edge-fold var(--dialog-fold-duration,280ms) cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,80ms) both;}
+.modal-scrim[data-closing="true"] .modal-caption::before{animation:dialog-header-fold var(--dialog-fold-duration,280ms) cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,80ms) both;}
+.modal-scrim[data-closing="true"] .modal-caption::after{animation:dialog-detail-disappear var(--dialog-content-exit-duration,110ms) ease-out both;}
 @keyframes dialog-material-fold{
   from{opacity:var(--dialog-fold-surface-opacity,1);-webkit-mask-size:var(--dialog-fold-mask,100% 100%,100% 100%);mask-size:var(--dialog-fold-mask,100% 100%,100% 100%);}
   to{opacity:0;-webkit-mask-size:4% 100%,100% 100%;mask-size:4% 100%,100% 100%;}
