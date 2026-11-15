@@ -475,6 +475,7 @@
   -webkit-backdrop-filter:none;
 }
 .modal{
+  --dialog-edge-light:linear-gradient(90deg,transparent 6%,#dce8dd26 32%,#edf2e54d 50%,#dce8dd26 68%,transparent 94%);
   position:relative;
   isolation:isolate;
   width:100%;
@@ -516,7 +517,7 @@
   right:0;
   bottom:0;
   height:1px;
-  background:linear-gradient(90deg,transparent 4%,#dce8df66 28%,#edf3e8a6 50%,#dce8df66 72%,transparent 96%);
+  background:var(--dialog-edge-light);
   transform-origin:50% 50%;
   animation:dialog-line-unfold 700ms cubic-bezier(.22,.61,.36,1) both;
   pointer-events:none;
@@ -544,7 +545,7 @@
   position:absolute;
   z-index:-1;
   inset:0;
-  background:linear-gradient(90deg,transparent 6%,#dce8dd26 32%,#edf2e54d 50%,#dce8dd26 68%,transparent 94%) left top / 100% 1px no-repeat,
+  background:var(--dialog-edge-light) left top / 100% 1px no-repeat,
              linear-gradient(90deg,transparent 6%,#dce8dd1a 32%,#edf2e533 50%,#dce8dd1a 68%,transparent 94%) left bottom / 100% 1px no-repeat,
              linear-gradient(90deg,transparent 6%,#bdd0c30d 28%,#d1e0d31f 50%,#bdd0c30d 72%,transparent 94%);
   transform-origin:50% 50%;
@@ -601,8 +602,28 @@
   to{opacity:1;transform:scaleX(1);}
 }
 @keyframes dialog-detail-appear{from{opacity:0;}to{opacity:.6;}}
+.modal-scrim[data-closing="true"]{pointer-events:none;}
+.modal-scrim[data-closing="true"] .modal::before{animation:dialog-material-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
+.modal-scrim[data-closing="true"] .modal::after{animation:dialog-edge-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
+.modal-scrim[data-closing="true"] .modal-caption::before{animation:dialog-header-fold 460ms cubic-bezier(.4,0,.2,1) var(--dialog-fold-delay,140ms) both;}
+.modal-scrim[data-closing="true"] .modal-caption::after{animation:dialog-detail-disappear 160ms ease-out both;}
+@keyframes dialog-material-fold{
+  from{opacity:var(--dialog-fold-surface-opacity,1);-webkit-mask-size:var(--dialog-fold-mask,100% 100%,100% 100%);mask-size:var(--dialog-fold-mask,100% 100%,100% 100%);}
+  to{opacity:0;-webkit-mask-size:4% 100%,100% 100%;mask-size:4% 100%,100% 100%;}
+}
+@keyframes dialog-edge-fold{
+  from{opacity:var(--dialog-fold-edge-opacity,1);transform:var(--dialog-fold-edge-transform,scaleX(1));}
+  to{opacity:0;transform:scaleX(.04);}
+}
+@keyframes dialog-header-fold{
+  from{opacity:var(--dialog-fold-header-opacity,1);transform:var(--dialog-fold-header-transform,scaleX(1));}
+  to{opacity:0;transform:scaleX(.04);}
+}
+@keyframes dialog-detail-disappear{from{opacity:var(--dialog-fold-dots-opacity,.6);}to{opacity:0;}}
 @media(prefers-reduced-motion:reduce){
-  .modal::before,.modal::after,.modal-caption::before,.modal-caption::after{animation:none;}
+  .modal::before,.modal::after,.modal-caption::before,.modal-caption::after,
+  .modal-scrim[data-closing="true"] .modal::before,.modal-scrim[data-closing="true"] .modal::after,
+  .modal-scrim[data-closing="true"] .modal-caption::before,.modal-scrim[data-closing="true"] .modal-caption::after{animation:none;}
 }
 /* Toast timing, text, icon size and anchor are unchanged. */
 .toast{

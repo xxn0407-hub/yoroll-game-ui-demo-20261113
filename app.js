@@ -45,6 +45,7 @@ let resultSoundRequest = null;
 let failureSoundRequest = null;
 let gameoverSoundRequest = null;
 let modalPreviousFocus = null;
+let modalCloseMotion = null;
 let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
@@ -900,15 +901,84 @@ function openModal({title,message,confirm='确认',onConfirm,eyebrow='CONFIRM',d
  $$('.modal-actions>button').forEach((el,index)=>enter(el,{y:unit(6),blur:unit(1),delay:310+index*45,duration:420}));
  $('.modal [data-action="modal-cancel"]').focus({preventScroll:true});
 }
-async function closeModal(immediate=false){
- if(!modalRoot.firstElementChild){screen.inert=false;return;}
- if(!immediate)uiSound.play('back');
+function clearModalEntryMotion(node){
+ for(const animation of enterAnimations){
+  const target=animation.effect?.target;
+  if(target&&node.contains(target)){enterAnimations.delete(animation);animation.cancel();}
+ }
+}
+function cancelModalCloseMotion(){
+ const record=modalCloseMotion;
+ if(!record)return;
+ record.cancelled=true;
+ modalCloseMotion=null;
+ record.animations.forEach(animation=>animation.cancel());
+}
+async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
  const node=modalRoot.firstElementChild;
+ if(!node){cancelModalCloseMotion();screen.inert=false;return true;}
+ if(!immediate&&modalCloseMotion?.node===node)return modalCloseMotion.promise;
+ const previousFocus=modalPreviousFocus;
  confirmAction=null;
- if(!immediate&&!motionPreference.matches){const a=node.animate([{opacity:1},{opacity:0}],{duration:150,fill:'both'});await a.finished.catch(()=>{});}
- if(node.isConnected)node.remove();
- screen.inert=false;
- if(!immediate&&modalPreviousFocus?.isConnected)modalPreviousFocus.focus({preventScroll:true});
+ if(!immediate&&!silent)uiSound.play('back');
+ if(immediate||motionPreference.matches){
+  cancelModalCloseMotion();
+  node.remove();
+  clearModalEntryMotion(node);
+  screen.inert=false;
+  if(!immediate&&restoreFocus&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+  return true;
+ }
+ const panel=node.querySelector('.modal');
+ const caption=panel.querySelector('.modal-caption');
+ const surface=getComputedStyle(panel,'::before');
+ const edge=getComputedStyle(panel,'::after');
+ const header=getComputedStyle(caption,'::before');
+ const dots=getComputedStyle(caption,'::after');
+ const content=Array.from(panel.querySelectorAll('.modal-caption-label,#modal-message>span,.modal-actions>button')).map(element=>{
+  const style=getComputedStyle(element);
+  return {element,opacity:style.opacity,transform:style.transform,filter:style.filter};
+ });
+ const foldDelay=content.some(item=>Number(item.opacity)>.01)?140:0;
+ const variables={
+  '--dialog-fold-mask':surface.maskSize,
+  '--dialog-fold-surface-opacity':surface.opacity,
+  '--dialog-fold-edge-transform':edge.transform,
+  '--dialog-fold-edge-opacity':edge.opacity,
+  '--dialog-fold-header-transform':header.transform,
+  '--dialog-fold-header-opacity':header.opacity,
+  '--dialog-fold-dots-opacity':dots.opacity,
+  '--dialog-fold-delay':`${foldDelay}ms`
+ };
+ for(const [name,value] of Object.entries(variables))panel.style.setProperty(name,value);
+ const veilOpacity=getComputedStyle(node).opacity;
+ const record={node,animations:[],cancelled:false,promise:null};
+ modalCloseMotion=record;
+ node.dataset.closing='true';
+ for(const {element,opacity,transform,filter} of content){
+  const animation=element.animate([{opacity,transform,filter},{opacity:0,transform:`translate3d(0,${unit(-3)}px,0)`,filter:`blur(${unit(1)}px)`}],{duration:160,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  animation.finished.catch(()=>{});
+  record.animations.push(animation);
+ }
+ const veil=node.animate([{opacity:veilOpacity},{opacity:0}],{duration:260,delay:foldDelay+200,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+ record.animations.push(veil);
+ record.promise=(async()=>{
+  await veil.finished.catch(()=>{});
+  if(record.cancelled||modalCloseMotion!==record||modalRoot.firstElementChild!==node)return false;
+  node.remove();
+  clearModalEntryMotion(node);
+  modalCloseMotion=null;
+  record.animations.forEach(animation=>animation.cancel());
+  screen.inert=false;
+  if(restoreFocus&&previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+  return true;
+ })();
+ return record.promise;
+}
+async function confirmModal(){
+ if(!confirmAction)return;
+ const action=confirmAction;
+ if(await closeModal(false,{silent:true,restoreFocus:false}))action();
 }
 function showExit(){openModal({title:'离开当前故事？',message:'当前进度已保存在本地。你可以随时回来继续。',confirm:'退出',eyebrow:'LEAVE STORY',onConfirm:()=>{go('splash');}});}
 function saveAction(index){
@@ -926,7 +996,7 @@ const actions={
  'chapter-scroll-right':()=>chapterRailMove?.(1),
  'reset-settings':()=>{Object.assign(settingState,{master:100,video:100,sfx:100,music:100,language:'跟随系统'});audioMuted=false;applySoundLevels();uiSound.play('confirm');go('settings',{skipExit:true});toast('已恢复默认设置');},
  'modal-cancel':()=>closeModal(),
- 'modal-confirm':()=>{const fn=confirmAction;closeModal(true);fn?.();},
+ 'modal-confirm':confirmModal,
  'choice-0':()=>choose(0),'choice-1':()=>choose(1),
  'choice-timer':()=>{choicePaused=!choicePaused;if(choicePaused)choiceAnimation?.pause();else choiceAnimation?.play();const b=$('[data-action="choice-timer"]');b.textContent=choicePaused?'继续计时':'暂停计时';b.setAttribute('aria-pressed',String(choicePaused));},
  'qte-hit':qteHit,
@@ -991,6 +1061,7 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('keydown',event=>{
  if(modalRoot.firstElementChild){
+  if(modalRoot.firstElementChild.dataset.closing==='true'){if(['Escape','Tab','Enter',' '].includes(event.key))event.preventDefault();return;}
   if(event.key==='Escape'){event.preventDefault();closeModal();return;}
   if(event.key==='Tab'){const focusables=Array.from(modalRoot.querySelectorAll('button'));const first=focusables[0],last=focusables[focusables.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
   return;
