@@ -358,13 +358,13 @@
   "eventMap": {
     "hover": "Control focus",
     "click": "Ordinary activation",
-    "select": "Language selection and choice timeout",
+    "select": "Choice timeout",
     "back": "Modal cancel",
     "transition": "Page navigation",
     "open": "Modal opening",
     "confirm": "Confirmation and the quiet immediate QTE response.",
     "success": "Completion page entrance and explicit result replay; plays once with the title.",
-    "chapter": "Chapter activation and keyboard story selection; quiet low resonance with a continuous gentle tail.",
+    "chapter": "Chapter activation, keyboard story selection and language selection; quiet low resonance with a continuous gentle tail.",
     "locked": "Pointer intent over a locked story-node wrapper; the disabled button remains non-interactive.",
     "death": "Failure entrance, explicit failure replay and contextual death audition. Each action plays one finite cue.",
     "gameover": "Game-over entrance, explicit replay, and contextual ending audition; each plays one finite low resonance."
@@ -473,5 +473,13 @@
     "sourceManifest": "gameover-sound-source.json",
     "contextualAudition": true,
     "auditionControlLabel": "试听结束音"
+  },
+  "languageSelection": {
+    "revision": "language-soft-resonance-20261116",
+    "sourceCue": "chapter",
+    "level": 0.26,
+    "unchangedSelectionLevel": 0.16,
+    "throttleMs": 220,
+    "newAudioAsset": false
   }
 }

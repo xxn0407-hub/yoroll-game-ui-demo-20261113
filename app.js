@@ -52,7 +52,7 @@ let choicePaused = false;
 let playbackPaused = false;
 let playbackRate = 1;
 let playbackPosition = 0;
-let playbackSpeedMenuMotion = null;
+const optionsMenuMotions = new Map();
 const PLAYBACK_RATES = [1,1.25,1.5,2];
 const PLAYBACK_DURATION = 24000;
 let playbackStoryNode = null;
@@ -134,7 +134,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
 }
 function cancelPageMotion(){
  rememberPlaybackPosition();
- playbackSpeedMenuMotion=null;
+ optionsMenuMotions.clear();
  resultSoundRequest=null;delete frame.dataset.resultSound;
  failureSoundRequest=null;delete frame.dataset.failureSound;
  gameoverSoundRequest=null;delete frame.dataset.gameoverSound;
@@ -561,12 +561,12 @@ function settingsView(){
  <section class="settings-layout"><div class="setting-group">
  ${settingsRows.map(([key,label])=>`<label class="setting-row" data-enter="setting"><span>${label}</span><input class="range" type="range" min="0" max="100" value="${settingState[key]}" data-setting="${key}" style="--value:${settingState[key]}%" aria-label="${label}"><output>${settingState[key]}%</output></label>`).join('')}
  <div class="setting-row sound-setting" data-enter="setting"><span>全部声音</span><div class="sound-controls"><button class="sound-state-button" data-action="sound-toggle" aria-label="全部声音" aria-pressed="${!audioMuted}"><span class="sound-indicator"></span><span data-sound-label>${audioMuted?'关闭':'开启'}</span></button></div></div></div>
- <div class="setting-row language" data-enter="setting"><span>语言</span><div class="select-wrap"><button class="select-button" id="language-select" aria-expanded="false" aria-haspopup="listbox"><span>${settingState.language}</span>${icon('chevron')}</button><div class="select-options" id="language-options" role="listbox" aria-label="语言" hidden>${['跟随系统','简体中文','English','日本語'].map(label=>`<button role="option" aria-selected="${label===settingState.language}" data-language="${label}">${label}${label===settingState.language?icon('check'):''}</button>`).join('')}</div></div></div><p class="settings-note" data-enter="footer">主音量控制整体 · 音效与音乐分别调节</p></section>${footer(button('恢复默认','reset-settings','btn-small'),'<span><span class="keycap">Esc</span> 返回</span>')}`;
+ <div class="setting-row language" data-enter="setting"><span>语言</span><div class="select-wrap"><button class="select-button" id="language-select" aria-label="语言，当前${settingState.language}" aria-expanded="false" aria-haspopup="listbox" aria-controls="language-options"><span>${settingState.language}</span>${icon('chevron')}</button><div class="select-options glass-menu" id="language-options" role="listbox" aria-label="语言" hidden>${['跟随系统','简体中文','English','日本語'].map(label=>`<button type="button" role="option" tabindex="-1" aria-selected="${label===settingState.language}" data-language="${label}"><span>${label}</span><span class="glass-menu-check">${icon('check')}</span></button>`).join('')}</div></div></div><p class="settings-note" data-enter="footer">主音量控制整体 · 音效与音乐分别调节</p></section>${footer(button('恢复默认','reset-settings','btn-small'),'<span><span class="keycap">Esc</span> 返回</span>')}`;
 }
 function playbackLabel(){return playbackStoryNode?.chapter===selectedChapter?`片段 ${playbackStoryNode.id} · ${playbackStoryNode.name}`:activeChapter().name;}
 function hud({showPause=true}={}){const chapter=activeChapter(),fragment=playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null,labels=[`第 ${chapter.number} 章`,...(fragment?[`片段 ${fragment.id}`,fragment.name]:[chapter.name])];return `<div class="game-hud"><div class="hud-scene" data-enter="heading">${labels.map(label=>`<span class="hud-scene-label">${label}</span>`).join('<span class="hud-scene-separator" aria-hidden="true"></span>')}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div>${showPause?`<div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div>`:''}</div></div>`;}
 function playbackSpeedMarkup(){
- return `<div class="playback-speed"><button class="play-control playback-speed-toggle" id="playback-speed-toggle" data-action="playback-speed" aria-label="播放速度，当前 ${playbackRate} 倍" aria-haspopup="menu" aria-expanded="false" aria-controls="playback-speed-options"><span id="playback-speed-label">${playbackRate}×</span>${icon('chevron')}</button><div class="playback-speed-options" id="playback-speed-options" role="menu" aria-label="播放速度" hidden>${PLAYBACK_RATES.map(rate=>`<button type="button" role="menuitemradio" aria-checked="${rate===playbackRate}" data-speed-rate="${rate}" tabindex="-1"><span>${rate}×</span><span class="playback-speed-check">${icon('check')}</span></button>`).join('')}</div><span class="sr-only" id="playback-speed-announcement" role="status" aria-live="polite"></span></div>`;
+ return `<div class="playback-speed"><button class="play-control playback-speed-toggle" id="playback-speed-toggle" data-action="playback-speed" aria-label="播放速度，当前 ${playbackRate} 倍" aria-haspopup="menu" aria-expanded="false" aria-controls="playback-speed-options"><span id="playback-speed-label">${playbackRate}×</span>${icon('chevron')}</button><div class="playback-speed-options glass-menu" id="playback-speed-options" role="menu" aria-label="播放速度" hidden>${PLAYBACK_RATES.map(rate=>`<button type="button" role="menuitemradio" aria-checked="${rate===playbackRate}" data-speed-rate="${rate}" tabindex="-1"><span>${rate}×</span><span class="playback-speed-check glass-menu-check">${icon('check')}</span></button>`).join('')}</div><span class="sr-only" id="playback-speed-announcement" role="status" aria-live="polite"></span></div>`;
 }
 function gameplayView(){return `${hud({showPause:false})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><div class="playback-tools">${playbackSpeedMarkup()}<button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div>`;}
 function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${playbackLabel()}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
@@ -742,9 +742,7 @@ function bindPageControls(){
  applySoundLevels();
  $$('.range').forEach(input=>input.addEventListener('input',()=>{settingState[input.dataset.setting]=Number(input.value);input.style.setProperty('--value',`${input.value}%`);input.parentElement.querySelector('output').textContent=`${input.value}%`;applySoundLevels();uiSound.play('hover',{level:.45,throttle:180});}));
  $('#language-select')?.addEventListener('click',()=>{
-  const options=$('#language-options');options.hidden=!options.hidden;
-  $('#language-select').setAttribute('aria-expanded',String(!options.hidden));
-  if(!options.hidden){enter(options,{y:-7,duration:240});options.querySelector('[aria-selected="true"]')?.focus();}
+  setLanguageMenu($('#language-select').getAttribute('aria-expanded')!=='true');
  });
 }
 let choiceAnimation;
@@ -788,28 +786,34 @@ function rememberPlaybackPosition(){
  const position=Number(playAnimation.currentTime);
  playbackPosition=position>=PLAYBACK_DURATION?0:Math.max(0,position);
 }
-function setPlaybackSpeedMenu(open,{restoreFocus=false}={}){
- const menu=$('#playback-speed-options'),toggle=$('#playback-speed-toggle');
+function setOptionsMenu(menu,toggle,open,{restoreFocus=false,direction=1}={}){
  if(!menu||!toggle)return;
  const expanded=toggle.getAttribute('aria-expanded')==='true';
  if(open===expanded)return;
  const wasHidden=menu.hidden,pose=getComputedStyle(menu);
- const from={opacity:wasHidden?0:pose.opacity,transform:wasHidden?`translate3d(0,${unit(8)}px,0) scale(.98)`:pose.transform};
- playbackSpeedMenuMotion?.cancel();
+ const from={opacity:wasHidden?0:pose.opacity,transform:wasHidden?`translate3d(0,${unit(8)*direction}px,0) scale(.98)`:pose.transform};
+ optionsMenuMotions.get(menu)?.cancel();
  toggle.setAttribute('aria-expanded',String(open));
+ let motion;
  if(open){
   menu.hidden=false;menu.inert=false;
-  playbackSpeedMenuMotion=animate(menu,[from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
-  menu.querySelector('[aria-checked="true"]')?.focus({preventScroll:true});
+  motion=animate(menu,[from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
+  menu.querySelector('[aria-checked="true"],[aria-selected="true"]')?.focus({preventScroll:true});
  }else{
   menu.inert=true;
   if(restoreFocus)toggle.focus({preventScroll:true});
-  const hide=()=>{if(toggle.getAttribute('aria-expanded')==='false')menu.hidden=true;};
-  if(motionPreference.matches){hide();return;}
-  playbackSpeedMenuMotion=animate(menu,[from,{opacity:0,transform:`translate3d(0,${unit(5)}px,0) scale(.985)`}],{duration:160,easing:'cubic-bezier(.4,0,1,1)'});
-  playbackSpeedMenuMotion?.finished.then(hide).catch(()=>{});
+  motion=animate(menu,[from,{opacity:0,transform:`translate3d(0,${unit(5)*direction}px,0) scale(.985)`}],{duration:160,easing:'cubic-bezier(.4,0,1,1)'});
  }
+ if(!motion){optionsMenuMotions.delete(menu);menu.hidden=!open;return;}
+ optionsMenuMotions.set(menu,motion);
+ motion.finished.then(()=>{
+  if(optionsMenuMotions.get(menu)!==motion)return;
+  optionsMenuMotions.delete(menu);
+  if(!open&&toggle.getAttribute('aria-expanded')==='false')menu.hidden=true;
+ }).catch(()=>{});
 }
+function setPlaybackSpeedMenu(open,options={}){setOptionsMenu($('#playback-speed-options'),$('#playback-speed-toggle'),open,options);}
+function setLanguageMenu(open,options={}){setOptionsMenu($('#language-options'),$('#language-select'),open,{direction:-1,...options});}
 function setPlaybackRate(rate){
  if(currentPage!=='gameplay'||!PLAYBACK_RATES.includes(rate))return;
  const changed=rate!==playbackRate;
@@ -1095,10 +1099,12 @@ document.addEventListener('click',event=>{
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true')return;
  if(control.hasAttribute('data-route')){if(control.dataset.route===currentPage)uiSound.play('click',{level:.75});return;}
  if(control.matches('.chapter-card,.tree-node,.affinity-card,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
- uiSound.play(control.dataset.action==='modal-confirm'?'confirm':control.hasAttribute('data-language')?'select':'click',{level:.9});
+ if(control.hasAttribute('data-language')){uiSound.play('chapter',{level:control.dataset.language===settingState.language ? .16 : .26,throttle:220});return;}
+ uiSound.play(control.dataset.action==='modal-confirm'?'confirm':'click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
  if(!event.target.closest('.playback-speed'))setPlaybackSpeedMenu(false);
+ if(!event.target.closest('.select-wrap'))setLanguageMenu(false);
  const speedOption=event.target.closest('.playback-speed-options [data-speed-rate]');
  if(speedOption){setPlaybackRate(Number(speedOption.dataset.speedRate));return;}
  const affinityCard=event.target.closest('[data-affinity-index]');
@@ -1108,11 +1114,10 @@ document.addEventListener('click',event=>{
  const chapterCard=event.target.closest('.chapter-card[data-chapter-index]');
  if(chapterCard){if(performance.now()<ignoreChapterClickUntil){event.preventDefault();return;}selectChapter(Number(chapterCard.dataset.chapterIndex));return;}
  const route=event.target.closest('[data-route]');if(route){go(route.dataset.route);return;}
- const lang=event.target.closest('[data-language]');if(lang){settingState.language=lang.dataset.language;$('#language-select span').textContent=settingState.language;$('#language-options').hidden=true;$('#language-select').setAttribute('aria-expanded','false');$('#language-select').focus();$$('[data-language]').forEach(b=>b.setAttribute('aria-selected',String(b===lang)));return;}
+ const lang=event.target.closest('[data-language]');if(lang){settingState.language=lang.dataset.language;$('#language-select span').textContent=settingState.language;$('#language-select').setAttribute('aria-label',`语言，当前${settingState.language}`);$$('[data-language]').forEach(b=>b.setAttribute('aria-selected',String(b===lang)));setLanguageMenu(false,{restoreFocus:true});return;}
  const action=event.target.closest('[data-action]');if(action){const name=action.dataset.action;if(name.startsWith('save-'))saveAction(Number(name.slice(5)));else if(name.startsWith('delete-'))deleteAction(Number(name.slice(7)));else actions[name]?.();return;}
  if(event.target.classList.contains('modal-scrim'))closeModal();
  if(currentPage==='splash'&&!event.target.closest('.review-panel,.review-toggle'))go('home');
- if(!event.target.closest('.select-wrap')&&$('#language-options')){$('#language-options').hidden=true;$('#language-select').setAttribute('aria-expanded','false');}
 });
 document.addEventListener('keydown',event=>{
  if(modalRoot.firstElementChild){
@@ -1122,6 +1127,21 @@ document.addEventListener('keydown',event=>{
   return;
  }
  if(event.target.matches('input,select'))return;
+ if(currentPage==='settings'){
+  const toggle=$('#language-select'),menu=$('#language-options');
+  if(toggle?.getAttribute('aria-expanded')==='true'){
+   if(event.key==='Escape'){event.preventDefault();uiSound.play('back');setLanguageMenu(false,{restoreFocus:true});return;}
+   if(event.key==='Tab'){setLanguageMenu(false,{restoreFocus:true});return;}
+   if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
+    event.preventDefault();
+    const options=Array.from(menu.querySelectorAll('button')),index=options.indexOf(document.activeElement);
+    const next=event.key==='Home'?0:event.key==='End'?options.length-1:(index+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;
+    options[next].focus({preventScroll:true});return;
+   }
+  }else if(event.target===toggle&&['ArrowUp','ArrowDown'].includes(event.key)){
+   event.preventDefault();setLanguageMenu(true);return;
+  }
+ }
  if(currentPage==='gameplay'){
   const toggle=$('#playback-speed-toggle'),menu=$('#playback-speed-options');
   if(toggle?.getAttribute('aria-expanded')==='true'){
@@ -1140,7 +1160,7 @@ document.addEventListener('keydown',event=>{
  if(event.key==='Escape'){
   event.preventDefault();
   if(!$('#review-panel').hidden){uiSound.play('back');$('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');return;}
-  if($('#language-options')&&!$('#language-options').hidden){uiSound.play('back');$('#language-options').hidden=true;$('#language-select').setAttribute('aria-expanded','false');return;}
+  if($('#language-options')&&!$('#language-options').hidden){event.preventDefault();return;}
   if(currentPage==='pause')go('gameplay');else if(['gameplay','choice','qte'].includes(currentPage))go('pause');else if(currentPage==='affinity')go(affinityReturnPage);else if(['tree','result','failure'].includes(currentPage))go('chapters');else if(currentPage==='settings'&&previousPage==='pause')go('pause');else if(currentPage!=='home')go('home');else showExit();
  }
  if(currentPage==='splash'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();go('home');}

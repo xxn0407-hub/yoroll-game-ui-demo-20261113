@@ -475,6 +475,27 @@
       "rootMotion": "Fixed top-center position; opacity is cleared only after all layers finish",
       "reducedMotion": "Show static fully open layers immediately for the same lifetime, then hide; no unfold or translation",
       "appearanceRevision": "toast-neutral-surface-20261115"
+    },
+    "optionsMenu": {
+      "revision": "menus-shared-glass-20261116",
+      "appearance": "One dark glass surface and a pale gold checkmark; language uses a flat, restrained selection wash while the compact speed menu retains its approved inset light",
+      "surfaceBlurPx": 14,
+      "enterMs": 260,
+      "exitMs": 160,
+      "enterOffset": 8,
+      "exitOffset": 5,
+      "selectedStateUpdatesCheckmark": true,
+      "interruptedMotionResumesFromCurrentPose": true,
+      "keyboard": [
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+        "Enter",
+        "Escape",
+        "Tab"
+      ],
+      "reducedMotion": "Immediate open and close"
     }
   },
   "pages": [
@@ -750,7 +771,7 @@
       "id": "settings",
       "name": "设置",
       "kind": "原版实拍",
-      "motion": "设置项按 42ms 错峰落位，650ms 渐停；下拉列表从上方 7px 进入，240ms 完成。",
+      "motion": "设置项按 42ms 错峰落位，650ms 渐停；语言列表保留原版简洁比例，使用轻透深色底和淡选中光，从上方 8px 轻落展开，260ms 渐停，160ms 淡出收起。",
       "interaction": "四个音量滑杆、全部声音开关、语言选择与恢复默认沿用现有行为；设置页去掉试听入口，全部声音开关位于该行最右侧。",
       "groupCaptions": false,
       "cornerCaption": false,
@@ -759,6 +780,19 @@
         "revision": "settings-sound-align-20261114",
         "auditionVisible": false,
         "alignment": "right"
+      },
+      "languageMenu": {
+        "revision": "menus-shared-glass-20261116",
+        "sharedWith": "playback-speed",
+        "optionHeight": 48,
+        "fontSize": 20,
+        "keyboardSelection": true,
+        "escapeRestoresFocus": true,
+        "outsideClickCloses": true,
+        "appearance": "Original simple outline and flat option rows; no inner selection frame",
+        "sharedMotionWith": "playback-speed",
+        "selectionCue": "chapter",
+        "selectionCueLevel": 0.26
       }
     },
     {
