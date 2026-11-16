@@ -469,7 +469,7 @@
 .select-button>svg{opacity:.65;transition:transform .28s var(--ease);}
 .select-button[aria-expanded="true"]>svg{transform:rotate(180deg);}
 .select-options{
-  --menu-option-height:48;--menu-option-font:20;
+  --menu-option-height:40;--menu-option-font:18;
   top:calc(100% + var(--p)*7);left:0;right:0;transform-origin:50% 0;
 }
 .playback-speed-options{
@@ -526,22 +526,32 @@
 .glass-menu button:is([aria-checked="true"],[aria-selected="true"]) .glass-menu-check{opacity:1;}
 /* The wider language list keeps the original quiet, continuous rows. */
 .select-options.glass-menu{
-  gap:0;border-radius:calc(var(--p)*3);
+  gap:calc(var(--p)*2);border-radius:calc(var(--p)*3);
   background:linear-gradient(180deg,#1b2329d9,#10181ee6);
   box-shadow:inset 0 1px 0 #f1f7ed06,0 calc(var(--p)*8) calc(var(--p)*24) #00000026;
 }
 .select-options.glass-menu button{
-  border-radius:calc(var(--p)*2);text-align:left;
+  border-radius:calc(var(--p)*2);text-align:left;line-height:1.35;
 }
 .select-options.glass-menu button:is(:hover,:focus-visible){
-  border-color:transparent;background:#dce8df0b;box-shadow:none;
-}
-.select-options.glass-menu button[aria-selected="true"]{
-  color:#ecefe5;border-color:transparent;
-  background:linear-gradient(90deg,#e3ebe018,#e3ebe008);
+  border-color:transparent;
+  background:linear-gradient(90deg,#dce8df00,#dce8df0b 28%,#dce8df0b 72%,#dce8df00);
   box-shadow:none;
 }
-.select-options.glass-menu button::before{display:none;}
+.select-options.glass-menu button[aria-selected="true"]{
+  color:#f0f1e6;border-color:transparent;
+  background:radial-gradient(ellipse at 45% 50%,#e6ece51f 0%,#dfe8e50e 46%,#dfe8e500 86%);
+  box-shadow:none;
+}
+.select-options.glass-menu button::before{
+  display:block;inset:0;
+  background:linear-gradient(90deg,transparent 3%,#dfe9df26 38%,#dfe9df26 62%,transparent 97%) top / 100% 1px no-repeat,
+             linear-gradient(90deg,transparent 3%,#dfe9df18 38%,#dfe9df18 62%,transparent 97%) bottom / 100% 1px no-repeat;
+}
+.select-options.glass-menu button:is(:hover,:focus-visible,[aria-selected="true"])::before{opacity:.45;}
+.select-options.glass-menu button[aria-selected="true"] .glass-menu-check{
+  filter:drop-shadow(0 0 calc(var(--p)*5) #d8c7a52b);
+}
 @media(prefers-reduced-motion:reduce){
   .home-menu button,.home-menu button::before,.home-menu button::after,
   .home-menu [data-enter="menu"] button:is(:hover,:focus-visible),.home-menu [data-enter="menu"] button:is(:hover,:focus-visible)::before,.home-menu [data-enter="menu"] button:is(:hover,:focus-visible)::after,.playback-speed-toggle,.playback-speed-toggle svg,.glass-menu button,.glass-menu button::before,.glass-menu button::after,.glass-menu-check,.select-button,.select-button>svg{transition:none;}

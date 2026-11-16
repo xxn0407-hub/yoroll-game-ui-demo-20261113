@@ -782,17 +782,18 @@
         "alignment": "right"
       },
       "languageMenu": {
-        "revision": "menus-shared-glass-20261116",
+        "revision": "language-menu-rhythm-20261116",
         "sharedWith": "playback-speed",
-        "optionHeight": 48,
-        "fontSize": 20,
+        "optionHeight": 40,
+        "fontSize": 18,
         "keyboardSelection": true,
         "escapeRestoresFocus": true,
         "outsideClickCloses": true,
-        "appearance": "Original simple outline and flat option rows; no inner selection frame",
+        "appearance": "Preserved outer frame; compact continuous rows with softly feathered selection light and aligned pale-gold checkmarks",
         "sharedMotionWith": "playback-speed",
         "selectionCue": "chapter",
-        "selectionCueLevel": 0.26
+        "selectionCueLevel": 0.26,
+        "optionGap": 2
       }
     },
     {
