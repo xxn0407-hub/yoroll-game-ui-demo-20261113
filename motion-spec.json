@@ -782,14 +782,14 @@
         "alignment": "right"
       },
       "languageMenu": {
-        "revision": "language-menu-rhythm-20261116",
+        "revision": "language-selection-glow-20261116",
         "sharedWith": "playback-speed",
         "optionHeight": 40,
         "fontSize": 18,
         "keyboardSelection": true,
         "escapeRestoresFocus": true,
         "outsideClickCloses": true,
-        "appearance": "Preserved outer frame; compact continuous rows with softly feathered selection light and aligned pale-gold checkmarks",
+        "appearance": "Preserved outer frame and compact rows; stronger feathered selection light, brighter text and a clearer pale-gold checkmark without a hard inner border",
         "sharedMotionWith": "playback-speed",
         "selectionCue": "chapter",
         "selectionCueLevel": 0.26,
