@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "startNodeId": "web-game-test-entry"
+  },
+  "nodes": [
+    {
+      "id": "web-game-test-entry",
+      "title": "01 · 网页游戏 · 航行入口",
+      "next": "qte-web-game-demo"
+    },
+    {
+      "id": "qte-web-game-demo",
+      "title": "02 · 网页游戏 · 航行加载与结算",
+      "video": "1.mp4",
+      "qte": {
+        "type": "web_game",
+        "web_game_url": "https://voyage4.mimomo.ai/?config=Voyage&user_id=cc54d046-d921-4851-a03a-2c630d32c38c&user_type=1",
+        "web_game_type": "voyage",
+        "web_game_level": 1,
+        "web_game_start_json": "{\"source\":\"unity_qte_test\",\"level\":1}",
+        "web_game_allowed_origin": "https://voyage4.mimomo.ai",
+        "web_game_load_timeout": 300,
+        "web_game_allow_close": true,
+        "web_game_show_close_overlay": true,
+        "next_node_map": {
+          "0": "test-ch9-end",
+          "1": "test-ch9-end"
+        }
+      }
+    },
+    {
+      "id": "test-ch9-end",
+      "title": "03 · 网页小游戏 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "网页小游戏测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

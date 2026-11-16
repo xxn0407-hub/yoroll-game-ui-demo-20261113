@@ -1329,6 +1329,26 @@
       "kind": "原版退出后黑屏",
       "motion": "背景压暗、弹窗轻浮，确认后淡出到启动画面，取消返回菜单。",
       "interaction": "取消、Esc、退出均可演示。"
+    },
+    {
+      "id": "playtests",
+      "name": "玩法交互预览",
+      "kind": "原配置驱动的网页预览与引擎接口",
+      "motion": "640ms 柔和入场，32ms 错峰，上限 220ms；独立目标收圈、轨迹与判定反馈；复用现有弹窗和 toast。",
+      "interaction": "9 类、34 种玩法、94 个源节点；单项体验、连续流程、支线返回及原生玩法适配器。",
+      "revision": "gameplay-suite-20261116",
+      "referenceFrame": [
+        1920,
+        1080
+      ],
+      "families": 34,
+      "chapters": 9,
+      "sourceNodes": 94,
+      "independentEngineAdapters": 8,
+      "menus": {
+        "enter": 280,
+        "exit": 180
+      }
     }
   ],
   "interactionTimers": {

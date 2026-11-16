@@ -1,0 +1,132 @@
+{
+  "https://lineargame.top/test/Videos/1.mp4": {
+    "path": "assets/0b430eb9de71df92.mp4",
+    "bytes": 5249387,
+    "sha256": "e06d17c9e42f1568dffdae8cddd12e77c5e46eeaad756be49e9d9e6da470d2e2"
+  },
+  "https://lineargame.top/test/Videos/2.mp4": {
+    "path": "assets/ef83cca40bbe5cf5.mp4",
+    "bytes": 1134960,
+    "sha256": "a57e7006c3147edff429feae8443a58b4957deb57ce38039033fab41865923af"
+  },
+  "https://lineargame.top/test/Videos/3.mp4": {
+    "path": "assets/6dfb502d3018a6bf.mp4",
+    "bytes": 1134960,
+    "sha256": "a57e7006c3147edff429feae8443a58b4957deb57ce38039033fab41865923af"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/CatFight/Covers/ch0.jpg": {
+    "path": "assets/6c3a3a474bfc6759.jpg",
+    "bytes": 276630,
+    "sha256": "fdb94f46209ee34bd2e07930cea2b3aa99e9f2e01e5bf5077c38f5a2c798cdbe"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/LZ/Qte/pintuyouxi.png": {
+    "path": "assets/54557c64a346d8f7.png",
+    "bytes": 1342259,
+    "sha256": "bc56838fb98436f2d418d4e925f5c6cce00e45b909ad52df7f0d3a3c2cc660fb"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/001.png": {
+    "path": "assets/75c436105fcf9998.png",
+    "bytes": 3149697,
+    "sha256": "c6f2e3862730246116dcb865c0c7fc7f30286d4544a97b4cda22bfcee2257c47"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/002.png": {
+    "path": "assets/583365d99a1bff41.png",
+    "bytes": 2527159,
+    "sha256": "24ad970cd5eb57253139b64ded18bc4a0f17c68b70806739fda1ded6b5cb0f81"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/003.png": {
+    "path": "assets/d94113c643b04e1a.png",
+    "bytes": 2325872,
+    "sha256": "59a0f4ce27437ea79e50eb7157da21e3fa716fe47779bb59a96fb7035084687e"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/black_stain.png": {
+    "path": "assets/f67a1ce58f468d63.png",
+    "bytes": 6390080,
+    "sha256": "5ebb2316d50c0f56eac6296fdc72e45159344c7ed86ca55e0adadfda0f8d6642"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/bowl.png": {
+    "path": "assets/4916bdd08fee7db4.png",
+    "bytes": 3757583,
+    "sha256": "4cdde9664a2e2343676661681da6c4166f5ea6bda4675582681f65bae0a39c5e"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/candle.png": {
+    "path": "assets/703fbe74669b8973.png",
+    "bytes": 4219521,
+    "sha256": "1fff0f61f5508bef29461108568ff0174ebd7d60c444f5208a5649e3d454c1e5"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/gunny_sack.png": {
+    "path": "assets/a87e1b9ec91acec6.png",
+    "bytes": 5133040,
+    "sha256": "965b2a4f08aed833b66f17ee39fcb6ef9334d3bb7a760a64edb44399a5169e76"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/scratch.png": {
+    "path": "assets/c10ddee49f25c524.png",
+    "bytes": 4922547,
+    "sha256": "d05a83fb31bc10bd46b43006315e1873ccd7fb276575bf0e7ccbfc00e0ca537d"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/yang_letter.png": {
+    "path": "assets/85115b620175360f.png",
+    "bytes": 5364236,
+    "sha256": "96ebecbe53de15bf667dd4fdd76a612f2bcdb9d024218be32d53eae8b3afa9f5"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/candy.jpg": {
+    "path": "assets/26b1d7a544dcbf41.jpg",
+    "bytes": 214905,
+    "sha256": "e60472f5d8a5ee8bce06bdb5323218244e2f1de0d0a3dd6c1a3593d04fcaeebc"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/female_ghost.jpg": {
+    "path": "assets/7834bb89459ea7a0.jpg",
+    "bytes": 2216270,
+    "sha256": "839a4458e236ddb6e97831b557facb9f33dbf643ede0ab92870068a441bc85aa"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/iron_chain.jpg": {
+    "path": "assets/815ae614946eac6c.jpg",
+    "bytes": 1669122,
+    "sha256": "29d05ee574363110c54cbefebb4b4bc0d14571fd8f07df1cdc12a8b9453def52"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/letter.jpg": {
+    "path": "assets/a93c287a2d49392f.jpg",
+    "bytes": 1991993,
+    "sha256": "2cd9ee1315397011beb33bb0eeb6f5df46eada6ebc4e634c7a57d688c960d4f0"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/painting.jpg": {
+    "path": "assets/6499da5d9df749c4.jpg",
+    "bytes": 2095055,
+    "sha256": "2a20d9ca5b3962149e6aee0f8aa0ac6540b57ff24c5dd8d1215d05d9dec3dca4"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/scissors.jpg": {
+    "path": "assets/a99a4936982c923a.jpg",
+    "bytes": 2045267,
+    "sha256": "f631d5a072f7aff5f3c5af31a9ae8d520088c4ed21e69d8967ab8bbd5c9739ae"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/wall.jpg": {
+    "path": "assets/12cfedf6c76afb79.jpg",
+    "bytes": 2601627,
+    "sha256": "6daea3df1e0415114aebf62c12d8264e0b6272e979f14142ada2163ee68ba7b3"
+  },
+  "https://video-1318091918.cos.ap-beijing.myqcloud.com/zh/lantern/img_lantern_1.png": {
+    "path": "assets/b37cac1a7fd94053.png",
+    "bytes": 283476,
+    "sha256": "6b622142516e71567e250fb439426de6eebf7822770cca2e2ed3b1dffcc08dd7"
+  },
+  "https://lineargame.top/test/Audios/node_media_test_12s.wav": {
+    "path": "assets/fdef81ffdcde4448.wav",
+    "bytes": 1058444,
+    "sha256": "379ae96c6f7ab4fdbc5c9cb33d8d52791c608b0f8d9e2f10d354068df8fbae86"
+  },
+  "https://lineargame.top/test/Images/node_media_test_01.png": {
+    "path": "assets/7b1f812c0e0c4c21.png",
+    "bytes": 3602946,
+    "sha256": "a72778ce5602083adc88ded59af51c6f798309cc6a35d15dc72644fd7aaebf2a"
+  },
+  "https://lineargame.top/test/Images/node_media_test_02.png": {
+    "path": "assets/91c165205eae79a2.png",
+    "bytes": 2701559,
+    "sha256": "f50b369de2f4de0d9f30709209fab821c7edcf73e8ffcba93615ee362ad895fa"
+  },
+  "https://lineargame.top/test/Images/node_media_test_03.png": {
+    "path": "assets/71ae355742c86b3e.png",
+    "bytes": 2632708,
+    "sha256": "b528bccd7606751755b11815dfa6cd967c0589c18e82da42a30c148c475e0f00"
+  }
+}

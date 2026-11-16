@@ -1,0 +1,377 @@
+{
+  "meta": {
+    "startNodeId": "item-reward-test"
+  },
+  "nodes": [
+    {
+      "id": "item-reward-test",
+      "title": "01 · 道具 · 领取草药与麻绳",
+      "video": "1.mp4",
+      "itemEffects": {
+        "herb": 2,
+        "rope": 1
+      },
+      "next": "qte-use-item-click-test",
+      "itemEffectConfigs": {
+        "herb": {
+          "count": 2
+        },
+        "rope": {
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "qte-use-item-click-test",
+      "title": "02 · 道具 · 点击使用",
+      "video": "1.mp4",
+      "qte": {
+        "type": "use_item",
+        "instruction_text_1": "选择一件道具使用",
+        "use_item_config": {
+          "options": [
+            {
+              "item_id": "herb",
+              "required_count": 1,
+              "next_index": 1
+            },
+            {
+              "item_id": "rope",
+              "required_count": 1,
+              "next_index": 2
+            }
+          ]
+        },
+        "next_node_map": {
+          "1": "craft-test",
+          "2": "craft-test"
+        },
+        "next_node_immediate_settle": {
+          "1": true,
+          "2": true
+        }
+      }
+    },
+    {
+      "id": "craft-test",
+      "title": "03 · 条件合成 · 材料检查",
+      "video": "2.mp4",
+      "question": "使用草药和麻绳合成解毒药水，继续测试拖拽使用道具。",
+      "choices": [
+        {
+          "label": "合成解毒药水（需要草药x2 + 麻绳x1）",
+          "next": "craft-result",
+          "conditions": [
+            {
+              "condition_type": 3001,
+              "item_id": "herb",
+              "item_count": 2
+            },
+            {
+              "condition_type": 3001,
+              "item_id": "rope",
+              "item_count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "craft-result",
+      "title": "04 · 条件合成 · 消耗材料并获得药水",
+      "video": "3.mp4",
+      "itemEffects": {
+        "herb": -2,
+        "rope": -1,
+        "potion": 1
+      },
+      "next": "qte-use-item-drag-test",
+      "itemEffectConfigs": {
+        "herb": {
+          "count": -2
+        },
+        "rope": {
+          "count": -1
+        },
+        "potion": {
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "qte-use-item-drag-test",
+      "title": "05 · 道具 · 拖拽使用药水",
+      "video": "1.mp4",
+      "qte": {
+        "type": "use_item",
+        "instruction_text_1": "将解毒药水拖拽到伤口处",
+        "use_item_config": {
+          "options": [
+            {
+              "item_id": "potion",
+              "required_count": 1,
+              "next_index": 1,
+              "drop_target": {
+                "x": 0.5,
+                "y": 0.4,
+                "radius": 0.1
+              }
+            }
+          ]
+        },
+        "next_node_map": {
+          "1": "scene-search-test"
+        },
+        "next_node_immediate_settle": {
+          "1": true
+        }
+      }
+    },
+    {
+      "id": "scene-search-test",
+      "title": "06 · 场景探索 · 双层采集",
+      "video": "1.mp4",
+      "qte": {
+        "type": "scene_search",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "craft-bench-materials",
+          "1": "craft-bench-materials"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "scene_search_config": {
+          "exploration_time_seconds": 120,
+          "wrong_click_penalty_seconds": 3,
+          "capture_streak_bonus_seconds": 5,
+          "capture_streak_required_count": 2,
+          "yin_switch_lock_seconds": 2,
+          "yin_total_seconds": 30,
+          "faces": [
+            {
+              "id": "room",
+              "display_name": "房间",
+              "layer1_video_url": "1.mp4",
+              "layer2_video_url": "2.mp4",
+              "hotspots": [
+                {
+                  "id": "spot-herb",
+                  "display_name": "草药",
+                  "layer": "layer1",
+                  "x": 0.3,
+                  "y": 0.5,
+                  "width": 0.15,
+                  "height": 0.15,
+                  "interaction_hint": "你在墙角发现了一丛草药。",
+                  "output_item_ids": [
+                    "herb"
+                  ]
+                },
+                {
+                  "id": "spot-note",
+                  "display_name": "墙上的刻痕",
+                  "layer": "layer1",
+                  "x": 0.6,
+                  "y": 0.3,
+                  "width": 0.15,
+                  "height": 0.15,
+                  "interaction_hint": "墙上刻着看不懂的符号，似乎没什么用。",
+                  "output_item_ids": []
+                },
+                {
+                  "id": "spot-rope",
+                  "display_name": "麻绳",
+                  "layer": "layer2",
+                  "x": 0.5,
+                  "y": 0.6,
+                  "width": 0.15,
+                  "height": 0.15,
+                  "interaction_hint": "阴面的角落里挂着一卷麻绳。",
+                  "output_item_ids": [
+                    "rope"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "corridor",
+              "display_name": "走廊",
+              "layer1_video_url": "2.mp4",
+              "hotspots": [
+                {
+                  "id": "spot-mark",
+                  "display_name": "斑驳的墙面",
+                  "layer": "both",
+                  "x": 0.5,
+                  "y": 0.5,
+                  "width": 0.15,
+                  "height": 0.15,
+                  "interaction_hint": "什么都没有，走廊尽头一片寂静。",
+                  "output_item_ids": []
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft-bench-materials",
+      "video": "1.mp4",
+      "itemEffectConfigs": {
+        "herb": {
+          "count": 1
+        },
+        "rope": {
+          "count": 1
+        }
+      },
+      "title": "07 · 合成台 · 准备材料",
+      "next": "craft-bench-test"
+    },
+    {
+      "id": "craft-bench-test",
+      "title": "08 · 合成台 · 配方与错误次数",
+      "video": "2.mp4",
+      "qte": {
+        "type": "craft_bench",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "dial-lock-test",
+          "1": "dial-lock-test"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "craft_bench_config": {
+          "workbench_goal_text": "合成出解毒药水",
+          "workbench_error_limit": 20,
+          "workbench_scare_limit": 5,
+          "hint_unlock_success_count": 1,
+          "recipes": [
+            {
+              "id": "R01",
+              "inputs": [
+                "herb",
+                "rope"
+              ],
+              "outputs": [
+                "potion"
+              ],
+              "completes_qte": true,
+              "result_title": "解毒药水"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dial-lock-test",
+      "title": "09 · 密码盘 · 解锁与产出",
+      "video": "1.mp4",
+      "qte": {
+        "type": "dial_lock",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "1": "test-ch4-end"
+        },
+        "next_node_immediate_settle": {
+          "1": true
+        },
+        "dial_lock_config": {
+          "title": "YinYangCellar_DialPuzzle_DefaultTitle",
+          "wrong_hint": "YinYangCellar_DialPuzzle_Wrong",
+          "success_hint": "YinYangCellar_DialPuzzle_Success",
+          "reset_on_open": true,
+          "success_delay_seconds": 1.5,
+          "output_item_ids": [
+            "potion"
+          ],
+          "wheels": [
+            {
+              "display_type": "Text",
+              "initial_option_id": "0",
+              "answer_id": "3",
+              "options": [
+                {
+                  "id": "0",
+                  "text": "0"
+                },
+                {
+                  "id": "1",
+                  "text": "1"
+                },
+                {
+                  "id": "2",
+                  "text": "2"
+                },
+                {
+                  "id": "3",
+                  "text": "3"
+                },
+                {
+                  "id": "4",
+                  "text": "4"
+                }
+              ]
+            },
+            {
+              "display_type": "Text",
+              "initial_option_id": "0",
+              "answer_id": "7",
+              "options": [
+                {
+                  "id": "0",
+                  "text": "0"
+                },
+                {
+                  "id": "1",
+                  "text": "1"
+                },
+                {
+                  "id": "2",
+                  "text": "2"
+                },
+                {
+                  "id": "3",
+                  "text": "3"
+                },
+                {
+                  "id": "4",
+                  "text": "4"
+                },
+                {
+                  "id": "5",
+                  "text": "5"
+                },
+                {
+                  "id": "6",
+                  "text": "6"
+                },
+                {
+                  "id": "7",
+                  "text": "7"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "test-ch4-end",
+      "title": "10 · 道具与合成解谜 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "道具与合成解谜测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

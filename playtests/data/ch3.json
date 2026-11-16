@@ -1,0 +1,841 @@
+{
+  "meta": {
+    "startNodeId": "qte-investigation"
+  },
+  "nodes": [
+    {
+      "id": "qte-investigation",
+      "title": "01 · 调查 · 阴阳场景线索",
+      "video": "1.mp4",
+      "qte": {
+        "type": "investigation",
+        "duration": 120,
+        "delay_from_start_seconds": 0.5,
+        "background_video_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/Videos/cellarYang.mp4",
+        "investigation_data": {
+          "record_id": "qte-investigation",
+          "location_id": "caller",
+          "location_name": "地窖",
+          "yin_video_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/Videos/cellarYin.mp4",
+          "required_yang_photos": 1,
+          "investigation_hint_text": "找出所有异常点",
+          "phase1_complete_hint": "异常点解密完成！点击相簿按钮进行文字解密",
+          "enable_album_puzzle": true,
+          "note": {
+            "template": "这是个奇怪的村子。村民们看我的眼神充满了戒备，但乱世中兵匪横行，他们谨慎一些也情有可原。客房下是一间隐藏的地窖，哪里有秘密，我不该多管闲事，但……我就是忍不住。\n踏入这间密室，腐臭与血腥气扑面而来。墙上的{iron_chain}柱子的{scratch}告诉我，这里曾发生过一些不愉快的事情。\n我在这里找到了村长的{letter}，原来这里是村里惩罚犯错族人的地方。\n通过阴阳眼，我看到作祟的鬼魂{female_ghost}，她似乎在{wall}，但也许不是。\n我需要继续调查……",
+            "correct_answers": {
+              "iron_chain": "铁链",
+              "scratch": "抓痕",
+              "letter": "改造令",
+              "wall": "忏悔",
+              "female_ghost": "马静怡"
+            }
+          },
+          "yang_anomalies": [
+            {
+              "id": "yang_001",
+              "position": {
+                "x": 0.42,
+                "y": 0.412
+              },
+              "size": {
+                "x": 382,
+                "y": 248
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/black_stain.png",
+              "photo_name": "黑色污渍",
+              "photo_description": "墙壁上的黑色污渍，似乎在遮盖什么",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "黑色污渍"
+            },
+            {
+              "id": "yang_002",
+              "position": {
+                "x": 0.485,
+                "y": 0.54
+              },
+              "size": {
+                "x": 88,
+                "y": 124
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/candle.png",
+              "photo_name": "蜡烛",
+              "photo_description": "明明没有风却忽明忽暗的蜡烛。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "蜡烛"
+            },
+            {
+              "id": "yang_003",
+              "position": {
+                "x": 0.82,
+                "y": 0.825
+              },
+              "size": {
+                "x": 492,
+                "y": 320
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/gunny_sack.png",
+              "photo_name": "麻袋",
+              "photo_description": "里面似乎装着什么有用的东西。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": ""
+            },
+            {
+              "id": "yang_004",
+              "position": {
+                "x": 0.435,
+                "y": 0.567
+              },
+              "size": {
+                "x": 100,
+                "y": 72
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/bowl.png",
+              "photo_name": "碗",
+              "photo_description": "一股浓烈的草药味，似乎有一些致幻作用。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "草药"
+            },
+            {
+              "id": "yang_005",
+              "position": {
+                "x": 0.67,
+                "y": 0.73
+              },
+              "size": {
+                "x": 100,
+                "y": 100
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/yang_letter.png",
+              "photo_name": "阳间信",
+              "photo_description": "陈旧的文书。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/001.png",
+              "clue_keyword": "改造令"
+            },
+            {
+              "id": "yang_006",
+              "position": {
+                "x": 0.25,
+                "y": 0.5
+              },
+              "size": {
+                "x": 148,
+                "y": 588
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/scratch.png",
+              "photo_name": "抓痕",
+              "photo_description": "奇怪的抓痕",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "抓痕"
+            }
+          ],
+          "yin_anomalies": [
+            {
+              "id": "yin_001",
+              "position": {
+                "x": 0.8,
+                "y": 0.7
+              },
+              "size": {
+                "x": 100,
+                "y": 100
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/scissors.jpg",
+              "photo_name": "剪刀",
+              "photo_description": "很钝的剪刀，上面似乎有血迹。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": ""
+            },
+            {
+              "id": "yin_002",
+              "position": {
+                "x": 0.8,
+                "y": 1
+              },
+              "size": {
+                "x": 100,
+                "y": 100
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/letter.jpg",
+              "photo_name": "马婆子的信",
+              "photo_description": "一封马婆子写的信。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/003.png",
+              "clue_keyword": "改造令"
+            },
+            {
+              "id": "yin_003",
+              "position": {
+                "x": 0.6,
+                "y": 0.6
+              },
+              "size": {
+                "x": 186,
+                "y": 374
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/female_ghost.jpg",
+              "photo_name": "女鬼",
+              "photo_description": "拍下的女鬼照片。我听见她叫自己的名字“马静怡”",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "马静怡"
+            },
+            {
+              "id": "yin_004",
+              "position": {
+                "x": 0.4,
+                "y": 0.4
+              },
+              "size": {
+                "x": 600,
+                "y": 300
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/wall.jpg",
+              "photo_name": "墙上的悔字",
+              "photo_description": "看情况似乎是真的在忏悔。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "忏悔"
+            },
+            {
+              "id": "yin_005",
+              "position": {
+                "x": 0.7,
+                "y": 0.9
+              },
+              "size": {
+                "x": 100,
+                "y": 100
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/painting.jpg",
+              "photo_name": "傻子的画",
+              "photo_description": "完全看不懂的画。一条鱼和一个人？",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": ""
+            },
+            {
+              "id": "yin_006",
+              "position": {
+                "x": 0.2,
+                "y": 0.9
+              },
+              "size": {
+                "x": 160,
+                "y": 80
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/candy.jpg",
+              "photo_name": "糖果",
+              "photo_description": "褪色的糖果。仔细看竟然是喜糖。是谁的？",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": ""
+            },
+            {
+              "id": "yin_007",
+              "position": {
+                "x": 0.7,
+                "y": 0.3
+              },
+              "size": {
+                "x": 402,
+                "y": 590
+              },
+              "photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/iron_chain.jpg",
+              "photo_name": "铁链",
+              "photo_description": "锈迹斑斑的铁链。似乎囚禁过很多人。",
+              "thumbnail_url": "",
+              "unlocked_photo_url": "",
+              "clue_keyword": "铁链"
+            }
+          ],
+          "photo_merge_recipes": [
+            {
+              "ingredient_ids": [
+                "yang_003",
+                "yin_001"
+              ],
+              "result_keyword": "大量女子的鞋",
+              "result_photo_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/2DPuzzle/002.png",
+              "result_photo_name": "大量女子的鞋",
+              "result_photo_description": "大量女子的鞋",
+              "result_thumbnail_url": "",
+              "result_unlocked_photo_url": "",
+              "result_clue_keyword": ""
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "qte-click-video",
+          "1": "qte-click-video"
+        }
+      }
+    },
+    {
+      "id": "qte-click-video",
+      "title": "02 · 场景视频 · 观看线索",
+      "video": "1.mp4",
+      "qte": {
+        "type": "sceneclickvideo",
+        "scene_click_video": {
+          "background": "https://video-1318091918.cos.ap-beijing.myqcloud.com/Pet/Videos/1-1-1.mp4",
+          "clearText": "你已观看所有线索视频，真相逐渐浮出水面...",
+          "completionThreshold": 2,
+          "points": [
+            {
+              "id": "point_1",
+              "x": 0.2,
+              "y": 0.3,
+              "label": "物品1",
+              "side_node_id": "side_ch1_001",
+              "replayable": true
+            },
+            {
+              "id": "point_2",
+              "x": 0.5,
+              "y": 0.5,
+              "label": "物品2",
+              "side_node_id": "side_ch1_002",
+              "replayable": true
+            },
+            {
+              "id": "point_3",
+              "x": 0.8,
+              "y": 0.7,
+              "label": "物品3",
+              "side_node_id": "side_ch1_003",
+              "replayable": false
+            }
+          ]
+        },
+        "next_node_map": {
+          "1": "qte-click-video-branch-test"
+        }
+      }
+    },
+    {
+      "id": "qte-click-video-branch-test",
+      "title": "03 · 场景视频 · 多条件结算",
+      "video": "1.mp4",
+      "qte": {
+        "type": "sceneclickvideo",
+        "scene_click_video": {
+          "background": "https://video-1318091918.cos.ap-beijing.myqcloud.com/Pet/Videos/1-1-1.mp4",
+          "completionThreshold": 2,
+          "completionConditions": [
+            {
+              "requiredPointIds": [
+                "bp_1",
+                "bp_2"
+              ],
+              "result": 2
+            },
+            {
+              "requiredPointIds": [
+                "bp_2",
+                "bp_3"
+              ],
+              "result": 3
+            }
+          ],
+          "points": [
+            {
+              "id": "bp_1",
+              "x": 0.2,
+              "y": 0.3,
+              "label": "线索A",
+              "side_node_id": "side_ch1_001",
+              "replayable": true
+            },
+            {
+              "id": "bp_2",
+              "x": 0.5,
+              "y": 0.5,
+              "label": "线索B",
+              "side_node_id": "side_ch1_002",
+              "replayable": true
+            },
+            {
+              "id": "bp_3",
+              "x": 0.8,
+              "y": 0.7,
+              "label": "线索C",
+              "side_node_id": "side_ch1_003",
+              "replayable": true
+            }
+          ]
+        },
+        "next_node_map": {
+          "1": "qte-video-choice-loop",
+          "2": "qte-video-choice-loop",
+          "3": "qte-video-choice-loop"
+        }
+      }
+    },
+    {
+      "id": "qte-video-choice-loop",
+      "title": "04 · 线索回看 · 返回与继续",
+      "video": "1.mp4",
+      "qte": {
+        "type": "videochoiceloop",
+        "video_choice_loop": {
+          "question": "还要查看哪些线索？",
+          "requiredViewedCount": 2,
+          "options": [
+            {
+              "id": "letter",
+              "label": "查看书信",
+              "side_node_id": "side_ch1_001",
+              "completesQte": false,
+              "replayable": false,
+              "allowSkip": true
+            },
+            {
+              "id": "jade",
+              "label": "查看玉佩",
+              "side_node_id": "side_ch1_002",
+              "completesQte": false,
+              "replayable": true,
+              "allowSkip": false
+            },
+            {
+              "id": "portrait",
+              "label": "查看画像",
+              "side_node_id": "side_ch1_003",
+              "completesQte": false,
+              "replayable": false,
+              "allowSkip": true
+            },
+            {
+              "id": "continue",
+              "label": "结束查看，继续调查",
+              "video": "",
+              "completesQte": true,
+              "replayable": false,
+              "allowSkip": false
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "qte-peek",
+          "1": "qte-peek"
+        }
+      }
+    },
+    {
+      "id": "qte-peek",
+      "title": "05 · 窥探 · 危险时段与次数",
+      "video": "2.mp4",
+      "qte": {
+        "type": "peek",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "rage-meter-test",
+          "1": "rage-meter-test",
+          "2": "rage-meter-test",
+          "3": "rage-meter-test"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true,
+          "2": true,
+          "3": true
+        },
+        "score_effects": {
+          "0": {
+            "sanity": -10
+          },
+          "1": {
+            "favor": 5
+          }
+        },
+        "peek_config": {
+          "normal_video_url": "2.mp4",
+          "peek_video_url": "3.mp4",
+          "button_text_on_normal": "偷看一下",
+          "button_text_on_peek": "不看了",
+          "danger_windows": [
+            {
+              "start": 1,
+              "end": 3
+            },
+            {
+              "start": 5,
+              "end": 7
+            }
+          ],
+          "required_peek_count": 1
+        }
+      }
+    },
+    {
+      "id": "rage-meter-test",
+      "title": "06 · 怒气计量 · 阈值结算",
+      "qte": {
+        "type": "ragemeter",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "dating-calendar-test",
+          "1": "dating-calendar-test"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "rage_meter": {
+          "start_node_id": "rage-start",
+          "initial_rage": 0,
+          "nodes": [
+            {
+              "id": "rage-start",
+              "video": "1.mp4",
+              "rage_delta": 20,
+              "duration": 8,
+              "timeout_choice": {
+                "key": "rage-start-timeout",
+                "label": "超时未回应",
+                "next": "rage-calm-end"
+              },
+              "choices": [
+                {
+                  "key": "rage-calm",
+                  "label": "保持冷静",
+                  "next": "rage-calm-end"
+                },
+                {
+                  "key": "rage-provoke",
+                  "label": "继续挑衅",
+                  "next": "rage-provoke"
+                }
+              ]
+            },
+            {
+              "id": "rage-provoke",
+              "video": "2.mp4",
+              "rage_delta": 50,
+              "choices": [
+                {
+                  "key": "rage-stop",
+                  "label": "就此收手",
+                  "next": "rage-calm-end"
+                },
+                {
+                  "key": "rage-escalate",
+                  "label": "继续施压",
+                  "next": "rage-high-end"
+                }
+              ]
+            },
+            {
+              "id": "rage-calm-end",
+              "video": "3.mp4",
+              "rage_delta": 30,
+              "choices": []
+            },
+            {
+              "id": "rage-high-end",
+              "video": "3.mp4",
+              "rage_delta": 40,
+              "choices": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dating-calendar-test",
+      "title": "07 · 约会日历 · 事件回看",
+      "video": "1.mp4",
+      "qte": {
+        "type": "dating_calendar",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "1": "test-ch3-end"
+        },
+        "next_node_immediate_settle": {
+          "1": true
+        },
+        "dating_calendar": {
+          "year": 2026,
+          "month": 11,
+          "completion_delay_seconds": 2,
+          "empty_text": "当日暂无约会事件",
+          "completion_text": "本月约会事件已全部完成",
+          "events": [
+            {
+              "id": "dating-coffee",
+              "day": 5,
+              "title": "咖啡店见面",
+              "description": "午后在街角的咖啡店见面，聊聊最近发生的事。",
+              "image": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/candle.png",
+              "side_node_id": "dating-side-coffee"
+            },
+            {
+              "id": "dating-movie",
+              "day": 15,
+              "title": "周末电影",
+              "description": "一起看完了期待已久的电影，回程中还在讨论剧情。",
+              "image": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYang/photo/yang_letter.png",
+              "side_node_id": "dating-side-movie"
+            },
+            {
+              "id": "dating-park",
+              "day": 25,
+              "title": "公园散步",
+              "description": "傍晚沿着湖边散步，在夕阳落下前留下了合影。",
+              "image": "https://video-1318091918.cos.ap-beijing.myqcloud.com/MG20260510/InvestigationQTE/cellarYin/photo/painting.jpg",
+              "side_node_id": "dating-side-park"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "test-ch3-end",
+      "title": "08 · 场景与叙事互动 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "场景与叙事互动测试完成，可通过剧情树回看本章节点。"
+    }
+  ],
+  "side_nodes": [
+    {
+      "id": "side_ch1_001",
+      "title": "物品1支线",
+      "video": "1.mp4",
+      "question": "你发现了一件奇怪的物品，怎么处理？",
+      "choices": [
+        {
+          "label": "仔细检查",
+          "next": "side_ch1_001_inspect"
+        },
+        {
+          "label": "随手放下",
+          "next": "side_ch1_001_skip"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_001_inspect",
+      "title": "物品1支线 - 仔细检查",
+      "video": "2.mp4",
+      "question": "这是件珍贵的东西，你会怎么做？",
+      "choices": [
+        {
+          "label": "带走物品",
+          "next": "side_ch1_001_take"
+        },
+        {
+          "label": "留在原地",
+          "next": "side_ch1_001_leave"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_001_take",
+      "title": "物品1支线 - 带走",
+      "video": "3.mp4",
+      "statEffects": {
+        "favor": 3
+      },
+      "is_end": true,
+      "statEffectConfigs": {
+        "favor": {
+          "value": 3
+        }
+      }
+    },
+    {
+      "id": "side_ch1_001_leave",
+      "title": "物品1支线 - 留下",
+      "video": "3.mp4",
+      "is_end": true
+    },
+    {
+      "id": "side_ch1_001_skip",
+      "title": "物品1支线 - 放下",
+      "video": "2.mp4",
+      "is_end": true
+    },
+    {
+      "id": "side_ch1_002",
+      "title": "物品2支线",
+      "video": "1.mp4",
+      "question": "有人递来一件物品，你是否接受？",
+      "choices": [
+        {
+          "label": "接受",
+          "next": "side_ch1_002_accept"
+        },
+        {
+          "label": "拒绝",
+          "next": "side_ch1_002_reject"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_002_accept",
+      "title": "物品2支线 - 接受",
+      "video": "2.mp4",
+      "question": "收下之后，你如何回应？",
+      "choices": [
+        {
+          "label": "感谢对方",
+          "next": "side_ch1_002_thanks"
+        },
+        {
+          "label": "沉默接受",
+          "next": "side_ch1_002_silent"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_002_thanks",
+      "title": "物品2支线 - 感谢",
+      "video": "3.mp4",
+      "characterEffects": {
+        "sophia": {
+          "favor": 5
+        }
+      },
+      "is_end": true,
+      "characterEffectConfigs": {
+        "sophia": {
+          "favor": {
+            "value": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "side_ch1_002_silent",
+      "title": "物品2支线 - 沉默",
+      "video": "3.mp4",
+      "is_end": true
+    },
+    {
+      "id": "side_ch1_002_reject",
+      "title": "物品2支线 - 拒绝",
+      "video": "2.mp4",
+      "is_end": true
+    },
+    {
+      "id": "side_ch1_003",
+      "title": "物品3支线",
+      "video": "1.mp4",
+      "question": "你注意到一条可疑的线索，是否深入调查？",
+      "choices": [
+        {
+          "label": "深入调查",
+          "next": "side_ch1_003_deep"
+        },
+        {
+          "label": "置之不理",
+          "next": "side_ch1_003_ignore"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_003_deep",
+      "title": "物品3支线 - 深入调查",
+      "video": "2.mp4",
+      "question": "调查有了进展，你打算如何处置？",
+      "choices": [
+        {
+          "label": "上报线索",
+          "next": "side_ch1_003_report"
+        },
+        {
+          "label": "独自处理",
+          "next": "side_ch1_003_alone"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_003_report",
+      "title": "物品3支线 - 上报线索",
+      "video": "3.mp4",
+      "question": "上报后对方施压，你会？",
+      "choices": [
+        {
+          "label": "坚持立场",
+          "next": "side_ch1_003_firm"
+        },
+        {
+          "label": "妥协退让",
+          "next": "side_ch1_003_retreat"
+        }
+      ]
+    },
+    {
+      "id": "side_ch1_003_firm",
+      "title": "物品3支线 - 坚持",
+      "video": "1.mp4",
+      "statEffects": {
+        "favor": 5
+      },
+      "is_end": true,
+      "statEffectConfigs": {
+        "favor": {
+          "value": 5
+        }
+      }
+    },
+    {
+      "id": "side_ch1_003_retreat",
+      "title": "物品3支线 - 退让",
+      "video": "1.mp4",
+      "statEffects": {
+        "favor": -2
+      },
+      "is_end": true,
+      "statEffectConfigs": {
+        "favor": {
+          "value": -2
+        }
+      }
+    },
+    {
+      "id": "side_ch1_003_alone",
+      "title": "物品3支线 - 独自处理",
+      "video": "2.mp4",
+      "is_end": true
+    },
+    {
+      "id": "side_ch1_003_ignore",
+      "title": "物品3支线 - 置之不理",
+      "video": "2.mp4",
+      "is_end": true
+    },
+    {
+      "id": "dating-side-coffee",
+      "title": "约会回忆·咖啡店见面",
+      "video": "1.mp4",
+      "is_end": true
+    },
+    {
+      "id": "dating-side-movie",
+      "title": "约会回忆·周末电影",
+      "video": "2.mp4",
+      "is_end": true
+    },
+    {
+      "id": "dating-side-park",
+      "title": "约会回忆·公园散步",
+      "video": "3.mp4",
+      "is_end": true
+    }
+  ]
+}

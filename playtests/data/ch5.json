@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "startNodeId": "qte-puzzle"
+  },
+  "nodes": [
+    {
+      "id": "qte-puzzle",
+      "title": "01 · 拼图 · 完成与超时",
+      "video": "2.mp4",
+      "qte": {
+        "type": "puzzle",
+        "duration": 45,
+        "delay_from_start_seconds": 0,
+        "instruction_text_1": "",
+        "jigsaw_puzzle_grid_size_x": 3,
+        "jigsaw_puzzle_grid_size_y": 3,
+        "jigsaw_puzzle_img_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/LZ/Qte/pintuyouxi.png",
+        "puzzle_background_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/LZ/Qte/pintuyouxi.png",
+        "puzzle_stop_video_background": false,
+        "puzzle_timer_style": "incense",
+        "puzzle_incense_smoke": true,
+        "puzzle_bgm_url": "",
+        "puzzle_bgm_volume": 0.35,
+        "puzzle_bgm_loop": true,
+        "puzzle_ambient_sfx_urls": [],
+        "puzzle_ambient_min_interval": 12,
+        "puzzle_ambient_max_interval": 25,
+        "puzzle_ambient_volume": 0.35,
+        "puzzle_success_mode": "silent",
+        "puzzle_timeout_mode": "fade_end_word",
+        "puzzle_timeout_word": "完",
+        "puzzle_timeout_fade_seconds": 2.5,
+        "puzzle_timeout_hold_seconds": 1.2,
+        "next_node_map": {
+          "0": "qte-sudoku",
+          "1": "qte-sudoku"
+        }
+      }
+    },
+    {
+      "id": "qte-sudoku",
+      "title": "02 · 数独 · 达成目标",
+      "video": "3.mp4",
+      "qte": {
+        "type": "sudoku",
+        "sudoku_difficulty": "6x6",
+        "sudoku_target_score": 50000,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "qte-tileslot",
+          "1": "qte-tileslot"
+        }
+      }
+    },
+    {
+      "id": "qte-tileslot",
+      "title": "03 · 消除对对碰 · 达成目标",
+      "video": "2.mp4",
+      "qte": {
+        "type": "tileslot",
+        "tileslot_level_index": 5,
+        "tileslot_background_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/LZ/Qte/pintuyouxi.png",
+        "tileslot_tilesprite_url": "",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "instruction_text_1": "把相同花色的牌拖到收纳槽里",
+        "next_node_map": {
+          "0": "qte-gomoku",
+          "1": "qte-gomoku"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "favor": -5
+          },
+          "1": {
+            "favor": 8
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-gomoku",
+      "title": "04 · 五子棋 · 人机对弈",
+      "video": "1.mp4",
+      "qte": {
+        "type": "gomoku",
+        "duration": 300,
+        "delay_from_start_seconds": 0,
+        "gomoku_config": {
+          "board_size": 15,
+          "ai_difficulty": 3,
+          "ai_think_delay": 1.5,
+          "player_starts": true,
+          "show_coordinates": false,
+          "success_score": 1,
+          "failure_score": 0,
+          "title_text": "五子棋对弈",
+          "player_turn_text": "你的回合",
+          "computer_turn_text": "对手思考中...",
+          "thinking_text": "思考中...",
+          "player_win_text": "你赢了！",
+          "computer_win_text": "你输了！",
+          "draw_text": "平局"
+        },
+        "next_node_map": {
+          "0": "qte-chinese-chess",
+          "1": "qte-chinese-chess"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "intelligence": -3
+          },
+          "1": {
+            "intelligence": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-chinese-chess",
+      "title": "05 · 中国象棋 · 人机对弈",
+      "video": "2.mp4",
+      "qte": {
+        "type": "ChineseChessQTE",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "chinese_chess_difficulty": 1,
+        "instruction_text_1": "与老天下棋，赢了方可过关",
+        "next_node_map": {
+          "0": "qte-chess",
+          "1": "qte-chess"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "intelligence": -3
+          },
+          "1": {
+            "intelligence": 10
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-chess",
+      "title": "06 · 国际象棋 · 人机对弈",
+      "video": "3.mp4",
+      "qte": {
+        "type": "ChessQTE",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "param1": "pve",
+        "chess_difficulty": 3,
+        "instruction_text_1": "与宫廷棋手对弈",
+        "next_node_map": {
+          "0": "test-ch5-end",
+          "1": "test-ch5-end"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "intelligence": -2
+          },
+          "1": {
+            "intelligence": 8
+          }
+        }
+      }
+    },
+    {
+      "id": "test-ch5-end",
+      "title": "07 · 益智与棋类 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "益智与棋类测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

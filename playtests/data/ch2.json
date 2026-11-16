@@ -1,0 +1,272 @@
+{
+  "meta": {
+    "startNodeId": "qte-click"
+  },
+  "nodes": [
+    {
+      "id": "qte-click",
+      "title": "01 · 点击 · 目标点击",
+      "video": "2.mp4",
+      "qte": {
+        "type": "click",
+        "duration": 2,
+        "delay_from_start_seconds": 1.5,
+        "click_count": 1,
+        "area_position": "0.5,0.5",
+        "area_size": "0.2,0.2",
+        "instruction_text_1": "快速点击目标！",
+        "next_node_map": {
+          "0": "qte-longpress",
+          "1": "qte-longpress"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "qte-longpress",
+      "title": "02 · 长按 · 持续按住",
+      "video": "3.mp4",
+      "qte": {
+        "type": "longpress",
+        "duration": 5,
+        "delay_from_start_seconds": 1,
+        "press_time": 3,
+        "area_position": "0.5,0.5",
+        "area_size": "0.3,0.3",
+        "instruction_text_1": "按住屏幕不要松手！",
+        "next_node_map": {
+          "0": "qte-swipe",
+          "1": "qte-swipe"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "qte-swipe",
+      "title": "03 · 滑动 · 向右滑动",
+      "video": "1.mp4",
+      "qte": {
+        "type": "swipe",
+        "duration": 3,
+        "delay_from_start_seconds": 1,
+        "swipe_direction": "right",
+        "swipe_min_distance": 100,
+        "swipe_angle_tolerance": 30,
+        "instruction_text_1": "向右滑动躲避！",
+        "next_node_map": {
+          "0": "qte-erase",
+          "1": "qte-erase"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "qte-erase",
+      "title": "04 · 擦除 · 反复滑动",
+      "video": "2.mp4",
+      "qte": {
+        "type": "swipeerase",
+        "duration": 10,
+        "delay_from_start_seconds": 0.5,
+        "swipe_erase_direction": "any",
+        "swipe_erase_min_distance": 50,
+        "swipe_erase_required_count": 5,
+        "instruction_text_1": "快速擦除屏幕上的污渍！",
+        "next_node_map": {
+          "0": "qte-paper-cutting",
+          "1": "qte-paper-cutting"
+        }
+      }
+    },
+    {
+      "id": "qte-paper-cutting",
+      "title": "05 · 剪纸 · 预设图案",
+      "video": "2.mp4",
+      "qte": {
+        "type": "paper_cutting",
+        "duration": 60,
+        "paper_cutting_config": {
+          "pattern": "plum",
+          "center": "0.5,0.5",
+          "petal_count": 5,
+          "outer_radius": 0.3,
+          "inner_radius": 0.1,
+          "petal_power": 1.4,
+          "sample_count": 300,
+          "tolerance": 0.032,
+          "accuracy_threshold": 0.7,
+          "coverage_threshold": 0.75,
+          "minimum_progress": 0.25,
+          "auto_close_progress": 0.65,
+          "close_distance": 0.08,
+          "instruction_text": "沿虚线描摹梅花轮廓，回到起点自动闭合",
+          "drawing_text": "裁剪中…",
+          "success_text": "手很稳，梅花剪纸完成了",
+          "failure_text": "剪歪了，再试一次吧",
+          "retry_text": "轨迹太短，请重新描摹"
+        },
+        "next_node_map": {
+          "0": "qte-paper-cutting-custom",
+          "1": "qte-paper-cutting-custom"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        }
+      }
+    },
+    {
+      "id": "qte-paper-cutting-custom",
+      "title": "06 · 剪纸 · 自定义图案",
+      "video": "2.mp4",
+      "qte": {
+        "type": "paper_cutting",
+        "duration": 60,
+        "paper_cutting_config": {
+          "pattern": "custom",
+          "custom_points": [
+            "0.5000,0.1800",
+            "0.5719,0.4011",
+            "0.8043,0.4011",
+            "0.6163,0.5378",
+            "0.6881,0.7589",
+            "0.5000,0.6222",
+            "0.3119,0.7589",
+            "0.3837,0.5378",
+            "0.1957,0.4011",
+            "0.4281,0.4011"
+          ],
+          "tolerance": 0.032,
+          "accuracy_threshold": 0.7,
+          "coverage_threshold": 0.75,
+          "minimum_progress": 0.25,
+          "auto_close_progress": 0.65,
+          "close_distance": 0.08,
+          "instruction_text": "沿虚线描摹五角星轮廓，回到起点自动闭合",
+          "drawing_text": "裁剪中…",
+          "success_text": "手很稳，五角星剪纸完成了",
+          "failure_text": "剪歪了，再试一次吧",
+          "retry_text": "轨迹太短，请重新描摹"
+        },
+        "next_node_map": {
+          "0": "qte-balance",
+          "1": "qte-balance"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        }
+      }
+    },
+    {
+      "id": "qte-balance",
+      "title": "07 · 平衡 · 按住与松开",
+      "video": "3.mp4",
+      "qte": {
+        "type": "balance",
+        "duration": 15,
+        "delay_from_start_seconds": 0.5,
+        "background_video_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/Pet/Videos/1-1-1.mp4",
+        "instruction_text_1": "保持平衡",
+        "instruction_text_2": "按住屏幕控制指针",
+        "balance_initial_perfect": 50,
+        "balance_perfect_zone_min": 0.4,
+        "balance_perfect_zone_max": 0.6,
+        "balance_max_progress_duration": 10,
+        "balance_is_reverse": false,
+        "balance_decrease_rate": 15,
+        "balance_increase_rate": 25,
+        "balance_press_speed_multiplier": 1,
+        "balance_release_speed_multiplier": 1,
+        "next_node_map": {
+          "0": "qte-insight",
+          "1": "qte-insight"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        },
+        "score_effects": {
+          "0": {
+            "favor": -3
+          },
+          "1": {
+            "favor": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-insight",
+      "title": "08 · 洞察 · 扫描目标",
+      "video": "2.mp4",
+      "qte": {
+        "type": "insight",
+        "duration": 15,
+        "delay_from_start_seconds": 0.5,
+        "instruction_text_1": "寻找隐藏线索",
+        "insight_video_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/Pet/Videos/1-1-1.mp4",
+        "insight_targets": [
+          "0.2,0.3",
+          "-0.1,-0.2"
+        ],
+        "next_node_map": {
+          "0": "qte-scratch",
+          "1": "qte-scratch"
+        }
+      }
+    },
+    {
+      "id": "qte-scratch",
+      "title": "09 · 刮刮卡 · 擦除揭示",
+      "video": "3.mp4",
+      "qte": {
+        "type": "insight_scratch",
+        "duration": 30,
+        "delay_from_start_seconds": 1,
+        "instruction_text_1": "擦除画面揭示隐藏内容",
+        "insight_video_url": "1.mp4",
+        "next_node_map": {
+          "0": "qte-voice",
+          "1": "qte-voice"
+        }
+      }
+    },
+    {
+      "id": "qte-voice",
+      "title": "10 · 语音 · 识别口令",
+      "video": "1.mp4",
+      "qte": {
+        "type": "tencent_voice",
+        "duration": 10,
+        "delay_from_start_seconds": 1,
+        "voice_target_phrase": "疑是地上霜",
+        "voice_target_all_phrase": "疑是地上霜",
+        "instruction_text_1": "面前是个密室 看起来语音可以控制",
+        "instruction_text_2": "窗前明月光下一句",
+        "next_node_map": {
+          "0": "test-ch2-end",
+          "1": "test-ch2-end"
+        }
+      }
+    },
+    {
+      "id": "test-ch2-end",
+      "title": "11 · 基础操作 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "基础操作测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

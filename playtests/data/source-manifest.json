@@ -1,0 +1,154 @@
+{
+  "source": "https://preview.game.yoroll.ai/?config=test",
+  "game": "https://lineargame.top/test/game.json",
+  "chapters": [
+    {
+      "id": "1",
+      "title": "剧情选择与条件",
+      "url": "https://lineargame.top/test/ch1.json",
+      "file": "ch1.json",
+      "bytes": 8679,
+      "sha256": "0cd73d4932f0e82d7b42c776a585a3d35eb1a90713f1a2ad9e7255b14efa48ef",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "基础操作",
+      "url": "https://lineargame.top/test/ch2.json",
+      "file": "ch2.json",
+      "bytes": 7787,
+      "sha256": "6010537b658637677cf67cb6122c28454477ca9e80a039cf73f3a0105361e996",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "场景与叙事互动",
+      "url": "https://lineargame.top/test/ch3.json",
+      "file": "ch3.json",
+      "bytes": 25692,
+      "sha256": "ef691f59d024edf56e10a77d11892fb69436eef7bfd71f02874f3acb6348f34a",
+      "keys": [
+        "meta",
+        "nodes",
+        "side_nodes"
+      ]
+    },
+    {
+      "id": "4",
+      "title": "道具与合成解谜",
+      "url": "https://lineargame.top/test/ch4.json",
+      "file": "ch4.json",
+      "bytes": 9898,
+      "sha256": "84dcb5189a86e094e659baf6cb571936ea0a6805c0d9bf2f80cdeaae0160b53e",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "5",
+      "title": "益智与棋类",
+      "url": "https://lineargame.top/test/ch5.json",
+      "file": "ch5.json",
+      "bytes": 5342,
+      "sha256": "bcf2efe38f79d5d7afdcd4e890b78c156c491c54b6985213b563fc1399fdc662",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "6",
+      "title": "动作与竞技",
+      "url": "https://lineargame.top/test/ch6.json",
+      "file": "ch6.json",
+      "bytes": 4087,
+      "sha256": "669abc9744ebed3ca0ffb88e91cc8d5c9c045a1b315890a0043dfafec3a22f0c",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "节奏音游",
+      "url": "https://lineargame.top/test/ch7.json",
+      "file": "ch7.json",
+      "bytes": 11909,
+      "sha256": "8598cbd9600f93d1ecadfae77dba57ab5249d48588f6f9c190e595f7eb694302",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "8",
+      "title": "视频时序",
+      "url": "https://lineargame.top/test/ch8.json",
+      "file": "ch8.json",
+      "bytes": 9950,
+      "sha256": "c634a169e81dc8ad7488c0da11b675667c490404f4c9435cd4143038115151f9",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    },
+    {
+      "id": "9",
+      "title": "网页小游戏",
+      "url": "https://lineargame.top/test/ch9.json",
+      "file": "ch9.json",
+      "bytes": 1231,
+      "sha256": "f4196cc87072396adb9136bafa90ce22d1dcf10b05e07d634c2a1883547775ab",
+      "keys": [
+        "meta",
+        "nodes"
+      ]
+    }
+  ],
+  "mainNodes": 74,
+  "sideNodes": 20,
+  "qteTypes": {
+    "choice_area": 1,
+    "scene_choice": 1,
+    "click": 1,
+    "longpress": 1,
+    "swipe": 1,
+    "swipeerase": 1,
+    "paper_cutting": 2,
+    "balance": 1,
+    "insight": 1,
+    "insight_scratch": 1,
+    "tencent_voice": 1,
+    "investigation": 1,
+    "sceneclickvideo": 2,
+    "videochoiceloop": 1,
+    "peek": 1,
+    "ragemeter": 1,
+    "dating_calendar": 1,
+    "use_item": 2,
+    "scene_search": 1,
+    "craft_bench": 1,
+    "dial_lock": 1,
+    "puzzle": 1,
+    "sudoku": 1,
+    "tileslot": 1,
+    "gomoku": 1,
+    "ChineseChessQTE": 1,
+    "ChessQTE": 1,
+    "shoot2": 1,
+    "whack_mole": 1,
+    "carracing": 1,
+    "BasketballQTE": 1,
+    "PoolQTE": 1,
+    "rhythm": 9,
+    "web_game": 1
+  },
+  "dataPolicy": "Chapter and game JSON files are byte-identical copies of the supplied public preview data. UI rendering is separate from these rules."
+}

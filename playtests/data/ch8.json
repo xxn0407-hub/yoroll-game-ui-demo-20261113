@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "startNodeId": "image-audio-test"
+  },
+  "nodes": [
+    {
+      "id": "image-audio-test",
+      "nodeType": "choice",
+      "title": "00 · 图音播放 · 单音频与多图",
+      "playback_mode": "image_audio",
+      "audio_url": "node_media_test_12s.wav",
+      "images": [
+        {
+          "image_url": "node_media_test_01.png",
+          "duration": 3
+        },
+        {
+          "image_url": "node_media_test_02.png",
+          "duration": 3
+        },
+        {
+          "image_url": "node_media_test_03.png",
+          "duration": 3
+        }
+      ],
+      "loop": false,
+      "question": "预期：0–3 秒林间溪流，3–6 秒海边日落，6–12 秒星空湖泊。图片配置总长 9 秒，末图保持至 12 秒音频结束。可测试暂停、拖动和跳过，再继续原有视频测试。",
+      "delay_from_start_seconds": 0,
+      "duration": 0,
+      "default_choice_index": -1,
+      "choices": [
+        {
+          "label": "重播图音测试",
+          "next": "image-audio-test"
+        },
+        {
+          "label": "继续视频时序测试",
+          "next": "uitrigger"
+        }
+      ]
+    },
+    {
+      "id": "uitrigger",
+      "title": "01 · UI 提示 · 定时显示",
+      "video": "1.mp4",
+      "ui_triggers": [
+        {
+          "name": "rhythm_fail",
+          "delay_from_start_seconds": 2,
+          "duration": 3
+        },
+        {
+          "name": "rhythm_success",
+          "delay_from_start_seconds": 4,
+          "duration": 1.5
+        }
+      ],
+      "next": "ch2-slow-instant-choice-mid-wait"
+    },
+    {
+      "id": "ch2-slow-instant-choice-mid-wait",
+      "nodeType": "choice",
+      "title": "02 · 选择题 · 直接慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "question": "选项出现时直接切到0.7倍速。选择后直接恢复原速，等视频结束再进入平滑慢放测试。",
+      "delay_from_start_seconds": 2,
+      "duration": 0,
+      "default_choice_index": -1,
+      "video_slow_motion": {
+        "style": 1,
+        "target_speed": 0.7
+      },
+      "choices": [
+        {
+          "label": "继续（等待片尾）",
+          "next": "ch2-slow-smooth-choice-mid-wait",
+          "immediate_settle": false
+        }
+      ]
+    },
+    {
+      "id": "ch2-slow-smooth-choice-mid-wait",
+      "nodeType": "choice",
+      "title": "03 · 选择题 · 平滑慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "question": "选项出现时用0.5秒平滑降至0.7倍速。选择后用0.5秒恢复原速，等视频结束再进入限时选择测试。",
+      "delay_from_start_seconds": 2,
+      "duration": 0,
+      "default_choice_index": -1,
+      "video_slow_motion": {
+        "style": 2,
+        "target_speed": 0.7
+      },
+      "choices": [
+        {
+          "label": "继续（等待片尾）",
+          "next": "ch2-slow-instant-timed-choice-mid-wait",
+          "immediate_settle": false
+        }
+      ]
+    },
+    {
+      "id": "ch2-slow-instant-timed-choice-mid-wait",
+      "nodeType": "choice",
+      "title": "04 · 限时选择 · 直接慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "question": "选项出现时直接切到0.7倍速。3秒内选择，或等待超时自动选择默认选项；随后直接恢复原速，等视频结束再进入下一节点。",
+      "delay_from_start_seconds": 2,
+      "duration": 3,
+      "default_choice_index": 0,
+      "video_slow_motion": {
+        "style": 1,
+        "target_speed": 0.7
+      },
+      "choices": [
+        {
+          "label": "继续（超时默认，等待片尾）",
+          "next": "ch2-slow-smooth-timed-choice-mid-wait",
+          "immediate_settle": false
+        }
+      ]
+    },
+    {
+      "id": "ch2-slow-smooth-timed-choice-mid-wait",
+      "nodeType": "choice",
+      "title": "05 · 限时选择 · 平滑慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "question": "选项出现时用0.5秒平滑降至0.7倍速。3秒内选择，或等待超时自动选择默认选项；随后用0.5秒恢复原速，等视频结束再进入音游直接慢放测试。",
+      "delay_from_start_seconds": 2,
+      "duration": 3,
+      "default_choice_index": 0,
+      "video_slow_motion": {
+        "style": 2,
+        "target_speed": 0.7
+      },
+      "choices": [
+        {
+          "label": "继续（超时默认，等待片尾）",
+          "next": "ch2-slow-instant-rhythm-mid-wait",
+          "immediate_settle": false
+        }
+      ]
+    },
+    {
+      "id": "ch2-slow-instant-rhythm-mid-wait",
+      "nodeType": "qte",
+      "title": "06 · 音游 · 直接慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "先点两侧重叠音符，再点上方短间隔音符，最后按住中央1.35秒。长按时右上角音符可放过，观察视频是否继续慢放；结束后等待片尾。",
+        "target_score": 60,
+        "video_slow_motion": {
+          "style": 1,
+          "target_speed": 0.7
+        },
+        "rhythm_beatmap": {
+          "songName": "视频时序 · 音游慢放测试：重叠、短间隔、长按",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 4,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2,
+              "duration": 0.3,
+              "noteType": "OSUTapNote",
+              "screenX": 560,
+              "screenY": 430
+            },
+            {
+              "trackId": 1,
+              "perfectTime": 2.14,
+              "duration": 0.3,
+              "noteType": "OSUTapNote",
+              "screenX": 1360,
+              "screenY": 430
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 3.9,
+              "duration": 0.2,
+              "noteType": "OSUTapNote",
+              "screenX": 680,
+              "screenY": 740
+            },
+            {
+              "trackId": 1,
+              "perfectTime": 4.86,
+              "duration": 0.2,
+              "noteType": "OSUTapNote",
+              "screenX": 1240,
+              "screenY": 740
+            },
+            {
+              "trackId": 2,
+              "perfectTime": 6,
+              "duration": 0.2,
+              "noteType": "OSUHoldNote",
+              "screenX": 960,
+              "screenY": 430,
+              "floatParam": 1.35
+            },
+            {
+              "trackId": 3,
+              "perfectTime": 6.48,
+              "duration": 0.1,
+              "noteType": "OSUTapNote",
+              "screenX": 1480,
+              "screenY": 740
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "ch2-slow-smooth-rhythm-mid-wait",
+          "1": "ch2-slow-smooth-rhythm-mid-wait"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "ch2-slow-smooth-rhythm-mid-wait",
+      "nodeType": "qte",
+      "title": "07 · 音游 · 平滑慢放",
+      "video": "1.mp4",
+      "loop": false,
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "先点两侧重叠音符，再点上方短间隔音符，最后按住中央1.35秒。长按时右上角音符可放过，观察视频是否继续慢放；结束后等待片尾。",
+        "target_score": 60,
+        "video_slow_motion": {
+          "style": 2,
+          "target_speed": 0.7
+        },
+        "rhythm_beatmap": {
+          "songName": "视频时序 · 音游慢放测试：重叠、短间隔、长按",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 4,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2,
+              "duration": 0.3,
+              "noteType": "OSUTapNote",
+              "screenX": 560,
+              "screenY": 430
+            },
+            {
+              "trackId": 1,
+              "perfectTime": 2.14,
+              "duration": 0.3,
+              "noteType": "OSUTapNote",
+              "screenX": 1360,
+              "screenY": 430
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 3.9,
+              "duration": 0.2,
+              "noteType": "OSUTapNote",
+              "screenX": 680,
+              "screenY": 740
+            },
+            {
+              "trackId": 1,
+              "perfectTime": 4.86,
+              "duration": 0.2,
+              "noteType": "OSUTapNote",
+              "screenX": 1240,
+              "screenY": 740
+            },
+            {
+              "trackId": 2,
+              "perfectTime": 6,
+              "duration": 0.2,
+              "noteType": "OSUHoldNote",
+              "screenX": 960,
+              "screenY": 430,
+              "floatParam": 1.35
+            },
+            {
+              "trackId": 3,
+              "perfectTime": 6.48,
+              "duration": 0.1,
+              "noteType": "OSUTapNote",
+              "screenX": 1480,
+              "screenY": 740
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-ch8-end",
+          "1": "test-ch8-end"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-ch8-end",
+      "title": "08 · 视频时序 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "视频时序测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

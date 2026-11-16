@@ -1,6 +1,7 @@
 'use strict';
 // Finite local PCM cues; provenance is recorded in sound-spec.json.
 window.YorollSound = (() => {
+ const assetRoot = new URL('./',document.currentScript?.src||location.href);
  const revision = 'chapter-short-resonance-20261113';
  const completionRevision = 'completion-brighter-20261114';
  const deathRevision = 'death-glitch-resonance-20261114';
@@ -21,7 +22,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:name==='gameover'?gameoverRevision:revision}`)
+ const bytes = new Map(names.map(name => [name,fetch(new URL(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:name==='gameover'?gameoverRevision:revision}`,assetRoot))
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 

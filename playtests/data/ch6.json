@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "startNodeId": "qte-shoot"
+  },
+  "nodes": [
+    {
+      "id": "qte-shoot",
+      "title": "01 · 射击 · 命中目标",
+      "video": "1.mp4",
+      "qte": {
+        "type": "shoot2",
+        "duration": 8,
+        "delay_from_start_seconds": 1,
+        "shoot_radius": 0.2,
+        "shoot_max_fired_count": 5,
+        "shoot_hit_count": 1,
+        "area_position": "0.5,0.5",
+        "instruction_text_1": "瞄准目标射击！",
+        "next_node_map": {
+          "0": "qte-whack-mole",
+          "1": "qte-whack-mole"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "qte-whack-mole",
+      "title": "02 · 打地鼠 · 点击命中",
+      "video": "2.mp4",
+      "qte": {
+        "type": "whack_mole",
+        "duration": 30,
+        "delay_from_start_seconds": 1,
+        "whack_mole_config": {
+          "target_hits": 15,
+          "max_misses": 5,
+          "spawn_interval": 0.6,
+          "spawn_interval_jitter": 0.2,
+          "mole_visible_duration": 1,
+          "simultaneous_moles": 2,
+          "pre_spawn_delay": 0.5,
+          "allow_same_hole_consecutive": false,
+          "count_expired_as_miss": true,
+          "fail_on_timeout": true,
+          "success_score": 1,
+          "failure_score": 0,
+          "mole_label": "打！"
+        },
+        "next_node_map": {
+          "0": "qte-carracing",
+          "1": "qte-carracing"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "favor": -2
+          },
+          "1": {
+            "favor": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-carracing",
+      "title": "03 · 赛车 · 名次结算",
+      "video": "2.mp4",
+      "qte": {
+        "type": "carracing",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "required_rank": 3,
+        "next_node_map": {
+          "0": "qte-basketball",
+          "1": "qte-basketball"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "favor": -5
+          },
+          "1": {
+            "favor": 8
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-basketball",
+      "title": "04 · 篮球 · 投篮命中",
+      "video": "1.mp4",
+      "qte": {
+        "type": "BasketballQTE",
+        "duration": 60,
+        "delay_from_start_seconds": 0,
+        "shoot_count": 5,
+        "next_node_map": {
+          "0": "qte-pool",
+          "1": "qte-pool"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "favor": -2
+          },
+          "1": {
+            "favor": 8
+          }
+        }
+      }
+    },
+    {
+      "id": "qte-pool",
+      "title": "05 · 台球 · 对局结算",
+      "video": "2.mp4",
+      "qte": {
+        "type": "PoolQTE",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "0": "test-ch6-end",
+          "1": "test-ch6-end"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": true
+        },
+        "score_effects": {
+          "0": {
+            "favor": -2
+          },
+          "1": {
+            "favor": 5
+          }
+        },
+        "ball_pool": {
+          "playerName": "玩家1",
+          "playerAvatarPath": "https://video-1318091918.cos.ap-beijing.myqcloud.com/zh/lantern/img_lantern_1.png",
+          "opponentName": "玩家2",
+          "opponentAvatarPath": "https://video-1318091918.cos.ap-beijing.myqcloud.com/zh/lantern/img_lantern_1.png"
+        }
+      }
+    },
+    {
+      "id": "test-ch6-end",
+      "title": "06 · 动作与竞技 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "动作与竞技测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

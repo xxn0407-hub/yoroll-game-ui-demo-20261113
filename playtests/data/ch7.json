@@ -1,0 +1,404 @@
+{
+  "meta": {
+    "startNodeId": "qte-rhythm"
+  },
+  "nodes": [
+    {
+      "id": "qte-rhythm",
+      "title": "01 · 音游 · 普通点击测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "普通点击连续测试两次，前一音符倒计时结束1秒后出现下一个。可不操作检查Miss。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "普通点击 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUTapNote",
+              "screenX": 960,
+              "screenY": 540
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUTapNote",
+              "screenX": 960,
+              "screenY": 540
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-rhythm-mash",
+          "1": "test-rhythm-mash"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-rhythm-mash",
+      "title": "02 · 音游 · 连续点击测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "连续点击连续测试两次，前一音符倒计时结束1秒后出现下一个。可不操作检查Miss。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "连续点击 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUMashNote",
+              "screenX": 960,
+              "screenY": 540,
+              "intParam": 3,
+              "floatParam": 1.5
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUMashNote",
+              "screenX": 960,
+              "screenY": 540,
+              "intParam": 3,
+              "floatParam": 1.5
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-rhythm-hold",
+          "1": "test-rhythm-hold"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-rhythm-hold",
+      "title": "03 · 音游 · 长按测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "长按连续测试两次，前一音符倒计时结束1秒后出现下一个。可不操作检查Miss。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "长按 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUHoldNote",
+              "screenX": 960,
+              "screenY": 540,
+              "floatParam": 1
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUHoldNote",
+              "screenX": 960,
+              "screenY": 540,
+              "floatParam": 1
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-rhythm-swipe",
+          "1": "test-rhythm-swipe"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-rhythm-swipe",
+      "title": "04 · 音游 · 滑动上/下测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "依次向上、向下滑动。中心箭头固定，残影沿要求方向连续发射，前一音符倒计时结束1秒后出现下一个。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "滑动上/下 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUSwipeNote",
+              "screenX": 960,
+              "screenY": 540,
+              "stringParam": "up",
+              "floatParam": 1
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUSwipeNote",
+              "screenX": 960,
+              "screenY": 540,
+              "stringParam": "down",
+              "floatParam": 1
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-rhythm-swipe-horizontal",
+          "1": "test-rhythm-swipe-horizontal"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-rhythm-swipe-horizontal",
+      "title": "05 · 音游 · 滑动左/右测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "依次向左、向右滑动。中心箭头固定，残影沿要求方向连续发射，前一音符倒计时结束1秒后出现下一个。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "滑动左/右 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUSwipeNote",
+              "screenX": 960,
+              "screenY": 540,
+              "stringParam": "left",
+              "floatParam": 1
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUSwipeNote",
+              "screenX": 960,
+              "screenY": 540,
+              "stringParam": "right",
+              "floatParam": 1
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-rhythm-fight",
+          "1": "test-rhythm-fight"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-rhythm-fight",
+      "title": "06 · 音游 · 对抗测试",
+      "video": "1.mp4",
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.1,
+        "instruction_text_1": "对抗连续测试两次，前一音符倒计时结束1秒后出现下一个。可不操作检查Miss。",
+        "target_score": 80,
+        "rhythm_beatmap": {
+          "songName": "对抗 · 间隔1秒测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "rhythm",
+          "maxMistakes": -1,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2.0,
+              "duration": 0.75,
+              "noteType": "OSUFightNote",
+              "screenX": 960,
+              "screenY": 540,
+              "floatParam": 1.5
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.75,
+              "noteType": "OSUFightNote",
+              "screenX": 960,
+              "screenY": 540,
+              "floatParam": 1.5
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "ch2-quick-qte-test",
+          "1": "ch2-quick-qte-test"
+        },
+        "next_node_immediate_settle": {
+          "0": false,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "ch2-quick-qte-test",
+      "title": "07 · 快速 QTE · 允许错误两次",
+      "video": "1.mp4",
+      "loop": false,
+      "qte": {
+        "type": "rhythm",
+        "duration": 0,
+        "delay_from_start_seconds": 0.5,
+        "instruction_text_1": "依次完成点击、长按、右滑、连点、点击，允许错误2次",
+        "rhythm_beatmap": {
+          "songName": "快速 QTE · 容错次数测试",
+          "author": "测试",
+          "bpm": 120,
+          "noteSpeed": 60,
+          "audioUrl": "",
+          "difficulty": 1,
+          "trackCount": 1,
+          "mode": "qte",
+          "maxMistakes": 2,
+          "notes": [
+            {
+              "trackId": 0,
+              "perfectTime": 2,
+              "duration": 0.45,
+              "noteType": "OSUTapNote",
+              "screenX": 560,
+              "screenY": 540
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 3,
+              "duration": 0.45,
+              "noteType": "OSUHoldNote",
+              "screenX": 960,
+              "screenY": 540,
+              "floatParam": 0.6
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 4,
+              "duration": 0.45,
+              "noteType": "OSUSwipeNote",
+              "screenX": 1360,
+              "screenY": 540,
+              "stringParam": "right",
+              "floatParam": 0.6
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 5.2,
+              "duration": 0.45,
+              "noteType": "OSUMashNote",
+              "screenX": 960,
+              "screenY": 720,
+              "intParam": 3,
+              "floatParam": 0.7
+            },
+            {
+              "trackId": 0,
+              "perfectTime": 6.5,
+              "duration": 0.45,
+              "noteType": "OSUTapNote",
+              "screenX": 560,
+              "screenY": 540
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "test-ch7-end",
+          "1": "test-ch7-end"
+        },
+        "next_node_immediate_settle": {
+          "0": true,
+          "1": false
+        }
+      }
+    },
+    {
+      "id": "test-ch7-end",
+      "title": "08 · 节奏音游 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "节奏音游测试完成，可通过剧情树回看本章节点。"
+    }
+  ]
+}

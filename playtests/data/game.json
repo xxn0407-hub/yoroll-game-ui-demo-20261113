@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "title": "玩法分类测试",
+    "cdnBase": "https://lineargame.top/",
+    "coverImage": "",
+    "bg_url": "",
+    "common_bg_url": ""
+  },
+  "mediaType": "mp4",
+  "videoBaseUrl": "https://lineargame.top/test/Videos",
+  "screenOrientation": "Landscape",
+  "themeStyle": 0,
+  "chapters": [
+    {
+      "id": "1",
+      "title": "剧情选择与条件",
+      "coverImage": "ch1",
+      "dataPath": "ch1.json"
+    },
+    {
+      "id": "2",
+      "title": "基础操作",
+      "coverImage": "ch2",
+      "dataPath": "ch2.json"
+    },
+    {
+      "id": "3",
+      "title": "场景与叙事互动",
+      "coverImage": "ch3",
+      "dataPath": "ch3.json"
+    },
+    {
+      "id": "4",
+      "title": "道具与合成解谜",
+      "coverImage": "ch4",
+      "dataPath": "ch4.json"
+    },
+    {
+      "id": "5",
+      "title": "益智与棋类",
+      "coverImage": "ch2",
+      "dataPath": "ch5.json"
+    },
+    {
+      "id": "6",
+      "title": "动作与竞技",
+      "coverImage": "ch2",
+      "dataPath": "ch6.json"
+    },
+    {
+      "id": "7",
+      "title": "节奏音游",
+      "coverImage": "ch2",
+      "dataPath": "ch7.json"
+    },
+    {
+      "id": "8",
+      "title": "视频时序",
+      "coverImage": "ch1",
+      "dataPath": "ch8.json"
+    },
+    {
+      "id": "9",
+      "title": "网页小游戏",
+      "coverImage": "ch1",
+      "dataPath": "ch9.json"
+    }
+  ],
+  "statConfigs": [
+    {
+      "id": "favor",
+      "displayName": "好感度",
+      "initialValue": 0,
+      "showToast": true,
+      "maxValue": 100,
+      "perCharacter": true
+    },
+    {
+      "id": "trust",
+      "displayName": "信任度",
+      "initialValue": 0,
+      "maxValue": 100,
+      "showToast": true,
+      "perCharacter": true
+    },
+    {
+      "id": "intelligence",
+      "displayName": "智力",
+      "initialValue": 0,
+      "maxValue": 100,
+      "showToast": true,
+      "perCharacter": false
+    },
+    {
+      "id": "sanity",
+      "displayName": "理智",
+      "initialValue": 100,
+      "maxValue": 100,
+      "showToast": true,
+      "perCharacter": false
+    }
+  ],
+  "characterConfigs": [
+    {
+      "characterId": "sophia",
+      "displayName": "索菲娅",
+      "description": "用于角色属性增减与条件判断测试。",
+      "initStats": {
+        "favor": 0,
+        "trust": 0
+      }
+    },
+    {
+      "characterId": "lily",
+      "displayName": "莉莉",
+      "description": "用于角色好感度比较测试，初始好感度为5。",
+      "initStats": {
+        "favor": 5,
+        "trust": 0
+      }
+    }
+  ],
+  "itemConfigs": [
+    {
+      "itemId": "herb",
+      "itemName": "草药",
+      "description": "一株普通草药，可用于合成药水",
+      "itemType": 1,
+      "initialCount": 0,
+      "documentPageType": 0,
+      "documentPages": [
+        "测试书页第一页：这株草药采集于后山。",
+        "测试书页第二页：晒干后可入药，也可合成解毒药水。"
+      ]
+    },
+    {
+      "itemId": "rope",
+      "itemName": "麻绳",
+      "description": "一段结实的麻绳，可用于合成药水",
+      "itemType": 1,
+      "initialCount": 0,
+      "documentPageType": 1,
+      "documentPages": [
+        "测试信件：这段麻绳是从阁楼旧箱子里找到的，绳结的打法很特别。"
+      ]
+    },
+    {
+      "itemId": "potion",
+      "itemName": "解毒药水",
+      "description": "用草药和麻绳制成，可解除毒素",
+      "itemType": 1,
+      "initialCount": 0
+    }
+  ],
+  "craftRecipes": [
+    {
+      "recipeId": "recipe_potion",
+      "inputs": {
+        "herb": 2,
+        "rope": 1
+      },
+      "outputItemId": "potion",
+      "outputCount": 1,
+      "consumeInputs": true
+    }
+  ],
+  "achievementEnabled": false,
+  "gachaEnabled": false,
+  "characterStatusEntryEnabled": true,
+  "characterArchiveEnabled": false,
+  "inventoryEntryEnabled": true
+}

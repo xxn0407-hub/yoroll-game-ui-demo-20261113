@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "startNodeId": "choice-basic"
+  },
+  "nodes": [
+    {
+      "id": "choice-basic",
+      "title": "01 · 基础选择",
+      "video": "2.mp4",
+      "question": "你要怎么做？",
+      "choices": [
+        {
+          "label": "勇敢面对",
+          "next": "choice-timed"
+        },
+        {
+          "label": "选择逃跑",
+          "next": "choice-timed"
+        },
+        {
+          "label": "查看死亡结局",
+          "next": "test-ch1-death",
+          "immediate_settle": true
+        }
+      ]
+    },
+    {
+      "id": "test-ch1-death",
+      "title": "行动失败",
+      "video": "1.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "death",
+      "death_desc": "你没能逃出险境，故事在这里结束。"
+    },
+    {
+      "id": "choice-timed",
+      "title": "02 · 限时选择 · 立即结算与等待片尾",
+      "video": "1.mp4",
+      "question": "快做决定！时间不多了！",
+      "choices": [
+        {
+          "label": "立刻逃跑",
+          "next": "choice-stat-1",
+          "immediate_settle": true
+        },
+        {
+          "label": "原地隐藏",
+          "next": "choice-stat-1",
+          "immediate_settle": false
+        }
+      ],
+      "delay_from_start_seconds": 3,
+      "duration": 5,
+      "default_choice_index": 0
+    },
+    {
+      "id": "choice-stat-1",
+      "title": "03 · 角色属性 · 增加好感",
+      "video": "3.mp4",
+      "statEffects": {
+        "favor": 5
+      },
+      "characterEffects": {
+        "sophia": {
+          "favor": 10,
+          "trust": 5
+        }
+      },
+      "next": "choice-condition-test",
+      "statEffectConfigs": {
+        "favor": {
+          "value": 5
+        }
+      },
+      "characterEffectConfigs": {
+        "sophia": {
+          "favor": {
+            "value": 10
+          },
+          "trust": {
+            "value": 5
+          }
+        }
+      }
+    },
+    {
+      "id": "choice-condition-test",
+      "title": "04 · 条件判断 · 高好感",
+      "video": "2.mp4",
+      "question": "sophia 好感已增加到 10，lily 好感为 5：高好感和角色比较选项应可选，低好感选项应不可选。",
+      "choices": [
+        {
+          "label": "sophia好感≥10时可选",
+          "next": "choice-stat-2",
+          "conditions": [
+            {
+              "condition_type": 1001,
+              "character_name": "sophia",
+              "favor": 10
+            }
+          ]
+        },
+        {
+          "label": "sophia好感≤5时可选",
+          "next": "choice-stat-2",
+          "conditions": [
+            {
+              "condition_type": 1002,
+              "character_name": "sophia",
+              "favor": 5
+            }
+          ]
+        },
+        {
+          "label": "sophia好感>lily好感时可选",
+          "next": "choice-stat-2",
+          "conditions": [
+            {
+              "condition_type": 1003,
+              "character_name": "sophia",
+              "other_character_name": "lily"
+            }
+          ],
+          "hide_on_condition_fail": true
+        },
+        {
+          "label": "始终可选",
+          "next": "choice-stat-2"
+        }
+      ]
+    },
+    {
+      "id": "choice-stat-2",
+      "title": "05 · 角色属性 · 减少好感",
+      "video": "3.mp4",
+      "statEffects": {
+        "favor": 5
+      },
+      "characterEffects": {
+        "sophia": {
+          "favor": -10,
+          "trust": 0
+        }
+      },
+      "next": "choice-condition-low-test",
+      "statEffectConfigs": {
+        "favor": {
+          "value": 5
+        }
+      },
+      "characterEffectConfigs": {
+        "sophia": {
+          "favor": {
+            "value": -10
+          },
+          "trust": {
+            "value": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "choice-condition-low-test",
+      "title": "06 · 条件判断 · 低好感",
+      "video": "2.mp4",
+      "question": "sophia 好感已从 10 降至 0：低好感选项应可选，高好感选项应不可选，角色比较选项应隐藏。",
+      "choices": [
+        {
+          "label": "sophia好感≥10时可选",
+          "next": "area_choice_single",
+          "conditions": [
+            {
+              "condition_type": 1001,
+              "character_name": "sophia",
+              "favor": 10
+            }
+          ]
+        },
+        {
+          "label": "sophia好感≤5时可选",
+          "next": "area_choice_single",
+          "conditions": [
+            {
+              "condition_type": 1002,
+              "character_name": "sophia",
+              "favor": 5
+            }
+          ]
+        },
+        {
+          "label": "sophia好感>lily好感时可选",
+          "next": "area_choice_single",
+          "conditions": [
+            {
+              "condition_type": 1003,
+              "character_name": "sophia",
+              "other_character_name": "lily"
+            }
+          ],
+          "hide_on_condition_fail": true
+        },
+        {
+          "label": "始终可选",
+          "next": "area_choice_single"
+        }
+      ]
+    },
+    {
+      "id": "area_choice_single",
+      "video": "1.mp4",
+      "qte": {
+        "type": "choice_area",
+        "duration": 10,
+        "delay_from_start_seconds": 0.5,
+        "choice_area_config": {
+          "instruction_text": "",
+          "auto_complete_on_click": true,
+          "countdown_seconds": 10,
+          "timeout_score": 0,
+          "allow_multi_select": false,
+          "options": [
+            {
+              "id": "option_left",
+              "label": "",
+              "x": 0.3,
+              "y": 0.5,
+              "width": 0.25,
+              "height": 0.55,
+              "background_url": "https://video-1318091918.cos.ap-beijing.myqcloud.com/CatFight/Covers/ch0.jpg",
+              "score": 1
+            },
+            {
+              "id": "option_right",
+              "label": "",
+              "x": 0.7,
+              "y": 0.5,
+              "width": 0.25,
+              "height": 0.55,
+              "score": 2
+            }
+          ]
+        },
+        "next_node_map": {
+          "0": "scene-choice-test",
+          "1": "scene-choice-test",
+          "2": "scene-choice-test",
+          "3": "scene-choice-test"
+        }
+      },
+      "title": "07 · 区域选择 · 点击与超时"
+    },
+    {
+      "id": "scene-choice-test",
+      "title": "08 · 场景选项 · 方向选择",
+      "video": "1.mp4",
+      "qte": {
+        "type": "scene_choice",
+        "duration": 0,
+        "delay_from_start_seconds": 0,
+        "next_node_map": {
+          "1": "visited-test-choice",
+          "2": "visited-test-choice"
+        },
+        "next_node_immediate_settle": {
+          "1": true,
+          "2": true
+        },
+        "scene_choice": {
+          "background": "2.mp4",
+          "title": "场景选项测试·请选择方向",
+          "points": [
+            {
+              "id": "choice-left",
+              "x": 0.25,
+              "y": 0.45,
+              "arrowDir": 4,
+              "label": "向左调查",
+              "result": 1
+            },
+            {
+              "id": "choice-right",
+              "x": 0.75,
+              "y": 0.45,
+              "arrowDir": 6,
+              "label": "向右调查",
+              "result": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "visited-test-choice",
+      "nodeType": "choice",
+      "title": "09 · 访问记录 · 条件解锁",
+      "video": "1.mp4",
+      "question": "首次进入时，访问条件选项应不可选。继续经过下一节点并完成本章，再从剧情树回溯到这里检查解锁状态。",
+      "choices": [
+        {
+          "label": "继续并记录前置节点",
+          "next": "visited-test-required"
+        },
+        {
+          "label": "已访问前置节点：验证解锁",
+          "next": "visited-test-required",
+          "conditions": [
+            {
+              "condition_type": 4001,
+              "chapter_id": "1",
+              "node_id": "visited-test-required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "visited-test-required",
+      "nodeType": "basic",
+      "title": "10 · 访问记录 · 记录前置节点",
+      "video": "2.mp4",
+      "next": "ending"
+    },
+    {
+      "id": "ending",
+      "title": "11 · 剧情选择与条件 · 完成",
+      "video": "2.mp4",
+      "nodeType": "end",
+      "is_end": true,
+      "end_type": "chapter",
+      "chapter_desc": "剧情选择与条件测试完成。回溯到“09 · 访问记录 · 条件解锁”，验证第二个选项已解锁。"
+    }
+  ]
+}
