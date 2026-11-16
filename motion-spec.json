@@ -1534,5 +1534,30 @@
     "fadeOutCurve": "smootherstep",
     "fadeOutGainIndependentFromPlaybackGain": true,
     "entryAutoplay": "Try on entry; start the prepared opening with the page entrance where permitted; never block the entrance on permission."
+  },
+  "mobile": {
+    "activation": "Phone detection; layout=mobile is a desktop review override",
+    "desktop": "Original geometry and timelines unchanged",
+    "orientations": [
+      "landscape",
+      "portrait"
+    ],
+    "safeArea": "env(safe-area-inset-*) with visualViewport height",
+    "touchTargetCssPx": {
+      "minimum": 44,
+      "primary": 48
+    },
+    "gameReferenceSize": {
+      "landscape": [
+        1920,
+        1080
+      ],
+      "portrait": [
+        1080,
+        1920
+      ]
+    },
+    "motion": "Reuse existing entry, ambient, feedback and exit timings",
+    "portraitValidation": "Generic layout and coordinate contract; real portrait game not supplied"
   }
 }

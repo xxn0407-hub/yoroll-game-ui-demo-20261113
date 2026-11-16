@@ -146,7 +146,7 @@ function cancelPageMotion(){
  for(const timer of timers)clearTimeout(timer);
  timers.clear();
 }
-function unit(value){return Math.min(frame.clientWidth/1920,frame.clientHeight/1080)*value;}
+function unit(value){return (window.YorollLayout?.isMobile?window.YorollLayout.unit:Math.min(frame.clientWidth/1920,frame.clientHeight/1080))*value;}
 function footer(left='',right='<span><span class="keycap">Esc</span> 返回</span>'){
  return `<footer class="page-footer" data-enter="footer"><div>${left}</div><div class="key-hints">${right}</div></footer>`;
 }
@@ -543,7 +543,7 @@ function selectAffinity(index,{focus=false}={}){
  if(currentPage!=='affinity'||index<0||index>=AFFINITY_CHARACTERS.length)return;
  const changed=index!==selectedAffinity;selectedAffinity=index;
  $$('.affinity-card').forEach((card,i)=>{const active=i===index;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active));card.tabIndex=active?0:-1;});
- const character=AFFINITY_CHARACTERS[index];frame.dataset.affinityCharacter=character.id;
+ const character=AFFINITY_CHARACTERS[index];frame.dataset.affinityCharacter=character.id;window.YorollLayout?.reveal($(`.affinity-cell:nth-child(${index+1})`));
  $('#affinity-announcement').textContent=`已选择 ${character.name}，好感度 ${character.score} / 6`;
  if(focus)$(`.affinity-card[data-affinity-index="${index}"]`)?.focus({preventScroll:true});
  uiSound.play('chapter',{level:changed?.36:.22,throttle:220});
@@ -575,7 +575,7 @@ function choiceView(){
  const outline='<svg class="choice-outline" viewBox="0 0 196 52" preserveAspectRatio="none" aria-hidden="true"><path d="M90 51H26A25 25 0 0 1 26 1H170A25 25 0 0 1 170 51H106" vector-effect="non-scaling-stroke"/><circle cx="98" cy="51" r="1.6"/></svg>';
  return `${hud()}<section class="choice-panel" aria-label="剧情选项"><h2 data-enter="choice-title">你要怎么做？</h2><div class="choice-divider" data-enter="choice-time" aria-hidden="true"><span id="choice-progress"></span></div><div class="choice-options">${['勇敢面对','选择逃跑'].map((label,index)=>`<div data-enter="choice"><button class="choice-option" data-action="choice-${index}">${outline}<span class="choice-label">${label}</span></button></div>`).join('')}</div></section>${footer('<button class="time-toggle" data-action="choice-timer" aria-pressed="false">暂停计时</button>','<span><span class="keycap">1</span> / <span class="keycap">2</span> 选择</span><span><span class="keycap">Esc</span> 暂停</span>')}`;
 }
-function qteView(){return `${hud()}<div class="subtitle qte-subtitle" data-enter="subtitle"><span class="speaker">把握时机</span>在弯道前完成换挡。</div><div class="qte-widget" data-enter="qte"><div class="qte-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle id="qte-progress" cx="60" cy="60" r="56"/></svg><button class="qte-key" data-action="qte-hit" aria-label="完成换挡，按 E">E</button></div><div class="qte-label">换挡</div><div class="qte-tip">按下 E 或点击</div></div>${footer('','<span><span class="keycap">E</span> 换挡</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
+function qteView(){const mobile=window.YorollLayout?.isMobile;return `${hud()}<div class="subtitle qte-subtitle" data-enter="subtitle"><span class="speaker">把握时机</span>在弯道前完成换挡。</div><div class="qte-widget" data-enter="qte"><div class="qte-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56"/><circle id="qte-progress" cx="60" cy="60" r="56"/></svg><button class="qte-key" data-action="qte-hit" aria-label="${mobile?'点击完成换挡':'完成换挡，按 E'}">${mobile?'点击':'E'}</button></div><div class="qte-label">换挡</div><div class="qte-tip">${mobile?'轻触光环完成换挡':'按下 E 或点击'}</div></div>${footer('','<span><span class="keycap">E</span> 换挡</span><span><span class="keycap">Esc</span> 暂停</span>')}`;}
 function resultDustMarkup(){
  const sample=(i,salt)=>{const n=Math.sin((i+1)*127.1+salt*311.7)*43758.5453;return n-Math.floor(n);};
  const layers=[
@@ -624,7 +624,7 @@ function setScene(page){
  const key=fragment?`story-${selectedChapter}-${fragment.id}`:['home','exit','saves','affinity','profile','settings','logout'].includes(page)?'wall':page==='cover'?'cover':`chapter-${selectedChapter}`;
  if(key!==sceneKey){
   sceneKey=key;
-  if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="wall/index.html?clean&revision=real-game-covers-20261114" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
+  if(key==='wall'){scene.className='scene scene-wall';scene.innerHTML='<iframe src="'+(window.YorollLayout?.withPreview('wall/index.html?clean&revision=real-game-covers-20261114')||'wall/index.html?clean&revision=real-game-covers-20261114')+'" title="默认海报动态背景" tabindex="-1" aria-hidden="true"></iframe>';}
   else if(key==='cover'){scene.className='scene';scene.innerHTML='<img src="wall/assets/nocturne-cover.webp" alt="">';}
   else{const chapter=activeChapter(),image=fragment||chapter;scene.className='scene';scene.innerHTML=`<img class="chapter-background" data-chapter-index="${selectedChapter}" src="${image.cover}" alt="" style="object-position:${image.position||'50% center'}">`;}
  }
@@ -1044,7 +1044,7 @@ function showExit(){openModal({kind:'exit',title:'离开当前故事？',message
 function saveAction(index){
  if(!slots[index])openModal({kind:'save-create',title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters');toast('新的本地演示存档已建立');}});
  else if(index===activeSlot){uiSound.play('click',{level:.75});toast('已在使用这个存档');}
- else openModal({kind:'save-switch',title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();toast('已切换存档');}});
+ else openModal({kind:'save-switch',title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();if(window.YorollLayout?.isMobile&&window.YorollLayout.orientation==='portrait')timeout(()=>window.YorollLayout.reveal($('.save-shell.is-active')),680);toast('已切换存档');}});
 }
 function deleteAction(index){openModal({kind:'save-delete',title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
 function showLogout(){openModal({kind:'logout',title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}

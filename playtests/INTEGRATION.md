@@ -15,6 +15,16 @@
 
 ## 原生玩法适配器
 
+### 手机横竖屏与游戏方向
+
+手机自动启用独立布局，桌面保留原尺寸。横竖屏旋转、浏览器工具栏高度和安全区变化会重新计算可用区域；横屏压缩重复标题，竖屏将菜单、选择、操作与播放控制分区排列。密集棋盘可放大并拖动浏览，输入坐标仍由原棋盘元素计算。UI 音效、反馈和结算规则保持原实现。
+
+设备方向与游戏内容方向分别处理。游戏方向依次取 `node.screenOrientation`、章节 `meta.screenOrientation`、`game.screenOrientation`，支持 `Landscape` 与 `Portrait`。原配置目前为横屏，竖屏手机会完整保留其交互坐标平面；画面外的背景继续铺满视口。后续竖屏游戏使用 1080×1920 参考坐标，横屏为 1920×1080，节奏目标的 Y 轴仍由底向上。热点和对应媒体使用同一个等比显示区域。
+
+宿主也可在开始新节点前调用 `YorollGameplayUI.setOrientation('Portrait')`。原引擎的 `start(request)` 增加 `orientation` 与 `referenceSize`，应按这些值设置 canvas 和输入映射，而不是按手机物理方向改变游戏规则。嵌入目标会随布局变化，原引擎通过 ResizeObserver 监听 `getRenderTarget(sessionId)` 的尺寸即可。不要用横屏素材替代竖屏素材来验证构图；当前没有提供真实竖屏游戏，本轮验证的是布局、方向接口和坐标映射。
+
+桌面浏览器可用 `/playtests/?layout=mobile` 检查手机布局；此参数仅控制 UI 预览，不更改游戏方向。`layout=desktop` 强制桌面布局。生产链接不需要这些参数。
+
 在文档脚本加载后接入 `window.YorollGameplayUI`。`start` 每次收到新的 `sessionId`。异步回传必须携带它；离开、重播或完成后的旧回调被拒绝。
 
 ```js
@@ -23,7 +33,7 @@ const detach = ui.attach({
   start(request) {
     // 可选：const target = ui.getRenderTarget(request.sessionId);
     // 原 3D 玩法可将 canvas 挂入 target，再回传 {renderMode:'embedded'}。
-    // {sessionId, type, nodeId, chapterId, config, state, muted}
+    // {sessionId, type, nodeId, chapterId, config, state, muted, orientation, referenceSize}
     originalEngine.start(request.config, {
       onState(state) { ui.update(request.sessionId, state); },
       onResult(score) { ui.complete(request.sessionId, score); }

@@ -2,7 +2,7 @@
 'use strict';
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const screen=$('#screen'),modalRoot=$('#modal-root'),uiSound=window.YorollSound;
-const unit=n=>n*Math.min(innerWidth/1920,innerHeight/1080);
+const unit=n=>n*(window.YorollLayout?.isMobile?window.YorollLayout.unit:Math.min(innerWidth/1920,innerHeight/1080));
 const motionPreference=matchMedia('(prefers-reduced-motion: reduce)'),enterAnimations=new Set();
 const TOAST_MOTION={duration:2600,surfaceEnter:440,contentDelay:140,contentEnter:280,contentExitStart:2050,contentExit:170,surfaceExitStart:2140};
 const MODAL_CLOSE_TIMING={content:110,lead:80,surface:280,veil:200};
