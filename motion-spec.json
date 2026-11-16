@@ -478,7 +478,7 @@
     },
     "optionsMenu": {
       "revision": "menus-shared-glass-20261116",
-      "appearance": "One dark glass surface and a pale-gold checkmark; language selection uses an even translucent row tint while the compact speed menu retains its approved inset light",
+      "appearance": "Language and speed options share the same selected vertical glass shading, inset top and bottom edge light, fine outline and pale-gold checkmark",
       "surfaceBlurPx": 14,
       "enterMs": 260,
       "exitMs": 160,
@@ -782,20 +782,22 @@
         "alignment": "right"
       },
       "languageMenu": {
-        "revision": "language-selection-surface-20261116",
+        "revision": "language-speed-selection-20261116",
         "sharedWith": "playback-speed",
         "optionHeight": 40,
         "fontSize": 18,
         "keyboardSelection": true,
         "escapeRestoresFocus": true,
         "outsideClickCloses": true,
-        "appearance": "Preserved outer frame and compact rows; an even translucent selected-row tint with clear text and a pale-gold checkmark",
+        "appearance": "Same selected background, inset edge light, fine outline and pale-gold checkmark as the speed menu; compact language geometry and outer frame preserved",
         "sharedMotionWith": "playback-speed",
         "selectionCue": "chapter",
         "selectionCueLevel": 0.26,
         "optionGap": 2,
-        "selectionGlow": false,
-        "selectionSurface": "#dce3e121"
+        "selectionGlow": true,
+        "selectionStyleSharedWith": "playback-speed",
+        "centerLightStreak": false,
+        "selectionLight": "shared inset top and bottom edge light"
       }
     },
     {
