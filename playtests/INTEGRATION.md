@@ -17,7 +17,7 @@
 
 ### 手机横竖屏与游戏方向
 
-手机自动启用独立布局，桌面保留原尺寸。横竖屏旋转、浏览器工具栏高度和安全区变化会重新计算可用区域；横屏压缩重复标题，竖屏将菜单、选择、操作与播放控制分区排列。手机视觉统一收至上一版的 80%，常用控件通过透明子区域保留至少 44px 的点击范围。密集棋盘可放大并拖动浏览，输入坐标仍由原棋盘元素计算。UI 音效、反馈和结算规则保持原实现。
+手机自动启用独立布局，桌面保留原尺寸。横竖屏旋转、浏览器工具栏高度和安全区变化会重新计算可用区域；横屏压缩重复标题，竖屏将菜单、选择、操作与播放控制分区排列。手机视觉统一收至上一版的 80%，常用控件通过透明子区域保留至少 44px 的点击范围。密集棋盘可放大并拖动浏览，输入坐标仍由原棋盘元素计算。手机与桌面共享新版声音路由，反馈和结算规则保持原实现。
 
 设备方向与游戏内容方向分别处理。游戏方向依次取 `node.screenOrientation`、章节 `meta.screenOrientation`、`game.screenOrientation`，支持 `Landscape` 与 `Portrait`。原配置目前为横屏，竖屏手机会完整保留其交互坐标平面；画面外的背景继续铺满视口。后续竖屏游戏使用 1080×1920 参考坐标，横屏为 1920×1080，节奏目标的 Y 轴仍由底向上。热点和对应媒体使用同一个等比显示区域。
 
@@ -33,10 +33,13 @@ const detach = ui.attach({
   start(request) {
     // 可选：const target = ui.getRenderTarget(request.sessionId);
     // 原 3D 玩法可将 canvas 挂入 target，再回传 {renderMode:'embedded'}。
-    // {sessionId, type, nodeId, chapterId, config, state, muted, orientation, referenceSize}
+    // {sessionId, type, nodeId, chapterId, config, state, muted:true,
+    //  hostMuted, audioPolicy, orientation, referenceSize}
+    // 关闭原引擎的 UI / 操作音；统一交给宿主。不要同时播放旧声音。
     originalEngine.start(request.config, {
       onState(state) { ui.update(request.sessionId, state); },
-      onResult(score) { ui.complete(request.sessionId, score); }
+      onResult(score) { ui.complete(request.sessionId, score); },
+      onSound(event) { ui.playSound(request.sessionId, event); }
     });
   },
   action(event) {
@@ -45,7 +48,7 @@ const detach = ui.attach({
   },
   pause({sessionId, paused}) { originalEngine.setPaused(paused); },
   setMuted({sessionId, muted}) { originalEngine.setMuted(muted); },
-  audio({sessionId, muted}) { originalEngine.setMuted(muted); },
+  // 旧的 audio(detail) 仅作为没有 setMuted 时的兼容回调。
   stop({sessionId}) { originalEngine.stop(); }
 });
 
@@ -54,6 +57,12 @@ detach();
 ```
 
 这里的 `originalEngine` 是接入方提供的实例，不是本预览内置的引擎。
+
+### 统一声音接口
+
+玩法使用 `ethereal-gameplay-20261116`，素材与来源见 [AUDIO.md](AUDIO.md)。`start` 的 `muted` 固定为 `true`，要求引擎关闭旧音轨；`hostMuted` 表示玩家的总开关，`audioPolicy.uiSfx === 'host'` 表示新的操作音由宿主负责。引擎收到这些字段后必须实际关闭旧声音，不能只保留字段。
+
+操作意图由网页控件自动发出一声；引擎可为真实的命中、发现、落子等判定回传 `ui.playSound(sessionId, event)`。事件仅接受本地语义名称，不接受 URL、音高或音量参数。不要为同一次 UI 按下再回传一声相同的音效。允许的名称为 `tap`、`hold`、`release`、`swipe`、`trace`、`reveal`、`item`、`combine`、`place`、`turn`、`invalid`、`rhythm-hit`、`rhythm-miss`、`focus`。成功／失败由 `complete()` 统一触发，避免重复结算。离开、重播、结算后的旧 session，以及暂停期间的声音请求都被拒绝。
 
 ### UI 输出
 
@@ -110,13 +119,25 @@ parent.postMessage({
 
 宿主发出 `start`（payload 为 gameType、level、start）、`pause`、`resume`、`mute`（payload.muted）、`stop`。宿主同时验证精确 `event.origin`、`event.source === iframe.contentWindow`、命名空间和版本。禁止使用 `*` 放宽来源。iframe load 只代表文档加载完成，不代表游戏已准备好；游戏主动 ready 后会再收到 start，应按幂等方式初始化。跨域 iframe 是否允许嵌入仍由原站响应头决定。
 
+外部游戏的 `start` / `mute` 中 `muted` 同样固定为 `true`，并携带 `hostMuted` 与 `audioPolicy`；加载后还会收到 `configure-audio`。外部游戏应关闭旧声音，通过下面的消息请求宿主声音：
+
+```js
+parent.postMessage({namespace:'yoroll-gameplay',version:1,type:'sound',
+  payload:{event:'reveal'}}, hostOrigin);
+```
+
+消息只接受已配置 origin 与当前 iframe 的真实窗口，且暂停或离开后不播放。iframe 不再获得自动播放权限。但浏览器不能强制关闭一个跨域页面在用户点击后自行播放的声音；该页面仍须实现上述关闭旧音频的桥接协议。当前预览没有修改跨域游戏的源码。
+
 ## 生命周期与音频
 
 - 暂停原因独立记录：手动、弹窗、预览面板、支线、页面失焦／隐藏。关闭一个原因不会解除其他原因。
 - 媒体、交互计时和延时结算随当前预览一起暂停；恢复后继续。
 - 倍速独立于 QTE 的真实时间，临时慢放与基础倍速相乘。
 - 重叠节奏目标各自判定，短目标结束不会取消仍在长按的目标慢放。
-- 使用现有 UI 音效，声音开关同时控制所有媒体和提示音，不新增循环 BGM。
+- 操作、手势、线索、道具、棋盘、节奏命中及成功／失败统一使用新的本地玩法音库。主界面已确认的音库文件保持原字节内容。
+- 参考 MP4 的原音轨始终静音，擦除、窥探等辅助视频也不例外。声音开关开启时不会解除这些素材的静音。
+- 图音示例改用本地重新制作的一次性尾音，保留原来的 12 秒画面时间轴，不引入循环 BGM。
+- 新声音与主界面共用一个 AudioContext、SFX 音量、总开关和失焦暂停门控；连续输入限流、旧尾音让位，结算后自然衰减至静音。
 - 适配器必须响应 pause/stop，自行停止原引擎的音频和输入；宿主无法直接控制跨域 iframe 或 Unity 引擎内部的声音。
 
 ## 验证

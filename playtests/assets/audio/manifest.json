@@ -1,0 +1,388 @@
+{
+  "revision": "ethereal-gameplay-20261116",
+  "format": "48000 Hz stereo 16-bit PCM WAV",
+  "sharedMixGain": 0.5,
+  "character": "Soft low resonance, restrained air, continuous natural decay.",
+  "sourcePolicy": "Only approved local Yoroll masters. No original test-link audio.",
+  "processing": "Trim, lower pitch where needed, low pass and zero-ended fades. No added delay, reverb, drums or loops.",
+  "assets": {
+    "start": {
+      "file": "assets/audio/start.wav",
+      "sha256": "6399f8bd47838d8f998f2584a92013331fadce99f529c24b870fe41c3bd2b07f",
+      "source": "assets/audio/home-opening.wav",
+      "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+      "sourceRangeSeconds": [
+        5.05,
+        7.25
+      ],
+      "playbackRatio": 0.94,
+      "durationSeconds": 2.2,
+      "lowPassHz": 1800,
+      "attackSeconds": 0.09,
+      "releaseSeconds": 0.85,
+      "peak": 0.12,
+      "rmsDbfs": -31.37,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "focus": {
+      "file": "assets/audio/focus.wav",
+      "sha256": "d6415d598251001e8c14405bc9790ca0d5106d46b03afdc4d8b89ebd3a6bb417",
+      "source": "assets/audio/ui-hover.wav",
+      "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+      "sourceRangeSeconds": [
+        0.05,
+        0.9
+      ],
+      "playbackRatio": 0.9,
+      "durationSeconds": 0.9,
+      "lowPassHz": 1100,
+      "attackSeconds": 0.055,
+      "releaseSeconds": 0.45,
+      "peak": 0.09,
+      "rmsDbfs": -36.46,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "tap": {
+      "file": "assets/audio/tap.wav",
+      "sha256": "5bb4b92dcaea955907f725866133ce0e93692337515c80a46b6de6b4595a1f36",
+      "source": "assets/audio/ui-select.wav",
+      "sourceSha256": "0749cdce16b5ae0824d1388e8234b41baf6d4e952b8a3ab0f7671c8c5bb1a572",
+      "sourceRangeSeconds": [
+        0,
+        0.4
+      ],
+      "playbackRatio": 0.82,
+      "durationSeconds": 0.38,
+      "lowPassHz": 1300,
+      "attackSeconds": 0.018,
+      "releaseSeconds": 0.22,
+      "peak": 0.10001,
+      "rmsDbfs": -38.87,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "hold": {
+      "file": "assets/audio/hold.wav",
+      "sha256": "0a719ec55825c28320dd5df1c53d629126b0b518054b35e8fedf8f31a2d43def",
+      "source": "assets/audio/ui-hover.wav",
+      "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+      "sourceRangeSeconds": [
+        0.04,
+        0.9
+      ],
+      "playbackRatio": 0.76,
+      "durationSeconds": 0.98,
+      "lowPassHz": 1050,
+      "attackSeconds": 0.09,
+      "releaseSeconds": 0.55,
+      "peak": 0.10001,
+      "rmsDbfs": -35.13,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "release": {
+      "file": "assets/audio/release.wav",
+      "sha256": "3486df1fe610e081c32ea976c65b4127058bf2cd487216deb853c18371674246",
+      "source": "assets/audio/ui-select.wav",
+      "sourceSha256": "0749cdce16b5ae0824d1388e8234b41baf6d4e952b8a3ab0f7671c8c5bb1a572",
+      "sourceRangeSeconds": [
+        0.05,
+        0.44
+      ],
+      "playbackRatio": 0.68,
+      "durationSeconds": 0.48,
+      "lowPassHz": 900,
+      "attackSeconds": 0.025,
+      "releaseSeconds": 0.32,
+      "peak": 0.065,
+      "rmsDbfs": -42.26,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "swipe": {
+      "file": "assets/audio/swipe.wav",
+      "sha256": "e1eee164a16eb1ab891c75f118ef7ca091d6408bed4299d2378e4b2e4d566b1a",
+      "source": "assets/audio/ui-transition.wav",
+      "sourceSha256": "d39ec2b4498ded4042ae62c2080c26aa84a275df4026e2d8c86626b956f16311",
+      "sourceRangeSeconds": [
+        0.12,
+        1.1
+      ],
+      "playbackRatio": 0.9,
+      "durationSeconds": 1.0,
+      "lowPassHz": 1400,
+      "attackSeconds": 0.07,
+      "releaseSeconds": 0.6,
+      "peak": 0.095,
+      "rmsDbfs": -34.07,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "trace": {
+      "file": "assets/audio/trace.wav",
+      "sha256": "7abab7bc713f2866d66d98b288e41f1090ef6e5484bdb7868e6e05068171bc60",
+      "source": "assets/audio/ui-open.wav",
+      "sourceSha256": "8b8daa3d78a81ef7d6d4200cb6abe9e0472063f82e163d8f28be80dbbb6afa94",
+      "sourceRangeSeconds": [
+        0.12,
+        0.95
+      ],
+      "playbackRatio": 0.82,
+      "durationSeconds": 0.85,
+      "lowPassHz": 1100,
+      "attackSeconds": 0.08,
+      "releaseSeconds": 0.5,
+      "peak": 0.07501,
+      "rmsDbfs": -35.03,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "reveal": {
+      "file": "assets/audio/reveal.wav",
+      "sha256": "ddd6cf7dcb2b3f2889c2ac288c7091e718bee29f098d0aea83d68955c1df1ee6",
+      "source": "assets/audio/home-opening.wav",
+      "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+      "sourceRangeSeconds": [
+        6.05,
+        8.0
+      ],
+      "playbackRatio": 0.98,
+      "durationSeconds": 1.8,
+      "lowPassHz": 1700,
+      "attackSeconds": 0.11,
+      "releaseSeconds": 1.05,
+      "peak": 0.10501,
+      "rmsDbfs": -31.86,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "item": {
+      "file": "assets/audio/item.wav",
+      "sha256": "3cd8045e10bc69519246ed889b60a53c7d381e00407972fbfd28265990576b68",
+      "source": "assets/audio/ui-chapter.wav",
+      "sourceSha256": "8f4c438cc3b6e95daae38584c8784b0a739f23a61b831c3baae9d568c15b624d",
+      "sourceRangeSeconds": [
+        0,
+        1.15
+      ],
+      "playbackRatio": 0.9,
+      "durationSeconds": 1.2,
+      "lowPassHz": 1250,
+      "attackSeconds": 0.07,
+      "releaseSeconds": 0.7,
+      "peak": 0.095,
+      "rmsDbfs": -31.52,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "combine": {
+      "file": "assets/audio/combine.wav",
+      "sha256": "c228c3155f82419f202737fd59da467f8c11fa1e6728602952928563e198b0a8",
+      "source": "assets/audio/home-opening.wav",
+      "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+      "sourceRangeSeconds": [
+        5.35,
+        8.35
+      ],
+      "playbackRatio": 1.0,
+      "durationSeconds": 2.7,
+      "lowPassHz": 1700,
+      "attackSeconds": 0.12,
+      "releaseSeconds": 1.4,
+      "peak": 0.12,
+      "rmsDbfs": -31.65,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "turn": {
+      "file": "assets/audio/turn.wav",
+      "sha256": "a13b988f6199c61218fc9b00946298743763228d50f86eac171526308be76020",
+      "source": "assets/audio/ui-back.wav",
+      "sourceSha256": "c5c93ce8f5b1f4ff2ce4ad9cbe90edc31bb82bd9aa5a60de91f715dbf5d2b2fe",
+      "sourceRangeSeconds": [
+        0.04,
+        0.8
+      ],
+      "playbackRatio": 0.8,
+      "durationSeconds": 0.85,
+      "lowPassHz": 1050,
+      "attackSeconds": 0.04,
+      "releaseSeconds": 0.52,
+      "peak": 0.08499,
+      "rmsDbfs": -37.74,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "place": {
+      "file": "assets/audio/place.wav",
+      "sha256": "aa0b92346869ed7a63c2a3ee42dcfe1ba39a4516193a3db7ebc1f5deab158197",
+      "source": "assets/audio/ui-select.wav",
+      "sourceSha256": "0749cdce16b5ae0824d1388e8234b41baf6d4e952b8a3ab0f7671c8c5bb1a572",
+      "sourceRangeSeconds": [
+        0,
+        0.45
+      ],
+      "playbackRatio": 0.65,
+      "durationSeconds": 0.52,
+      "lowPassHz": 1000,
+      "attackSeconds": 0.025,
+      "releaseSeconds": 0.3,
+      "peak": 0.095,
+      "rmsDbfs": -39.66,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "invalid": {
+      "file": "assets/audio/invalid.wav",
+      "sha256": "69a7f42afd108b14d579871fd3bc75ba8da4b88560b25d574aa0aa30ac68c362",
+      "source": "assets/audio/ui-hover.wav",
+      "sourceSha256": "c445d4eff410bc44205dee8be891e2bac3a01a0964689cee368a84557681da2d",
+      "sourceRangeSeconds": [
+        0.02,
+        0.88
+      ],
+      "playbackRatio": 0.45,
+      "durationSeconds": 1.35,
+      "lowPassHz": 800,
+      "attackSeconds": 0.1,
+      "releaseSeconds": 0.85,
+      "peak": 0.07999,
+      "rmsDbfs": -37.13,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "rhythm-hit": {
+      "file": "assets/audio/rhythm-hit.wav",
+      "sha256": "efdb7e082c63c6a7bec05ebe8287e12c4df625186107abdd07cdc97caa524171",
+      "source": "assets/audio/ui-select.wav",
+      "sourceSha256": "0749cdce16b5ae0824d1388e8234b41baf6d4e952b8a3ab0f7671c8c5bb1a572",
+      "sourceRangeSeconds": [
+        0,
+        0.26
+      ],
+      "playbackRatio": 0.78,
+      "durationSeconds": 0.28,
+      "lowPassHz": 1100,
+      "attackSeconds": 0.012,
+      "releaseSeconds": 0.18,
+      "peak": 0.08499,
+      "rmsDbfs": -38.63,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "rhythm-miss": {
+      "file": "assets/audio/rhythm-miss.wav",
+      "sha256": "3d549c12085c56b408dd35ce2eaf519b4979f14984632443532527c125d2c99e",
+      "source": "assets/audio/ui-select.wav",
+      "sourceSha256": "0749cdce16b5ae0824d1388e8234b41baf6d4e952b8a3ab0f7671c8c5bb1a572",
+      "sourceRangeSeconds": [
+        0.03,
+        0.33
+      ],
+      "playbackRatio": 0.58,
+      "durationSeconds": 0.4,
+      "lowPassHz": 650,
+      "attackSeconds": 0.03,
+      "releaseSeconds": 0.25,
+      "peak": 0.04501,
+      "rmsDbfs": -44.21,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "success": {
+      "file": "assets/audio/success.wav",
+      "sha256": "a2cf04e6b0c9a8d0b7b951cbd5fef04a7bd67a1160c1fb977f30bb5d59cd40c5",
+      "source": "assets/audio/ui-success.wav",
+      "sourceSha256": "698bd232d7c3553223717f057298da31a3406c06e85590598cf25093693fcb55",
+      "sourceRangeSeconds": [
+        0,
+        4.64
+      ],
+      "playbackRatio": 1.0,
+      "durationSeconds": 4.64,
+      "lowPassHz": 1900,
+      "attackSeconds": 0.09,
+      "releaseSeconds": 1.25,
+      "peak": 0.14499,
+      "rmsDbfs": -32.26,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "failure": {
+      "file": "assets/audio/failure.wav",
+      "sha256": "d3b3255022dfcab40f0eee5cde65a5c48b6b91654e086fb246fbfa8af3d20b9c",
+      "source": "assets/audio/ui-gameover.wav",
+      "sourceSha256": "383d27bf0444e66ad1a946cf4a2a407533b0e28d43aaa3fd73cc22e04022a66a",
+      "sourceRangeSeconds": [
+        0.12,
+        3.7
+      ],
+      "playbackRatio": 0.93,
+      "durationSeconds": 3.6,
+      "lowPassHz": 1100,
+      "attackSeconds": 0.14,
+      "releaseSeconds": 1.25,
+      "peak": 0.11499,
+      "rmsDbfs": -33.38,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    },
+    "image-audio": {
+      "file": "assets/audio/image-audio.wav",
+      "sha256": "9ba7ee74fad06b9ec086bd4b7a2ce66371d1d24ab4ff19989bd11864eaf9f37c",
+      "source": "assets/audio/home-opening.wav",
+      "sourceSha256": "2c81c7c28837d6d18086ca7454cb14771c3e632abaedba9ea39cc66525b07a47",
+      "sourceRangeSeconds": [
+        5.05,
+        10.0
+      ],
+      "playbackRatio": 1.0,
+      "durationSeconds": 12.0,
+      "lowPassHz": 1600,
+      "attackSeconds": 0.13,
+      "releaseSeconds": 1.8,
+      "peak": 0.095,
+      "rmsDbfs": -39.57,
+      "boundarySamples": [
+        0,
+        0
+      ]
+    }
+  }
+}

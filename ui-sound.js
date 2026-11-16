@@ -11,6 +11,8 @@ window.YorollSound = (() => {
  const voices = new Set();
  const lastPlayed = new Map();
  const counts = {};
+ const customCues=new Map(),failedCues=new Set(),channelEpoch=new Map(),pendingMedia=new Set(),mediaRoutes=new WeakMap();
+ let voiceEpoch=0;
  const mixGain = .5;
  const muteKey = 'yoroll-ui-preview:master-muted';
  let context, output, compressor, activityGate, loading, contextChange, activityPoll;
@@ -28,14 +30,14 @@ window.YorollSound = (() => {
 
  function readMutedPreference(){try{return localStorage.getItem(muteKey)==='true';}catch{return false;}}
  function publish(){
-  const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
+  const state = !available?'unavailable':!activated?'locked':loadFailed?'unavailable':buffers.size+failedCues.size<names.length?'loading':context?.state==='running'?'ready':'suspended';
   Object.assign(document.documentElement.dataset,{
    audioRevision:revision,audioCompletionRevision:completionRevision,audioDeathRevision:deathRevision,audioGameoverRevision:gameoverRevision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
    audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
    audioUnlockRevision:'touch-release-resume-20261116',audioContextState:context?.state||'uncreated',
    audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
-   audioDecoded:String(buffers.size),audioVoices:String(voices.size),
+   audioDecoded:String(buffers.size),audioVoices:String(voices.size),audioBankFailures:String(failedCues.size),
    audioLifecycleRevision:'preview-pause-20261111',audioPreviewActive:String(isActive()),
    audioPreviewFocused:String(document.hasFocus()),audioPreviewOwner:String(ownsAudio),audioPreviewPaused:String(previewPaused)
   });
@@ -122,7 +124,35 @@ window.YorollSound = (() => {
   voice.gain.gain.cancelScheduledValues(now);
   voice.gain.gain.setTargetAtTime(voice.gain.gain.value*level,now,seconds);
  }
- function stopAll(immediate=false){previewId++;for(const voice of voices)stopVoice(voice,immediate);}
+ function stopAll(immediate=false){previewId++;voiceEpoch++;for(const voice of voices)stopVoice(voice,immediate);}
+ function stopChannel(channel,fade=.08){channelEpoch.set(channel,(channelEpoch.get(channel)||0)+1);for(const voice of voices)if(voice.channel===channel)stopVoice(voice,false,fade);}
+ async function decodeCue(name){
+  const data=await bytes.get(name);
+  try{if(!data)throw new Error('Audio asset unavailable');buffers.set(name,await context.decodeAudioData(data));}
+  catch{if(customCues.has(name))failedCues.add(name);else loadFailed=true;}
+ }
+ // An optional local palette joins the existing SFX bus and iOS activation.
+ // It never creates another context or bypasses mute, focus or voice limits.
+ function registerCues(definitions){
+  const added=[];
+  for(const [name,definition] of Object.entries(definitions||{})){
+   if(!/^game-[a-z-]+$/.test(name)||names.includes(name)||!definition.file)continue;
+   const file=new URL(definition.file,assetRoot);
+   if(file.origin!==assetRoot.origin)continue;
+   customCues.set(name,definition);names.push(name);added.push(name);
+   bytes.set(name,fetch(file).then(r=>{if(!r.ok)throw new Error('Audio asset unavailable');return r.arrayBuffer();}).catch(()=>null));
+  }
+  if(context)loading=Promise.all([loading,...added.map(decodeCue)]).then(publish);
+  publish();return added.length;
+ }
+ function routeMedia(media){
+  if(mediaRoutes.has(media))return true;
+  if(media.isConnected===false){pendingMedia.delete(media);return false;}
+  if(!context){pendingMedia.add(media);return false;}
+  pendingMedia.delete(media);
+  try{const source=context.createMediaElementSource(media);source.connect(output);mediaRoutes.set(media,source);return true;}
+  catch{return false;}
+ }
  function setLevels({master=1,sfx=1,isMuted=false}={}){
   const nextVolume=Math.max(0,Math.min(1,Number(master)||0))*Math.max(0,Math.min(1,Number(sfx)||0));
   const nextMuted=Boolean(isMuted);
@@ -148,11 +178,8 @@ window.YorollSound = (() => {
    activityGate=context.createGain();activityGate.gain.value=isActive()?1:0;
    output.connect(compressor);compressor.connect(activityGate);activityGate.connect(context.destination);
    context.addEventListener('statechange',()=>{if(context.state==='running'&&autoplayRequested&&!activated)finishAutoplay();if(!isActive())syncActivity();publish();});
-   loading=Promise.all(names.map(async name=>{
-    const data=await bytes.get(name);
-    if(!data){loadFailed=true;return;}
-    try{buffers.set(name,await context.decodeAudioData(data));}catch{loadFailed=true;}
-   })).then(publish);
+   loading=Promise.all(names.map(decodeCue)).then(publish);
+   for(const media of pendingMedia)routeMedia(media);
   }catch{available=false;}
   publish();
  }
@@ -197,21 +224,25 @@ window.YorollSound = (() => {
  function play(name,{level=1,delay=0,sequence=false,throttle}={}){
   if(!names.includes(name)||!activated||!available||muted||volume===0||!isActive())return false;
   const requested=performance.now();
-  const interval=throttle??(name==='locked'?650:name==='hover'?180:name==='transition'?220:55);
+  const definition=customCues.get(name);
+  const channel=definition?.channel||(['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':['success','death','gameover'].includes(name)?'result':'control');
+  const epoch=voiceEpoch,channelToken=channelEpoch.get(channel)||0;
+  const interval=throttle??definition?.throttle??(name==='locked'?650:name==='hover'?180:name==='transition'?220:55);
   if(requested-(lastPlayed.get(name)??-Infinity)<interval)return false;
   if(!sequence&&name==='transition'&&['confirm','open','success','death','gameover'].some(cue=>requested-(lastPlayed.get(cue)??-Infinity)<180))return false;
   lastPlayed.set(name,requested);
   if(name==='select')suppressHover();
   const run=()=>{
    if(!context||context.state!=='running'||muted||volume===0||!isActive()||!buffers.has(name))return false;
+   if(epoch!==voiceEpoch||channelToken!==(channelEpoch.get(channel)||0))return false;
    if(performance.now()-requested>200)return false; // Never replay stale interactions after a slow load.
-   const channel=['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':['success','death','gameover'].includes(name)?'result':'control';
    if(!sequence){
     previewId++;
     for(const voice of voices){
      if(voice.sequence)stopVoice(voice);
      else if(channel==='chapter'&&voice.channel==='hover')stopVoice(voice,false,.12);
      else if(channel==='chapter'&&voice.channel==='chapter')stopVoice(voice,false,.16);
+     else if(voice.channel===channel&&definition?.replace)stopVoice(voice,false,.07);
      else if(voice.channel===channel||(channel!=='hover'&&voice.channel==='hover'))duckTail(voice);
     }
    }
@@ -259,5 +290,5 @@ window.YorollSound = (() => {
  window.addEventListener('pageshow',()=>{pageAway=false;focusLost=!document.hasFocus();if(activated){claimAudio();watchActivity();}syncActivity();});
  syncActivity();
  publish();
- return {play,unlock,prepareAutoplay,setLevels,audition,stopAll,suppressHover,isActive,isMuted:()=>muted,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
+ return {play,unlock,prepareAutoplay,setLevels,audition,stopAll,stopChannel,registerCues,routeMedia,suppressHover,isActive,isMuted:()=>muted,setPreviewPaused,getRouting:()=>context&&compressor?{context,destination:compressor}:null};
 })();
