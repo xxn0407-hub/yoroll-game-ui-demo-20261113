@@ -32,6 +32,7 @@ window.YorollSound = (() => {
   Object.assign(document.documentElement.dataset,{
    audioRevision:revision,audioCompletionRevision:completionRevision,audioDeathRevision:deathRevision,audioGameoverRevision:gameoverRevision,audioState:state,audioMuted:String(muted),audioGain:String(Number(((muted?0:volume)*mixGain).toFixed(4))),
    audioEntryRevision:'entry-autoplay-20261113',audioAutoplay:autoplayState,audioActivation:activation,
+   audioUnlockRevision:'touch-release-resume-20261116',audioContextState:context?.state||'uncreated',
    audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
    audioDecoded:String(buffers.size),audioVoices:String(voices.size),
@@ -51,6 +52,19 @@ window.YorollSound = (() => {
   ownsAudio=true;
   audioChannel?.postMessage({type:'claim',ownerId});
  }
+ function changeContext(method){
+  // Invoke immediately: awaiting an earlier blocked request loses the gesture.
+  let request;
+  try{request=Promise.resolve(context[method]());}catch{return Promise.resolve();}
+  const tracked=request.catch(()=>{}).finally(()=>{
+   if(contextChange!==tracked)return;
+   contextChange=null;
+   if(method==='resume'&&!isActive()||method==='suspend'&&isActive())syncActivity();
+   publish();
+  });
+  contextChange=tracked;
+  return tracked;
+ }
  function syncActivity(){
   const active=isActive();
   if(active!==lastActivity){
@@ -67,9 +81,9 @@ window.YorollSound = (() => {
   }
   if(!context||contextChange||context.state==='closed')return;
   if(active&&activated&&context.state!=='running'){
-   contextChange=context.resume().catch(()=>{}).finally(()=>{contextChange=null;if(!isActive())syncActivity();publish();});
+   changeContext('resume');
   }else if(!active&&context.state!=='suspended'){
-   contextChange=context.suspend().catch(()=>{}).finally(()=>{contextChange=null;if(isActive())syncActivity();publish();});
+   changeContext('suspend');
   }
  }
  function pollActivity(){
@@ -112,13 +126,14 @@ window.YorollSound = (() => {
  function setLevels({master=1,sfx=1,isMuted=false}={}){
   const nextVolume=Math.max(0,Math.min(1,Number(master)||0))*Math.max(0,Math.min(1,Number(sfx)||0));
   const nextMuted=Boolean(isMuted);
+  const unmuting=muted&&!nextMuted;
   if(nextMuted!==muted){muted=nextMuted;try{localStorage.setItem(muteKey,String(muted));}catch{}}
   volume=nextVolume;
   if(output){const now=context.currentTime;output.gain.cancelScheduledValues(now);output.gain.setTargetAtTime(muted?0:volume*mixGain,now,.008);}
   if(volume===0)stopAll();
   // The activity gate sits after the shared compressor, so mute also pauses
   // the opening, whose music bus bypasses the SFX volume control.
-  syncActivity();
+  if(unmuting&&activated)unlock();else syncActivity();
   publish();
  }
  function ensureContext(){
@@ -172,9 +187,11 @@ window.YorollSound = (() => {
  }
  async function unlock(){
   if(!activated){activation='gesture';if(autoplayRequested)autoplayState='gesture';}
-  activated=true;focusLost=false;lastDocumentFocus=document.hasFocus();claimAudio();ensureContext();watchActivity();syncActivity();
+  activated=true;focusLost=false;lastDocumentFocus=document.hasFocus();claimAudio();ensureContext();watchActivity();
   if(!context)return;
-  try{await contextChange;await loading;}catch{}
+  const resumed=isActive()&&context.state!=='running'?changeContext('resume'):null;
+  syncActivity();
+  try{await resumed;await loading;}catch{}
   publish();
  }
  function play(name,{level=1,delay=0,sequence=false,throttle}={}){
@@ -226,7 +243,14 @@ window.YorollSound = (() => {
   play('transition',{sequence:true,delay:3.1,throttle:0,level:.85});
  }
  function turnsSoundOff(target){return !muted&&target?.closest?.('[data-action="sound-toggle"],[data-action="mute"]');}
- document.addEventListener('pointerdown',event=>{if(!turnsSoundOff(event.target))unlock();},{capture:true});
+ function unlockFromGesture(event){
+  if(turnsSoundOff(event.target)||activated&&context?.state==='running'&&isActive())return;
+  unlock();
+ }
+ document.addEventListener('pointerdown',event=>{if(event.pointerType==='mouse')unlockFromGesture(event);},{capture:true});
+ document.addEventListener('pointerup',event=>{if(event.pointerType!=='mouse')unlockFromGesture(event);},{capture:true});
+ document.addEventListener('touchend',unlockFromGesture,{capture:true,passive:true});
+ document.addEventListener('click',unlockFromGesture,{capture:true});
  document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.ctrlKey&&!event.altKey&&!(['Enter',' '].includes(event.key)&&turnsSoundOff(event.target)))unlock();},{capture:true});
  document.addEventListener('visibilitychange',pollActivity);
  window.addEventListener('blur',()=>{focusLost=true;lastDocumentFocus=document.hasFocus();syncActivity();});
