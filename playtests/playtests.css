@@ -379,3 +379,6 @@
 .suite-player[data-feedback="success"] .suite-item,.suite-player[data-feedback="success"] .suite-craft-slot{border-color:#d9cfb68c;box-shadow:inset 0 0 calc(var(--p)*22) #d8c7a513;transition:border-color .5s,box-shadow .5s;}
 .suite-player[data-feedback="success"] .suite-puzzle{gap:0;border-color:#d9cfb680;transition:gap .65s var(--ease),border-color .65s;}
 .suite-player[data-feedback="success"] .suite-puzzle-piece{border-color:transparent;}
+
+/* Keep poster rows intrinsic when the landscape viewport becomes short. */
+.suite-grid{grid-auto-rows:max-content;align-content:start;align-items:start;min-height:0;}
