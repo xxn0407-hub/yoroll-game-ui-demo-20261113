@@ -477,13 +477,13 @@
       "appearanceRevision": "toast-neutral-surface-20261115"
     },
     "optionsMenu": {
-      "revision": "menus-shared-glass-20261116",
+      "revision": "menus-hover-motion-20261116",
       "appearance": "Language and speed options share the same selected vertical glass shading, inset top and bottom edge light, fine outline and pale-gold checkmark",
       "surfaceBlurPx": 14,
-      "enterMs": 260,
-      "exitMs": 160,
-      "enterOffset": 8,
-      "exitOffset": 5,
+      "enterMs": 280,
+      "exitMs": 180,
+      "enterOffset": 6,
+      "exitOffset": 4,
       "selectedStateUpdatesCheckmark": true,
       "interruptedMotionResumesFromCurrentPose": true,
       "keyboard": [
@@ -495,7 +495,37 @@
         "Escape",
         "Tab"
       ],
-      "reducedMotion": "Immediate open and close"
+      "reducedMotion": "Immediate open and close",
+      "enterScale": 0.985,
+      "exitScale": 0.985,
+      "enterEasing": [
+        0.16,
+        1,
+        0.3,
+        1
+      ],
+      "exitEasing": [
+        0.22,
+        0.68,
+        0.25,
+        1
+      ],
+      "origin": "Center of the edge nearest its trigger",
+      "hover": {
+        "sharedTriggers": true,
+        "sharedOptions": true,
+        "colorMs": 220,
+        "borderMs": 240,
+        "backgroundMs": 240,
+        "rimMs": 280,
+        "shadowMs": 320,
+        "easing": [
+          0.22,
+          0.68,
+          0.25,
+          1
+        ]
+      }
     }
   },
   "pages": [
@@ -771,7 +801,7 @@
       "id": "settings",
       "name": "设置",
       "kind": "原版实拍",
-      "motion": "设置项按 42ms 错峰落位，650ms 渐停；语言列表保留原版简洁比例，使用轻透深色底和淡选中光，从上方 8px 轻落展开，260ms 渐停，160ms 淡出收起。",
+      "motion": "设置项按 42ms 错峰落位，650ms 渐停；语言与倍速菜单共用 hover 反馈和开合曲线，280ms 轻落展开，180ms 柔和收起，入口箭头同步转动。",
       "interaction": "四个音量滑杆、全部声音开关、语言选择与恢复默认沿用现有行为；设置页去掉试听入口，全部声音开关位于该行最右侧。",
       "groupCaptions": false,
       "cornerCaption": false,
@@ -797,7 +827,8 @@
         "selectionGlow": true,
         "selectionStyleSharedWith": "playback-speed",
         "centerLightStreak": false,
-        "selectionLight": "shared inset top and bottom edge light"
+        "selectionLight": "shared inset top and bottom edge light",
+        "interactionRevision": "menus-hover-motion-20261116"
       }
     },
     {
@@ -811,7 +842,7 @@
       "id": "gameplay",
       "name": "游戏内",
       "kind": "场景帧实拍",
-      "motion": "字幕和 HUD 沿用当前入场；倍速菜单 260ms 从下方轻浮展开，160ms 淡出，倍率数字 240ms 轻柔替换，选择时不重播底部控制栏。",
+      "motion": "字幕和 HUD 沿用当前入场；倍速与语言菜单共用 hover 反馈，280ms 轻浮展开、180ms 柔和收起，倍率数字 240ms 轻柔替换，选择时不重播底部控制栏。",
       "interaction": "底部可暂停 / 继续播放，倍速提供 1×、1.25×、1.5×、2× 四个演示档位。切换立即影响当前播放进度，保留播放位置和暂停状态；Esc 先关闭倍速菜单，再进入暂停页，返回播放页保留位置与速度。键盘上下键、Home / End、Enter 和 Tab 可操作，点击外部收起。速度不改变 UI 入场、声音或选项倒计时；场景与进度仍为本地交互演示。",
       "hudRevision": "gameplay-hud-clean-20261114",
       "topRightPauseVisible": false,
@@ -829,8 +860,8 @@
         "preservesPosition": true,
         "preservesPausedState": true,
         "persistsAcrossPages": true,
-        "menuEnterMs": 260,
-        "menuExitMs": 160,
+        "menuEnterMs": 280,
+        "menuExitMs": 180,
         "labelChangeMs": 240,
         "affects": "Demonstration playback timeline only; UI animations, audio and timed choices remain independent",
         "appearanceRevision": "speed-unified-glass-20261115",
@@ -848,7 +879,8 @@
           "selected": "Soft silver inset-rim light on a single row and a pale-gold check",
           "hoverAndKeyboardFocus": "Low-opacity row light; no additional focus outline",
           "reducedMotion": "Static light without transitions"
-        }
+        },
+        "interactionRevision": "menus-hover-motion-20261116"
       }
     },
     {

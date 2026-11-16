@@ -53,6 +53,7 @@ let playbackPaused = false;
 let playbackRate = 1;
 let playbackPosition = 0;
 const optionsMenuMotions = new Map();
+const OPTIONS_MENU_MOTION = Object.freeze({enter:280,exit:180,enterOffset:6,exitOffset:4,scale:.985,enterEasing:'cubic-bezier(.16,1,.3,1)',exitEasing:'cubic-bezier(.22,.68,.25,1)'});
 const PLAYBACK_RATES = [1,1.25,1.5,2];
 const PLAYBACK_DURATION = 24000;
 let playbackStoryNode = null;
@@ -791,18 +792,18 @@ function setOptionsMenu(menu,toggle,open,{restoreFocus=false,direction=1}={}){
  const expanded=toggle.getAttribute('aria-expanded')==='true';
  if(open===expanded)return;
  const wasHidden=menu.hidden,pose=getComputedStyle(menu);
- const from={opacity:wasHidden?0:pose.opacity,transform:wasHidden?`translate3d(0,${unit(8)*direction}px,0) scale(.98)`:pose.transform};
+ const from={opacity:wasHidden?0:pose.opacity,transform:wasHidden?`translate3d(0,${unit(OPTIONS_MENU_MOTION.enterOffset)*direction}px,0) scale(${OPTIONS_MENU_MOTION.scale})`:pose.transform};
  optionsMenuMotions.get(menu)?.cancel();
  toggle.setAttribute('aria-expanded',String(open));
  let motion;
  if(open){
   menu.hidden=false;menu.inert=false;
-  motion=animate(menu,[from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:260,easing:'cubic-bezier(.16,1,.3,1)'});
+  motion=animate(menu,[from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:OPTIONS_MENU_MOTION.enter,easing:OPTIONS_MENU_MOTION.enterEasing});
   menu.querySelector('[aria-checked="true"],[aria-selected="true"]')?.focus({preventScroll:true});
  }else{
   menu.inert=true;
   if(restoreFocus)toggle.focus({preventScroll:true});
-  motion=animate(menu,[from,{opacity:0,transform:`translate3d(0,${unit(5)*direction}px,0) scale(.985)`}],{duration:160,easing:'cubic-bezier(.4,0,1,1)'});
+  motion=animate(menu,[from,{opacity:0,transform:`translate3d(0,${unit(OPTIONS_MENU_MOTION.exitOffset)*direction}px,0) scale(${OPTIONS_MENU_MOTION.scale})`}],{duration:OPTIONS_MENU_MOTION.exit,easing:OPTIONS_MENU_MOTION.exitEasing});
  }
  if(!motion){optionsMenuMotions.delete(menu);menu.hidden=!open;return;}
  optionsMenuMotions.set(menu,motion);
