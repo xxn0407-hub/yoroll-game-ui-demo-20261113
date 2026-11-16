@@ -478,7 +478,7 @@
     },
     "optionsMenu": {
       "revision": "menus-shared-glass-20261116",
-      "appearance": "One dark glass surface and a pale gold checkmark; language uses a flat, restrained selection wash while the compact speed menu retains its approved inset light",
+      "appearance": "One dark glass surface and a pale-gold checkmark; language selection uses an even translucent row tint while the compact speed menu retains its approved inset light",
       "surfaceBlurPx": 14,
       "enterMs": 260,
       "exitMs": 160,
@@ -782,18 +782,20 @@
         "alignment": "right"
       },
       "languageMenu": {
-        "revision": "language-selection-glow-20261116",
+        "revision": "language-selection-surface-20261116",
         "sharedWith": "playback-speed",
         "optionHeight": 40,
         "fontSize": 18,
         "keyboardSelection": true,
         "escapeRestoresFocus": true,
         "outsideClickCloses": true,
-        "appearance": "Preserved outer frame and compact rows; stronger feathered selection light, brighter text and a clearer pale-gold checkmark without a hard inner border",
+        "appearance": "Preserved outer frame and compact rows; an even translucent selected-row tint with clear text and a pale-gold checkmark",
         "sharedMotionWith": "playback-speed",
         "selectionCue": "chapter",
         "selectionCueLevel": 0.26,
-        "optionGap": 2
+        "optionGap": 2,
+        "selectionGlow": false,
+        "selectionSurface": "#dce3e121"
       }
     },
     {

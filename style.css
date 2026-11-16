@@ -535,24 +535,17 @@
 }
 .select-options.glass-menu button:is(:hover,:focus-visible){
   border-color:transparent;
-  background:linear-gradient(90deg,#dce8df00,#dce8df0b 28%,#dce8df0b 72%,#dce8df00);
+  background:#dce3e110;
   box-shadow:none;
 }
 .select-options.glass-menu button[aria-selected="true"]{
-  color:#fafaf0;border-color:transparent;
-  background:radial-gradient(ellipse at 45% 50%,#e6ece53d 0%,#dfe8e525 48%,#dfe8e500 90%);
-  box-shadow:none;text-shadow:0 0 calc(var(--p)*8) #eef1df26;
+  color:#f1f2e8;border-color:transparent;
+  background:#dce3e121;
+  box-shadow:none;text-shadow:none;
 }
-.select-options.glass-menu button::before{
-  display:block;inset:0;
-  background:linear-gradient(90deg,transparent 3%,#dfe9df26 38%,#dfe9df26 62%,transparent 97%) top / 100% 1px no-repeat,
-             linear-gradient(90deg,transparent 3%,#dfe9df18 38%,#dfe9df18 62%,transparent 97%) bottom / 100% 1px no-repeat;
-}
-.select-options.glass-menu button:is(:hover,:focus-visible,[aria-selected="true"])::before{opacity:.45;}
-.select-options.glass-menu button[aria-selected="true"]::before{opacity:.8;}
+.select-options.glass-menu button::before{display:none;}
 .select-options.glass-menu button[aria-selected="true"] .glass-menu-check{
-  color:#ecd9b1;
-  filter:drop-shadow(0 0 calc(var(--p)*6) #d8c7a54d);
+  color:#e2cda5;filter:none;
 }
 @media(prefers-reduced-motion:reduce){
   .home-menu button,.home-menu button::before,.home-menu button::after,
