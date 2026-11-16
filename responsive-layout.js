@@ -5,7 +5,7 @@
  const doc=root.document,html=doc.documentElement,query=new URLSearchParams(root.location.search);
  const preview=query.get('layout');
  let mobile=false,unit=1,orientation='landscape',pending=false;
- const managed=new Map(),zoomBoards=new Set();
+ const managed=new Map(),zoomBoards=new Set(),hitControls=new Set();
  function sync(){
   const width=root.innerWidth,height=root.innerHeight;
   mobile=helpers.isPhone({preview,width,height,mobile:root.navigator.userAgentData?.mobile,userAgent:root.navigator.userAgent,coarse:root.matchMedia('(pointer:coarse)').matches});
@@ -14,14 +14,16 @@
   unit=helpers.designUnit(width,height,orientation);
   html.classList.toggle('mobile-ui',mobile);html.dataset.uiOrientation=orientation;
   if(mobile){
+   html.style.setProperty('--mobile-visual-scale',String(helpers.mobileVisualScale));
    html.style.setProperty('--mobile-unit',`${unit}px`);
    const visible=root.visualViewport;
    html.style.setProperty('--app-height',`${Math.round(visible&&visible.scale===1?visible.height:height)}px`);
    html.style.setProperty('--visual-top',`${Math.round(root.visualViewport?.offsetTop||0)}px`);
    html.dataset.keyboardOpen=String(!!visible&&visible.scale===1&&visible.height<height*.75&&doc.activeElement?.matches('input:not([type=range]),textarea'));
   }else{
-   html.style.removeProperty('--mobile-unit');html.style.removeProperty('--app-height');html.style.removeProperty('--visual-top');
+   html.style.removeProperty('--mobile-unit');html.style.removeProperty('--mobile-visual-scale');html.style.removeProperty('--app-height');html.style.removeProperty('--visual-top');
    for(const record of managed.values())restore(record);managed.clear();zoomBoards.clear();
+   for(const button of hitControls){button.classList.remove('mobile-hit-control');button.querySelector(':scope > .mobile-hit-area')?.remove();}hitControls.clear();
   }
   queue();
   root.dispatchEvent(new CustomEvent('yoroll:layout-change',{detail:{mobile,orientation,width,height,unit}}));
@@ -44,7 +46,7 @@
  function fit(record){
   const {element,reference,zoom=1,wrap}=record;if(!element.isConnected)return;
   const stage=wrap?{width:wrap.clientWidth,height:wrap.clientHeight}:measureStage(element);
-  const reserve=element.matches('.suite-paper')?40:0;
+  const reserve=element.matches('.suite-paper')?56:0;
   const availableHeight=Math.max(40,stage.height-reserve);
   const base=Math.min(stage.width,availableHeight*reference.width/reference.height),width=zoom>1?Math.max(base*zoom,record.minZoomWidth||0):base;
   element.style.width=`${width}px`;element.style.height=`${width*reference.height/reference.width}px`;
@@ -73,6 +75,12 @@
  }
  function scan(){
   pending=false;if(!mobile)return;
+  for(const button of hitControls)if(!button.isConnected)hitControls.delete(button);
+  const touchControls='.btn,.icon-button,.back-btn,.account,.brand,.select-button,.playback-speed-toggle,.play-control,.sound-state-button,.home-menu button,.pause-list button,.choice-option,.glass-menu button,.suite-top-actions button,.suite-transport>button,.suite-controls-right>button,.suite-dial>button,.suite-number-pad>button,.suite-mini-actions button';
+  for(const button of doc.querySelectorAll(touchControls)){
+   button.classList.add('mobile-hit-control');hitControls.add(button);
+   if(!button.querySelector(':scope > .mobile-hit-area')){const area=doc.createElement('i');area.className='mobile-hit-area';area.setAttribute('aria-hidden','true');button.append(area);}
+  }
   for(const [element,record] of managed)if(!element.isConnected){managed.delete(element);zoomBoards.delete(record);}
   const fits=[['.suite-gomoku',590,590,true],['.suite-sudoku',540,540,true],['.suite-chess-board',590,590,true],['.suite-xiangqi',530,590,true],['.suite-paper',660,660,false],['.suite-race-scene',970,535,false],['.suite-basket-court',800,510,false],['.suite-pool',900,475,false]];
   for(const [selector,width,height,zoomable] of fits)doc.querySelectorAll(selector).forEach(element=>registerFit(element,{width,height},zoomable));
@@ -95,6 +103,7 @@
  if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
 })(typeof window==='undefined'?globalThis:window,function(){
  'use strict';
+ const mobileVisualScale=.8;
  function orientationOf(value,fallback='landscape'){
   if(value&&typeof value==='object'&&value.width&&value.height)return value.width<value.height?'portrait':'landscape';
   const normalized=String(value||'').toLowerCase();
@@ -106,9 +115,9 @@
   if(preview==='desktop')return false;if(preview==='mobile')return true;
   return mobile===true||/iPhone|iPod|Android.*Mobile|Windows Phone/i.test(userAgent)||(mobile!==false&&coarse&&Math.min(width,height)<=820&&Math.max(width,height)<=1400);
  }
- function designUnit(width,height,orientation){return orientation==='portrait'?Math.min(.82,Math.max(.68,width/540)):Math.min(.82,Math.max(.64,height/610));}
+ function designUnit(width,height,orientation){return mobileVisualScale*(orientation==='portrait'?Math.min(.82,Math.max(.68,width/540)):Math.min(.82,Math.max(.64,height/610)));}
  function referenceSize(orientation){return orientationOf(orientation)==='portrait'?{width:1080,height:1920}:{width:1920,height:1080};}
  function normalizePoint(x,y,orientation){const frame=referenceSize(orientation);return {x:x/frame.width,y:1-y/frame.height};}
  function fitPlane(width,height,orientation){const frame=referenceSize(orientation),scale=Math.min(width/frame.width,height/frame.height);return {width:frame.width*scale,height:frame.height*scale};}
- return {orientationOf,isPhone,designUnit,referenceSize,normalizePoint,fitPlane};
+ return {orientationOf,isPhone,designUnit,referenceSize,normalizePoint,fitPlane,mobileVisualScale};
 });

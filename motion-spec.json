@@ -1545,7 +1545,7 @@
     "safeArea": "env(safe-area-inset-*) with visualViewport height",
     "touchTargetCssPx": {
       "minimum": 44,
-      "primary": 48
+      "primary": 44
     },
     "gameReferenceSize": {
       "landscape": [
@@ -1558,6 +1558,9 @@
       ]
     },
     "motion": "Reuse existing entry, ambient, feedback and exit timings",
-    "portraitValidation": "Generic layout and coordinate contract; real portrait game not supplied"
+    "portraitValidation": "Generic layout and coordinate contract; real portrait game not supplied",
+    "visualScale": 0.8,
+    "visibleControls": "Approx. 35-38px capsules; transparent 44px touch areas",
+    "visualScaling": "Typography, cards, icons, spacing and overlays share the same scale; content plane remains viewport-fitted"
   }
 }
