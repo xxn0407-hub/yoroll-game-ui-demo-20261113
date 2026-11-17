@@ -323,8 +323,8 @@
     "transitionUsed": true
   },
   "runtime": {
-    "hoverIntentMs": 70,
-    "hoverThrottleMs": 180,
+    "hoverIntentMs": 120,
+    "hoverThrottleMs": 260,
     "maxActiveVoices": 6,
     "stopFadeMs": 100,
     "tailDuckingGain": 0.28,
@@ -348,12 +348,25 @@
       "failure",
       "gameover"
     ],
-    "lockedHoverIntentMs": 110,
+    "lockedHoverIntentMs": 120,
     "lockedHoverThrottleMs": 650,
     "lockedHoverLevel": 0.44,
     "lockedDuringDrag": false,
     "chapterPreviousFadeOutMs": 160,
-    "chapterHoverFadeOutMs": 120
+    "chapterHoverFadeOutMs": 120,
+    "interactionRevision": "quiet-hover-priority-20261117",
+    "hoverBusGain": 0.45,
+    "hoverGainChangeDb": -6.94,
+    "maxHoverVoices": 1,
+    "hoverReplacementFadeMs": 35,
+    "hoverSuppressionAfterActionMs": 600,
+    "maxUiForegroundVoices": 1,
+    "uiReplacementFadeMs": 45,
+    "uiFeedbackOwnership": "Modal open, cancel and confirm own one cue; no extra navigation cue for opening a confirmation or for the route following confirmation.",
+    "focusRestorationSound": false,
+    "pendingHoverAfterClickOrScroll": false,
+    "hoverDuringTouch": false,
+    "volumeSliderFeedback": "One quiet select cue on change/release; no sound on every input frame."
   },
   "eventMap": {
     "hover": "Control focus",

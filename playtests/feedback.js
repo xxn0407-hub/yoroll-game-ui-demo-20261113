@@ -157,6 +157,7 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
 async function confirmModal(){
  if(!confirmAction)return;
  const action=confirmAction;
+ uiSound.play('confirm',{level:.8});
  if(await closeModal(false,{silent:true,restoreFocus:false}))action();
 }
 

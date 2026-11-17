@@ -9,8 +9,8 @@ const flush=async()=>{await new Promise(setImmediate);await new Promise(setImmed
 
 // Model a fresh iPhone visit: resume requests outside a user activation can
 // remain pending forever. Touch pointerdown is not an activation; release is.
-function phone({muted=false,blocked=true,gameplay=false}={}){
- let gesture=false,focused=true,now=1000;
+function phone({muted=false,blocked=true,gameplay=false,manualTimers=false}={}){
+ let gesture=false,focused=true,now=1000,timerId=0;const timers=new Map();
  const document=new EventTarget(),window=new EventTarget(),contexts=[],intervals=new Set();
  const storage=new Map([['yoroll-ui-preview:master-muted',String(muted)]]);
  document.hidden=false;document.hasFocus=()=>focused;document.documentElement={dataset:{}};
@@ -26,7 +26,7 @@ function phone({muted=false,blocked=true,gameplay=false}={}){
   createGain(){const n={gain:new Parameter(),connect(){},disconnect(){}};this.gains.push(n);return n;}
   createDynamicsCompressor(){return {connect(){},threshold:new Parameter(),knee:new Parameter(),ratio:new Parameter(),attack:new Parameter(),release:new Parameter()};}
   createMediaElementSource(media){return {media,connect(destination){this.destination=destination;}};}
-  createBufferSource(){const node={playbackRate:{value:1},connect(){},disconnect(){},start:()=>this.sources.push(node),stop:()=>{node.stopped=true;queueMicrotask(()=>node.onended?.());}};return node;}
+  createBufferSource(){const node={playbackRate:{value:1},connect(destination){this.destination=destination;},disconnect(){},start:()=>this.sources.push(node),stop:()=>{node.stopped=true;queueMicrotask(()=>node.onended?.());}};return node;}
   decodeAudioData(){return Promise.resolve({duration:plan.fileDurationSeconds});}
   resume(){
    this.resumeCalls.push({gesture});
@@ -40,7 +40,8 @@ function phone({muted=false,blocked=true,gameplay=false}={}){
   window,document,URL,Event,CustomEvent,console,location:{href:'https://example.test/'},
   performance:{now:()=>now},Date,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
   fetch:async()=>({ok:true,json:async()=>plan,arrayBuffer:async()=>new ArrayBuffer(8)}),
-  setTimeout,clearTimeout,setInterval:fn=>{intervals.add(fn);return fn;},clearInterval:id=>intervals.delete(id),
+  setTimeout:manualTimers?(fn,ms)=>{const id=++timerId;timers.set(id,{due:now+ms,fn});return id;}:setTimeout,
+  clearTimeout:manualTimers?id=>timers.delete(id):clearTimeout,setInterval:fn=>{intervals.add(fn);return fn;},clearInterval:id=>intervals.delete(id),
  });
  for(const name of ['ui-sound.js',...(gameplay?['playtests/audio.js']:[]),'home-music.js']){document.currentScript={src:new URL(name,'https://example.test/').href};vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),sandbox,{filename:name});}
  const sound=window.YorollSound,music=window.YorollMusic;
@@ -48,6 +49,7 @@ function phone({muted=false,blocked=true,gameplay=false}={}){
   async prepare(){await music.prepareEntry('home');music.setScene('home');await flush();},
   async event(type,pointerType){gesture=type==='click'||type==='touchend'||type==='keydown'||type==='pointerup'&&pointerType!=='mouse'||type==='pointerdown'&&pointerType==='mouse';const e=new Event(type);if(pointerType)Object.defineProperty(e,'pointerType',{value:pointerType});document.dispatchEvent(e);gesture=false;await flush();},
   async leave(){focused=false;document.hidden=true;window.dispatchEvent(new Event('pagehide'));await flush();},
+  async advance(ms){now+=ms;for(const [id,timer] of [...timers].sort((a,b)=>a[1].due-b[1].due))if(timer.due<=now&&timers.has(id)){timers.delete(id);timer.fn();}await flush();},
   async tick(){now+=1000;for(const fn of intervals)fn();await flush();},
   onClick(fn){document.addEventListener('click',fn);},
  };
@@ -155,4 +157,79 @@ test('settlement keeps its natural tail across the next node without a second en
  assert.equal(bank.play('start'),false);
  bank.clear();await flush();assert.equal(source.stopped,true);assert.equal(view.data.audioVoices,'0');
  await view.leave();
+});
+
+
+function hoverTarget(document){
+ const target={isConnected:true,disabled:false,hovered:true,blocked:false,
+  closest(){return this.blocked?{}:null;},matches(){return this.hovered;},contains(value){return value===this;}};
+ document.activeElement=target;return target;
+}
+
+test('hover keeps its approved timbre at a quieter level and has one audible voice across normal and locked cues',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ assert.equal(view.sound.play('hover',{level:.68}),true);
+ const normal=view.contexts[0].sources.at(-1);
+ assert.ok(Math.abs(normal.destination.gain.value-.68*.45)<1e-9);
+ await view.advance(300);
+ assert.equal(view.sound.play('locked',{level:.44}),true);
+ const locked=view.contexts[0].sources.at(-1);
+ assert.equal(normal.stopped,true);assert.equal(locked.playbackRate.value,.5);
+ assert.ok(Math.abs(locked.destination.gain.value-.44*.45)<1e-9);
+ assert.equal(view.data.audioHoverVoices,'1');await view.leave();
+});
+
+test('hover, click, cancel and restored focus do not leave overlapping tails or a delayed hover',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ const target=hoverTarget(view.document);
+ assert.equal(view.sound.play('hover'),true);const hover=view.contexts[0].sources.at(-1);
+ assert.equal(view.sound.play('click'),true);const click=view.contexts[0].sources.at(-1);
+ assert.equal(hover.stopped,true);assert.equal(view.data.audioHoverVoices,'0');
+ await view.advance(100);assert.equal(view.sound.play('back'),true);
+ assert.equal(click.stopped,true);assert.equal(view.data.audioUiForegroundVoices,'1');
+ assert.equal(view.sound.play('click',{throttle:0}),false,'generic click cannot mask cancel');
+ await view.advance(360);assert.equal(view.sound.requestHover(target,{keyboard:true}),false);
+ await view.advance(240);assert.equal(view.data.audioCounts,'{"hover":1,"click":1,"back":1}');
+ assert.equal(view.sound.requestHover(target,{keyboard:true}),true);await view.advance(120);
+ assert.equal(JSON.parse(view.data.audioCounts).hover,2);await view.leave();
+});
+
+test('fast scanning cancels pending targets and plays only the last settled hover',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ const a=hoverTarget(view.document),b=hoverTarget(view.document),c=hoverTarget(view.document);
+ view.sound.requestHover(a);await view.advance(70);
+ view.sound.requestHover(b);await view.advance(70);
+ view.sound.requestHover(c);await view.advance(119);assert.equal(view.data.audioPlayCount,'0');
+ await view.advance(1);assert.equal(view.data.audioCounts,'{"hover":1}');
+ view.sound.requestHover(a);await view.advance(120);assert.equal(view.data.audioCounts,'{"hover":1}','shared cooldown applies across targets');
+ view.sound.cancelHover();await view.advance(300);
+ view.sound.requestHover(b);view.sound.cancelHover(b);await view.advance(200);
+ assert.equal(view.data.audioCounts,'{"hover":1}');await view.leave();
+});
+
+test('scrolling, a closing or inert dialog and a disposed preview cannot release a pending hover',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ const target=hoverTarget(view.document);
+ view.sound.requestHover(target);await view.event('wheel');await view.advance(300);
+ assert.equal(view.data.audioPlayCount,'0');
+ target.blocked=true;assert.equal(view.sound.requestHover(target),false);
+ target.blocked=false;view.sound.requestHover(target);target.blocked=true;await view.advance(120);
+ assert.equal(view.data.audioPlayCount,'0');view.sound.cancelHover();
+ target.blocked=false;view.sound.requestHover(target);await view.leave();await view.advance(500);
+ assert.equal(view.data.audioPlayCount,'0');assert.equal(view.data.audioVoices,'0');
+});
+
+test('opening, confirming and navigation share one foreground voice; obsolete decoded hover requests are discarded',async()=>{
+ const view=phone({manualTimers:true,gameplay:true});await view.event('click');await view.advance(700);
+ assert.equal(view.sound.play('click'),true);const click=view.contexts[0].sources.at(-1);
+ assert.equal(view.sound.play('open'),true);const open=view.contexts[0].sources.at(-1);
+ assert.equal(click.stopped,true);assert.equal(view.sound.play('transition',{throttle:0}),false);
+ assert.equal(view.data.audioUiForegroundVoices,'1');
+ await view.advance(200);assert.equal(view.sound.play('confirm'),true);
+ assert.equal(open.stopped,true);assert.equal(view.data.audioUiForegroundVoices,'1');
+ await view.advance(700);
+ view.sound.registerCues({'game-late-focus':{file:'playtests/assets/audio/focus.wav',channel:'hover'}});
+ view.sound.play('game-late-focus');view.sound.play('back');await flush();
+ assert.equal(JSON.parse(view.data.audioCounts)['game-late-focus'],undefined);
+ assert.equal(view.data.audioHoverVoices,'0');await view.leave();
 });

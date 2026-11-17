@@ -690,13 +690,13 @@ function enterPage(){
  $$('[data-enter="gameover-action"]').forEach(el=>enter(el,{y:unit(14),delay:790,duration:900}));
  animateScene();
 }
-async function go(page,{replace=false,skipExit=false}={}){
+async function go(page,{replace=false,skipExit=false,silent=false}={}){
  if(!renders[page])page='home';
  const id=++transitionId;
  const old=currentPage;
  if(page==='affinity'&&['home','cover'].includes(old))affinityReturnPage=old;
  cancelPendingHover();
- if(screen.children.length&&page!==old&&!['result','failure','gameover'].includes(page))uiSound.play('transition',{level:.85,delay:.03});
+ if(!silent&&screen.children.length&&page!==old&&!['result','failure','gameover','exit','logout'].includes(page))uiSound.play('transition',{level:.85,delay:.03});
  closeModal(true);
  if(!skipExit&&!motionPreference.matches&&screen.children.length){
   screen.setAttribute('aria-busy','true');
@@ -741,7 +741,8 @@ function bindPageControls(){
  if(currentPage==='chapters')bindChapterRail();
  if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';bindStoryScroll();}
  applySoundLevels();
- $$('.range').forEach(input=>input.addEventListener('input',()=>{settingState[input.dataset.setting]=Number(input.value);input.style.setProperty('--value',`${input.value}%`);input.parentElement.querySelector('output').textContent=`${input.value}%`;applySoundLevels();uiSound.play('hover',{level:.45,throttle:180});}));
+ $$('.range').forEach(input=>input.addEventListener('input',()=>{settingState[input.dataset.setting]=Number(input.value);input.style.setProperty('--value',`${input.value}%`);input.parentElement.querySelector('output').textContent=`${input.value}%`;applySoundLevels();}));
+ $$('.range').forEach(input=>input.addEventListener('change',()=>uiSound.play('select',{level:.35,throttle:220})));
  $('#language-select')?.addEventListener('click',()=>{
   setLanguageMenu($('#language-select').getAttribute('aria-expanded')!=='true');
  });
@@ -1038,20 +1039,21 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
 async function confirmModal(){
  if(!confirmAction)return;
  const action=confirmAction;
+ uiSound.play('confirm',{level:.8});
  if(await closeModal(false,{silent:true,restoreFocus:false}))action();
 }
-function showExit(){openModal({kind:'exit',title:'离开当前故事？',message:'当前进度已保存在本地。你可以随时回来继续。',confirm:'退出',eyebrow:'LEAVE STORY',onConfirm:()=>{go('splash');}});}
+function showExit(){openModal({kind:'exit',title:'离开当前故事？',message:'当前进度已保存在本地。你可以随时回来继续。',confirm:'退出',eyebrow:'LEAVE STORY',onConfirm:()=>{go('splash',{silent:true});}});}
 function saveAction(index){
- if(!slots[index])openModal({kind:'save-create',title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters');toast('新的本地演示存档已建立');}});
+ if(!slots[index])openModal({kind:'save-create',title:`启用存档位 ${index+1}？`,message:'新的故事将从第 1 章开始。现有存档会保留。',confirm:'开始新故事',onConfirm:()=>{slots[index]={chapter:'第 1 章',scene:'race-start-1',date:saveTimestamp(),progress:0};activeSlot=index;selectedChapter=0;chapterRailLeft=0;go('chapters',{silent:true});toast('新的本地演示存档已建立');}});
  else if(index===activeSlot){uiSound.play('click',{level:.75});toast('已在使用这个存档');}
  else openModal({kind:'save-switch',title:'切换到这个存档？',message:`将从${slots[index].chapter}的进度继续。`,confirm:'切换存档',onConfirm:()=>{activeSlot=index;refreshSaveSelection();if(window.YorollLayout?.isMobile&&window.YorollLayout.orientation==='portrait')timeout(()=>window.YorollLayout.reveal($('.save-shell.is-active')),680);toast('已切换存档');}});
 }
 function deleteAction(index){openModal({kind:'save-delete',title:'删除这个存档？',message:'删除后将无法从这个存档继续。其他存档不受影响。',confirm:'删除存档',danger:true,onConfirm:()=>{slots[index]=null;go('saves',{skipExit:true});toast('本地演示存档已删除');}});}
-function showLogout(){openModal({kind:'logout',title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home');toast('已退出账号');}});}
+function showLogout(){openModal({kind:'logout',title:'退出当前账号？',message:'退出后，当前设备上的故事进度仍会保留。',confirm:'退出登录',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=false;go('home',{silent:true});toast('已退出账号');}});}
 const actions={
  'result-next':continueAfterResult,
  'failure-retry':()=>{if(currentPage!=='failure'||screen.getAttribute('aria-busy')==='true')return;playbackPaused=false;go('qte');},
- 'logout':()=>{if(signedIn)showLogout();else openModal({kind:'login',title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home');toast('欢迎回来');}});},
+ 'logout':()=>{if(signedIn)showLogout();else openModal({kind:'login',title:'登录以同步故事进度',message:'使用演示账号，继续体验你的故事。',confirm:'体验演示账号',eyebrow:'ACCOUNT',onConfirm:()=>{signedIn=true;go('home',{silent:true});toast('欢迎回来');}});},
  'chapter-scroll-left':()=>chapterRailMove?.(-1),
  'chapter-scroll-right':()=>chapterRailMove?.(1),
  'reset-settings':()=>{Object.assign(settingState,{master:100,video:100,sfx:100,music:100,language:'跟随系统'});audioMuted=false;applySoundLevels();uiSound.play('confirm');go('settings',{skipExit:true});toast('已恢复默认设置');},
@@ -1070,38 +1072,33 @@ const actions={
 };
 // Only deliberate controls sound; scrolling and dragging stay quiet.
 let keyboardFocusSound=false;
-let hoverSoundTimer=0;
 let hoveredSoundControl=null;
 const soundControl=target=>target.closest('.tree-node-cell.is-locked')||target.closest('button,a,input[type="range"]');
 const hoverLevel=control=>control.matches('.chapter-card,.tree-node,.affinity-card') ? .48 : .68;
-function cancelPendingHover(){clearTimeout(hoverSoundTimer);hoverSoundTimer=0;hoveredSoundControl=null;}
+function cancelPendingHover(){hoveredSoundControl=null;uiSound.cancelHover();}
 document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPendingHover();},{capture:true});
 document.addEventListener('keydown',event=>{keyboardFocusSound=event.key==='Tab';cancelPendingHover();},{capture:true});
 document.addEventListener('pointerover',event=>{
+ if(event.pointerType&&event.pointerType!=='mouse')return;
  const control=soundControl(event.target);
  if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||event.buttons||control.contains(event.relatedTarget)||$('.chapter-strip.is-dragging,.tree-viewport.is-dragging'))return;
  if(control.closest('#screen')&&frame.dataset.entryState!=='ready')return;
  if(control.closest('.chapter-strip')&&performance.now()<ignoreChapterClickUntil)return;
  if(control.closest('.tree-viewport')&&(performance.now()<ignoreStoryHoverUntil||frame.dataset.treePanState!=='ready'))return;
  const locked=control.matches('.tree-node-cell.is-locked');
- cancelPendingHover();hoveredSoundControl=control;
- hoverSoundTimer=setTimeout(()=>{
-  hoverSoundTimer=0;
-  if(hoveredSoundControl!==control||!control.isConnected||!control.matches(':hover')||document.hidden)return;
-  if(control.closest('.tree-viewport')&&(performance.now()<ignoreStoryHoverUntil||frame.dataset.treePanState!=='ready'||$('.tree-viewport.is-dragging')))return;
-  uiSound.play(locked?'locked':'hover',{level:locked?.44:hoverLevel(control),throttle:locked?650:180});
- },locked?110:70);
+ hoveredSoundControl=control;
+ uiSound.requestHover(control,{locked,level:locked?.44:hoverLevel(control)});
 });
 document.addEventListener('pointerout',event=>{if(hoveredSoundControl&&hoveredSoundControl.contains(event.target)&&!hoveredSoundControl.contains(event.relatedTarget))cancelPendingHover();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelPendingHover();});
-document.addEventListener('focusin',event=>{const control=soundControl(event.target);if(keyboardFocusSound&&control&&!control.disabled)uiSound.play('hover',{level:hoverLevel(control)});});
+document.addEventListener('focusin',event=>{const control=soundControl(event.target);if(keyboardFocusSound&&control&&!control.disabled)uiSound.requestHover(control,{level:hoverLevel(control),keyboard:true});});
 document.addEventListener('click',event=>{
  const control=event.target.closest('button,a');
- if(!control||control.disabled||control.getAttribute('aria-disabled')==='true')return;
+ if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||control.closest('[data-closing="true"]'))return;
  if(control.hasAttribute('data-route')){if(control.dataset.route===currentPage)uiSound.play('click',{level:.75});return;}
- if(control.matches('.chapter-card,.tree-node,.affinity-card,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
+ if(control.matches('.chapter-card,.tree-node,.affinity-card,[data-action="mute"],[data-action="sound-toggle"],[data-action="audition-sound"],[data-action="restart-music"],[data-action="modal-cancel"],[data-action="modal-confirm"],[data-action="result-next"],[data-action="failure-retry"],[data-action="qte-hit"],[data-action="choice-0"],[data-action="choice-1"],[data-action="reset-settings"],[data-action="logout"],[data-action^="delete-"],[data-action^="save-"],#replay'))return;
  if(control.hasAttribute('data-language')){uiSound.play('chapter',{level:control.dataset.language===settingState.language ? .16 : .26,throttle:220});return;}
- uiSound.play(control.dataset.action==='modal-confirm'?'confirm':'click',{level:.9});
+ uiSound.play('click',{level:.9});
 },{capture:true});
 document.addEventListener('click',event=>{
  if(!event.target.closest('.playback-speed'))setPlaybackSpeedMenu(false);
@@ -1152,7 +1149,7 @@ document.addEventListener('keydown',event=>{
     event.preventDefault();
     const options=Array.from(menu.querySelectorAll('button')),index=options.indexOf(document.activeElement);
     const next=event.key==='Home'?0:event.key==='End'?options.length-1:(index+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;
-    options[next].focus({preventScroll:true});uiSound.play('hover',{level:.4,throttle:180});return;
+    options[next].focus({preventScroll:true});uiSound.requestHover(options[next],{level:.4,keyboard:true});return;
    }
   }else if(event.target===toggle&&['ArrowUp','ArrowDown'].includes(event.key)){
    event.preventDefault();setPlaybackSpeedMenu(true);return;

@@ -20,7 +20,7 @@
  const channels=['gameplay-action','gameplay-gesture','gameplay-result','gameplay-start'];
  const policy=Object.freeze({theme:revision,uiSfx:'host',builtInUiSfx:false,referenceMediaAudio:false});
  let lastAction=-Infinity,lastResult=-Infinity;
- function clear({keepResult=false}={}){channels.filter(channel=>!keepResult||channel!=='gameplay-result').forEach(channel=>sound.stopChannel(channel));sound.stopChannel('hover',.04);lastAction=-Infinity;if(!keepResult)lastResult=-Infinity;}
+ function clear({keepResult=false}={}){channels.filter(channel=>!keepResult||channel!=='gameplay-result').forEach(channel=>sound.stopChannel(channel));sound.suppressHover();lastAction=-Infinity;if(!keepResult)lastResult=-Infinity;}
  function play(event,options={}){
   if(!Object.hasOwn(cues,event))return false;
   if(event==='start'&&performance.now()-lastResult<1200)return false;
