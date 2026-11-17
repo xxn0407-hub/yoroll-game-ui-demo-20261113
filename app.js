@@ -864,7 +864,10 @@ function bindPlaybackSeek(){
   playAnimation.currentTime=playbackPosition;syncPlaybackSeek(playbackPosition);
  });
  for(const name of ['change','pointerup','pointercancel','lostpointercapture','blur'])seek.addEventListener(name,finish);
- seek.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'].includes(event.key))begin();});
+ seek.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){event.preventDefault();playbackSeeking=false;playAnimation?.pause();go('pause');return;}
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'].includes(event.key))begin();
+ });
  seek.addEventListener('keyup',finish);
 }
 function startPlayback(){

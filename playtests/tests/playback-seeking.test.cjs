@@ -50,3 +50,8 @@ test('scrubbing back from the end keeps normal end-of-playback navigation workin
  assert.deepEqual(view.routes,[]);assert.equal(view.timeline.currentTime,6000);assert.equal(view.timeline.playState,'running');
  view.finish();assert.deepEqual(view.routes,['choice']);
 });
+test('Escape still returns to the game menu when the progress control has focus',()=>{
+ const view=playback({position:4300});view.event('keydown','Escape');
+ assert.deepEqual(view.routes,['pause']);assert.equal(view.timeline.playState,'paused');
+ assert.equal(view.timeline.currentTime,4300);
+});
