@@ -49,12 +49,12 @@
   if(flow){R.recordVisit(state,String(category+1),node.id);if(!stack.length)state.history.push({chapter:category+1,nodeId:node.id});}effects(node,`node:${category+1}:${node.id}`);save();setBackground(node);frame.dataset.mode=type;
   const element=document.createElement('section');element.className=`suite-player ${native?'is-native':['paper_cutting','balance','puzzle','craft_bench','dial_lock','dating_calendar'].includes(type)?'is-board':''} is-ready`;run.element=element;
   const title=U.modeOf(node)[0],spatial=['choice_area','scene_choice','insight','investigation','sceneclickvideo','scene_search','shoot2','rhythm','use_item'].includes(type);
-  element.innerHTML=`<div class="suite-media" data-media-container></div><div class="suite-dust-field">${Array.from({length:18},(_,i)=>`<i class="suite-float-dot" style="left:${(i*73)%100}%;top:${(i*37)%100}%;animation-delay:${-i*.7}s"></i>`).join('')}</div>${top(title,'leave')}<div class="suite-timer" hidden>${icon('clock')}<span></span></div><div class="suite-play-heading"><h2>${esc(U.shortTitle(node))}</h2><p>${esc(node.qte?.instruction_text_1||U.modeOf(node)[1])}</p></div><div class="suite-spatial-plane"><div class="suite-playbody ${spatial?'is-spatial':''}"></div></div><div class="suite-status" role="status"></div><div class="suite-stage-controls"><div class="playback-track suite-timeline"><span data-suite-progress></span><input class="suite-track playback-seek" type="range" aria-label="播放进度" min="0" max="1000" value="0"></div><div class="playback-controls"><div class="suite-transport"><button data-suite="pause" aria-label="暂停">${icon('pause')}</button><small data-media-time>00:00 / 00:00</small><div class="suite-speed-wrap"><button class="subtle-btn" data-suite="speed" aria-expanded="false">${baseSpeed}× ${icon('chevron')}</button><div class="glass-menu suite-speed-menu" hidden>${[1,1.25,1.5,2].map(v=>`<button role="menuitemradio" aria-checked="${v===baseSpeed}" data-suite="speed-option" data-value="${v}"><span>${v}×</span>${v===baseSpeed?icon('check'):''}</button>`).join('')}</div></div></div><div class="suite-controls-right">${flow&&!stack.length&&state.history.length>1?`<button class="subtle-btn" data-suite="previous-node">${icon('back')} 上一片段</button>`:''}<button class="subtle-btn" data-suite="replay">${icon('replay')} 重播</button>${button('继续','next',{small:true,iconName:'arrow',data:'hidden'})}</div></div></div><div class="suite-readiness"><div>${button(native?'预览操作':'开始体验','start',{primary:true,iconName:'play'})}<small>${native?'原玩法引擎接入前，可预览操作与界面状态':flow?'连续流程':'单项体验'}</small></div></div>`;
+  element.innerHTML=`<div class="suite-media" data-media-container></div><div class="suite-dust-field">${Array.from({length:18},(_,i)=>`<i class="suite-float-dot" style="left:${(i*73)%100}%;top:${(i*37)%100}%;animation-delay:${-i*.7}s"></i>`).join('')}</div>${top(title,'leave')}<div class="suite-timer" hidden>${icon('clock')}<span></span></div><div class="suite-play-heading"><h2>${esc(U.shortTitle(node))}</h2><p>${esc(node.qte?.instruction_text_1||U.modeOf(node)[1])}</p></div><div class="suite-spatial-plane"><div class="suite-playbody ${spatial?'is-spatial':''}"></div></div><div class="suite-status" role="status"></div><div class="suite-stage-controls"><div class="playback-track suite-timeline"><span data-suite-progress></span><input class="suite-track playback-seek" type="range" aria-label="播放进度" min="0" max="1000" value="0"></div><div class="playback-controls"><div class="suite-transport"><button data-suite="pause" aria-label="暂停" aria-keyshortcuts="Space" title="播放 / 暂停（观看时按空格）">${icon('pause')}</button><small data-media-time aria-hidden="true" title="已播放 / 本段总时长">00:00 / --:--</small><div class="suite-speed-wrap"><button class="subtle-btn" data-suite="speed" aria-expanded="false">${baseSpeed}× ${icon('chevron')}</button><div class="glass-menu suite-speed-menu" hidden>${[1,1.25,1.5,2].map(v=>`<button role="menuitemradio" aria-checked="${v===baseSpeed}" data-suite="speed-option" data-value="${v}"><span>${v}×</span>${v===baseSpeed?icon('check'):''}</button>`).join('')}</div></div></div><div class="suite-controls-right">${flow&&!stack.length&&state.history.length>1?`<button class="subtle-btn" data-suite="previous-node">${icon('back')} 上一片段</button>`:''}<button class="subtle-btn" data-suite="replay">${icon('replay')} 重播</button>${button('继续','next',{small:true,iconName:'arrow',data:'hidden'})}</div></div></div><div class="suite-readiness"><div>${button(native?'预览操作':'开始体验','start',{primary:true,iconName:'play'})}<small>${native?'原玩法引擎接入前，可预览操作与界面状态':flow?'连续流程':'单项体验'}</small></div></div>`;
   screen.replaceChildren(element);run.body=element.querySelector('.suite-playbody');run.plane=element.querySelector('.suite-spatial-plane');run.ctx=context(run);
   setMedia(run,backgroundRef(node));
   if(spatial)element.classList.add('has-spatial');
   if(type==='choice'){run.body.classList.add('is-spatial');run.module=choices(run);}else if(type==='end'||type==='basic')run.module=narrative(run);else if(native){run.engineSession=gate.begin(type,node.id);run.module=window.YorollPlayNative.mount(run.ctx);}else run.module=window.YorollPlayInteractions.mount(run.ctx);
-  run.ctx.on(element.querySelector('.suite-track'),'input',ev=>{if(ev.target.disabled)return;updateVideoProgress(run,Number(ev.target.value));if(run.media&&Number.isFinite(run.media.duration)){run.ended=false;run.media.currentTime=Number(ev.target.value)/1000*run.media.duration;if(type==='rhythm'){run.qteTime=Math.max(0,run.media.currentTime-(node.qte.delay_from_start_seconds||0));run.settled=false;run.pending=null;run.module.seek?.();F.toast('节奏判定已重新同步');}}});
+  run.ctx.on(element.querySelector('.suite-track'),'input',ev=>{if(ev.target.disabled)return;updateVideoProgress(run,Number(ev.target.value));if(run.media&&Number.isFinite(run.media.duration)){run.ended=false;run.media.currentTime=Number(ev.target.value)/1000*run.media.duration;syncVideoTime(run);if(type==='rhythm'){run.qteTime=Math.max(0,run.media.currentTime-(node.qte.delay_from_start_seconds||0));run.settled=false;run.pending=null;run.module.seek?.();F.toast('节奏判定已重新同步');}}});
   run.ctx.on(run.media,'ended',()=>mediaEnded(run));
   syncVideoTimeline(run);updateReview();motion(element);history.replaceState(null,'',pageLocation(id));
   if(flow||stack.length)start(run);
@@ -65,8 +65,9 @@
    holder.innerHTML=`<img data-image-audio src="${esc(url(run.node.images[0].image_url,'image'))}" alt="">`;media=document.createElement('audio');media.src=A.imageAudio;holder.append(media);A.protectMedia(media,{themed:true});
   }else if(/\.(png|jpg|jpeg|webp)(\?|$)/i.test(ref)){holder.innerHTML=`<img src="${esc(url(ref,'image'))}" alt="">`;run.media=null;return;
   }else{media=document.createElement('video');media.playsInline=true;media.preload='metadata';media.src=url(ref);media.poster=poster(run.node);holder.append(media);A.protectMedia(media);}
-  run.media=media;A.sync();media.playbackRate=baseSpeed*run.slowFactor;
-  run.ctx?.on(media,'loadedmetadata',()=>{if(run.started&&!run.clock.paused)media.play().catch(()=>status(run,'点击继续播放画面'));});
+  run.media=media;A.sync();media.playbackRate=baseSpeed*run.slowFactor;syncVideoTime(run);
+  for(const event of ['durationchange','seeked'])run.ctx?.on(media,event,()=>syncVideoTime(run));
+  run.ctx?.on(media,'loadedmetadata',()=>{syncVideoTime(run);if(run.started&&!run.clock.paused)media.play().catch(()=>status(run,'点击继续播放画面'));});
   run.ctx?.on(media,'error',()=>{status(run,'片段暂时无法加载，交互仍可预览');run.mediaFailed=true;});
   run.ctx?.on(media,'ended',()=>mediaEnded(run));if(run.started&&!run.clock.paused)media.play().catch(()=>{});
  }
@@ -130,10 +131,19 @@
  $('#suite-review-toggle').addEventListener('click',()=>{review.hidden=!review.hidden;$('#suite-review-toggle').setAttribute('aria-expanded',String(!review.hidden));pause('review',!review.hidden);});
  document.addEventListener('pointerover',ev=>{if(ev.pointerType&&ev.pointerType!=='mouse')return;const el=ev.target.closest('button,a');if(!el||el.contains(ev.relatedTarget)||el.disabled||ev.buttons)return;if(current?.body.contains(el)){if(el.matches('.suite-choice,.suite-direction,.suite-area-option')&&current.ctx.active())sound.requestHover(el,{locked:el.getAttribute('aria-disabled')==='true',cue:'game-focus',level:.7});return;}sound.requestHover(el,{locked:el.getAttribute('aria-disabled')==='true',level:.6});});
  document.addEventListener('pointerout',ev=>{const el=ev.target.closest('button,a');if(el&&!el.contains(ev.relatedTarget))sound.cancelHover(el);});
- document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('#modal-root').firstElementChild){if(current?.element.querySelector('.suite-note-panel'))closeNote(current);else if(!review.hidden){review.hidden=true;pause('review',false);}else if(current){pause('manual',!current.clock.pauses.has('manual'));}}if(ev.key===' '&&current&&!['INPUT','BUTTON','SELECT','TEXTAREA'].includes(ev.target.tagName)){ev.preventDefault();pause('manual',!current.clock.pauses.has('manual'));}});
+ document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('#modal-root').firstElementChild){if(current?.element.querySelector('.suite-note-panel'))closeNote(current);else if(!review.hidden){review.hidden=true;pause('review',false);}else if(current){pause('manual',!current.clock.pauses.has('manual'));}}handleVideoSpace(ev);});
  window.addEventListener('suite:modal-closed',()=>pause('modal',false));
  function sync(){pause('visibility',document.hidden||!document.hasFocus());}
  document.addEventListener('visibilitychange',sync);window.addEventListener('blur',()=>pause('visibility',true));window.addEventListener('focus',sync);window.addEventListener('pagehide',()=>{pause('visibility',true);sound.stopAll();save();});
+ function handleVideoSpace(event){
+  if(event.key!==' '||!current||event.defaultPrevented||event.isComposing||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey)return false;
+  if($('#modal-root').firstElementChild||!review.hidden||current.element.querySelector('.suite-note-panel')||current.element.querySelector('[data-suite="speed"]')?.getAttribute('aria-expanded')==='true')return false;
+  if(current.qteStarted&&!['basic','end'].includes(current.type))return false;
+  if(event.target?.isContentEditable||event.target?.closest?.('button,a,input:not(.suite-track),textarea,select,[contenteditable],[role="button"],[role="menuitem"]'))return false;
+  event.preventDefault();
+  if(!event.repeat){if(!current.started)start(current);else pause('manual',!current.clock.pauses.has('manual'));}
+  return true;
+ }
  function syncVideoTimeline(run){
   const hidden=run.qteStarted&&!['basic','end'].includes(run.type),mode=hidden?'hidden':'visible';
   if(run.element.dataset.videoTimeline===mode)return;
@@ -150,14 +160,22 @@
   run.element.querySelector('.suite-track').value=position;
   run.element.querySelector('[data-suite-progress]').style.width=`${position/10}%`;
  }
- function format(t){return `${String(Math.floor(t/60)).padStart(2,'0')}:${String(Math.floor(t)%60).padStart(2,'0')}`;}
+ function format(t){const seconds=Number.isFinite(t)?Math.floor(Math.max(0,t)):0;return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;}
+ function syncVideoTime(run){
+  const media=run.media;if(!media)return;
+  const duration=media.duration,known=Number.isFinite(duration)&&duration>0;
+  const text=`${format(media.currentTime)} / ${known?format(duration):'--:--'}`;
+  const time=run.element.querySelector('[data-media-time]');if(time.textContent!==text)time.textContent=text;
+  run.element.querySelector('.suite-track').setAttribute('aria-valuetext',text);
+  updateVideoProgress(run,known?media.currentTime/duration*1000:0);
+ }
  function tick(now){const dt=Math.min((now-last)/1000,.1);last=now;const run=current;if(run)syncVideoTimeline(run);
   if(run&&run.started&&!run.abort.signal.aborted){const previous=run.clock.time;run.clock.advance(dt);const delta=run.clock.time-previous;
    if(delta){for(const task of (run.scheduled||[]).filter(t=>t.due<=run.clock.time)){run.scheduled=run.scheduled.filter(t=>t!==task);task.fn();if(current!==run)break;}if(current!==run){requestAnimationFrame(tick);return;}const mediaTime=run.media&&!run.mediaFailed?run.media.currentTime:run.clock.time,delay=Number(run.node.qte?.delay_from_start_seconds??run.node.delay_from_start_seconds)||0;
     if(!run.qteStarted&&mediaTime>=delay){run.qteStarted=true;run.module?.activate?.();if(run.engineSession)engineStart(run);}
     if(run.qteStarted&&!run.settled){run.qteTime+=delta;run.module?.tick?.(delta,run.qteTime);if(run.duration>0&&run.qteTime>=run.duration&&!run.timedOut){run.timedOut=true;if(run.type==='choice')run.module.timeout();else if(!U.nativeTypes.has(run.type))run.module?.timeout?run.module.timeout():finish(run,0);}}
     if(run.slowStyle===2){const amount=delta/.5;run.slowFactor+=Math.sign(run.slowTarget-run.slowFactor)*Math.min(Math.abs(run.slowTarget-run.slowFactor),amount*.3);}else run.slowFactor=run.slowTarget;
-    if(run.media){run.media.playbackRate=Math.max(.1,baseSpeed*run.slowFactor);const duration=run.media.duration||0;run.element.querySelector('[data-media-time]').textContent=`${format(run.media.currentTime)} / ${format(Number.isFinite(duration)?duration:0)}`;if(Number.isFinite(duration)&&duration>0)updateVideoProgress(run,run.media.currentTime/duration*1000);
+    if(run.media){run.media.playbackRate=Math.max(.1,baseSpeed*run.slowFactor);const duration=run.media.duration||0;syncVideoTime(run);
      if(run.node.playback_mode==='image_audio'){const i=R.mediaFrameAt(run.node.images,mediaTime,duration),img=run.element.querySelector('[data-image-audio]');if(img.dataset.index!==String(i)){img.src=url(run.node.images[i].image_url,'image');img.dataset.index=i;}}
     }
     for(const [i,trigger] of (run.node.ui_triggers||[]).entries()){const visible=mediaTime>=trigger.delay_from_start_seconds&&mediaTime<trigger.delay_from_start_seconds+trigger.duration;let el=run.element.querySelector(`[data-trigger="${i}"]`);if(visible&&!el){el=document.createElement('div');el.className=`suite-timed-feedback ${trigger.name==='rhythm_fail'?'is-miss':''}`;el.dataset.trigger=i;el.innerHTML=`${icon(trigger.name==='rhythm_fail'?'close':'check')}<span>${trigger.name==='rhythm_fail'?'错过时机':'完美'}</span>`;run.element.append(el);}if(!visible&&el)el.remove();}

@@ -759,3 +759,4 @@
 .playback-track>span::after{content:"";box-sizing:border-box;position:absolute;right:0;top:50%;width:var(--seek-knob);height:var(--seek-knob);transform:translate(50%,-50%);border:1px solid #d8c7a599;border-radius:50%;background:#eee9dc;box-shadow:0 0 calc(var(--p)*5) #e5dbc933;pointer-events:none;transition:background .18s,box-shadow .2s,transform .2s var(--soft)}
 .playback-track:is(:hover,:focus-within)>span::after{background:#fff9eb;box-shadow:0 0 calc(var(--p)*8) #e5dbc966;transform:translate(50%,-50%) scale(1.15)}
 .playback-track:active>span::after{transform:translate(50%,-50%) scale(1.25)}
+.playback-time{white-space:nowrap;color:#96a59a;font-size:calc(var(--p)*13);letter-spacing:.025em;font-variant-numeric:tabular-nums}

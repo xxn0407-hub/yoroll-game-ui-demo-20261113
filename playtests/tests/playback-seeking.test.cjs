@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
 const source=fs.readFileSync(path.resolve(__dirname,'../../app.js'),'utf8');
-const functions=source.slice(source.indexOf('function syncPlaybackSeek('),source.indexOf('function tryResultSound('));
+const functions=source.slice(source.indexOf('function formatPlaybackTime('),source.indexOf('function tryResultSound('));
 
 function playback({paused=false,position=0}={}){
  class Timeline extends EventTarget{
@@ -16,11 +16,11 @@ function playback({paused=false,position=0}={}){
   value='0';attributes={};setAttribute(key,value){this.attributes[key]=value;}setPointerCapture(){}
  }
  const seek=new Seek(),timeline=new Timeline(),routes=[],jobs=new Map();let nextJob=0,suppressed=0;
- const progress={animate:()=>timeline};
- const context=vm.createContext({PLAYBACK_DURATION:24000,currentPage:'gameplay',playbackPosition:position,playbackRate:1,playbackPaused:paused,playbackSeeking:false,playbackSeekFrame:0,playAnimation:null,frame:{dataset:{}},document:{hidden:false},$:selector=>selector==='#playback-seek'?seek:selector==='#play-progress'?progress:null,track:value=>value,uiSound:{suppressHover:()=>suppressed++},requestAnimationFrame:callback=>{jobs.set(++nextJob,callback);return nextJob;},cancelAnimationFrame:id=>jobs.delete(id),go:page=>routes.push(page)});
+ const progress={animate:()=>timeline},time={textContent:''};
+ const context=vm.createContext({PLAYBACK_DURATION:24000,currentPage:'gameplay',playbackPosition:position,playbackRate:1,playbackPaused:paused,playbackSeeking:false,playbackSeekFrame:0,playAnimation:null,frame:{dataset:{}},document:{hidden:false},$:selector=>selector==='#playback-seek'?seek:selector==='#play-progress'?progress:selector==='#playback-time'?time:null,track:value=>value,uiSound:{suppressHover:()=>suppressed++},requestAnimationFrame:callback=>{jobs.set(++nextJob,callback);return nextJob;},cancelAnimationFrame:id=>jobs.delete(id),go:page=>routes.push(page)});
  vm.runInContext(functions+'\nbindPlaybackSeek();startPlayback();',context);
  const event=(type,key)=>{const e=new Event(type);if(key)Object.defineProperty(e,'key',{value:key});seek.dispatchEvent(e);};
- return {context,seek,timeline,routes,jobs,get suppressed(){return suppressed;},event,
+ return {context,seek,timeline,time,routes,jobs,get suppressed(){return suppressed;},event,
   scrub(value){seek.value=String(value);event('input');},
   finish(){timeline.playState='finished';timeline.dispatchEvent(new Event('finish'));}};
 }
@@ -33,7 +33,7 @@ test('dragging a playing timeline pauses while scrubbing and resumes from the ch
 });
 test('scrubbing a paused timeline keeps it paused and stores the new position for return or resume',()=>{
  const view=playback({paused:true,position:4000});view.event('pointerdown');view.scrub(18000);view.event('pointerup');
- assert.equal(view.context.playbackPosition,18000);assert.equal(view.timeline.currentTime,18000);
+ assert.equal(view.context.playbackPosition,18000);assert.equal(view.timeline.currentTime,18000);assert.equal(view.time.textContent,'00:18 / 00:24');
  assert.equal(view.timeline.playState,'paused');assert.equal(view.timeline.plays,0);assert.deepEqual(view.routes,[]);
 });
 test('keyboard seeking retains pause state and clamps the timeline to its bounds',()=>{

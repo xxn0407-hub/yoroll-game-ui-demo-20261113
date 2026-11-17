@@ -578,3 +578,8 @@ html.mobile-ui[data-ui-orientation=portrait] .suite-stage-controls .suite-transp
 html.mobile-ui[data-ui-orientation=portrait] .suite-stage-controls .suite-controls-right{width:100%}
 .mobile-ui .suite-player[data-video-timeline=visible] .suite-status{bottom:calc(var(--mobile-bottom) + 76px)}
 html.mobile-ui[data-ui-orientation=portrait] .suite-player[data-video-timeline=visible] .suite-status{bottom:calc(var(--mobile-bottom) + 128px)}
+.mobile-ui .playback-status{gap:var(--mobile-space-1)}
+.mobile-ui .playback-status>[data-action=playback]{width:44px;min-width:44px;padding:0;justify-content:center}
+.mobile-ui .playback-status>[data-action=playback]>span{display:none}
+.mobile-ui .playback-time{font-size:11px;letter-spacing:0}
+@media(max-width:360px){.mobile-ui .playback-controls{gap:6px}}
