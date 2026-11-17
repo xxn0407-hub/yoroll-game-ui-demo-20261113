@@ -735,14 +735,27 @@
 }
 .toast-copy{min-width:0;text-align:center;letter-spacing:.045em;text-shadow:0 0 calc(var(--p)*12) #e3ece114;}
 
-/* Playback reuses the shared back arrow and the original one-pixel progress line. */
+/* Shared back arrow; playback controls retain the original one-pixel progress line. */
 .game-hud .hud-leading{position:static;flex:1;min-width:0;gap:calc(var(--p)*20)}
 .game-hud .hud-leading .hud-scene{min-width:0}
 #play-progress{width:0}
-.playback-seek{appearance:none;-webkit-appearance:none;position:absolute;inset:auto 0;top:50%;transform:translateY(-50%);width:100%;height:max(28px,calc(var(--p)*44));padding:0;margin:0;border:0;background:transparent;color:transparent;cursor:ew-resize;touch-action:none}
+.playback-track{--seek-knob:max(6px,calc(var(--p)*8))}
+.playback-seek{appearance:none;-webkit-appearance:none;position:absolute;inset:auto calc(var(--seek-knob)*-.5);top:50%;transform:translateY(-50%);width:calc(100% + var(--seek-knob));height:max(28px,calc(var(--p)*44));padding:0;margin:0;border:0;background:transparent;color:transparent;cursor:ew-resize;touch-action:none}
 .playback-seek::-webkit-slider-runnable-track{height:1px;border:0;background:transparent}
-.playback-seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:0;background:transparent;box-shadow:none}
+.playback-seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:var(--seek-knob);height:var(--seek-knob);margin-top:calc((1px - var(--seek-knob))/2);border:0;background:transparent;box-shadow:none}
 .playback-seek::-moz-range-track,.playback-seek::-moz-range-progress{height:1px;border:0;background:transparent}
-.playback-seek::-moz-range-thumb{width:16px;height:16px;border:0;background:transparent;box-shadow:none}
+.playback-seek::-moz-range-thumb{width:var(--seek-knob);height:var(--seek-knob);border:0;background:transparent;box-shadow:none}
 .playback-seek:focus-visible{outline:none}
 .playback-track:focus-within #play-progress{filter:drop-shadow(0 0 calc(var(--p)*3) #d8c7a544)}
+
+
+/* A film-game timeline spans the bottom; playback and speed share its left controls. */
+.playback-bar{flex-direction:column;align-items:stretch;gap:calc(var(--p)*16)}
+.playback-bar>.playback-track{width:100%;flex:none}
+.playback-controls{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--p)*20)}
+
+/* The visible handle follows the continuous fill, avoiding stepped motion during playback. */
+.playback-track>span{position:relative}
+.playback-track>span::after{content:"";box-sizing:border-box;position:absolute;right:0;top:50%;width:var(--seek-knob);height:var(--seek-knob);transform:translate(50%,-50%);border:1px solid #d8c7a599;border-radius:50%;background:#eee9dc;box-shadow:0 0 calc(var(--p)*5) #e5dbc933;pointer-events:none;transition:background .18s,box-shadow .2s,transform .2s var(--soft)}
+.playback-track:is(:hover,:focus-within)>span::after{background:#fff9eb;box-shadow:0 0 calc(var(--p)*8) #e5dbc966;transform:translate(50%,-50%) scale(1.15)}
+.playback-track:active>span::after{transform:translate(50%,-50%) scale(1.25)}

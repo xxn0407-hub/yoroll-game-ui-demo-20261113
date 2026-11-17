@@ -564,4 +564,17 @@ html.mobile-ui[data-ui-orientation=portrait] .suite-choice-grid{max-width:calc(v
 /* The playback back arrow keeps the existing phone control size and safe insets. */
 .mobile-ui .game-hud .hud-leading{gap:var(--mobile-space-1)}
 .mobile-ui .hud-leading .hud-scene{max-width:none}
+.mobile-ui .playback-track{--seek-knob:8px}
 .mobile-ui .playback-seek{height:44px}
+.mobile-ui .playback-bar{flex-wrap:nowrap;gap:var(--mobile-space-2)}
+.mobile-ui .playback-bar>.playback-track{width:100%;flex:none}
+.mobile-ui .playback-controls{gap:var(--mobile-space-2)}
+html.mobile-ui[data-ui-orientation=portrait] .playback-status{flex-basis:auto}
+html.mobile-ui[data-ui-orientation=portrait] .playback-tools{width:auto}
+.mobile-ui .suite-timeline{width:100%;flex:none}
+.mobile-ui .suite-player .suite-timeline .suite-track{height:44px;min-height:44px;max-width:none;min-width:0;flex:none}
+html.mobile-ui[data-ui-orientation=portrait] .suite-stage-controls>.playback-controls{flex-wrap:wrap;row-gap:var(--mobile-space-2)}
+html.mobile-ui[data-ui-orientation=portrait] .suite-stage-controls .suite-transport{flex-basis:100%;justify-content:flex-start}
+html.mobile-ui[data-ui-orientation=portrait] .suite-stage-controls .suite-controls-right{width:100%}
+.mobile-ui .suite-player[data-video-timeline=visible] .suite-status{bottom:calc(var(--mobile-bottom) + 76px)}
+html.mobile-ui[data-ui-orientation=portrait] .suite-player[data-video-timeline=visible] .suite-status{bottom:calc(var(--mobile-bottom) + 128px)}

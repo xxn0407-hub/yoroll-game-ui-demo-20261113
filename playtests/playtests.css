@@ -382,3 +382,13 @@
 
 /* Keep poster rows intrinsic when the landscape viewport becomes short. */
 .suite-grid{grid-auto-rows:max-content;align-content:start;align-items:start;min-height:0;}
+
+/* Watch-only segments share the film timeline; interactive nodes fold it away. */
+.suite-stage-controls{flex-direction:column;align-items:stretch;gap:calc(var(--p)*16);transition:gap .24s var(--soft)}
+.suite-timeline{width:100%;flex:none;height:1px;opacity:1;transition:opacity .2s var(--soft),transform .28s var(--soft),height .24s var(--soft)}
+.suite-timeline>span{width:0}
+.suite-player .suite-timeline .suite-track{width:calc(100% + var(--seek-knob));height:max(28px,calc(var(--p)*44));max-width:none;min-width:0;flex:none;cursor:ew-resize}
+.suite-player[data-video-timeline=hidden] .suite-stage-controls{gap:0}
+.suite-player[data-video-timeline=hidden] .suite-timeline{height:0;opacity:0;transform:translateY(calc(var(--p)*5));pointer-events:none}
+@media(prefers-reduced-motion:reduce){.suite-stage-controls,.suite-timeline{transition:none}}
+.suite-player[data-video-timeline=visible] .suite-status{bottom:calc(var(--p)*126)}
