@@ -234,7 +234,7 @@ test('opening, confirming and navigation share one foreground voice; obsolete de
  assert.equal(view.data.audioHoverVoices,'0');await view.leave();
 });
 
-test('modal dismiss uses one quiet lower hover-family tone, with a continuous bounded fade instead of the long back accent',async()=>{
+test('menu back feedback uses one quiet lower hover-family tone, with a continuous bounded fade instead of the long back accent',async()=>{
  const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
  assert.equal(view.fetched.some(address=>address.includes('ui-back.wav')),false);
  assert.equal(view.sound.play('back'),true);const cue=view.contexts[0].sources.at(-1);
@@ -246,7 +246,7 @@ test('modal dismiss uses one quiet lower hover-family tone, with a continuous bo
  assert.equal(view.data.audioCounts,'{"back":1}');await view.leave();
 });
 
-test('cancel waits until hover and the modal-opening cue have faded, and blocks click or focus from adding a second accent',async()=>{
+test('menu back waits until previous cues have faded, and blocks click or focus from adding a second accent',async()=>{
  const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
  view.sound.play('open');const opening=view.contexts[0].sources.at(-1);
  await view.advance(700);view.sound.play('hover');const hover=view.contexts[0].sources.at(-1);

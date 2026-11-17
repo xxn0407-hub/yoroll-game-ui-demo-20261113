@@ -979,7 +979,7 @@ async function closeModal(immediate=false,{silent=false,restoreFocus=true}={}){
  if(!immediate&&modalCloseMotion?.node===node)return modalCloseMotion.promise;
  const previousFocus=modalPreviousFocus;
  confirmAction=null;
- if(!immediate&&!silent)uiSound.play('back');
+ if(!immediate){uiSound.suppressHover();uiSound.stopChannel('navigation',.035);}
  if(immediate||motionPreference.matches){
   cancelModalCloseMotion();
   node.remove();

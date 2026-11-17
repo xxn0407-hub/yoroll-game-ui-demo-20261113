@@ -69,7 +69,7 @@
       ],
       "minFadeInMs": 12,
       "fadeOutMs": 120,
-      "runtimeUse": "Legacy source retained; modal cancel / Escape now use the quiet hover-family variant in runtime.backFeedback."
+      "runtimeUse": "Legacy source retained; menu Escape uses the quiet hover-family variant in runtime.backFeedback. Modal closing is silent."
     },
     "transition": {
       "file": "assets/audio/ui-transition.wav",
@@ -382,14 +382,18 @@
       "voiceCount": 1,
       "extraClosingCue": false,
       "priorHoverAndUiFadeBeforeOnset": true,
-      "character": "A single quiet lowered hover-family tone with a continuous fade; replaces the full-level 1.15-second roomy back accent."
-    }
+      "character": "A single quiet lowered hover-family tone with a continuous fade; replaces the full-level 1.15-second roomy back accent.",
+      "usedBy": "Language and preview-menu Escape only; confirmation modal dismissal is silent."
+    },
+    "modalDismissSound": false,
+    "modalDismissRevision": "silent-modal-dismiss-20261117",
+    "modalDismissBehavior": "Cancel, Escape and scrim dismissals emit no cue; they fade pending/current hover and remaining navigation/open audio. Confirm keeps its own cue."
   },
   "eventMap": {
     "hover": "Control focus",
     "click": "Ordinary activation",
     "select": "Choice timeout",
-    "back": "One soft dismiss cue for modal cancel / Escape. Completion of the close animation is silent.",
+    "back": "Soft back feedback for language / preview-menu Escape; confirmation modal cancel, Escape and close are silent.",
     "transition": "Page navigation",
     "open": "Modal opening",
     "confirm": "Confirmation and the quiet immediate QTE response.",

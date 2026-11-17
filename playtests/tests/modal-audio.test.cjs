@@ -6,7 +6,8 @@ const vm=require('node:vm');
 const root=path.resolve(__dirname,'../..');
 
 function dialog(file,{reduced=false}={}){
- const source=fs.readFileSync(path.join(root,file),'utf8'),sounds=[],animations=[],clicks=[];
+ const source=fs.readFileSync(path.join(root,file),'utf8'),sounds=[],animations=[],clicks=[],stopped=[];
+ let hoverSuppressions=0;
  const timing=source.match(/const MODAL_CLOSE_TIMING\s*=[^;]+;/)[0];
  const start=source.indexOf('function clearModalEntryMotion(');
  const end=source.indexOf(file==='app.js'?'function showExit()':"document.addEventListener('click',e=>",start);
@@ -17,7 +18,7 @@ function dialog(file,{reduced=false}={}){
  node.contains=()=>false;node.remove=()=>{modalRoot.firstElementChild=null;};modalRoot.firstElementChild=node;
  const focus={isConnected:true,calls:0,focus(){this.calls++;}};
  const document={addEventListener(type,callback){if(type==='click')clicks.push(callback);}};
- const context=vm.createContext({document,modalRoot,screen,modalPreviousFocus:focus,modalCloseMotion:null,confirmAction:null,enterAnimations:new Set(),motionPreference:{matches:reduced},unit:n=>n,uiSound:{play:name=>sounds.push(name)},getComputedStyle:()=>({opacity:'1',transform:'none',filter:'none',maskSize:'100% 100%'})});
+ const context=vm.createContext({document,modalRoot,screen,modalPreviousFocus:focus,modalCloseMotion:null,confirmAction:null,enterAnimations:new Set(),motionPreference:{matches:reduced},unit:n=>n,uiSound:{play:name=>sounds.push(name),suppressHover:()=>hoverSuppressions++,stopChannel:(channel,fade)=>stopped.push({channel,fade})},getComputedStyle:()=>({opacity:'1',transform:'none',filter:'none',maskSize:'100% 100%'})});
  vm.runInContext(timing+'\n'+source.slice(start,end),context);
  // Execute the actual generic click listener too: it must not add a button cue.
  const app=fs.readFileSync(path.join(root,file==='app.js'?'app.js':'playtests/app.js'),'utf8');
@@ -27,18 +28,19 @@ function dialog(file,{reduced=false}={}){
  const control={disabled:false,dataset:{action:'modal-cancel'},hasAttribute:()=>false,getAttribute:()=>null,
   closest(selector){if(selector==='button,a')return this;if(selector==='[data-closing="true"]')return node.dataset.closing?node:null;return null;},
   matches(selector){return selector.includes(`[data-action="${this.dataset.action}"]`);}};
- return {context,sounds,animations,modalRoot,screen,focus,
+ return {context,sounds,animations,modalRoot,screen,focus,stopped,get hoverSuppressions(){return hoverSuppressions;},
   cancel(){control.dataset.action='modal-cancel';clicks.forEach(fn=>fn({target:control}));return context.closeModal();},
   confirm(){control.dataset.action='modal-confirm';clicks.forEach(fn=>fn({target:control}));return context.confirmModal();},
   finish(){animations.at(-1)?.finish();}};
 }
 
 for(const file of ['app.js','playtests/feedback.js']){
- test(`${file}: cancel and the complete closing animation emit only one dismiss cue`,async()=>{
+ test(`${file}: cancel and the complete closing animation are silent and fade out hover and the opening cue`,async()=>{
   const view=dialog(file),first=view.cancel(),again=view.cancel();
-  assert.deepEqual(view.sounds,['back']);assert.equal(view.screen.inert,true);
+  assert.deepEqual(view.sounds,[]);assert.equal(view.screen.inert,true);
+  assert.equal(view.hoverSuppressions,1);assert.deepEqual(view.stopped,[{channel:'navigation',fade:.035}]);
   view.finish();await Promise.all([first,again]);
-  assert.deepEqual(view.sounds,['back']);assert.equal(view.modalRoot.firstElementChild,null);
+  assert.deepEqual(view.sounds,[]);assert.equal(view.modalRoot.firstElementChild,null);
   assert.equal(view.focus.calls,1);assert.equal(view.screen.inert,false);
  });
  test(`${file}: confirm owns its cue and silent replacement never adds a dismiss cue`,async()=>{
@@ -49,9 +51,9 @@ for(const file of ['app.js','playtests/feedback.js']){
   const replacement=dialog(file);await replacement.context.closeModal(true);
   assert.deepEqual(replacement.sounds,[]);
  });
- test(`${file}: reduced-motion and repeated cancellation still have one cue`,async()=>{
+ test(`${file}: reduced-motion and repeated cancellation stay silent`,async()=>{
   const view=dialog(file,{reduced:true});await view.cancel();await view.cancel();
-  assert.deepEqual(view.sounds,['back']);assert.equal(view.animations.length,0);
+  assert.deepEqual(view.sounds,[]);assert.equal(view.animations.length,0);
   assert.equal(view.focus.calls,1);
  });
 }
