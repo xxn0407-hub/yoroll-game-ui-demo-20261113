@@ -838,7 +838,7 @@ function setPlaybackRate(rate){
 function bindPlaybackChrome(){
  playbackChrome?.dispose();
  playbackChrome=window.YorollPlaybackChrome.attach({
-  surface:frame,controls:$('.playback-bar'),
+  surface:frame,controls:[$('.game-hud'),$('.playback-bar')],
   isPlaying:()=>currentPage==='gameplay'&&!playbackPaused&&!playbackSeeking&&playAnimation?.playState==='running',
   keepVisible:()=>Boolean(modalRoot.firstElementChild||!$('#review-panel').hidden||screen.getAttribute('aria-busy')==='true'||$('#playback-speed-toggle')?.getAttribute('aria-expanded')==='true'),
   onHide:()=>uiSound.suppressHover()

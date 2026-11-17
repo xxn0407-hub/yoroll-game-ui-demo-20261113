@@ -2,16 +2,18 @@
  'use strict';
  // Both players share idle timing and input ownership; revealing controls never consumes a tap.
  function attach({surface,controls,isPlaying,keepVisible=()=>false,onHide=()=>{},idleMs=2800}){
-  const doc=controls.ownerDocument,view=doc.defaultView,listeners=[];
-  const previousAria=controls.getAttribute('aria-hidden'),previousInert=controls.inert;
-  let timer=0,disposed=false,visible=true,hovered=false,pressed=false,keyboard=false,lastPinned;
+  const groups=Array.isArray(controls)?controls:[controls];
+  const doc=groups[0].ownerDocument,view=doc.defaultView,listeners=[];
+  const previous=groups.map(group=>({group,aria:group.getAttribute('aria-hidden'),inert:group.inert}));
+  const contains=target=>groups.some(group=>group.contains(target));
+  let timer=0,disposed=false,visible=true,pressed=false,keyboard=false,lastPinned,lastPointer=null;
   function listen(target,type,fn,options){target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));}
   function clear(){view.clearTimeout(timer);timer=0;}
-  function pinned(){return doc.hidden||!isPlaying()||keepVisible()||hovered||pressed||(keyboard&&controls.contains(doc.activeElement));}
+  function pinned(){return doc.hidden||!isPlaying()||keepVisible()||pressed||(keyboard&&contains(doc.activeElement));}
   function apply(show){
-   if(visible===show&&controls.dataset.controlsVisibility)return;
-   visible=show;controls.dataset.controlsVisibility=show?'visible':'hidden';
-   controls.inert=!show;controls.setAttribute('aria-hidden',String(!show));
+   if(visible===show&&groups.every(group=>group.dataset.controlsVisibility))return;
+   visible=show;
+   groups.forEach(group=>{group.dataset.controlsVisibility=show?'visible':'hidden';group.inert=!show;group.setAttribute('aria-hidden',String(!show));});
    if(!show)onHide();
   }
   function wake(){
@@ -25,16 +27,19 @@
   }
   function sync(){if(!disposed&&Boolean(pinned())!==lastPinned)wake();}
   const mouse=event=>!event.pointerType||event.pointerType==='mouse';
-  listen(surface,'pointermove',event=>{
+  const move=event=>{
    if(!mouse(event))return;
-   hovered=controls.contains(event.target);wake();
-  },{passive:true});
-  listen(controls,'pointerenter',event=>{if(mouse(event)){hovered=true;wake();}},{passive:true});
-  listen(controls,'pointerleave',event=>{if(mouse(event)){hovered=false;sync();}},{passive:true});
-  listen(surface,'pointerdown',event=>{
-   keyboard=false;pressed=controls.contains(event.target);
-   if(!mouse(event))hovered=false;
+   // Browser hit-testing can redispatch pointer events when fading UI moves under a stationary mouse.
+   if(Number.isFinite(event.clientX)&&Number.isFinite(event.clientY)){
+    if(lastPointer&&lastPointer.x===event.clientX&&lastPointer.y===event.clientY)return;
+    lastPointer={x:event.clientX,y:event.clientY};
+   }
    wake();
+  };
+  listen(surface,'pointermove',move,{passive:true});
+  groups.forEach(group=>listen(group,'pointerenter',move,{passive:true}));
+  listen(surface,'pointerdown',event=>{
+   keyboard=false;pressed=contains(event.target);wake();
   },{capture:true,passive:true});
   const release=event=>{
    if(!pressed&&!surface.contains(event.target))return;
@@ -42,21 +47,24 @@
   };
   listen(doc,'pointerup',release,{passive:true});
   listen(doc,'pointercancel',release,{passive:true});
-  listen(surface,'pointerleave',()=>{hovered=false;sync();},{passive:true});
   listen(doc,'keydown',event=>{
    if(surface.isConnected===false||(!surface.contains(event.target)&&event.target!==doc.body&&event.target!==doc.documentElement))return;
    keyboard=true;wake();
   },true);
-  listen(controls,'focusin',wake);
-  listen(controls,'focusout',()=>view.queueMicrotask(sync));
-  listen(controls,'input',wake);
-  listen(doc,'visibilitychange',()=>{hovered=false;pressed=false;wake();});
+  groups.forEach(group=>{
+   listen(group,'focusin',wake);
+   listen(group,'focusout',()=>view.queueMicrotask(sync));
+   listen(group,'input',wake);
+  });
+  listen(doc,'visibilitychange',()=>{pressed=false;lastPointer=null;wake();});
   wake();
   return Object.freeze({sync,wake,dispose(){
    if(disposed)return;
    disposed=true;clear();listeners.forEach(remove=>remove());
-   delete controls.dataset.controlsVisibility;controls.inert=previousInert;
-   if(previousAria===null)controls.removeAttribute('aria-hidden');else controls.setAttribute('aria-hidden',previousAria);
+   previous.forEach(({group,aria,inert})=>{
+    delete group.dataset.controlsVisibility;group.inert=inert;
+    if(aria===null)group.removeAttribute('aria-hidden');else group.setAttribute('aria-hidden',aria);
+   });
   }});
  }
  window.YorollPlaybackChrome=Object.freeze({attach});

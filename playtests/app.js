@@ -138,7 +138,7 @@
  function bindVideoChrome(run){
   run.chrome?.dispose();
   run.chrome=window.YorollPlaybackChrome.attach({
-   surface:run.element,controls:run.element.querySelector('.suite-stage-controls'),
+   surface:run.element,controls:[run.element.querySelector('.suite-top'),run.element.querySelector('.suite-stage-controls')],
    isPlaying:()=>current===run&&run.started&&!run.clock.paused&&!run.ended&&(!run.qteStarted||['basic','end'].includes(run.type))&&(!run.media||(!run.media.paused&&!run.media.ended&&run.media.readyState>=2)),
    keepVisible:()=>Boolean($('#modal-root').firstElementChild||!review.hidden||run.element.querySelector('.suite-note-panel')||run.element.querySelector('[data-suite="speed"]')?.getAttribute('aria-expanded')==='true'),
    onHide:()=>sound.suppressHover()
