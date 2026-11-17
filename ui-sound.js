@@ -12,6 +12,7 @@ window.YorollSound = (() => {
  const lastPlayed = new Map();
  const counts = {};
  const hoverPolicy={gain:.45,intentMs:120,retriggerMs:260,postActionMs:600,fadeSeconds:.035};
+ const backPolicy={gain:.24,rate:.75,leadSeconds:.06,attackSeconds:.018,fadeFromSeconds:.18,durationSeconds:.54};
  const uiPriority={click:10,select:15,chapter:20,transition:20,open:30,back:30,confirm:30};
  let hoverTimer=0,hoverTarget=null,hoverBlockedUntil=0,lastHoverStarted=-Infinity,uiEpoch=0;
  let lastUi={name:'',time:-Infinity,priority:0};
@@ -28,7 +29,7 @@ window.YorollSound = (() => {
  const ownerId=`${Date.now()}-${Math.random()}`;
  let audioChannel;
  try{audioChannel=new BroadcastChannel('yoroll-ui-preview-audio');}catch{}
- const bytes = new Map(names.map(name => [name,fetch(new URL(`assets/audio/ui-${name==='locked'?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:name==='gameover'?gameoverRevision:revision}`,assetRoot))
+ const bytes = new Map(names.map(name => [name,fetch(new URL(`assets/audio/ui-${['locked','back'].includes(name)?'hover':name}.wav?v=${name==='success'?completionRevision:name==='death'?deathRevision:name==='gameover'?gameoverRevision:revision}`,assetRoot))
   .then(response => {if(!response.ok)throw new Error('Audio asset unavailable');return response.arrayBuffer();})
   .catch(() => null)]));
 
@@ -42,7 +43,8 @@ window.YorollSound = (() => {
    audioMasterRevision:'master-mute-20261113',
    audioLastCue:lastCue,audioPlayCount:String(total),audioCounts:JSON.stringify(counts),
    audioDecoded:String(buffers.size),audioVoices:String(voices.size),audioBankFailures:String(failedCues.size),
-   audioInteractionRevision:'quiet-hover-priority-20261117',audioHoverGain:String(hoverPolicy.gain),audioHoverIntentPending:String(Boolean(hoverTimer)),
+   audioInteractionRevision:'soft-modal-dismiss-20261117',audioHoverGain:String(hoverPolicy.gain),audioHoverIntentPending:String(Boolean(hoverTimer)),
+   audioBackGain:String(backPolicy.gain),audioBackRate:String(backPolicy.rate),audioBackDurationMs:String(backPolicy.durationSeconds*1000),
    audioHoverVoices:String([...voices].filter(v=>v.channel==='hover'&&!v.stopping).length),
    audioUiForegroundVoices:String([...voices].filter(v=>v.group==='ui'&&!v.stopping).length),
    audioLifecycleRevision:'preview-pause-20261111',audioPreviewActive:String(isActive()),
@@ -261,7 +263,7 @@ window.YorollSound = (() => {
   const channel=definition?.channel||(['hover','locked'].includes(name)?'hover':name==='chapter'?'chapter':['transition','open','back'].includes(name)?'navigation':['success','death','gameover'].includes(name)?'result':'control');
   const hover=channel==='hover',ui=Object.hasOwn(uiPriority,name),result=['result','gameplay-result'].includes(channel);
   const epoch=voiceEpoch,channelToken=channelEpoch.get(channel)||0;
-  const interval=throttle??definition?.throttle??(name==='locked'?650:name==='hover'?180:name==='transition'?220:55);
+  const interval=throttle??definition?.throttle??(name==='locked'?650:name==='back'?400:name==='hover'?180:name==='transition'?220:55);
   if(requested-(lastPlayed.get(name)??-Infinity)<interval)return false;
   if(!sequence&&hover&&(requested<hoverBlockedUntil||requested-lastHoverStarted<hoverPolicy.retriggerMs))return false;
   if(!sequence&&ui&&requested-lastUi.time<90&&uiPriority[name]<lastUi.priority)return false;
@@ -282,7 +284,7 @@ window.YorollSound = (() => {
      else if(hover&&voice.channel==='hover')stopVoice(voice,false,hoverPolicy.fadeSeconds);
      else if((ui||result)&&voice.group==='ui')stopVoice(voice,false,.045);
      else if(result&&['result','gameplay-result'].includes(voice.channel))stopVoice(voice,false,.1);
-     else if(ui&&['result','gameplay-result'].includes(voice.channel))stopVoice(voice,false,.1);
+     else if(ui&&['result','gameplay-result'].includes(voice.channel))stopVoice(voice,false,name==='back'?.045:.1);
      else if(channel==='chapter'&&voice.channel==='hover')stopVoice(voice,false,.12);
      else if(channel==='chapter'&&voice.channel==='chapter')stopVoice(voice,false,.16);
      else if(voice.channel===channel&&definition?.replace)stopVoice(voice,false,.07);
@@ -294,11 +296,24 @@ window.YorollSound = (() => {
    const source=context.createBufferSource();source.buffer=buffers.get(name);
    // Use the original hover timbre, lowered for unavailable nodes.
    if(name==='locked')source.playbackRate.value=.5;
-   const gain=context.createGain();gain.gain.value=Math.max(0,Math.min(1,level))*(hover?hoverPolicy.gain:1);
+   const back=name==='back';
+   if(back)source.playbackRate.value=backPolicy.rate;
+   const gain=context.createGain(),cueGain=Math.max(0,Math.min(1,level))*(hover?hoverPolicy.gain:back?backPolicy.gain:1);
+   const startAt=context.currentTime+Math.max(0,delay,back?backPolicy.leadSeconds:0);
+   gain.gain.value=back?0:cueGain;
+   if(back){
+    // A single quiet, lower hover-family tone replaces the roomy back accent.
+    // Let the prior hover/open fade away before this one starts; no close cue follows.
+    gain.gain.setValueAtTime(0,startAt);
+    gain.gain.linearRampToValueAtTime(cueGain,startAt+backPolicy.attackSeconds);
+    gain.gain.setValueAtTime(cueGain,startAt+backPolicy.fadeFromSeconds);
+    gain.gain.linearRampToValueAtTime(0,startAt+backPolicy.durationSeconds);
+   }
    source.connect(gain);gain.connect(output);
    const voice={source,gain,channel,group:ui?'ui':channel,sequence,stopping:false,ducked:false};voices.add(voice);
    source.onended=()=>{releaseVoice(voice);publish();};
-   source.start(context.currentTime+Math.max(0,delay));
+   if(back)source.start(startAt,0,backPolicy.durationSeconds*backPolicy.rate);
+   else source.start(startAt);
    if(hover)lastHoverStarted=performance.now();
    lastCue=name;total++;counts[name]=(counts[name]||0)+1;publish();
    return true;

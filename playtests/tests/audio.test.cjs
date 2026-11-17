@@ -11,13 +11,13 @@ const flush=async()=>{await new Promise(setImmediate);await new Promise(setImmed
 // remain pending forever. Touch pointerdown is not an activation; release is.
 function phone({muted=false,blocked=true,gameplay=false,manualTimers=false}={}){
  let gesture=false,focused=true,now=1000,timerId=0;const timers=new Map();
- const document=new EventTarget(),window=new EventTarget(),contexts=[],intervals=new Set();
+ const document=new EventTarget(),window=new EventTarget(),contexts=[],intervals=new Set(),fetched=[];
  const storage=new Map([['yoroll-ui-preview:master-muted',String(muted)]]);
  document.hidden=false;document.hasFocus=()=>focused;document.documentElement={dataset:{}};
  document.currentScript={src:'https://example.test/ui-sound.js'};document.querySelectorAll=()=>[];
  class Parameter{
-  value=1;cancelScheduledValues(){}setValueAtTime(v){this.value=v;}
-  linearRampToValueAtTime(v){this.value=v;}setTargetAtTime(v){this.value=v;}
+  value=1;steps=[];cancelScheduledValues(){}setValueAtTime(v,t){this.value=v;this.steps.push({type:'set',value:v,time:t});}
+  linearRampToValueAtTime(v,t){this.value=v;this.steps.push({type:'linear',value:v,time:t});}setTargetAtTime(v){this.value=v;}
   setValueCurveAtTime(){}
  }
  class AudioContext extends EventTarget{
@@ -26,7 +26,7 @@ function phone({muted=false,blocked=true,gameplay=false,manualTimers=false}={}){
   createGain(){const n={gain:new Parameter(),connect(){},disconnect(){}};this.gains.push(n);return n;}
   createDynamicsCompressor(){return {connect(){},threshold:new Parameter(),knee:new Parameter(),ratio:new Parameter(),attack:new Parameter(),release:new Parameter()};}
   createMediaElementSource(media){return {media,connect(destination){this.destination=destination;}};}
-  createBufferSource(){const node={playbackRate:{value:1},connect(destination){this.destination=destination;},disconnect(){},start:()=>this.sources.push(node),stop:()=>{node.stopped=true;queueMicrotask(()=>node.onended?.());}};return node;}
+  createBufferSource(){const node={playbackRate:{value:1},connect(destination){this.destination=destination;},disconnect(){},start:(...args)=>{node.startArgs=args;this.sources.push(node);},stop:(time)=>{node.stopped=true;node.stopAt=time;queueMicrotask(()=>node.onended?.());}};return node;}
   decodeAudioData(){return Promise.resolve({duration:plan.fileDurationSeconds});}
   resume(){
    this.resumeCalls.push({gesture});
@@ -39,13 +39,13 @@ function phone({muted=false,blocked=true,gameplay=false,manualTimers=false}={}){
  const sandbox=vm.createContext({
   window,document,URL,Event,CustomEvent,console,location:{href:'https://example.test/'},
   performance:{now:()=>now},Date,localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},
-  fetch:async()=>({ok:true,json:async()=>plan,arrayBuffer:async()=>new ArrayBuffer(8)}),
+  fetch:async address=>{fetched.push(String(address));return {ok:true,json:async()=>plan,arrayBuffer:async()=>new ArrayBuffer(8)};},
   setTimeout:manualTimers?(fn,ms)=>{const id=++timerId;timers.set(id,{due:now+ms,fn});return id;}:setTimeout,
   clearTimeout:manualTimers?id=>timers.delete(id):clearTimeout,setInterval:fn=>{intervals.add(fn);return fn;},clearInterval:id=>intervals.delete(id),
  });
  for(const name of ['ui-sound.js',...(gameplay?['playtests/audio.js']:[]),'home-music.js']){document.currentScript={src:new URL(name,'https://example.test/').href};vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),sandbox,{filename:name});}
  const sound=window.YorollSound,music=window.YorollMusic;
- return {sound,music,contexts,document,window,data:document.documentElement.dataset,
+ return {sound,music,contexts,document,window,fetched,data:document.documentElement.dataset,
   async prepare(){await music.prepareEntry('home');music.setScene('home');await flush();},
   async event(type,pointerType){gesture=type==='click'||type==='touchend'||type==='keydown'||type==='pointerup'&&pointerType!=='mouse'||type==='pointerdown'&&pointerType==='mouse';const e=new Event(type);if(pointerType)Object.defineProperty(e,'pointerType',{value:pointerType});document.dispatchEvent(e);gesture=false;await flush();},
   async leave(){focused=false;document.hidden=true;window.dispatchEvent(new Event('pagehide'));await flush();},
@@ -232,4 +232,29 @@ test('opening, confirming and navigation share one foreground voice; obsolete de
  view.sound.play('game-late-focus');view.sound.play('back');await flush();
  assert.equal(JSON.parse(view.data.audioCounts)['game-late-focus'],undefined);
  assert.equal(view.data.audioHoverVoices,'0');await view.leave();
+});
+
+test('modal dismiss uses one quiet lower hover-family tone, with a continuous bounded fade instead of the long back accent',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ assert.equal(view.fetched.some(address=>address.includes('ui-back.wav')),false);
+ assert.equal(view.sound.play('back'),true);const cue=view.contexts[0].sources.at(-1);
+ assert.equal(cue.playbackRate.value,.75);
+ assert.ok(Math.abs(cue.startArgs[0]-.06)<1e-9);
+ assert.ok(Math.abs(cue.startArgs[2]/cue.playbackRate.value-.54)<1e-9);
+ assert.deepEqual(cue.destination.gain.steps.map(step=>[step.type,step.value]),[['set',0],['linear',.24],['set',.24],['linear',0]]);
+ assert.ok(Math.abs(cue.destination.gain.steps.at(-1).time-.6)<1e-9);
+ assert.equal(view.data.audioCounts,'{"back":1}');await view.leave();
+});
+
+test('cancel waits until hover and the modal-opening cue have faded, and blocks click or focus from adding a second accent',async()=>{
+ const view=phone({manualTimers:true});await view.event('click');await view.advance(700);
+ view.sound.play('open');const opening=view.contexts[0].sources.at(-1);
+ await view.advance(700);view.sound.play('hover');const hover=view.contexts[0].sources.at(-1);
+ view.sound.play('back');const dismiss=view.contexts[0].sources.at(-1);
+ assert.ok(opening.stopAt<dismiss.startArgs[0]);assert.ok(hover.stopAt<dismiss.startArgs[0]);
+ assert.equal(view.data.audioHoverVoices,'0');assert.equal(view.data.audioUiForegroundVoices,'1');
+ assert.equal(view.sound.play('click'),false);assert.equal(view.sound.play('transition'),false);
+ assert.equal(view.sound.requestHover(hoverTarget(view.document),{keyboard:true}),false);
+ await view.advance(100);assert.equal(view.sound.play('back'),false,'repeated dismissal cannot build another tail');
+ assert.equal(view.data.audioCounts,'{"open":1,"hover":1,"back":1}');await view.leave();
 });

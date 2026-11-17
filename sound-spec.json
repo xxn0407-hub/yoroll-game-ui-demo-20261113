@@ -68,7 +68,8 @@
         0
       ],
       "minFadeInMs": 12,
-      "fadeOutMs": 120
+      "fadeOutMs": 120,
+      "runtimeUse": "Legacy source retained; modal cancel / Escape now use the quiet hover-family variant in runtime.backFeedback."
     },
     "transition": {
       "file": "assets/audio/ui-transition.wav",
@@ -354,7 +355,7 @@
     "lockedDuringDrag": false,
     "chapterPreviousFadeOutMs": 160,
     "chapterHoverFadeOutMs": 120,
-    "interactionRevision": "quiet-hover-priority-20261117",
+    "interactionRevision": "soft-modal-dismiss-20261117",
     "hoverBusGain": 0.45,
     "hoverGainChangeDb": -6.94,
     "maxHoverVoices": 1,
@@ -366,13 +367,29 @@
     "focusRestorationSound": false,
     "pendingHoverAfterClickOrScroll": false,
     "hoverDuringTouch": false,
-    "volumeSliderFeedback": "One quiet select cue on change/release; no sound on every input frame."
+    "volumeSliderFeedback": "One quiet select cue on change/release; no sound on every input frame.",
+    "backFeedback": {
+      "sourceCue": "hover",
+      "sourceFile": "assets/audio/ui-hover.wav",
+      "playbackRate": 0.75,
+      "gain": 0.24,
+      "durationMs": 540,
+      "leadMs": 60,
+      "attackMs": 18,
+      "tailFadeStartMs": 180,
+      "tailFadeEndMs": 540,
+      "retriggerMs": 400,
+      "voiceCount": 1,
+      "extraClosingCue": false,
+      "priorHoverAndUiFadeBeforeOnset": true,
+      "character": "A single quiet lowered hover-family tone with a continuous fade; replaces the full-level 1.15-second roomy back accent."
+    }
   },
   "eventMap": {
     "hover": "Control focus",
     "click": "Ordinary activation",
     "select": "Choice timeout",
-    "back": "Modal cancel",
+    "back": "One soft dismiss cue for modal cancel / Escape. Completion of the close animation is silent.",
     "transition": "Page navigation",
     "open": "Modal opening",
     "confirm": "Confirmation and the quiet immediate QTE response.",
