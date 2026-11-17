@@ -20,7 +20,7 @@
  function motion(root){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;root.querySelectorAll('.suite-top,.suite-library-heading,.suite-category,.suite-card,.suite-play-heading,.suite-stage-controls,.suite-operation,.suite-native-stage,.suite-calendar,.suite-paper,.suite-choices').forEach((el,i)=>el.animate([{opacity:0,transform:`translate3d(0,${8+Math.min(i,6)}px,0)`},{opacity:1,transform:'none'}],{duration:640,delay:Math.min(i*32,220),easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'}));}
  function top(title,back='hub'){return `<header class="suite-top"><div class="back-heading"><button class="back-btn" data-suite="${back}" aria-label="返回">${icon('back')}</button><h1>${esc(title)}</h1></div><div class="suite-top-actions"><button class="subtle-btn" data-suite="inventory" aria-label="随身道具">${icon('bag')}<span>道具</span></button><button class="subtle-btn" data-suite="stats" aria-label="角色状态">${icon('heart')}<span>角色</span></button><button class="icon-btn suite-sound" data-suite="sound" aria-label="${muted?'开启声音':'关闭声音'}" aria-pressed="${!muted}">${icon(muted?'mute':'volume')}</button></div></header>`;}
  function setBackground(node){$('#suite-background').innerHTML=`<img src="${esc(poster(node))}" alt="">`;}
- function stopRuntime(run,{keepResult=false}={}){if(!run)return;A.clear({keepResult});if(run.engineSession){window.dispatchEvent(new CustomEvent('yoroll:gameplay-stop',{detail:{sessionId:run.engineSession.sessionId}}));try{adapter?.stop?.({sessionId:run.engineSession.sessionId});}catch{}}run.abort.abort();run.module?.dispose?.();run.media?.pause();run.module?.suspend?.();run.element?.querySelectorAll('video,audio').forEach(m=>m.pause());run.element?.querySelectorAll('iframe').forEach(m=>m.remove());run.element?.remove();}
+ function stopRuntime(run,{keepResult=false}={}){if(!run)return;run.chrome?.dispose();A.clear({keepResult});if(run.engineSession){window.dispatchEvent(new CustomEvent('yoroll:gameplay-stop',{detail:{sessionId:run.engineSession.sessionId}}));try{adapter?.stop?.({sessionId:run.engineSession.sessionId});}catch{}}run.abort.abort();run.module?.dispose?.();run.media?.pause();run.module?.suspend?.();run.element?.querySelectorAll('video,audio').forEach(m=>m.pause());run.element?.querySelectorAll('iframe').forEach(m=>m.remove());run.element?.remove();}
  function dispose(){gate.stop();stopRuntime(current);stack.forEach(v=>stopRuntime(v.run));stack=[];current=null;}
  function later(run,fn,ms){(run.scheduled||(run.scheduled=[])).push({due:run.clock.time+ms/1000,fn});}
  function hub(index=category){dispose();category=index;flow=false;F.closeModal(true);frame.dataset.mode='library';const chapter=chapters[category];setBackground(chapter.nodes[0]);
@@ -56,7 +56,7 @@
   if(type==='choice'){run.body.classList.add('is-spatial');run.module=choices(run);}else if(type==='end'||type==='basic')run.module=narrative(run);else if(native){run.engineSession=gate.begin(type,node.id);run.module=window.YorollPlayNative.mount(run.ctx);}else run.module=window.YorollPlayInteractions.mount(run.ctx);
   run.ctx.on(element.querySelector('.suite-track'),'input',ev=>{if(ev.target.disabled)return;updateVideoProgress(run,Number(ev.target.value));if(run.media&&Number.isFinite(run.media.duration)){run.ended=false;run.media.currentTime=Number(ev.target.value)/1000*run.media.duration;syncVideoTime(run);if(type==='rhythm'){run.qteTime=Math.max(0,run.media.currentTime-(node.qte.delay_from_start_seconds||0));run.settled=false;run.pending=null;run.module.seek?.();F.toast('节奏判定已重新同步');}}});
   run.ctx.on(run.media,'ended',()=>mediaEnded(run));
-  syncVideoTimeline(run);updateReview();motion(element);history.replaceState(null,'',pageLocation(id));
+  bindVideoChrome(run);syncVideoTimeline(run);updateReview();motion(element);history.replaceState(null,'',pageLocation(id));
   if(flow||stack.length)start(run);
  }
  function backgroundRef(node){const q=node.qte||{};return q.scene_choice?.background||q.scene_click_video?.background||q.peek_config?.normal_video_url||q.background_video_url||node.video||'1.mp4';}
@@ -98,8 +98,8 @@
  function closeNote(run){run.element.querySelector('.suite-note-panel')?.remove();run.clock.resume('note');if(run.started&&!run.clock.paused)run.media?.play().catch(()=>{});}
  function inventory(){if(!current){F.toast('进入玩法后可查看道具');return;}const run=current;note(run,'随身道具',`<div class="suite-inventory">${game.itemConfigs.map(v=>`<button class="suite-item" data-suite="item-read" data-item="${v.itemId}">${icon(itemIcon(v.itemId))}<span>${esc(v.itemName)}</span><small>× ${state.items[v.itemId]||0}</small></button>`).join('')}</div><p>选择物品，查看收集到的记录。</p>${R.canCraft(state,game.craftRecipes[0])?button('合成解毒药水','inventory-craft',{small:true,primary:true}):''}`);}
  function stats(){if(!current){F.toast('进入玩法后可查看角色信息');return;}note(current,'角色状态',`<div class="suite-character-stats">${game.characterConfigs.map(c=>`<article><h3>${esc(c.displayName)}</h3><p>好感度　${state.characters[c.characterId]?.favor||0}</p><div class="suite-progress"><span style="width:${state.characters[c.characterId]?.favor||0}%"></span></div><p>信任度　${state.characters[c.characterId]?.trust||0}</p></article>`).join('')}</div>`);}
- function openSide(run,option,onReturn){if(!run.ctx.active()||!option.side_node_id)return;run.media?.pause();run.clock.pause('side');run.module?.suspend?.();A.clear();A.play('turn');run.element.remove();stack.push({run,option,onReturn});current=null;load(option.side_node_id);}
- function closeSide({skipped=false}={}){const entry=stack.pop();if(!entry)return;const finished=current;stopRuntime(finished);current=entry.run;screen.replaceChildren(current.element);current.clock.resume('side');current.ended=current.media?.ended||false;entry.onReturn?.(entry.option,skipped);if(current.started&&!current.clock.paused)current.media?.play().catch(()=>{});current.module?.resume?.();motion(current.element);updateReview();save();history.replaceState(null,'',pageLocation(current.node.id));}
+ function openSide(run,option,onReturn){if(!run.ctx.active()||!option.side_node_id)return;run.media?.pause();run.clock.pause('side');run.chrome?.dispose();run.module?.suspend?.();A.clear();A.play('turn');run.element.remove();stack.push({run,option,onReturn});current=null;load(option.side_node_id);}
+ function closeSide({skipped=false}={}){const entry=stack.pop();if(!entry)return;const finished=current;stopRuntime(finished);current=entry.run;screen.replaceChildren(current.element);bindVideoChrome(current);current.clock.resume('side');current.ended=current.media?.ended||false;entry.onReturn?.(entry.option,skipped);if(current.started&&!current.clock.paused)current.media?.play().catch(()=>{});current.module?.resume?.();motion(current.element);updateReview();save();history.replaceState(null,'',pageLocation(current.node.id));}
  function engineStart(run){if(!run.engineSession)return;const request={...run.engineSession,chapterId:String(category+1),config:R.clone(run.node.qte),state:R.clone(state),muted:true,hostMuted:muted,audioPolicy:A.policy,orientation:run.contentOrientation,referenceSize:window.YorollLayout.referenceSize(run.contentOrientation)};
   window.dispatchEvent(new CustomEvent('yoroll:gameplay-start',{detail:request}));if(adapter?.start)try{adapter.start(request,window.YorollGameplayUI);adapter.setMuted?.({sessionId:run.engineSession.sessionId,muted:true,hostMuted:muted,audioPolicy:A.policy});}catch{status(run,'引擎未响应，仍可查看界面状态');}}
  function engineAction(run,action,payload={}){if(!gate.accept(run.engineSession?.sessionId))return false;const event={...run.engineSession,action,payload};window.dispatchEvent(new CustomEvent('yoroll:gameplay-action',{detail:event}));if(adapter?.action){try{adapter.action(event);return true;}catch{status(run,'引擎操作暂时未响应');return false;}}return false;}
@@ -135,6 +135,15 @@
  window.addEventListener('suite:modal-closed',()=>pause('modal',false));
  function sync(){pause('visibility',document.hidden||!document.hasFocus());}
  document.addEventListener('visibilitychange',sync);window.addEventListener('blur',()=>pause('visibility',true));window.addEventListener('focus',sync);window.addEventListener('pagehide',()=>{pause('visibility',true);sound.stopAll();save();});
+ function bindVideoChrome(run){
+  run.chrome?.dispose();
+  run.chrome=window.YorollPlaybackChrome.attach({
+   surface:run.element,controls:run.element.querySelector('.suite-stage-controls'),
+   isPlaying:()=>current===run&&run.started&&!run.clock.paused&&!run.ended&&(!run.qteStarted||['basic','end'].includes(run.type))&&(!run.media||(!run.media.paused&&!run.media.ended&&run.media.readyState>=2)),
+   keepVisible:()=>Boolean($('#modal-root').firstElementChild||!review.hidden||run.element.querySelector('.suite-note-panel')||run.element.querySelector('[data-suite="speed"]')?.getAttribute('aria-expanded')==='true'),
+   onHide:()=>sound.suppressHover()
+  });
+ }
  function handleVideoSpace(event){
   if(event.key!==' '||!current||event.defaultPrevented||event.isComposing||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey)return false;
   if($('#modal-root').firstElementChild||!review.hidden||current.element.querySelector('.suite-note-panel')||current.element.querySelector('[data-suite="speed"]')?.getAttribute('aria-expanded')==='true')return false;
@@ -169,7 +178,7 @@
   run.element.querySelector('.suite-track').setAttribute('aria-valuetext',text);
   updateVideoProgress(run,known?media.currentTime/duration*1000:0);
  }
- function tick(now){const dt=Math.min((now-last)/1000,.1);last=now;const run=current;if(run)syncVideoTimeline(run);
+ function tick(now){const dt=Math.min((now-last)/1000,.1);last=now;const run=current;if(run){syncVideoTimeline(run);run.chrome?.sync();}
   if(run&&run.started&&!run.abort.signal.aborted){const previous=run.clock.time;run.clock.advance(dt);const delta=run.clock.time-previous;
    if(delta){for(const task of (run.scheduled||[]).filter(t=>t.due<=run.clock.time)){run.scheduled=run.scheduled.filter(t=>t!==task);task.fn();if(current!==run)break;}if(current!==run){requestAnimationFrame(tick);return;}const mediaTime=run.media&&!run.mediaFailed?run.media.currentTime:run.clock.time,delay=Number(run.node.qte?.delay_from_start_seconds??run.node.delay_from_start_seconds)||0;
     if(!run.qteStarted&&mediaTime>=delay){run.qteStarted=true;run.module?.activate?.();if(run.engineSession)engineStart(run);}

@@ -50,6 +50,7 @@ const MODAL_CLOSE_TIMING = Object.freeze({content:110,lead:80,surface:280,veil:2
 let confirmAction = null;
 let choicePaused = false;
 let playbackPaused = false;
+let playbackChrome = null;
 let playbackRate = 1;
 let playbackPosition = 0;
 const optionsMenuMotions = new Map();
@@ -134,6 +135,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
  return animate(element,[{opacity:0,transform:`translate3d(${x}px,${y}px,0) scale(${scale})`,filter:`blur(${blur}px)`},{opacity:1,transform:'translate3d(0,0,0) scale(1)',filter:'blur(0px)'}],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)'});
 }
 function cancelPageMotion(){
+ playbackChrome?.dispose();playbackChrome=null;
  rememberPlaybackPosition();
  cancelAnimationFrame(playbackSeekFrame);playbackSeekFrame=0;playbackSeeking=false;
  optionsMenuMotions.clear();
@@ -570,7 +572,7 @@ function hud({showPause=true,showBack=false}={}){const chapter=activeChapter(),f
 function playbackSpeedMarkup(){
  return `<div class="playback-speed"><button class="play-control playback-speed-toggle" id="playback-speed-toggle" data-action="playback-speed" aria-label="播放速度，当前 ${playbackRate} 倍" aria-haspopup="menu" aria-expanded="false" aria-controls="playback-speed-options"><span id="playback-speed-label">${playbackRate}×</span>${icon('chevron')}</button><div class="playback-speed-options glass-menu" id="playback-speed-options" role="menu" aria-label="播放速度" hidden>${PLAYBACK_RATES.map(rate=>`<button type="button" role="menuitemradio" aria-checked="${rate===playbackRate}" data-speed-rate="${rate}" tabindex="-1"><span>${rate}×</span><span class="playback-speed-check glass-menu-check">${icon('check')}</span></button>`).join('')}</div><span class="sr-only" id="playback-speed-announcement" role="status" aria-live="polite"></span></div>`;
 }
-function gameplayView(){return `${hud({showPause:false,showBack:true})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-controls"><div class="playback-status"><button class="play-control" id="playback-toggle" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}" aria-keyshortcuts="Space" title="${playbackPaused?'继续播放':'暂停播放'}（空格）">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><span class="playback-time" id="playback-time" aria-hidden="true" title="已播放 / 本段总时长">${formatPlaybackTime(playbackPosition)} / ${formatPlaybackTime(PLAYBACK_DURATION)}</span>${playbackSpeedMarkup()}</div><div class="playback-tools"><button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div><div class="playback-track"><span id="play-progress"></span><input class="playback-seek" id="playback-seek" type="range" min="0" max="${PLAYBACK_DURATION}" step="100" value="${playbackPosition}" aria-label="播放进度" aria-keyshortcuts="ArrowLeft ArrowRight Home End Space" title="拖动定位 · 方向键微调 · Home / End 跳转 · 空格播放或暂停"></div></div>`;}
+function gameplayView(){return `${hud({showPause:false,showBack:true})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar"><div class="playback-controls" data-enter="footer"><div class="playback-status"><button class="play-control" id="playback-toggle" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}" aria-keyshortcuts="Space" title="${playbackPaused?'继续播放':'暂停播放'}（空格）">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><span class="playback-time" id="playback-time" aria-hidden="true" title="已播放 / 本段总时长">${formatPlaybackTime(playbackPosition)} / ${formatPlaybackTime(PLAYBACK_DURATION)}</span>${playbackSpeedMarkup()}</div><div class="playback-tools"><button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div><div class="playback-track" data-enter="footer"><span id="play-progress"></span><input class="playback-seek" id="playback-seek" type="range" min="0" max="${PLAYBACK_DURATION}" step="100" value="${playbackPosition}" aria-label="播放进度" aria-keyshortcuts="ArrowLeft ArrowRight Home End Space" title="拖动定位 · 方向键微调 · Home / End 跳转 · 空格播放或暂停"></div></div>`;}
 function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${playbackLabel()}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
 function choiceView(){
  const outline='<svg class="choice-outline" viewBox="0 0 196 52" preserveAspectRatio="none" aria-hidden="true"><path d="M90 51H26A25 25 0 0 1 26 1H170A25 25 0 0 1 170 51H106" vector-effect="non-scaling-stroke"/><circle cx="98" cy="51" r="1.6"/></svg>';
@@ -738,7 +740,7 @@ async function go(page,{replace=false,skipExit=false,silent=false}={}){
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
- if(currentPage==='gameplay')bindPlaybackSeek();
+ if(currentPage==='gameplay'){bindPlaybackSeek();bindPlaybackChrome();}
  if(currentPage==='affinity')bindAffinity();
  if(currentPage==='chapters')bindChapterRail();
  if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';bindStoryScroll();}
@@ -833,6 +835,15 @@ function setPlaybackRate(rate){
  if(changed)animate(label,[{opacity:.4,transform:`translateY(${unit(3)}px)`},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'cubic-bezier(.16,1,.3,1)'});
  setPlaybackSpeedMenu(false,{restoreFocus:true});
 }
+function bindPlaybackChrome(){
+ playbackChrome?.dispose();
+ playbackChrome=window.YorollPlaybackChrome.attach({
+  surface:frame,controls:$('.playback-bar'),
+  isPlaying:()=>currentPage==='gameplay'&&!playbackPaused&&!playbackSeeking&&playAnimation?.playState==='running',
+  keepVisible:()=>Boolean(modalRoot.firstElementChild||!$('#review-panel').hidden||screen.getAttribute('aria-busy')==='true'||$('#playback-speed-toggle')?.getAttribute('aria-expanded')==='true'),
+  onHide:()=>uiSound.suppressHover()
+ });
+}
 function formatPlaybackTime(milliseconds){
  const seconds=Number.isFinite(Number(milliseconds))?Math.floor(Math.max(0,Number(milliseconds))/1000):0;
  return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
@@ -892,6 +903,7 @@ function startPlayback(){
  const updateSeek=()=>{
   if(playAnimation!==animation||currentPage!=='gameplay')return;
   if(!playbackSeeking)syncPlaybackSeek(Number(animation.currentTime)||0);
+  playbackChrome?.sync();
   playbackSeekFrame=requestAnimationFrame(updateSeek);
  };
  cancelAnimationFrame(playbackSeekFrame);updateSeek();

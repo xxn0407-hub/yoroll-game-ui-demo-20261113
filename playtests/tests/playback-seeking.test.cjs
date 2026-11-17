@@ -17,7 +17,7 @@ function playback({paused=false,position=0}={}){
  }
  const seek=new Seek(),timeline=new Timeline(),routes=[],jobs=new Map();let nextJob=0,suppressed=0;
  const progress={animate:()=>timeline},time={textContent:''};
- const context=vm.createContext({PLAYBACK_DURATION:24000,currentPage:'gameplay',playbackPosition:position,playbackRate:1,playbackPaused:paused,playbackSeeking:false,playbackSeekFrame:0,playAnimation:null,frame:{dataset:{}},document:{hidden:false},$:selector=>selector==='#playback-seek'?seek:selector==='#play-progress'?progress:selector==='#playback-time'?time:null,track:value=>value,uiSound:{suppressHover:()=>suppressed++},requestAnimationFrame:callback=>{jobs.set(++nextJob,callback);return nextJob;},cancelAnimationFrame:id=>jobs.delete(id),go:page=>routes.push(page)});
+ const context=vm.createContext({PLAYBACK_DURATION:24000,currentPage:'gameplay',playbackPosition:position,playbackRate:1,playbackPaused:paused,playbackSeeking:false,playbackSeekFrame:0,playAnimation:null,playbackChrome:null,frame:{dataset:{}},document:{hidden:false},$:selector=>selector==='#playback-seek'?seek:selector==='#play-progress'?progress:selector==='#playback-time'?time:null,track:value=>value,uiSound:{suppressHover:()=>suppressed++},requestAnimationFrame:callback=>{jobs.set(++nextJob,callback);return nextJob;},cancelAnimationFrame:id=>jobs.delete(id),go:page=>routes.push(page)});
  vm.runInContext(functions+'\nbindPlaybackSeek();startPlayback();',context);
  const event=(type,key)=>{const e=new Event(type);if(key)Object.defineProperty(e,'key',{value:key});seek.dispatchEvent(e);};
  return {context,seek,timeline,time,routes,jobs,get suppressed(){return suppressed;},event,
