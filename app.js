@@ -135,6 +135,7 @@ function enter(element,{x=0,y=18,scale=1,delay=0,duration=620,blur=0}={}){
 }
 function cancelPageMotion(){
  rememberPlaybackPosition();
+ cancelAnimationFrame(playbackSeekFrame);playbackSeekFrame=0;playbackSeeking=false;
  optionsMenuMotions.clear();
  resultSoundRequest=null;delete frame.dataset.resultSound;
  failureSoundRequest=null;delete frame.dataset.failureSound;
@@ -565,11 +566,11 @@ function settingsView(){
  <div class="setting-row language" data-enter="setting"><span>语言</span><div class="select-wrap"><button class="select-button" id="language-select" aria-label="语言，当前${settingState.language}" aria-expanded="false" aria-haspopup="listbox" aria-controls="language-options"><span>${settingState.language}</span>${icon('chevron')}</button><div class="select-options glass-menu" id="language-options" role="listbox" aria-label="语言" hidden>${['跟随系统','简体中文','English','日本語'].map(label=>`<button type="button" role="option" tabindex="-1" aria-selected="${label===settingState.language}" data-language="${label}"><span>${label}</span><span class="glass-menu-check">${icon('check')}</span></button>`).join('')}</div></div></div><p class="settings-note" data-enter="footer">主音量控制整体 · 音效与音乐分别调节</p></section>${footer(button('恢复默认','reset-settings','btn-small'),'<span><span class="keycap">Esc</span> 返回</span>')}`;
 }
 function playbackLabel(){return playbackStoryNode?.chapter===selectedChapter?`片段 ${playbackStoryNode.id} · ${playbackStoryNode.name}`:activeChapter().name;}
-function hud({showPause=true}={}){const chapter=activeChapter(),fragment=playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null,labels=[`第 ${chapter.number} 章`,...(fragment?[`片段 ${fragment.id}`,fragment.name]:[chapter.name])];return `<div class="game-hud"><div class="hud-scene" data-enter="heading">${labels.map(label=>`<span class="hud-scene-label">${label}</span>`).join('<span class="hud-scene-separator" aria-hidden="true"></span>')}</div><div class="hud-actions"><div data-enter="header">${soundButton()}</div>${showPause?`<div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div>`:''}</div></div>`;}
+function hud({showPause=true,showBack=false}={}){const chapter=activeChapter(),fragment=playbackStoryNode?.chapter===selectedChapter?playbackStoryNode:null,labels=[`第 ${chapter.number} 章`,...(fragment?[`片段 ${fragment.id}`,fragment.name]:[chapter.name])],sceneLabels=labels.map(label=>`<span class="hud-scene-label">${label}</span>`).join('<span class="hud-scene-separator" aria-hidden="true"></span>');return `<div class="game-hud">${showBack?`<div class="hud-leading back-heading" data-enter="heading"><button class="icon-button back-button" data-route="pause" aria-label="返回" title="返回游戏菜单">${icon('back-filled')}</button><div class="hud-scene">${sceneLabels}</div></div>`:`<div class="hud-scene" data-enter="heading">${sceneLabels}</div>`}<div class="hud-actions"><div data-enter="header">${soundButton()}</div>${showPause?`<div data-enter="header"><button class="icon-button" data-route="pause" aria-label="暂停">${icon('pause')}</button></div>`:''}</div></div>`;}
 function playbackSpeedMarkup(){
  return `<div class="playback-speed"><button class="play-control playback-speed-toggle" id="playback-speed-toggle" data-action="playback-speed" aria-label="播放速度，当前 ${playbackRate} 倍" aria-haspopup="menu" aria-expanded="false" aria-controls="playback-speed-options"><span id="playback-speed-label">${playbackRate}×</span>${icon('chevron')}</button><div class="playback-speed-options glass-menu" id="playback-speed-options" role="menu" aria-label="播放速度" hidden>${PLAYBACK_RATES.map(rate=>`<button type="button" role="menuitemradio" aria-checked="${rate===playbackRate}" data-speed-rate="${rate}" tabindex="-1"><span>${rate}×</span><span class="playback-speed-check glass-menu-check">${icon('check')}</span></button>`).join('')}</div><span class="sr-only" id="playback-speed-announcement" role="status" aria-live="polite"></span></div>`;
 }
-function gameplayView(){return `${hud({showPause:false})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span></div></div><div class="playback-tools">${playbackSpeedMarkup()}<button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div>`;}
+function gameplayView(){return `${hud({showPause:false,showBack:true})}<div class="subtitle" data-enter="subtitle"><span class="speaker">车手</span><span id="subtitle-text">准备好了，就出发吧。</span></div><div class="playback-bar" data-enter="footer"><div class="playback-status"><button class="play-control" data-action="playback" aria-label="${playbackPaused?'继续播放':'暂停播放'}">${icon(playbackPaused?'play':'pause')}<span>${playbackPaused?'已暂停':'播放中'}</span></button><div class="playback-track"><span id="play-progress"></span><input class="playback-seek" id="playback-seek" type="range" min="0" max="${PLAYBACK_DURATION}" step="100" value="${playbackPosition}" aria-label="播放进度"></div></div><div class="playback-tools">${playbackSpeedMarkup()}<button class="play-control" data-route="choice">继续 ${icon('arrow')}</button></div></div>`;}
 function pauseView(){return `${pageHeading('暂停','gameplay')}<nav class="pause-menu"><div class="eyebrow" data-enter="pause">STORY PAUSED</div><h1 data-enter="pause">片刻停留</h1><div class="pause-list">${[['继续游戏','gameplay'],['剧情树','tree'],['切换存档','saves'],['设置','settings'],['返回主菜单','home']].map(([label,route])=>`<div data-enter="pause"><button data-route="${route}">${label}${icon('arrow')}</button></div>`).join('')}</div></nav>${footer(`第 ${activeChapter().number} 章 · ${playbackLabel()}`,'<span><span class="keycap">Esc</span> 继续游戏</span>')}`;}
 function choiceView(){
  const outline='<svg class="choice-outline" viewBox="0 0 196 52" preserveAspectRatio="none" aria-hidden="true"><path d="M90 51H26A25 25 0 0 1 26 1H170A25 25 0 0 1 170 51H106" vector-effect="non-scaling-stroke"/><circle cx="98" cy="51" r="1.6"/></svg>';
@@ -737,6 +738,7 @@ async function go(page,{replace=false,skipExit=false,silent=false}={}){
  $('#review-panel').hidden=true;$('#review-toggle').setAttribute('aria-expanded','false');
 }
 function bindPageControls(){
+ if(currentPage==='gameplay')bindPlaybackSeek();
  if(currentPage==='affinity')bindAffinity();
  if(currentPage==='chapters')bindChapterRail();
  if(currentPage==='tree'){frame.dataset.treeNode=currentStoryState().node;frame.dataset.treeTransition='ready';bindStoryScroll();}
@@ -783,6 +785,7 @@ function qteHit(){
  timeout(()=>go('result'),1100);
 }
 let playAnimation;
+let playbackSeekFrame=0,playbackSeeking=false;
 function rememberPlaybackPosition(){
  if(currentPage!=='gameplay'||!playAnimation||playAnimation.playState==='idle'||playAnimation.currentTime===null)return;
  const position=Number(playAnimation.currentTime);
@@ -830,14 +833,55 @@ function setPlaybackRate(rate){
  if(changed)animate(label,[{opacity:.4,transform:`translateY(${unit(3)}px)`},{opacity:1,transform:'translateY(0)'}],{duration:240,easing:'cubic-bezier(.16,1,.3,1)'});
  setPlaybackSpeedMenu(false,{restoreFocus:true});
 }
+function syncPlaybackSeek(position){
+ const seek=$('#playback-seek');if(!seek)return;
+ seek.value=String(Math.max(0,Math.min(PLAYBACK_DURATION,Math.round(position/100)*100)));
+ const format=ms=>`${String(Math.floor(ms/60000)).padStart(2,'0')}:${String(Math.floor(ms/1000)%60).padStart(2,'0')}`;
+ seek.setAttribute('aria-valuetext',`${format(position)} / ${format(PLAYBACK_DURATION)}`);
+}
+function bindPlaybackSeek(){
+ const seek=$('#playback-seek');if(!seek)return;
+ let resumeAfterSeek=false;
+ const begin=()=>{
+  if(playbackSeeking||!playAnimation)return;
+  resumeAfterSeek=playAnimation.playState==='running'&&!playbackPaused;
+  playbackSeeking=true;playAnimation.pause();uiSound.suppressHover();
+ };
+ const finish=()=>{
+  if(!playbackSeeking)return;
+  playbackSeeking=false;
+  if(resumeAfterSeek&&!playbackPaused&&!document.hidden){
+   if(playbackPosition>=PLAYBACK_DURATION)go('choice');else playAnimation?.play();
+  }
+ };
+ seek.addEventListener('pointerdown',event=>{
+  if(event.button>0)return;
+  begin();try{seek.setPointerCapture(event.pointerId);}catch{}
+ });
+ seek.addEventListener('input',()=>{
+  if(!playAnimation)return;
+  playbackPosition=Math.max(0,Math.min(PLAYBACK_DURATION,Number(seek.value)||0));
+  playAnimation.currentTime=playbackPosition;syncPlaybackSeek(playbackPosition);
+ });
+ for(const name of ['change','pointerup','pointercancel','lostpointercapture','blur'])seek.addEventListener(name,finish);
+ seek.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','PageUp','PageDown'].includes(event.key))begin();});
+ seek.addEventListener('keyup',finish);
+}
 function startPlayback(){
  const progress=$('#play-progress');if(!progress)return;
- const animation=playAnimation=track(progress.animate([{width:'12%'},{width:'100%'}],{duration:PLAYBACK_DURATION,easing:'linear',fill:'both'}),false);
+ const animation=playAnimation=track(progress.animate([{width:'0%'},{width:'100%'}],{duration:PLAYBACK_DURATION,easing:'linear',fill:'both'}),false);
  animation.currentTime=playbackPosition;
  animation.updatePlaybackRate(playbackRate);
  frame.dataset.playbackRate=String(playbackRate);
  if(playbackPaused||document.hidden)animation.pause();
- animation.finished.then(()=>{if(playAnimation===animation&&currentPage==='gameplay')go('choice');}).catch(()=>{});
+ const updateSeek=()=>{
+  if(playAnimation!==animation||currentPage!=='gameplay')return;
+  if(!playbackSeeking)syncPlaybackSeek(Number(animation.currentTime)||0);
+  playbackSeekFrame=requestAnimationFrame(updateSeek);
+ };
+ cancelAnimationFrame(playbackSeekFrame);updateSeek();
+ animation.addEventListener('finish',()=>{if(playAnimation===animation&&currentPage==='gameplay'&&!playbackSeeking&&!playbackPaused)go('choice');});
+ animation.finished.catch(()=>{});
 }
 function tryResultSound(){
  const request=resultSoundRequest;
@@ -1068,12 +1112,12 @@ const actions={
  'restart-music':()=>{uiSound.setPreviewPaused(false);window.YorollMusic.replayOpening();},
  'toggle-preview-audio':()=>uiSound.setPreviewPaused(document.documentElement.dataset.audioPreviewPaused!=='true'),
  'playback-speed':()=>setPlaybackSpeedMenu($('#playback-speed-toggle').getAttribute('aria-expanded')!=='true'),
- 'playback':()=>{playbackPaused=!playbackPaused;if(playbackPaused)playAnimation?.pause();else playAnimation?.play();const b=$('[data-action="playback"]');b.innerHTML=icon(playbackPaused?'play':'pause')+`<span>${playbackPaused?'已暂停':'播放中'}</span>`;b.setAttribute('aria-label',playbackPaused?'继续播放':'暂停播放');}
+ 'playback':()=>{playbackPaused=!playbackPaused;if(playbackPaused)playAnimation?.pause();else if(playbackPosition>=PLAYBACK_DURATION){go('choice');return;}else playAnimation?.play();const b=$('[data-action="playback"]');b.innerHTML=icon(playbackPaused?'play':'pause')+`<span>${playbackPaused?'已暂停':'播放中'}</span>`;b.setAttribute('aria-label',playbackPaused?'继续播放':'暂停播放');}
 };
 // Only deliberate controls sound; scrolling and dragging stay quiet.
 let keyboardFocusSound=false;
 let hoveredSoundControl=null;
-const soundControl=target=>target.closest('.tree-node-cell.is-locked')||target.closest('button,a,input[type="range"]');
+const soundControl=target=>target.closest('.tree-node-cell.is-locked')||target.closest('button,a,input[type="range"]:not(.playback-seek)');
 const hoverLevel=control=>control.matches('.chapter-card,.tree-node,.affinity-card') ? .48 : .68;
 function cancelPendingHover(){hoveredSoundControl=null;uiSound.cancelHover();}
 document.addEventListener('pointerdown',()=>{keyboardFocusSound=false;cancelPendingHover();},{capture:true});

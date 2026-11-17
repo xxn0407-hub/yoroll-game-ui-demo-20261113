@@ -560,3 +560,8 @@ html.mobile-ui[data-ui-orientation=portrait] .suite-choice-grid{max-width:calc(v
 
 /* A card and its scroll slot share one width, avoiding leftover desktop gaps. */
 .mobile-ui .chapter-cell{flex:0 0 auto;width:max-content;}
+
+/* The playback back arrow keeps the existing phone control size and safe insets. */
+.mobile-ui .game-hud .hud-leading{gap:var(--mobile-space-1)}
+.mobile-ui .hud-leading .hud-scene{max-width:none}
+.mobile-ui .playback-seek{height:44px}

@@ -734,3 +734,15 @@
   filter:drop-shadow(0 0 calc(var(--p)*4) #e7d9b366);
 }
 .toast-copy{min-width:0;text-align:center;letter-spacing:.045em;text-shadow:0 0 calc(var(--p)*12) #e3ece114;}
+
+/* Playback reuses the shared back arrow and the original one-pixel progress line. */
+.game-hud .hud-leading{position:static;flex:1;min-width:0;gap:calc(var(--p)*20)}
+.game-hud .hud-leading .hud-scene{min-width:0}
+#play-progress{width:0}
+.playback-seek{appearance:none;-webkit-appearance:none;position:absolute;inset:auto 0;top:50%;transform:translateY(-50%);width:100%;height:max(28px,calc(var(--p)*44));padding:0;margin:0;border:0;background:transparent;color:transparent;cursor:ew-resize;touch-action:none}
+.playback-seek::-webkit-slider-runnable-track{height:1px;border:0;background:transparent}
+.playback-seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:0;background:transparent;box-shadow:none}
+.playback-seek::-moz-range-track,.playback-seek::-moz-range-progress{height:1px;border:0;background:transparent}
+.playback-seek::-moz-range-thumb{width:16px;height:16px;border:0;background:transparent;box-shadow:none}
+.playback-seek:focus-visible{outline:none}
+.playback-track:focus-within #play-progress{filter:drop-shadow(0 0 calc(var(--p)*3) #d8c7a544)}
